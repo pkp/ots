@@ -1,0 +1,28 @@
+<?php echo $this->doctype(); ?>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <?php echo $this->headTitle('PKP XML Parsing Service')->setSeparator(' - ')->setAutoEscape(false) ?>
+    <meta name="description" content="">
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+
+    <?php
+      echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/favicon.ico'))
+        ->prependStylesheet($this->basePath() . '/css/style.min.css')
+    ?>
+
+    <?php
+      echo $this->headScript()->prependFile($this->basePath() . '/js/script.min.js', 'text/javascript')
+    ?>
+  </head>
+  <body>
+    <div class="container">
+      <?php echo $this->content; ?>
+    </div>
+    <?php echo $this->inlineScript() ?>
+  </body>
+</html>
