@@ -1,5 +1,9 @@
 !.gitignore
 .composer
 composer
-zendframework
 autoload.php
+
+doctrine
+symfony
+zendframework
+
