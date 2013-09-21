@@ -11,4 +11,7 @@ return array(
             ),
         ),
     ),
+    'log' => array(
+        'level' => 6,
+    ),
 );

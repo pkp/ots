@@ -34,10 +34,36 @@ class Module
     public function getAutoloaderConfig()
     {
         return array(
+            'Zend\Loader\ClassMapAutoloader' => array(
+                __DIR__ . '/../../vendor/xmlps/autoload_classmap.php',
+            ),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
+            ),
+        );
+    }
+
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'Logger' => function($sm)
+                {
+                    $config = $sm->get('config');
+                    $logger = new \Xmlps\Log\Logger;
+                    $writer = new \Zend\Log\Writer\Stream($config['log']['file']);
+                    if (!empty($config['log']['level'])) {
+                        $writer->addFilter($config['log']['level']);
+                    }
+                    else {
+                        $writer->addFilter(Zend_Log::INFO);
+                    }
+                    $logger->addWriter($writer);
+
+                    return $logger;
+                },
             ),
         );
     }
