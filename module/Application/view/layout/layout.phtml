@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <?php echo $this->headTitle('PKP XML Parsing Service')->setSeparator(' - ')->setAutoEscape(false) ?>
+    <?php echo $this->headTitle($this->translate('application.generic.siteTitle'))->setSeparator(' - ')->setAutoEscape(false) ?>
     <meta name="description" content="">
     <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
 
@@ -22,7 +22,7 @@
   <body>
     <div class="container">
       <header>
-        <span>PDF, DOC, DOCX or ODT to XML (<a href="http://dtd.nlm.nih.gov/publishing/tag-library/3.0/" target="_blank">NML-XML 3.0 compatible</a>) document conversion</span>
+        <span><?php echo sprintf($this->translate('application.layout.subHeading'), '<a href="http://dtd.nlm.nih.gov/publishing/tag-library/3.0/" target="_blank">', '</a>'); ?></span>
       </header>
       <div class="content"><?php echo $this->content; ?></div>
     </div>

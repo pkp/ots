@@ -1,0 +1,142 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: XMLPS\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-09-24 11:53-1000\n"
+"PO-Revision-Date: 2013-09-24 12:01-1000\n"
+"Last-Translator: \n"
+"Language-Team: Michael Thessel\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../view/application/index/index.phtml:4 ../view/layout/layout.phtml:9
+msgid "application.generic.siteTitle"
+msgstr "PKP XML Parsing Service"
+
+#: ../view/application/index/index.phtml:6
+msgid "application.index.sidebarDescription"
+msgstr ""
+"This is a new, experimental service being developed by the Public Knowledge "
+"Project to provide unsupervised conversion of Word/compatible inputs to "
+"production-ready NLM3 XML, HTML, and PDF. This service is currently under "
+"active development and output will not be perfect. Contact axfelix@gmail.com "
+"with any questions, and watch this sp    ace over the coming months."
+
+#: ../view/application/index/index.phtml:8
+msgid "application.index.sidebarTips"
+msgstr "Tips on preparing your document:"
+
+#: ../view/application/index/index.phtml:11
+msgid "application.index.sidebarTipsPDF"
+msgstr ""
+"PDFs must have embedded text (i.e. created from an already-digital "
+"document). Scanned PDFs must have been OCRed before being uploaded to our "
+"service (want us to add OCR support? ask!)"
+
+#: ../view/application/index/index.phtml:12
+msgid "application.index.sidebarTipsCitation"
+msgstr ""
+"Ideally, citations (in your document that point to your bibliography) are "
+"formatted as numbers in brackets, e.g. [10] or [11,12,13]. Consequently, "
+"bracketed numbers should not occur in your document for any other reason."
+
+#: ../view/application/index/index.phtml:13
+msgid "application.index.sidebarTipsCitationReference"
+msgstr ""
+"Citations can also be formatted as single references in parentheses, e.g. "
+"(Clancy, 2010) . Our software will re-style these citations according to the "
+"citation style you have selected."
+
+#: ../view/application/index/index.phtml:14
+msgid "application.index.sidebarTipsBibliography"
+msgstr ""
+"Any bibliography entries which are not cited in your document are reported "
+"in a warning section at the bottom."
+
+#: ../view/layout/layout.phtml:25
+msgid "application.layout.subHeading"
+msgstr ""
+"PDF, DOC, DOCX or ODT to XML (%sNML-XML 3.0 compatible%s) document conversion"
+
+#: ../view/error/index.phtml:1
+msgid "application.error.generic"
+msgstr "An error occurred"
+
+#: ../view/error/index.phtml:8 ../view/error/404.phtml:53
+msgid "application.error.additionalInformation"
+msgstr "Additional information"
+
+#: ../view/error/index.phtml:11 ../view/error/index.phtml:35
+#: ../view/error/404.phtml:56 ../view/error/404.phtml:80
+msgid "application.generic.file"
+msgstr "File"
+
+#: ../view/error/index.phtml:15 ../view/error/index.phtml:39
+#: ../view/error/404.phtml:60 ../view/error/404.phtml:84
+msgid "application.generic.message"
+msgstr "Message"
+
+#: ../view/error/index.phtml:19 ../view/error/index.phtml:43
+#: ../view/error/404.phtml:64 ../view/error/404.phtml:88
+msgid "application.error.stackTrace"
+msgstr "Stack trace"
+
+#: ../view/error/index.phtml:29 ../view/error/404.phtml:74
+msgid "application.error.previousExceptions"
+msgstr "Previous exceptions"
+
+#: ../view/error/index.phtml:58 ../view/error/404.phtml:103
+msgid "application.error.noExceptionAvailable"
+msgstr "No Exception available"
+
+#: ../view/error/404.phtml:1
+msgid "application.error.404"
+msgstr "A 404 error occurred"
+
+#: ../view/error/404.phtml:10
+msgid "application.error.controllerDispatch"
+msgstr "The requested controller was unable to dispatch the request."
+
+#: ../view/error/404.phtml:13
+msgid "application.error.controlerMap"
+msgstr ""
+"The requested controller could not be mapped to an existing controller class."
+
+#: ../view/error/404.phtml:16
+msgid "application.error.controllerNoDispatch"
+msgstr "The requested controller was not dispatchable."
+
+#: ../view/error/404.phtml:19
+msgid "application.error.noRoute"
+msgstr "The requested URL could not be matched by routing."
+
+#: ../view/error/404.phtml:22
+msgid "application.error.unknown404"
+msgstr "We cannot determine at this time why a 404 was generated."
+
+#: ../view/error/404.phtml:34
+msgid "application.generic.controller"
+msgstr "Controller"
+
+#: ../view/error/404.phtml:41
+msgid "application.error.controlerResolves"
+msgstr "resolves to %s"
+
+#~ msgid "The requested controller was not dispatchable."
+#~ msgstr ""
+#~ "The requested controller could not be mapped to an existing controller "
+#~ "class."
+
+#~ msgid ""
+#~ "The requested controller could not be mapped to an existing controller "
+#~ "class."
+#~ msgstr "The requested controller was unable to dispatch the request"
+
+#~ msgid "PKP XML Parsing Service"
+#~ msgstr "foo"
