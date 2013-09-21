@@ -16,6 +16,11 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
+        // Disable XDebug
+        if (function_exists('xdebug_disable')) {
+              xdebug_disable();
+        }
+
         $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
