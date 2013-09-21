@@ -27,4 +27,15 @@ class ApplicationControllerTest extends AbstractHttpControllerTestCase
         $this->assertControllerClass('IndexController');
         $this->assertMatchedRouteName('home');
     }
+
+    /**
+     * Tests if the service manager provides access to the Logger
+     *
+     * @return void
+     */
+    public function testLoggerCanBeAccessed()
+    {
+        $sm = $this->getApplicationServiceLocator();
+        $this->assertTrue($sm->get('Logger') instanceof \Xmlps\Log\Logger);
+    }
 }
