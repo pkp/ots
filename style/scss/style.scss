@@ -5,6 +5,67 @@
 
 // Site
 @import "colors";
+@import "variables";
 @import "fonts";
 @import "mixins";
 @import "forms";
+
+/*******************************
+ * Site Styles
+ *******************************/
+body {
+  margin: 0; padding: 0;
+  font-family: 'Istok Web', sans-serif;
+}
+
+header {
+  background: url('/img/logo.png');
+  width: 889px;
+  height: 122px;
+  margin: 0 5px;
+
+  span {
+    color: $textColorLight;
+    a { color: $textColorLight; }
+    font-size: em(14);
+    float: left;
+    margin-top: 85px;
+    margin-left: 180px;
+  }
+}
+
+.container {
+  @include outer-container;
+  background-color: $backgroundColorLight;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+aside {
+  @include span-columns(4);
+  @include omega();
+  @include pad();
+  border-left: 1px dashed $backgroundColorDark;
+}
+
+.content {
+  font-size: em(14);
+  line-height: em(21);
+}
+
+/*******************************
+ * Page Styles
+ *******************************/
+.front-page {
+  div:first-child {
+    @include span-columns(8);
+    @include pad();
+  }
+
+  aside {
+    ul { padding-left: 20px; }
+    h4 { margin-top: 0; }
+  }
+}
+
+
