@@ -1,0 +1,6 @@
+<testsuites>
+  <testsuite name="XMLPS">
+    <directory>module/Application/test</directory>
+    <directory>module/User/test</directory>
+  </testsuite>
+</testsuites>
