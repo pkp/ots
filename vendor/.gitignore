@@ -4,6 +4,7 @@ composer
 autoload.php
 
 doctrine
+phpunit
 symfony
 zendframework
 
