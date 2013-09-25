@@ -18,37 +18,37 @@ class User
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string", nullable=false, unique=true)
      */
-    protected $email;
+    public $email;
 
     /**
      * @ORM\Column(type="string", length=32, nullable=false)
      */
-    protected $password;
+    public $password;
 
     /**
      * @ORM\Column(type="string", length=23, nullable=false)
      */
-    protected $passwordSalt;
+    public $passwordSalt;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
      */
-    protected $registrationDate;
+    public $registrationDate;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    protected $lastLogin;
+    public $lastLogin;
 
     /**
      * @ORM\Column(type="smallint", nullable=false)
      */
-    protected $userLevel;
+    public $userLevel;
 
     /**
      * @ORM\PrePersist

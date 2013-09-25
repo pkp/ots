@@ -35,7 +35,9 @@ class Bootstrap
                 'module_paths' => $zf2ModulePaths,
             ),
             'modules' => array(
-                'User'
+                'DoctrineModule',
+                'DoctrineORMModule',
+                'User',
             )
         );
 
