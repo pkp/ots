@@ -32,3 +32,27 @@ cp config/autoload/local.php.dist config/autoload/local.php
 ```
     # ./unittest.sh
 ```
+
+Technical notes
+---------------
+* SASS compilation, CSS and Javascript compression & unification is done using Guard (http://guardgem.org)
+* After making changes to Javascript (javascript/) or style files (style/scss/) recompile/recompress the style and Javascript files by running
+
+```
+    # guard
+```
+
+Module Description
+------------------
+* User
+ * Authentication
+ * Registration
+ * Lost password retrieval
+* Admin
+ * User management
+  * Confirm registration
+  * Set user's document conversion rate
+  * System log viewer
+* Manager
+ * Receives conversion jobs
+ * Queues jobs for individual workers
