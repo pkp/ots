@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit bootstrap="Bootstrap.php" colors="true">
-    <testsuites>
-        <testsuite name="XMLPSApplication">
-            <directory>./ApplicationTest</directory>
-        </testsuite>
-    </testsuites>
-</phpunit>

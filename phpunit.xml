@@ -1,6 +1,8 @@
-<testsuites>
-  <testsuite name="XMLPS">
-    <directory>module/Application/test</directory>
-    <directory>module/User/test</directory>
-  </testsuite>
-</testsuites>
+<phpunit colors="true">
+    <testsuites>
+      <testsuite name="XMLPS">
+        <directory>module/Application/test</directory>
+        <directory>module/User/test</directory>
+      </testsuite>
+    </testsuites>
+</phpunit>
