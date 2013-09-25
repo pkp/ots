@@ -27,6 +27,12 @@ cp config/autoload/local.php.dist config/autoload/local.php
 # sudo chown :www-data var/log
 # chmod g+w var/log
 ```
+
+* Initialize the database
+
+```
+    # vendor/doctrine/doctrine-module/bin/doctrine-module  orm:schema-tool:update --force
+```
 * Run the unit tests (optional)
 
 ```
