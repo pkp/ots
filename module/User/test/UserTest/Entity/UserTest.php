@@ -21,8 +21,15 @@ class UserEntityTest extends PHPUnit_Framework_TestCase
     public function testUserPasswordSalt()
     {
         $user = new User;
-        $this->assertTrue($user->passwordSalt === null);
-        $user->setPasswordSalt();
-        $this->assertTrue(strlen($user->passwordSalt) == 23);
+        $this->assertTrue(strlen($user->passwordSalt) == 13);
+    }
+
+    public function testUserPassword()
+    {
+        $user = new User;
+        $this->assertTrue($user->password === null);
+        $password = 'password';
+        $user->password = $password;
+        $this->assertTrue($user->password == sha1($password . $user->passwordSalt));
     }
 }
