@@ -1,0 +1,9 @@
+<?php
+$form = $this->form;
+$form->prepare();
+$form = $this->form()->render($form);
+?>
+<div class="front-page">
+  <div><?php echo $form?></div>
+  <?php echo $this->partial('_sideBar.phtml'); ?>
+</div>
