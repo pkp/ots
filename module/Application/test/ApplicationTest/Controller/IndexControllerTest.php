@@ -22,9 +22,9 @@ class ApplicationControllerTest extends AbstractHttpControllerTestCase
         $this->dispatch('/');
         $this->assertResponseStatusCode(200);
 
-        $this->assertModuleName('Application');
-        $this->assertControllerName('Application\Controller\Index');
-        $this->assertControllerClass('IndexController');
+        $this->assertModuleName('User');
+        $this->assertControllerName('User\Controller\User');
+        $this->assertControllerClass('UserController');
         $this->assertMatchedRouteName('home');
     }
 
