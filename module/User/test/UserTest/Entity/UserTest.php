@@ -28,8 +28,14 @@ class UserEntityTest extends PHPUnit_Framework_TestCase
     {
         $user = new User;
         $this->assertTrue($user->password === null);
+
+        // Validate that the password gets hashed
         $password = 'password';
         $user->password = $password;
-        $this->assertTrue($user->password == sha1($password . $user->passwordSalt));
+        $this->assertTrue(strlen($user->password) == 40);
+
+        // Validate password validation
+        $this->assertTrue($user::validatePassword($user, $password));
+        $this->assertFalse($user::validatePassword($user, 'wrongpassword'));
     }
 }

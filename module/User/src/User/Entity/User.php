@@ -28,7 +28,7 @@ class User extends DataObject
     protected $email;
 
     /**
-     * @ORM\Column(type="string", length=32, nullable=false)
+     * @ORM\Column(type="string", length=40, nullable=false)
      */
     protected $password;
 
@@ -81,7 +81,20 @@ class User extends DataObject
         return $this->passwordSalt;
     }
 
-    public function setPassword($password) {
-        $this->password = sha1($password . $this->getPasswordSalt());
+    public function setPassword($password)
+    {
+        $this->password = self::hashPassword($password, $this->getPasswordSalt());
+    }
+
+    protected static function hashPassword($password, $salt)
+    {
+        return sha1($password . $salt);
+    }
+
+    public static function validatePassword(User $user, $password)
+    {
+        return (
+            $user->password == self::hashPassword($password, $user->getPasswordSalt())
+        );
     }
 }
