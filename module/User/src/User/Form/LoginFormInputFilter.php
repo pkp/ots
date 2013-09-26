@@ -42,9 +42,11 @@ class LoginFormInputFilter implements InputFilterAwareInterface
                         'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min' => 5,
                             'max' => 255,
                         ),
+                    ),
+                    array(
+                        'name' => 'EmailAddress',
                     ),
                 ),
             )));
