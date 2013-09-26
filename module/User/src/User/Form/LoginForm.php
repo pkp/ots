@@ -26,7 +26,7 @@ class LoginForm extends Form
         $this->add(
             array(
                 'name' => 'email',
-                'type' => '\Zend\Form\Element\Text',
+                'type' => '\Zend\Form\Element\Email',
                 'attributes' => array(
                     'placeholder' => $this->translator->translate('user.loginForm.emailAddress')
                 ),
