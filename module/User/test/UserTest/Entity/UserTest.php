@@ -34,6 +34,18 @@ class UserEntityTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test if the user level is initialized properly
+     *
+     * @return void
+     */
+    public function testUserLevel()
+    {
+        $this->assertTrue($this->user->userLevel === null);
+        $this->user->setUserLevel();
+        $this->assertSame(USER_USERLEVEL_REGISTERED, $this->user->userLevel);
+    }
+
+    /**
      * Test if the password salt is initialized properly
      *
      * @return void

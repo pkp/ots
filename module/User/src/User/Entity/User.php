@@ -6,6 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Xmlps\DataObject\DataObject;
 
+define('USER_USERLEVEL_REGISTERED', 0);
+define('USER_USERLEVEL_REGISTRATION_CONFIRMED', 1);
+
 /**
  * User
  *
@@ -76,7 +79,7 @@ class User extends DataObject
     public function setUserLevel()
     {
         if ($this->userLevel === null) {
-            $this->userLevel = 0;
+            $this->userLevel = USER_USERLEVEL_REGISTERED;
         }
     }
 
