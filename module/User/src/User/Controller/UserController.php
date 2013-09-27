@@ -29,6 +29,13 @@ class UserController extends AbstractActionController {
 
     public function indexAction()
     {
+        if (!$this->identity()) {
+            return array('loginForm' => $this->loginForm);
+        }
+    }
+
+    public function loginAction()
+    {
         // Process login requests
         if ($this->request->isPost()) {
             $data = $this->request->getPost();
@@ -70,12 +77,16 @@ class UserController extends AbstractActionController {
                             'user.authentication.invalidLoginCredentials'
                         )
                     );
+
                 }
             }
         }
 
-        if (!$this->identity()) {
-            return array('loginForm' => $this->loginForm);
-        }
+        $viewModel = new ViewModel(array(
+            'loginForm' => $this->loginForm,
+        ));
+        $viewModel->setTemplate('user/user/index.phtml');
+
+        return $viewModel;
     }
 }

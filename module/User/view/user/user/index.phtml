@@ -1,5 +1,6 @@
 <?php
 if (isset($this->loginForm)) {
+  $loginForm->setAttribute('action', $this->url('user', array('action' => 'login')));
   $loginForm = $this->loginForm;
   $loginForm->prepare();
   $loginForm = $this->form()->render($loginForm);

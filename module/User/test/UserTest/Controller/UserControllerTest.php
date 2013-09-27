@@ -28,6 +28,17 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         $this->assertMatchedRouteName('user');
     }
 
+    public function testLoginActionCanBeAccessed()
+    {
+        $this->dispatch('/user/login');
+        $this->assertResponseStatusCode(200);
+
+        $this->assertModuleName('User');
+        $this->assertControllerName('User\Controller\User');
+        $this->assertControllerClass('UserController');
+        $this->assertMatchedRouteName('user');
+    }
+
     public function testRedirectAfterLogin()
     {
         // Mock the user object
@@ -99,7 +110,7 @@ class UserControllerTest extends AbstractHttpControllerTestCase
 
         // Execute the form submission
         $postData = array('email' => 'blim@bla.com', 'password' => 'pasword');
-        $this->dispatch('/user/index', 'POST', $postData);
+        $this->dispatch('/user/login', 'POST', $postData);
         $this->assertResponseStatusCode(302);
     }
 }
