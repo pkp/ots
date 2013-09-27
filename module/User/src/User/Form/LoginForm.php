@@ -44,7 +44,7 @@ class LoginForm extends Form
             )
         );
 
-        // Add the search button
+        // Add the submit button
         $this->add(
             array(
                 'name' => 'submit',
