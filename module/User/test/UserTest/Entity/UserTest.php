@@ -9,27 +9,31 @@ class UserEntityTest extends PHPUnit_Framework_TestCase
 {
     protected $traceError = true;
 
+    protected $user;
+
+    public function setUp() {
+        $this->user = new User;
+    }
+
     public function testUserRegistrationDate()
     {
-        $user = new User;
-        $this->assertTrue($user->registrationDate === null);
-        $user->setRegistrationDate();
-        $this->assertTrue(is_int($user->registrationDate));
-        $this->assertTrue($user->registrationDate <= time());
+        $this->assertTrue($this->user->registrationDate === null);
+        $this->user->setRegistrationDate();
+        $this->assertTrue(is_int($this->user->registrationDate));
+        $this->assertTrue($this->user->registrationDate <= time());
     }
 
     public function testUserPasswordSalt()
     {
-        $user = new User;
-        $this->assertTrue(strlen($user->passwordSalt) == 13);
+        $this->assertTrue(strlen($this->user->passwordSalt) == 13);
     }
 
     public function testUserPassword()
     {
-        $user = new User;
-        $this->assertTrue($user->password === null);
+        $user = $this->user;
 
         // Validate that the password gets hashed
+        $this->assertTrue($user->password === null);
         $password = 'password';
         $user->password = $password;
         $this->assertTrue(strlen($user->password) == 40);
