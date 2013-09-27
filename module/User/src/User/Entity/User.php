@@ -53,6 +53,10 @@ class User extends DataObject
     protected $userLevel;
 
     /**
+     * Sets the registration date timestamp
+     *
+     * @return void
+     *
      * @ORM\PrePersist
      */
     public function setRegistrationDate()
@@ -63,6 +67,10 @@ class User extends DataObject
     }
 
     /**
+     * Initializes the user level
+     *
+     * @return void
+     *
      * @ORM\PrePersist
      */
     public function setUserLevel()
@@ -72,6 +80,11 @@ class User extends DataObject
         }
     }
 
+    /**
+     * Returns a users password salt. If the salt is not set it will generate it
+     *
+     * @return string Password salt
+     */
     public function getPasswordSalt()
     {
         if ($this->passwordSalt === null) {
@@ -81,16 +94,38 @@ class User extends DataObject
         return $this->passwordSalt;
     }
 
+    /**
+     * Password setter. It will hash the password automatically.
+     *
+     * @param string $password Password
+     *
+     * @return void
+     */
     public function setPassword($password)
     {
         $this->password = self::hashPassword($password, $this->getPasswordSalt());
     }
 
+    /**
+     * Hashes a password
+     *
+     * @param mixed $password Unhased password
+     * @param mixed $salt Salt
+     *
+     * @return string Hashed password
+     */
     protected static function hashPassword($password, $salt)
     {
         return sha1($password . $salt);
     }
 
+    /**
+     * Validates a password for a given user
+     *
+     * @param User $user User instance
+     * @param mixed $password Plaintext password
+     * @return bool Whether or not the password is valid
+     */
     public static function validatePassword(User $user, $password)
     {
         return (

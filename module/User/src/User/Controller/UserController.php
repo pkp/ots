@@ -14,6 +14,15 @@ class UserController extends AbstractActionController {
     protected $loginForm;
     protected $loginFormInputFilter;
 
+    /**
+     * Constructor
+     *
+     * @param Logger $logger
+     * @param Translator $translator
+     * @param LoginForm $loginForm
+     * @param LoginFormInputFilter $loginFormInputFilter
+     * @return void
+     */
     public function __construct(
         Logger $logger,
         Translator $translator,
@@ -27,6 +36,11 @@ class UserController extends AbstractActionController {
         $this->loginFormInputFilter = $loginFormInputFilter;
     }
 
+    /**
+     * Index action
+     *
+     * @return mixed Array containing view variables
+     */
     public function indexAction()
     {
         if (!$this->identity()) {
@@ -34,6 +48,11 @@ class UserController extends AbstractActionController {
         }
     }
 
+    /**
+     * Processes POST requests from the login form
+     *
+     * @return ViewModel ViewModel instance
+     */
     public function loginAction()
     {
         // Process login requests

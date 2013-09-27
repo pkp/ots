@@ -11,10 +11,20 @@ class UserEntityTest extends PHPUnit_Framework_TestCase
 
     protected $user;
 
+    /**
+     * Initialize the test
+     *
+     * @return void
+     */
     public function setUp() {
         $this->user = new User;
     }
 
+    /**
+     * Test if the registration date is initialized properly
+     *
+     * @return void
+     */
     public function testUserRegistrationDate()
     {
         $this->assertTrue($this->user->registrationDate === null);
@@ -23,11 +33,21 @@ class UserEntityTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->user->registrationDate <= time());
     }
 
+    /**
+     * Test if the password salt is initialized properly
+     *
+     * @return void
+     */
     public function testUserPasswordSalt()
     {
         $this->assertTrue(strlen($this->user->passwordSalt) == 13);
     }
 
+    /**
+     * Test if the users password is hashed propperly
+     *
+     * @return void
+     */
     public function testUserPassword()
     {
         $user = $this->user;

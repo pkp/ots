@@ -9,12 +9,22 @@ class LoginFormInputFilterTest extends PHPUnit_Framework_TestCase
 {
     protected $traceError = true;
 
+    /**
+     * Initialize the test
+     *
+     * @return void
+     */
     public function setUp()
     {
         $this->inputFilter = new LoginFormInputFilter;
         $this->inputFilter = $this->inputFilter->getInputFilter();
     }
 
+    /**
+     * Test the input filter validation
+     *
+     * @return void
+     */
     public function testValidation()
     {
         $this->assertSame(2, $this->inputFilter->count());

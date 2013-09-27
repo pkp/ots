@@ -14,16 +14,34 @@ class LoginFormInputFilter implements InputFilterAwareInterface
 
     protected $inputFilter;
 
+    /**
+     * Initialized properties
+     *
+     * @param mixed $data Array containing property data
+     * @return void
+     */
     public function exchageArray($data)
     {
         $this->email = isset($data['email']) ? $data['email'] : null;
         $this->password = isset($data['password']) ? $data['password'] : null;
     }
 
+    /**
+     * Set the input filter.
+     *
+     * NOTE: not used
+     *
+     * @return void
+     */
     public function setInputFilter(InputFilterInterface $inputFilter) {
         throw new \Exception('Not used');
     }
 
+    /**
+     * Retrurns a input filter instance
+     *
+     * @return InputFilter Input filter instance
+     */
     public function getInputFilter()
     {
         if (!$this->inputFilter) {

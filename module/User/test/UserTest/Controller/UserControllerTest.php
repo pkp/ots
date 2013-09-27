@@ -8,6 +8,11 @@ class UserControllerTest extends AbstractHttpControllerTestCase
 {
     protected $traceError = true;
 
+    /**
+     * Set up the controller test
+     *
+     * @return void
+     */
     public function setUp()
     {
         $baseDir = dirname(dirname(dirname(dirname(dirname(__DIR__)))));
@@ -17,6 +22,11 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         parent::setUp();
     }
 
+    /**
+     * Test if the index action can be accessed
+     *
+     * @return void
+     */
     public function testIndexActionCanBeAccessed()
     {
         $this->dispatch('/user');
@@ -28,6 +38,11 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         $this->assertMatchedRouteName('user');
     }
 
+    /**
+     * Test if the login action can be accessed
+     *
+     * @return void
+     */
     public function testLoginActionCanBeAccessed()
     {
         $this->dispatch('/user/login');
@@ -39,7 +54,12 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         $this->assertMatchedRouteName('user');
     }
 
-    public function testRedirectAfterLogin()
+    /**
+     * Test if the login POST is processed correctly
+     *
+     * @return void
+     */
+    public function testProcessLoginPost()
     {
         // Mock the user object
         $userMock = $this->getMockBuilder('User\Entity\User')
