@@ -27,4 +27,79 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         $this->assertControllerClass('UserController');
         $this->assertMatchedRouteName('user');
     }
+
+    public function testRedirectAfterLogin()
+    {
+        // Mock the user object
+        $userMock = $this->getMockBuilder('User\Entity\User')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $userMock->expects($this->at(1))
+            ->method('__get')
+            ->with($this->equalTo('email'))
+            ->will($this->returnValue(null));
+
+        // Mock the auth adapter
+        $authAdapterMock = $this->getMockBuilder('DoctrineModule\Authentication\Adapter\ObjectRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $authAdapterMock->expects($this->once())
+            ->method('setIdentityValue')
+            ->will($this->returnValue(null));
+        $authAdapterMock->expects($this->once())
+            ->method('setCredentialValue')
+            ->will($this->returnValue(null));
+
+        // Mock the auth result
+        $authResultMock = $this->getMockBuilder('Zend\Authentication\Result')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $authResultMock->expects($this->once())
+            ->method('isValid')
+            ->will($this->returnValue(true));
+        $authResultMock->expects($this->once())
+            ->method('getIdentity')
+            ->will($this->returnValue($userMock));
+
+        // Mock the auth storage
+        $authStorageMock = $this->getMockBuilder('DoctrineModule\Authentication\Storage\ObjectRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $authStorageMock->expects($this->once())
+            ->method('write')
+            ->will($this->returnValue(true));
+
+        // Mock the auth Service
+        $authMock = $this->getMockBuilder('Zend\Authentication\AuthenticationService')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $authMock->expects($this->once())
+            ->method('getAdapter')
+            ->will($this->returnValue($authAdapterMock));
+        $authMock->expects($this->once())
+            ->method('authenticate')
+            ->will($this->returnValue($authResultMock));
+        $authMock->expects($this->once())
+            ->method('getStorage')
+            ->will($this->returnValue($authStorageMock));
+
+        // Mock the logger
+        $loggerMock = $this->getMockBuilder('Xmlps\Log\Logger')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $loggerMock->expects($this->once())
+            ->method('info')
+            ->will($this->returnValue(null));
+
+        // Register the services
+        $sm = $this->getApplicationServiceLocator();
+        $sm->setAllowOverride(true);
+        $sm->setService('Zend\Authentication\AuthenticationService', $authMock);
+        $sm->setService('Logger', $loggerMock);
+
+        // Execute the form submission
+        $postData = array('email' => 'blim@bla.com', 'password' => 'pasword');
+        $this->dispatch('/user/index', 'POST', $postData);
+        $this->assertResponseStatusCode(302);
+    }
 }
