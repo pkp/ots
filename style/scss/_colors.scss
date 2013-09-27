@@ -1,8 +1,4 @@
-$textColorLight: #FFF;
-$backgroundColorLight: #E8EFF0;
-$backgroundColorDark: #33F;
-
-
+// Color schema
 // http://colorschemedesigner.com/#3.31T--ILw0w0
 $primaryColor1: #0068CC;
 $primaryColor2: #266199;
@@ -22,5 +18,19 @@ $secondaryColor23: #A63600;
 $secondaryColor24: #FF7E40;
 $secondaryColor25: #FFA073;
 
-
+// Page
+$backgroundColorLight: change-color($primaryColor5, $lightness: 95%);
+$backgroundColorDark: $primaryColor1;
 $errorColor: $secondaryColor25;
+
+// Text
+$textColorLight: #FFF;
+$textColorDark: #000;
+
+// Box
+$boxBorderColor: #000;
+$boxBackgroundColor: #FFF;
+
+// Form
+$buttonColor: $secondaryColor24;
+$buttonBorderColor: change-color($secondaryColor24, $lightness: 70%);

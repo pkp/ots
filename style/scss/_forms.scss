@@ -1,0 +1,25 @@
+input[type="submit"] {
+  @include button;
+}
+
+input {
+  padding: 3px 10px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.input-error {
+  border: 1px solid $errorColor;
+}
+
+// Form input error messages
+.input-error + ul {
+  list-style: none;
+  padding-left: 3px;
+
+  li:before {
+    content: '\0021\0021\0021';
+    margin-right: 10px;
+    color: $errorColor;
+  }
+}

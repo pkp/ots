@@ -44,8 +44,8 @@ header {
 aside {
   @include span-columns(4);
   @include omega();
-  @include pad();
   border-left: 1px dashed $backgroundColorDark;
+  padding: 0 1em;
 }
 
 .content {
@@ -63,14 +63,36 @@ aside {
   }
 }
 
+.box {
+  margin-top: 20px;
+  position: relative;
+  border: 1px solid $boxBorderColor;
+  background-color: $boxBackgroundColor;
+  padding: 10px;
+  z-index: 0;
+
+  label {
+    position: absolute;
+    top: -20px;
+    left: -1px;
+    display: block;
+    height: 20px;
+    background-color: $boxBackgroundColor;
+    border: 1px solid $boxBorderColor;
+    border-bottom: none;
+    z-index: 1;
+    padding: 5px 20px 0 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+}
+
 /*******************************
  * Page Styles
  *******************************/
 .front-page {
-  div:first-child {
-    @include span-columns(8);
-    @include pad();
-  }
+  @include span-columns(8);
+  padding: 1em 0 1em 1em;
 
   aside {
     ul { padding-left: 20px; }

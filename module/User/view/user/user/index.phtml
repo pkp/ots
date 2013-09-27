@@ -6,6 +6,11 @@ if (isset($this->loginForm)) {
 }
 ?>
 <div class="front-page">
-  <div><?php if (isset($loginForm)) { echo $loginForm; } ?></div>
-  <?php echo $this->partial('_sideBar.phtml'); ?>
+  <?php if (isset($loginForm)) : ?>
+    <div class="box">
+      <label><?php echo $this->translate('user.loginForm.login') ?></label>
+      <?php echo $loginForm; ?>
+    </div>
+  <?php endif ?>
 </div>
+<?php echo $this->partial('_sideBar.phtml'); ?>
