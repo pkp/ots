@@ -40,5 +40,14 @@ return array(
                 ),
             ),
         ),
+        'authentication' => array(
+            'orm_default' => array(
+                'objectManager' => 'Doctrine\ORM\EntityManager',
+                'identityClass' => 'User\Entity\User',
+                'identityProperty' => 'email',
+                'credentialProperty' => 'password',
+                'credentialCallable' => '\User\Entity\User::validatePassword'
+            ),
+        )
     ),
 );

@@ -66,6 +66,19 @@ aside {
   font-size: 0.875em;
   line-height: 1.3125em; }
 
+.error-container {
+  display: block;
+  float: left;
+  margin-right: 2.12766%;
+  width: 100%;
+  margin-right: 0; }
+  .error-container:last-child {
+    margin-right: 0; }
+  .error-container p {
+    margin: 10px 5px;
+    padding: 10px;
+    background-color: #ffa073; }
+
 /*******************************
  * Page Styles
  *******************************/

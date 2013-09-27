@@ -1,9 +1,11 @@
 <?php
-$form = $this->form;
-$form->prepare();
-$form = $this->form()->render($form);
+if (isset($this->loginForm)) {
+  $loginForm = $this->loginForm;
+  $loginForm->prepare();
+  $loginForm = $this->form()->render($loginForm);
+}
 ?>
 <div class="front-page">
-  <div><?php echo $form?></div>
+  <div><?php if (isset($loginForm)) { echo $loginForm; } ?></div>
   <?php echo $this->partial('_sideBar.phtml'); ?>
 </div>

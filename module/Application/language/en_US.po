@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-25 17:03-1000\n"
-"PO-Revision-Date: 2013-09-25 17:03-1000\n"
+"POT-Creation-Date: 2013-09-26 14:43-1000\n"
+"PO-Revision-Date: 2013-09-26 14:43-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -27,6 +27,14 @@ msgstr "Password"
 #: ../../User/src/User/Form/LoginForm.php:53
 msgid "user.loginForm.login"
 msgstr "Login"
+
+#: ../../User/src/User/Controller/UserController.php:55
+msgid "user.authentication.sucessfulLogin"
+msgstr "Successful login by %s"
+
+#: ../../User/src/User/Controller/UserController.php:62
+msgid "user.authentication.invalidLoginCredentials"
+msgstr "The login credentials you provided are invalid. Please try again."
 
 #: ../view/layout/layout.phtml:9 ../../Application/view/layout/layout.phtml:9
 #: ../../User/view/_sideBar.phtml:2

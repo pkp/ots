@@ -53,6 +53,16 @@ aside {
   line-height: em(21);
 }
 
+.error-container {
+  @include span-columns(12);
+  @include omega();
+  p {
+    margin: 10px 5px;
+    padding: 10px;
+    background-color: $errorColor;
+  }
+}
+
 /*******************************
  * Page Styles
  *******************************/

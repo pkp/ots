@@ -24,7 +24,14 @@
       <header>
         <span><?php echo sprintf($this->translate('application.layout.subHeading'), '<a href="http://dtd.nlm.nih.gov/publishing/tag-library/3.0/" target="_blank">', '</a>'); ?></span>
       </header>
-      <div class="content"><?php echo $this->content; ?></div>
+      <div class="content">
+        <?php
+          if ($this->error !== null) {
+            echo '<div class="error-container"><p>' . $this->error . '</p></div>';
+          }
+        ?>
+        <?php echo $this->content; ?>
+      </div>
     </div>
     <?php echo $this->inlineScript() ?>
   </body>

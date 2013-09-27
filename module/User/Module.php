@@ -53,6 +53,9 @@ class Module
                 {
                     return new LoginFormInputFilter();
                 },
+                'Zend\Authentication\AuthenticationService' => function($sm) {
+                    return $sm->get('doctrine.authenticationservice.orm_default');
+                }
             ),
         );
     }
@@ -69,9 +72,13 @@ class Module
                 'User\Controller\User' => function($cm)
                 {
                     $sm = $cm->getServiceLocator();
+                    $logger = $sm->get('Logger');
+                    $translator = $sm->get('Translator');
                     $loginForm = $sm->get('User\Form\LoginForm');
                     $loginFormInputFilter = $sm->get('User\Form\LoginFormInputFilter');
                     return new Controller\UserController(
+                        $logger,
+                        $translator,
                         $loginForm,
                         $loginFormInputFilter
                     );
