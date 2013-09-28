@@ -49,7 +49,7 @@ class LoginFormInputFilter implements InputFilterAwareInterface
             $factory = new InputFactory();
 
             $inputFilter->add($factory->createInput(array(
-                'name'     => 'email',
+                'name' => 'email',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),
@@ -70,12 +70,8 @@ class LoginFormInputFilter implements InputFilterAwareInterface
             )));
 
             $inputFilter->add($factory->createInput(array(
-                'name'     => 'password',
+                'name' => 'password',
                 'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
                 'validators' => array(
                     array(
                         'name' => 'StringLength',
