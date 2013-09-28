@@ -1,8 +1,11 @@
 <?php
 
 namespace User;
+use User\Entity\User;
 use User\Form\LoginForm;
 use User\Form\LoginFormInputFilter;
+use User\Form\RegistrationForm;
+use User\Form\RegistrationFormInputFilter;
 
 class Module
 {
@@ -44,6 +47,10 @@ class Module
     {
         return array(
             'factories' => array(
+                'User\Entity\User' => function($sm)
+                {
+                    return new User();
+                },
                 'User\Form\LoginForm' => function($sm)
                 {
                     $translator = $sm->get('translator');
@@ -52,6 +59,21 @@ class Module
                 'User\Form\LoginFormInputFilter' => function($sm)
                 {
                     return new LoginFormInputFilter();
+                },
+                'User\Form\RegistrationForm' => function($sm)
+                {
+                    $translator = $sm->get('translator');
+                    return new RegistrationForm($translator);
+                },
+                'User\Form\RegistrationFormInputFilter' => function($sm)
+                {
+                    $em = $sm->get('doctrine.entitymanager.orm_default');
+                    $userRepository = $em->getRepository('User\Entity\User');
+                    $translator = $sm->get('translator');
+                    return new RegistrationFormInputFilter(
+                        $translator,
+                        $userRepository
+                    );
                 },
                 'Zend\Authentication\AuthenticationService' => function($sm) {
                     return $sm->get('doctrine.authenticationservice.orm_default');
@@ -72,15 +94,22 @@ class Module
                 'User\Controller\User' => function($cm)
                 {
                     $sm = $cm->getServiceLocator();
+                    $em = $sm->get('doctrine.entitymanager.orm_default');
                     $logger = $sm->get('Logger');
                     $translator = $sm->get('Translator');
                     $loginForm = $sm->get('User\Form\LoginForm');
                     $loginFormInputFilter = $sm->get('User\Form\LoginFormInputFilter');
+                    $registrationForm = $sm->get('User\Form\RegistrationForm');
+                    $registrationFormInputFilter = $sm->get('User\Form\RegistrationFormInputFilter');
+
                     return new Controller\UserController(
+                        $em,
                         $logger,
                         $translator,
                         $loginForm,
-                        $loginFormInputFilter
+                        $loginFormInputFilter,
+                        $registrationForm,
+                        $registrationFormInputFilter
                     );
                 }
             )

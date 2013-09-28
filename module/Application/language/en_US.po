@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-26 14:43-1000\n"
-"PO-Revision-Date: 2013-09-26 14:43-1000\n"
+"POT-Creation-Date: 2013-09-27 16:02-1000\n"
+"PO-Revision-Date: 2013-09-27 16:02-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -25,16 +25,46 @@ msgid "user.loginForm.password"
 msgstr "Password"
 
 #: ../../User/src/User/Form/LoginForm.php:53
+#: ../../User/view/user/user/index.phtml:20
 msgid "user.loginForm.login"
 msgstr "Login"
 
-#: ../../User/src/User/Controller/UserController.php:55
+#: ../../User/src/User/Form/RegistrationFormInputFilter.php:89
+msgid "user.registrationForm.userAlreadyExists"
+msgstr "This email address is already registered!"
+
+#: ../../User/src/User/Form/RegistrationFormInputFilter.php:126
+msgid "user.registrationForm.passwordsDontMatch"
+msgstr "The provided passwords don't match"
+
+#: ../../User/src/User/Form/RegistrationForm.php:31
+msgid "user.registrationForm.emailAddress"
+msgstr "Email Address"
+
+#: ../../User/src/User/Form/RegistrationForm.php:42
+msgid "user.registrationForm.password"
+msgstr "Password"
+
+#: ../../User/src/User/Form/RegistrationForm.php:53
+msgid "user.registrationForm.passwordConfirm"
+msgstr "Confirm Password"
+
+#: ../../User/src/User/Form/RegistrationForm.php:65
+#: ../../User/view/user/user/index.phtml:27
+msgid "user.registrationForm.register"
+msgstr "Register"
+
+#: ../../User/src/User/Controller/UserController.php:100
 msgid "user.authentication.sucessfulLogin"
 msgstr "Successful login by %s"
 
-#: ../../User/src/User/Controller/UserController.php:62
+#: ../../User/src/User/Controller/UserController.php:112
 msgid "user.authentication.invalidLoginCredentials"
 msgstr "The login credentials you provided are invalid. Please try again."
+
+#: ../../User/src/User/Controller/UserController.php:163
+msgid "user.registration.sucessfulRegistration"
+msgstr "User %s registered successfully"
 
 #: ../view/layout/layout.phtml:9 ../../Application/view/layout/layout.phtml:9
 #: ../../User/view/_sideBar.phtml:2
@@ -168,6 +198,9 @@ msgid "application.index.sidebarTipsBibliography"
 msgstr ""
 "Any bibliography entries which are not cited in your document are reported "
 "in a warning section at the bottom."
+
+#~ msgid "user.registerForm.register"
+#~ msgstr "Register"
 
 #~ msgid "The requested controller was not dispatchable."
 #~ msgstr ""

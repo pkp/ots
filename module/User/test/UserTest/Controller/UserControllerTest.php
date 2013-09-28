@@ -65,21 +65,26 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         $userMock = $this->getMockBuilder('User\Entity\User')
             ->disableOriginalConstructor()
             ->getMock();
-        $userMock->expects($this->at(1))
-            ->method('__get')
-            ->with($this->equalTo('email'))
-            ->will($this->returnValue(null));
+
+        // Mock the entity manager object
+        $emRepositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $emRepositoryMock->expects($this->once())
+            ->method('findOneBy')
+            ->will($this->returnValue($userMock));
+
+        $emMock = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $emMock->expects($this->any())
+            ->method('getRepository')
+            ->will($this->returnValue($emRepositoryMock));
 
         // Mock the auth adapter
         $authAdapterMock = $this->getMockBuilder('DoctrineModule\Authentication\Adapter\ObjectRepository')
             ->disableOriginalConstructor()
             ->getMock();
-        $authAdapterMock->expects($this->once())
-            ->method('setIdentityValue')
-            ->will($this->returnValue(null));
-        $authAdapterMock->expects($this->once())
-            ->method('setCredentialValue')
-            ->will($this->returnValue(null));
 
         // Mock the auth result
         $authResultMock = $this->getMockBuilder('Zend\Authentication\Result')
@@ -88,31 +93,11 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         $authResultMock->expects($this->once())
             ->method('isValid')
             ->will($this->returnValue(true));
-        $authResultMock->expects($this->once())
-            ->method('getIdentity')
-            ->will($this->returnValue($userMock));
-
-        // Mock the auth storage
-        $authStorageMock = $this->getMockBuilder('DoctrineModule\Authentication\Storage\ObjectRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $authStorageMock->expects($this->once())
-            ->method('write')
-            ->will($this->returnValue(true));
 
         // Mock the auth Service
         $authMock = $this->getMockBuilder('Zend\Authentication\AuthenticationService')
             ->disableOriginalConstructor()
             ->getMock();
-        $authMock->expects($this->once())
-            ->method('getAdapter')
-            ->will($this->returnValue($authAdapterMock));
-        $authMock->expects($this->once())
-            ->method('authenticate')
-            ->will($this->returnValue($authResultMock));
-        $authMock->expects($this->once())
-            ->method('getStorage')
-            ->will($this->returnValue($authStorageMock));
 
         // Mock the logger
         $loggerMock = $this->getMockBuilder('Xmlps\Log\Logger')
@@ -122,15 +107,64 @@ class UserControllerTest extends AbstractHttpControllerTestCase
             ->method('info')
             ->will($this->returnValue(null));
 
+        // Simulate controller methods
+        $this->authenticate($authMock, $authAdapterMock, $authResultMock);
+        $this->sessionRegister($authMock);
+
         // Register the services
         $sm = $this->getApplicationServiceLocator();
         $sm->setAllowOverride(true);
-        $sm->setService('Zend\Authentication\AuthenticationService', $authMock);
+        $sm->setService('doctrine.entitymanager.orm_default', $emMock);
         $sm->setService('Logger', $loggerMock);
+        $sm->setService('Zend\Authentication\AuthenticationService', $authMock);
 
         // Execute the form submission
         $postData = array('email' => 'blim@bla.com', 'password' => 'pasword');
         $this->dispatch('/user/login', 'POST', $postData);
         $this->assertResponseStatusCode(302);
+    }
+
+    /**
+     * Simulatess controllers authenticate() method
+     *
+     * @param mixed $authMock
+     * @param mixed $authAdapterMock
+     * @param mixed $authResultMock
+     * @return void
+     */
+    protected function authenticate($authMock, $authAdapterMock, $authResultMock)
+    {
+        $authAdapterMock->expects($this->once())
+            ->method('setIdentityValue')
+            ->will($this->returnValue(null));
+        $authAdapterMock->expects($this->once())
+            ->method('setCredentialValue')
+            ->will($this->returnValue(null));
+        $authMock->expects($this->once())
+            ->method('getAdapter')
+            ->will($this->returnValue($authAdapterMock));
+        $authMock->expects($this->once())
+            ->method('authenticate')
+            ->will($this->returnValue($authResultMock));
+    }
+
+    /**
+     * Simulatess controllers sessionRegister() method
+     *
+     * @param mixed $authMock
+     * @return void
+     */
+    protected function sessionRegister($authMock)
+    {
+        $authStorageMock = $this->getMockBuilder('DoctrineModule\Authentication\Storage\ObjectRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $authStorageMock->expects($this->once())
+            ->method('write')
+            ->will($this->returnValue(true));
+
+        $authMock->expects($this->once())
+            ->method('getStorage')
+            ->will($this->returnValue($authStorageMock));
     }
 }
