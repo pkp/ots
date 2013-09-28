@@ -103,6 +103,7 @@ aside {
 
 .box {
   margin-top: 20px;
+  margin-bottom: 30px;
   position: relative;
   border: 1px solid black;
   background-color: white;
