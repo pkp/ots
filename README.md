@@ -54,6 +54,7 @@ Module Description
  * Authentication
  * Registration
  * Lost password retrieval
+ * New password
 * Admin
  * User management
   * Confirm registration
