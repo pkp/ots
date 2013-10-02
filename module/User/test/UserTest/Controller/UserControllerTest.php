@@ -55,21 +55,6 @@ class UserControllerTest extends AbstractHttpControllerTestCase
     }
 
     /**
-     * Test if a user can be logged in
-     *
-     * @return void
-     */
-    public function testLoginActionGet() {
-        $this->dispatch('/user/login');
-        $this->assertResponseStatusCode(200);
-
-        $this->assertModuleName('User');
-        $this->assertControllerName('User\Controller\User');
-        $this->assertControllerClass('UserController');
-        $this->assertMatchedRouteName('user');
-    }
-
-    /**
      * Test if a login attempt is processed correctly
      *
      * @return void
