@@ -39,7 +39,7 @@ class UserControllerTest extends AbstractHttpControllerTestCase
     }
 
     /**
-     * Test if the login action can be accessed
+     * Test if the login action is accessible
      *
      * @return void
      */
@@ -55,11 +55,26 @@ class UserControllerTest extends AbstractHttpControllerTestCase
     }
 
     /**
-     * Test if the login POST is processed correctly
+     * Test if a user can be logged in
      *
      * @return void
      */
-    public function testProcessLoginPost()
+    public function testLoginActionGet() {
+        $this->dispatch('/user/login');
+        $this->assertResponseStatusCode(200);
+
+        $this->assertModuleName('User');
+        $this->assertControllerName('User\Controller\User');
+        $this->assertControllerClass('UserController');
+        $this->assertMatchedRouteName('user');
+    }
+
+    /**
+     * Test if a login attempt is processed correctly
+     *
+     * @return void
+     */
+    public function testLoginActionPost()
     {
         // Mock the user object
         $userMock = $this->getMockBuilder('User\Entity\User')
