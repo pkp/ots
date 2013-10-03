@@ -1,4 +1,4 @@
-<phpunit colors="true">
+<phpunit colors="true" bootstrap="UnitTestBootstrap.php">
     <testsuites>
       <testsuite name="XMLPS">
         <directory>module/Application/test</directory>

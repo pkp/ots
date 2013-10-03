@@ -6,13 +6,13 @@ use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
-use Doctrine\ORM\EntityRepository;
 use Zend\Mvc\I18n\Translator;
+use User\Model\DAO\UserDAO;
 
 class RegistrationFormInputFilter implements InputFilterAwareInterface
 {
     protected $translator;
-    protected $userRepository;
+    protected $userDAO;
 
     public $email;
     public $password;
@@ -23,16 +23,16 @@ class RegistrationFormInputFilter implements InputFilterAwareInterface
      * Constructor
      *
      * @param Translator $translator
-     * @param EntityRepository $userRepository
+     * @param UserDAO $userDAO
      * @return void
      */
     public function __construct(
         Translator $translator,
-        EntityRepository $userRepository
+        UserDAO $userDAO
     )
     {
         $this->translator = $translator;
-        $this->userRepository = $userRepository;
+        $this->userDAO = $userDAO;
     }
 
     /**
@@ -90,7 +90,7 @@ class RegistrationFormInputFilter implements InputFilterAwareInterface
                     array(
                         'name' => 'DoctrineModule\Validator\NoObjectExists',
                         'options' => array(
-                            'object_repository' => $this->userRepository,
+                            'object_repository' => $this->userDAO->getRepository(),
                             'fields' => array('email'),
                             'messages' => array(
                                 \DoctrineModule\Validator\NoObjectExists::ERROR_OBJECT_FOUND => $this->translator->translate('user.registrationForm.userAlreadyExists')

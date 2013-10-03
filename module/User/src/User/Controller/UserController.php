@@ -3,7 +3,7 @@ namespace User\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Doctrine\ORM\EntityManager;
+use User\Model\DAO\UserDAO;
 use User\Form\LoginForm;
 use User\Form\LoginFormInputFilter;
 use User\Form\RegistrationForm;
@@ -12,7 +12,7 @@ use Zend\Mvc\I18n\Translator;
 use Xmlps\Log\Logger;
 
 class UserController extends AbstractActionController {
-    protected $em;
+    protected $userDAO;
     protected $logger;
     protected $translator;
     protected $loginForm;
@@ -23,7 +23,7 @@ class UserController extends AbstractActionController {
     /**
      * Constructor
      *
-     * @param EntityManager $em
+     * @param UserDAO $userDAO
      * @param Logger $logger
      * @param Translator $translator
      * @param LoginForm $loginForm
@@ -34,7 +34,7 @@ class UserController extends AbstractActionController {
      * @return void
      */
     public function __construct(
-        EntityManager $em,
+        UserDAO $userDAO,
         Logger $logger,
         Translator $translator,
         LoginForm $loginForm,
@@ -43,7 +43,7 @@ class UserController extends AbstractActionController {
         RegistrationFormInputFilter $registrationFormInputFilter
     )
     {
-        $this->em = $em;
+        $this->userDAO = $userDAO;
         $this->logger = $logger;
         $this->translator = $translator;
         $this->loginForm = $loginForm;
@@ -88,8 +88,9 @@ class UserController extends AbstractActionController {
                 $authResult = $this->authenticate($data['email'], $data['password']);
                 if ($authResult->isValid()) {
                     // Fetch the user object
-                    $user = $this->em->getRepository('User\Entity\User')
-                        ->findOneBy(array('email' => $data['email']));
+                    $user = $this->userDAO->findOneBy(
+                        array('email' => $data['email'])
+                    );
 
                     // Register the user in the session
                     $this->sessionRegister($user);
@@ -148,8 +149,7 @@ class UserController extends AbstractActionController {
                 $user = $this->getServiceLocator()->get('User\Entity\User');
                 $user->email = $data['email'];
                 $user->password = $data['password'];
-                $this->em->persist($user);
-                $this->em->flush();
+                $this->userDAO->save($user);
 
                 // Authenticate user and register in the session
                 $this->authenticate($data['email'], $data['password']);

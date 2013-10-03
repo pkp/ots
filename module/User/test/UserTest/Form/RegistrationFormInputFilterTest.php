@@ -2,12 +2,17 @@
 
 namespace UserTest\Form;
 
-use PHPUnit_Framework_TestCase;
+use Xmlps\UnitTest\ModelTest;
 use User\Form\RegistrationFormInputFilter;
 
-class RegistrationFormInputFilterTest extends PHPUnit_Framework_TestCase
+class RegistrationFormInputFilterTest extends ModelTest
 {
-    protected $traceError = true;
+    protected $userDAO;
+
+    protected $testUserEmail = 'unittestuser@example.com';
+    protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
+    protected $testUser2Email = 'unittestuser2@example.com';
+    protected $testUser2Password = 'a4a6cb8b60695d718a902afaba4c2765';
 
     /**
      * Initialize the test
@@ -16,18 +21,25 @@ class RegistrationFormInputFilterTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $emMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translatorMock = $this->getMockBuilder('Zend\Mvc\I18n\Translator')
-            ->disableOriginalConstructor()
-            ->getMock();
+        parent::setUp();
 
-        $this->inputFilter = new RegistrationFormInputFilter(
-            $translatorMock,
-            $emMock
-        );
+        $this->inputFilter = $this->sm->get('User\Form\RegistrationFormInputFilter');
         $this->inputFilter = $this->inputFilter->getInputFilter();
+
+        $this->userDAO = $this->sm->get('UserDAO');
+
+        $this->cleanTestData();
+        $this->createTestData();
+    }
+
+    /**
+     * Clean up after test
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        $this->cleanTestData();
     }
 
     /**
@@ -43,12 +55,22 @@ class RegistrationFormInputFilterTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->inputFilter->has('passwordConfirm'));
 
         $data = array(
-            'email' => 'blim@bla.com',
-            'password' => 'password',
-            'passwordConfirm' => 'password'
+            'email' => $this->testUserEmail,
+            'password' => $this->testUserPassword,
+            'passwordConfirm' => $this->testUserPassword,
         );
 
-        // Correct data
+        // Existing user
+        $this->inputFilter->setData($data);
+        $this->assertFalse($this->inputFilter->isValid());
+
+        $data = array(
+            'email' => $this->testUser2Email,
+            'password' => $this->testUser2Password,
+            'passwordConfirm' => $this->testUser2Password,
+        );
+
+        // New user
         $this->inputFilter->setData($data);
         $this->assertTrue($this->inputFilter->isValid());
 
@@ -94,5 +116,30 @@ class RegistrationFormInputFilterTest extends PHPUnit_Framework_TestCase
         $testData['passwordConfirm'] = 'password2';
         $this->inputFilter->setData($testData);
         $this->assertFalse($this->inputFilter->isValid());
+    }
+
+    /**
+     * Clean test data
+     *
+     * @return void
+     */
+    protected function cleanTestData()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        if ($user) { $this->userDAO->remove($user); }
+    }
+
+    /**
+     * Create test data
+     *
+     * @return void
+     */
+    protected function createTestData()
+    {
+        $user = $this->sm->get('User\Entity\User');
+        $user->email = $this->testUserEmail;
+        $user->password = $this->testUserPassword;
+
+        $this->userDAO->save($user);
     }
 }

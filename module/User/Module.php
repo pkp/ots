@@ -6,6 +6,7 @@ use User\Form\LoginForm;
 use User\Form\LoginFormInputFilter;
 use User\Form\RegistrationForm;
 use User\Form\RegistrationFormInputFilter;
+use User\Model\DAO\UserDAO;
 
 class Module
 {
@@ -47,6 +48,11 @@ class Module
     {
         return array(
             'factories' => array(
+                'UserDAO' => function($sm)
+                {
+                    $em = $sm->get('doctrine.entitymanager.orm_default');
+                    return new UserDAO($em);
+                },
                 'User\Entity\User' => function($sm)
                 {
                     return new User();
@@ -67,12 +73,11 @@ class Module
                 },
                 'User\Form\RegistrationFormInputFilter' => function($sm)
                 {
-                    $em = $sm->get('doctrine.entitymanager.orm_default');
-                    $userRepository = $em->getRepository('User\Entity\User');
+                    $userDAO = $sm->get('UserDAO');
                     $translator = $sm->get('translator');
                     return new RegistrationFormInputFilter(
                         $translator,
-                        $userRepository
+                        $userDAO
                     );
                 },
                 'Zend\Authentication\AuthenticationService' => function($sm) {
@@ -94,7 +99,7 @@ class Module
                 'User\Controller\User' => function($cm)
                 {
                     $sm = $cm->getServiceLocator();
-                    $em = $sm->get('doctrine.entitymanager.orm_default');
+                    $userDAO = $sm->get('UserDAO');
                     $logger = $sm->get('Logger');
                     $translator = $sm->get('Translator');
                     $loginForm = $sm->get('User\Form\LoginForm');
@@ -103,7 +108,7 @@ class Module
                     $registrationFormInputFilter = $sm->get('User\Form\RegistrationFormInputFilter');
 
                     return new Controller\UserController(
-                        $em,
+                        $userDAO,
                         $logger,
                         $translator,
                         $loginForm,
