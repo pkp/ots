@@ -8,6 +8,14 @@ class UserControllerTest extends AbstractHttpControllerTestCase
 {
     protected $traceError = true;
 
+    protected $testUserEmail = 'unittestuser@example.com';
+    protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
+    protected $testUser2Email = 'unittestuser2@example.com';
+    protected $testUser2Password = 'a4a6cb8b60695d718a902afaba4c2765';
+
+    protected $sm;
+    protected $em;
+
     /**
      * Set up the controller test
      *
@@ -19,7 +27,24 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         $this->setApplicationConfig(
             include $baseDir . '/config/application.config.php'
         );
+
+        $this->sm = $this->getApplicationServiceLocator();
+        $this->em = $this->sm->get('doctrine.entitymanager.orm_default');
+
+        $this->cleanTestData();
+        $this->createTestData();
+
         parent::setUp();
+    }
+
+    /**
+     * Clean up after test
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        $this->cleanTestData();
     }
 
     /**
@@ -35,6 +60,7 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         $this->assertModuleName('User');
         $this->assertControllerName('User\Controller\User');
         $this->assertControllerClass('UserController');
+        $this->assertActionName('index');
         $this->assertMatchedRouteName('user');
     }
 
@@ -51,6 +77,24 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         $this->assertModuleName('User');
         $this->assertControllerName('User\Controller\User');
         $this->assertControllerClass('UserController');
+        $this->assertActionName('login');
+        $this->assertMatchedRouteName('user');
+    }
+
+    /**
+     * Test if the login action is accessible
+     *
+     * @return void
+     */
+    public function testRegisterActionCanBeAccessed()
+    {
+        $this->dispatch('/user/register');
+        $this->assertResponseStatusCode(200);
+
+        $this->assertModuleName('User');
+        $this->assertControllerName('User\Controller\User');
+        $this->assertControllerClass('UserController');
+        $this->assertActionName('register');
         $this->assertMatchedRouteName('user');
     }
 
@@ -59,112 +103,87 @@ class UserControllerTest extends AbstractHttpControllerTestCase
      *
      * @return void
      */
-    public function testLoginActionPost()
+    public function testLoginAction()
     {
-        // Mock the user object
-        $userMock = $this->getMockBuilder('User\Entity\User')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        // Mock the entity manager object
-        $emRepositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $emRepositoryMock->expects($this->once())
-            ->method('findOneBy')
-            ->will($this->returnValue($userMock));
-
-        $emMock = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $emMock->expects($this->any())
-            ->method('getRepository')
-            ->will($this->returnValue($emRepositoryMock));
-
-        // Mock the auth adapter
-        $authAdapterMock = $this->getMockBuilder('DoctrineModule\Authentication\Adapter\ObjectRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        // Mock the auth result
-        $authResultMock = $this->getMockBuilder('Zend\Authentication\Result')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $authResultMock->expects($this->once())
-            ->method('isValid')
-            ->will($this->returnValue(true));
-
-        // Mock the auth Service
-        $authMock = $this->getMockBuilder('Zend\Authentication\AuthenticationService')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        // Mock the logger
-        $loggerMock = $this->getMockBuilder('Xmlps\Log\Logger')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $loggerMock->expects($this->once())
-            ->method('info')
-            ->will($this->returnValue(null));
-
-        // Simulate controller methods
-        $this->authenticate($authMock, $authAdapterMock, $authResultMock);
-        $this->sessionRegister($authMock);
-
-        // Register the services
-        $sm = $this->getApplicationServiceLocator();
-        $sm->setAllowOverride(true);
-        $sm->setService('doctrine.entitymanager.orm_default', $emMock);
-        $sm->setService('Logger', $loggerMock);
-        $sm->setService('Zend\Authentication\AuthenticationService', $authMock);
+        // Invalid user
+        $postData = array(
+            'email' => 'foo@example.com',
+            'password' => 'password',
+        );
+        $this->dispatch('/user/login', 'POST', $postData);
+        $this->assertResponseStatusCode(200);
 
         // Execute the form submission
-        $postData = array('email' => 'blim@bla.com', 'password' => 'pasword');
+        $postData = array(
+            'email' => $this->testUserEmail,
+            'password' => $this->testUserPassword,
+        );
         $this->dispatch('/user/login', 'POST', $postData);
         $this->assertResponseStatusCode(302);
     }
 
     /**
-     * Simulatess controllers authenticate() method
+     * Test if a register attempt is processed correctly
      *
-     * @param mixed $authMock
-     * @param mixed $authAdapterMock
-     * @param mixed $authResultMock
      * @return void
      */
-    protected function authenticate($authMock, $authAdapterMock, $authResultMock)
+    public function testRegisterAction()
     {
-        $authAdapterMock->expects($this->once())
-            ->method('setIdentityValue')
-            ->will($this->returnValue(null));
-        $authAdapterMock->expects($this->once())
-            ->method('setCredentialValue')
-            ->will($this->returnValue(null));
-        $authMock->expects($this->once())
-            ->method('getAdapter')
-            ->will($this->returnValue($authAdapterMock));
-        $authMock->expects($this->once())
-            ->method('authenticate')
-            ->will($this->returnValue($authResultMock));
+        // Passwords don't match
+        $postData = array(
+            'email' => $this->testUser2Email,
+            'password' => $this->testUserPassword,
+            'passwordConfirm' => $this->testUser2Password,
+        );
+        $this->dispatch('/user/register', 'POST', $postData);
+        $this->assertResponseStatusCode(200);
+
+        // Register an existing user
+        $postData = array(
+            'email' => $this->testUserEmail,
+            'password' => $this->testUserPassword,
+            'passwordConfirm' => $this->testUserPassword,
+        );
+        $this->dispatch('/user/register', 'POST', $postData);
+        $this->assertResponseStatusCode(200);
+
+        // Register a new user
+        $postData = array(
+            'email' => $this->testUser2Email,
+            'password' => $this->testUser2Password,
+            'passwordConfirm' => $this->testUser2Password,
+        );
+        $this->dispatch('/user/register', 'POST', $postData);
+        $this->assertResponseStatusCode(302);
     }
 
     /**
-     * Simulatess controllers sessionRegister() method
+     * Creates test data for this test
      *
-     * @param mixed $authMock
      * @return void
      */
-    protected function sessionRegister($authMock)
+    protected function createTestData()
     {
-        $authStorageMock = $this->getMockBuilder('DoctrineModule\Authentication\Storage\ObjectRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $authStorageMock->expects($this->once())
-            ->method('write')
-            ->will($this->returnValue(true));
+        $this->testUser = $this->sm->get('User\Entity\User');
+        $this->testUser->email = $this->testUserEmail;
+        $this->testUser->password = $this->testUserPassword;
+        $this->em->persist($this->testUser);
+        $this->em->flush($this->testUser);
+    }
 
-        $authMock->expects($this->once())
-            ->method('getStorage')
-            ->will($this->returnValue($authStorageMock));
+    /**
+     * Cleans test data after test
+     *
+     * @return void
+     */
+    protected function cleanTestData()
+    {
+        $testUserEmails = array($this->testUserEmail, $this->testUser2Email);
+        foreach ($testUserEmails as $email) {
+            if ($user = $this->em->getRepository('User\Entity\User')->findOneBy(array('email' => $email))) {
+                $this->em->remove($user);
+            }
+        }
+        $this->em->flush();
     }
 }
