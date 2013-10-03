@@ -52,7 +52,7 @@ class Module
                 'Logger' => function($sm)
                 {
                     $config = $sm->get('config');
-                    $logger = new \Xmlps\Log\Logger;
+                    $logger = new \Xmlps\Logger\Logger;
                     $writer = new \Zend\Log\Writer\Stream($config['log']['file']);
                     if (!empty($config['log']['level'])) {
                         $writer->addFilter($config['log']['level']);

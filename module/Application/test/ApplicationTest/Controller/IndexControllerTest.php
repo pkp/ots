@@ -36,6 +36,6 @@ class ApplicationControllerTest extends AbstractHttpControllerTestCase
     public function testLoggerCanBeAccessed()
     {
         $sm = $this->getApplicationServiceLocator();
-        $this->assertTrue($sm->get('Logger') instanceof \Xmlps\Log\Logger);
+        $this->assertTrue($sm->get('Logger') instanceof \Xmlps\Logger\Logger);
     }
 }

@@ -9,7 +9,7 @@ use User\Form\LoginFormInputFilter;
 use User\Form\RegistrationForm;
 use User\Form\RegistrationFormInputFilter;
 use Zend\Mvc\I18n\Translator;
-use Xmlps\Log\Logger;
+use Xmlps\Logger\Logger;
 
 class UserController extends AbstractActionController {
     protected $userDAO;

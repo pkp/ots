@@ -1,6 +1,6 @@
 <?php
 
-namespace Xmlps\Log;
+namespace Xmlps\Logger;
 use Zend\Log;
 
 class Logger extends \Zend\Log\Logger {
