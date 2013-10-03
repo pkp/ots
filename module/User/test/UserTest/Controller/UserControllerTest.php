@@ -14,7 +14,7 @@ class UserControllerTest extends AbstractHttpControllerTestCase
     protected $testUser2Password = 'a4a6cb8b60695d718a902afaba4c2765';
 
     protected $sm;
-    protected $em;
+    protected $userDAO;
 
     /**
      * Set up the controller test
@@ -29,7 +29,7 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         );
 
         $this->sm = $this->getApplicationServiceLocator();
-        $this->em = $this->sm->get('doctrine.entitymanager.orm_default');
+        $this->userDAO = $this->sm->get('UserDAO');
 
         $this->cleanTestData();
         $this->createTestData();
@@ -164,11 +164,10 @@ class UserControllerTest extends AbstractHttpControllerTestCase
      */
     protected function createTestData()
     {
-        $this->testUser = $this->sm->get('User\Entity\User');
-        $this->testUser->email = $this->testUserEmail;
-        $this->testUser->password = $this->testUserPassword;
-        $this->em->persist($this->testUser);
-        $this->em->flush($this->testUser);
+        $user = $this->sm->get('User\Entity\User');
+        $user->email = $this->testUserEmail;
+        $user->password = $this->testUserPassword;
+        $this->userDAO->save($user);
     }
 
     /**
@@ -180,10 +179,9 @@ class UserControllerTest extends AbstractHttpControllerTestCase
     {
         $testUserEmails = array($this->testUserEmail, $this->testUser2Email);
         foreach ($testUserEmails as $email) {
-            if ($user = $this->em->getRepository('User\Entity\User')->findOneBy(array('email' => $email))) {
-                $this->em->remove($user);
+            if ($user = $this->userDAO->findOneBy(array('email' => $email))) {
+                $this->userDAO->remove($user);
             }
         }
-        $this->em->flush();
     }
 }
