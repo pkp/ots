@@ -20,7 +20,7 @@ class RegistrationFormInputFilter implements InputFilterAwareInterface
     protected $inputFilter;
 
     /**
-     * Constructor 
+     * Constructor
      *
      * @param Translator $translator
      * @param EntityRepository $userRepository
