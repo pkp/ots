@@ -52,15 +52,6 @@ header {
 
 .container {
   @include outer-container;
-
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow: hidden;
-  z-index: -1;
-
   background-color: $backgroundColorLight;
 }
 
@@ -69,14 +60,10 @@ aside {
   @include omega();
   padding: 0 1em;
   border-left: 1px solid $boxBorderColor;
-  position: absolute;
-  right: 0;
-  top: 95px;
-  bottom: 0;
 }
 
 .content {
-  font-size: em(16);
+  font-size: em(14);
   line-height: em(24);
 }
 
