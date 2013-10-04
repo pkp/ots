@@ -86,40 +86,20 @@ input {
 /*******************************
  * Site Styles
  *******************************/
-html {
-  min-height: 100%;
-  position: relative; }
-
 body {
-  height: 100%;
   margin: 0;
   padding: 0;
   font-family: "Georgia";
-  background-color: #eeeeee; }
+  background-color: #eeeeee;
+  font-size: 0.875em;
+  line-height: 1.5em; }
 
 h1, h2, h3, h4 {
   font-family: "Oswald"; }
 
-header {
-  background: url("/img/logo.png");
-  background-repeat: no-repeat;
-  background-color: #0068cc;
-  background-position: 10px 5px;
-  width: 889px;
-  height: 95px;
-  margin: 0 5px; }
-  header span {
-    color: white;
-    font-size: 0.875em;
-    float: left;
-    margin-top: 65px;
-    margin-left: 167px; }
-    header span a {
-      color: white; }
-
 .container {
   *zoom: 1;
-  max-width: 56.25em;
+  max-width: 60em;
   margin-left: auto;
   margin-right: auto;
   background-color: white; }
@@ -128,6 +108,86 @@ header {
     display: table; }
   .container:after {
     clear: both; }
+
+header {
+  display: block;
+  float: left;
+  margin-right: 2.12766%;
+  width: 100%;
+  margin-right: 0;
+  background: #0068cc url("/img/logo.png") no-repeat 10px 5px;
+  height: 95px; }
+  header:last-child {
+    margin-right: 0; }
+  @media screen and (max-width: 480px) {
+    header {
+      display: block;
+      float: left;
+      margin-right: 4.34783%;
+      width: 100%; }
+      header:last-child {
+        margin-right: 0; } }
+  @media screen and (max-width: 960px) {
+    header {
+      background: #0068cc url("/img/logo-tablet.png") no-repeat 10px 5px;
+      height: 60px; } }
+  @media screen and (max-width: 480px) {
+    header {
+      background: #0068cc url("/img/logo-mobile.png") no-repeat 5px top;
+      height: 50px; } }
+  header span {
+    color: white;
+    font-size: 0.875em;
+    float: left;
+    margin-top: 65px;
+    margin-left: 167px; }
+    @media screen and (max-width: 960px) {
+      header span {
+        display: none; } }
+    header span a {
+      color: white; }
+
+footer {
+  display: block;
+  float: left;
+  margin-right: 2.12766%;
+  width: 100%;
+  margin-right: 0;
+  padding: 10px;
+  background-color: #0068cc;
+  color: white;
+  text-align: right; }
+  footer:last-child {
+    margin-right: 0; }
+  @media screen and (max-width: 480px) {
+    footer {
+      display: block;
+      float: left;
+      margin-right: 4.34783%;
+      width: 100%; }
+      footer:last-child {
+        margin-right: 0; } }
+  footer span {
+    margin-left: 0.5em; }
+    footer span:before {
+      speak: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-transform: none;
+      line-height: 1;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: normal;
+      font-family: 'Icons'; }
+    footer span:before {
+      margin-right: 0.5em; }
+    footer span a {
+      text-decoration: none;
+      color: white; }
+  footer .copyright:before {
+    content: '\00a9'; }
+  footer .contact:before {
+    content: "\e161"; }
 
 aside {
   display: block;
@@ -141,8 +201,22 @@ aside {
     margin-right: 0; }
 
 .content {
-  font-size: 0.875em;
-  line-height: 1.5em; }
+  display: block;
+  float: left;
+  margin-right: 2.12766%;
+  width: 100%;
+  margin-right: 0;
+  padding: 0 10px; }
+  .content:last-child {
+    margin-right: 0; }
+  @media screen and (max-width: 480px) {
+    .content {
+      display: block;
+      float: left;
+      margin-right: 4.34783%;
+      width: 100%; }
+      .content:last-child {
+        margin-right: 0; } }
 
 .message-container {
   display: block;
@@ -211,10 +285,21 @@ aside {
   float: left;
   margin-right: 2.12766%;
   width: 65.95745%;
-  padding: 1em 0 1em 1em; }
+  padding: 10px 0; }
   .front-page:last-child {
     margin-right: 0; }
+  @media screen and (max-width: 480px) {
+    .front-page {
+      display: block;
+      float: left;
+      margin-right: 4.34783%;
+      width: 100%; }
+      .front-page:last-child {
+        margin-right: 0; } }
 
+@media screen and (max-width: 480px) {
+  .front-page + aside {
+    display: none; } }
 .front-page + aside ul {
   list-style: none; }
   .front-page + aside ul li {

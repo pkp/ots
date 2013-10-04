@@ -34,14 +34,27 @@ h1, h2, h3, h4 {
 
 header {
   @include span-columns(12);
+  @include media($mobile) {
+    @include span-columns(6);
+  }
   @include omega();
-  background: url('/img/logo.png');
-  background-repeat: no-repeat;
-  background-color: $primaryColor1;
-  background-position: 10px 5px;
+
+  background: $primaryColor1 url('/img/logo.png') no-repeat 10px 5px;
   height: 95px;
+  @include media($tablet) {
+    background: $primaryColor1 url('/img/logo-tablet.png') no-repeat 10px 5px;
+    height: 60px;
+  }
+
+  @include media($mobile) {
+    background: $primaryColor1 url('/img/logo-mobile.png') no-repeat 5px top;
+    height: 50px;
+  }
 
   span {
+    @include media($tablet) {
+      display: none;
+    }
     color: $textColorLight;
     a { color: $textColorLight; }
     font-size: em(14);
@@ -53,6 +66,9 @@ header {
 
 footer {
   @include span-columns(12);
+  @include media($mobile) {
+    @include span-columns(6);
+  }
   @include omega();
   padding: 10px;
   background-color: $primaryColor1;
@@ -86,7 +102,11 @@ aside {
 
 .content {
   @include span-columns(12);
+  @include media($mobile) {
+    @include span-columns(6);
+  }
   @include omega();
+  padding: 0 10px;
 }
 
 .message-container {
@@ -142,10 +162,16 @@ aside {
  *******************************/
 .front-page {
   @include span-columns(8);
-  padding: 1em 0 1em 1em;
-
+  @include media($mobile) {
+    @include span-columns(6);
+  }
+  padding: 10px 0;
 }
- .front-page + aside {
+.front-page + aside {
+  @include media($mobile) {
+    display: none;
+  }
+
   @include custom-list;
   ul { padding-left: 5px; }
 }
