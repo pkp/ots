@@ -137,6 +137,19 @@ aside {
     @include span-columns(6);
   }
   padding: 10px 0;
+
+  .authenticate {
+    .box {
+      min-height: 156px;
+      @include span-columns(4 of 8);
+      @include media($mobile) {
+        @include span-columns(6 of 6);
+      }
+    }
+    input { width: 100%; }
+    input[type="submit"] { width: auto; }
+  }
+
 }
 .front-page + aside {
   @include media($mobile) {

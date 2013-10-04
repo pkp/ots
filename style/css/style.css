@@ -296,6 +296,26 @@ aside {
       width: 100%; }
       .front-page:last-child {
         margin-right: 0; } }
+  .front-page .authenticate .box {
+    min-height: 156px;
+    display: block;
+    float: left;
+    margin-right: 3.22581%;
+    width: 48.3871%; }
+    .front-page .authenticate .box:last-child {
+      margin-right: 0; }
+    @media screen and (max-width: 480px) {
+      .front-page .authenticate .box {
+        display: block;
+        float: left;
+        margin-right: 4.34783%;
+        width: 100%; }
+        .front-page .authenticate .box:last-child {
+          margin-right: 0; } }
+  .front-page .authenticate input {
+    width: 100%; }
+  .front-page .authenticate input[type="submit"] {
+    width: auto; }
 
 @media screen and (max-width: 480px) {
   .front-page + aside {

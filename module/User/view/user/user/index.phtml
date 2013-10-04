@@ -15,19 +15,17 @@ if (isset($this->registrationForm)) {
 ?>
 <div class="front-page">
 
-  <?php if (isset($loginForm)) : ?>
+  <div class="authenticate">
     <div class="box">
       <label><?php echo $this->translate('user.loginForm.login') ?></label>
       <?php echo $loginForm; ?>
     </div>
-  <?php endif ?>
 
-  <?php if (isset($registrationForm)) : ?>
     <div class="box">
       <label><?php echo $this->translate('user.registrationForm.register') ?></label>
       <?php echo $registrationForm; ?>
     </div>
-  <?php endif ?>
+  </div>
 
 </div>
 <?php echo $this->partial('_sideBar.phtml'); ?>
