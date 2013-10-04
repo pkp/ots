@@ -1,6 +1,24 @@
+// Button
 @mixin button {
   background-color: $buttonColor;
   border: 1px solid $buttonBorderColor;
   text-transform: uppercase;
   padding: 4px 20px;
 }
+
+// Fade in transition
+@mixin fade-in($duration) {
+  animation: fadein $duration;
+  -moz-animation: fadein $duration; /* Firefox */
+  -webkit-animation: fadein $duration; /* Safari and Chrome */
+  -o-animation: fadein $duration; /* Opera */
+
+}
+@mixin fade-in-full {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadein { @include fade-in-full; }
+@-moz-keyframes fadein { @include fade-in-full; }
+@-webkit-keyframes fadein { @include fade-in-full; }
+@-o-keyframes fadein { @include fade-in-full; }

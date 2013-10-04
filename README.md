@@ -51,8 +51,8 @@ Technical notes
 Module Description
 ------------------
 * User
- * Authentication
- * Registration
+ * Authentication [X]
+ * Registration [X]
  * Lost password retrieval
  * New password
 * Admin
