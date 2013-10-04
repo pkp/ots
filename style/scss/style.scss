@@ -75,6 +75,9 @@ footer {
   color: $textColorLight;
   text-align: right;
   span {
+    @include media($mobile) {
+      display: block;
+    }
     margin-left: 0.5em;
     @include icon('before', true);
     &:before { margin-right: 0.5em; }

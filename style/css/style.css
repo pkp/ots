@@ -169,6 +169,9 @@ footer {
         margin-right: 0; } }
   footer span {
     margin-left: 0.5em; }
+    @media screen and (max-width: 480px) {
+      footer span {
+        display: block; } }
     footer span:before {
       speak: none;
       -webkit-font-smoothing: antialiased;
