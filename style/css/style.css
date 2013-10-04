@@ -88,18 +88,30 @@ aside {
   font-size: 0.875em;
   line-height: 1.3125em; }
 
-.error-container {
+.message-container {
   display: block;
   float: left;
   margin-right: 2.12766%;
   width: 100%;
-  margin-right: 0; }
-  .error-container:last-child {
+  margin-right: 0;
+  margin: 5px 0; }
+  .message-container:last-child {
     margin-right: 0; }
-  .error-container p {
-    margin: 10px 5px;
+  .message-container ul {
+    border: 1px solid black;
+    list-style: none;
     padding: 10px;
-    background-color: #ffa073; }
+    padding-left: 20px;
+    margin: 0 10px; }
+
+.message-container.success ul {
+  background-color: #67a7e6; }
+
+.message-container.info ul {
+  background-color: #ffde73; }
+
+.message-container.error ul {
+  background-color: #ffa073; }
 
 .box {
   margin-top: 20px;

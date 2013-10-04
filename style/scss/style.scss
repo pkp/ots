@@ -53,15 +53,22 @@ aside {
   line-height: em(21);
 }
 
-.error-container {
+.message-container {
   @include span-columns(12);
   @include omega();
-  p {
-    margin: 10px 5px;
+  margin: 5px 0;
+  ul {
+    border: 1px solid black;
+    list-style: none;
     padding: 10px;
-    background-color: $errorColor;
+    padding-left: 20px;
+    margin: 0 10px;
   }
 }
+
+.message-container.success ul { background-color: $successColor; }
+.message-container.info ul { background-color: $infoColor; }
+.message-container.error ul { background-color: $errorColor; }
 
 .box {
   margin-top: 20px;

@@ -95,6 +95,14 @@ class UserController extends AbstractActionController {
                     // Register the user in the session
                     $this->sessionRegister($user);
 
+                    $flashMessenger = $this->flashMessenger();
+                    $flashMessenger->setNamespace('success');
+                    $flashMessenger->addMessage(
+                        $this->translator->translate(
+                                'user.authentication.sucessfulLoginThanks'
+                        )
+                    );
+
                     $this->logger->info(
                         sprintf(
                             $this->translator->translate(
@@ -107,13 +115,13 @@ class UserController extends AbstractActionController {
                     return $this->redirect()->toRoute('home');
                 }
                 else {
-                    $this->layout()->setVariable(
-                        'error',
+                    $flashMessenger = $this->flashMessenger();
+                    $flashMessenger->setNamespace('error');
+                    $flashMessenger->addMessage(
                         $this->translator->translate(
                             'user.authentication.invalidLoginCredentials'
                         )
                     );
-
                 }
             }
         }
@@ -154,8 +162,13 @@ class UserController extends AbstractActionController {
                 // Authenticate user and register in the session
                 $this->authenticate($data['email'], $data['password']);
 
-                // TODO: Show message and email admin and user
-                // http://framework.zend.com/manual/2.0/en/modules/zend.mvc.plugins.html#the-flashmessenger
+                $flashMessenger = $this->flashMessenger();
+                $flashMessenger->setNamespace('success');
+                $flashMessenger->addMessage(
+                    $this->translator->translate(
+                        'user.registration.sucessfulRegistrationThanks'
+                    )
+                );
 
                 $this->logger->info(
                     sprintf(

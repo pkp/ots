@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-27 16:02-1000\n"
-"PO-Revision-Date: 2013-09-27 16:02-1000\n"
+"POT-Creation-Date: 2013-10-03 16:44-1000\n"
+"PO-Revision-Date: 2013-10-03 16:44-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -29,11 +29,11 @@ msgstr "Password"
 msgid "user.loginForm.login"
 msgstr "Login"
 
-#: ../../User/src/User/Form/RegistrationFormInputFilter.php:89
+#: ../../User/src/User/Form/RegistrationFormInputFilter.php:96
 msgid "user.registrationForm.userAlreadyExists"
 msgstr "This email address is already registered!"
 
-#: ../../User/src/User/Form/RegistrationFormInputFilter.php:126
+#: ../../User/src/User/Form/RegistrationFormInputFilter.php:133
 msgid "user.registrationForm.passwordsDontMatch"
 msgstr "The provided passwords don't match"
 
@@ -54,15 +54,23 @@ msgstr "Confirm Password"
 msgid "user.registrationForm.register"
 msgstr "Register"
 
-#: ../../User/src/User/Controller/UserController.php:100
+#: ../../User/src/User/Controller/UserController.php:102
+msgid "user.authentication.sucessfulLoginThanks"
+msgstr "Hi, welcome back!"
+
+#: ../../User/src/User/Controller/UserController.php:109
 msgid "user.authentication.sucessfulLogin"
 msgstr "Successful login by %s"
 
-#: ../../User/src/User/Controller/UserController.php:112
+#: ../../User/src/User/Controller/UserController.php:122
 msgid "user.authentication.invalidLoginCredentials"
 msgstr "The login credentials you provided are invalid. Please try again."
 
-#: ../../User/src/User/Controller/UserController.php:163
+#: ../../User/src/User/Controller/UserController.php:169
+msgid "user.registration.sucessfulRegistrationThanks"
+msgstr "Your registration was successful. Thank you."
+
+#: ../../User/src/User/Controller/UserController.php:176
 msgid "user.registration.sucessfulRegistration"
 msgstr "User %s registered successfully"
 

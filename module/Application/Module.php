@@ -11,6 +11,7 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\Mvc\Controller\Plugin\FlashMessenger;
 
 class Module
 {
@@ -24,6 +25,39 @@ class Module
         $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+
+        // Show flashmessages in the view
+        $eventManager->attach(MvcEvent::EVENT_RENDER, function($e) {
+            $flashMessenger = new FlashMessenger;
+
+            $messages = array();
+
+            $flashMessenger->setNamespace('success');
+            if ($flashMessenger->hasMessages()) {
+                $messages['success'] = $flashMessenger->getMessages();
+            }
+            $flashMessenger->clearMessages();
+
+            $flashMessenger->setNamespace('info');
+            if ($flashMessenger->hasMessages()) {
+                $messages['info'] = $flashMessenger->getMessages();
+            }
+            $flashMessenger->clearMessages();
+
+            $flashMessenger->setNamespace('default');
+            if ($flashMessenger->hasMessages()) {
+                $messages['info'] = $flashMessenger->getMessages();
+            }
+            $flashMessenger->clearMessages();
+
+            $flashMessenger->setNamespace('error');
+            if ($flashMessenger->hasMessages()) {
+                $messages['error'] = $flashMessenger->getMessages();
+            }
+            $flashMessenger->clearMessages();
+
+            $e->getViewModel()->setVariable('flashMessages', $messages);
+        });
     }
 
     public function getConfig()

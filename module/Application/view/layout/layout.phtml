@@ -26,8 +26,14 @@
       </header>
       <div class="content">
         <?php
-          if ($this->error !== null) {
-            echo '<div class="error-container"><p>' . $this->error . '</p></div>';
+          if ($this->flashMessages) {
+            foreach ($this->flashMessages as $context => $messages) {
+              echo '<div class="message-container ' . $context . '"><ul>';
+              foreach ($messages as $message) {
+                echo '<li>' . $message . '</li>';
+              }
+              echo '</ul></div>';
+            }
           }
         ?>
         <?php echo $this->content; ?>

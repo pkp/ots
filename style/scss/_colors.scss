@@ -21,6 +21,10 @@ $secondaryColor25: #FFA073;
 // Page
 $backgroundColorLight: change-color($primaryColor5, $lightness: 95%);
 $backgroundColorDark: $primaryColor1;
+
+// Notifications
+$successColor: $primaryColor5;
+$infoColor: $secondaryColor15;
 $errorColor: $secondaryColor25;
 
 // Text
