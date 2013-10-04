@@ -30,16 +30,6 @@ h1, h2, h3, h4 {
   font-family: 'Oswald', sans-serif;
 }
 
-ul {
-  list-style: none;
-  li { margin-bottom: 5px; }
-  li:before {
-    content: '\25FE';
-    margin-right: 0.8em;
-    color: $primaryColor1;
-  }
-}
-
 header {
   background: url('/img/logo.png');
   background-repeat: no-repeat;
@@ -147,6 +137,7 @@ aside {
 
 }
  .front-page + aside {
+  @include custom-list;
   ul { padding-left: 5px; }
 }
 

@@ -87,15 +87,6 @@ body {
 h1, h2, h3, h4 {
   font-family: 'Oswald', sans-serif; }
 
-ul {
-  list-style: none; }
-  ul li {
-    margin-bottom: 5px; }
-  ul li:before {
-    content: '\25FE';
-    margin-right: 0.8em;
-    color: #0068cc; }
-
 header {
   background: url("/img/logo.png");
   background-repeat: no-repeat;
@@ -223,5 +214,13 @@ aside {
   .front-page:last-child {
     margin-right: 0; }
 
+.front-page + aside ul {
+  list-style: none; }
+  .front-page + aside ul li {
+    margin-bottom: 5px; }
+  .front-page + aside ul li:before {
+    content: '\25FE';
+    margin-right: 0.8em;
+    color: #0068cc; }
 .front-page + aside ul {
   padding-left: 5px; }
