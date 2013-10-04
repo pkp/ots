@@ -57,8 +57,8 @@
 
 input[type="submit"] {
   background-color: #ff7e40;
-  border: 1px solid #ff9866;
-  padding: 2px 35px;
+  border: none;
+  padding: 4px 35px;
   border-radius: 2px;
   color: white;
   font-family: 'Oswald', sans-serif;
@@ -73,7 +73,7 @@ input {
   font-family: "Georgia"; }
 
 .input-error {
-  border: 1px solid #ffa073; }
+  border: 1px solid #ff7e40; }
 
 .input-error + ul {
   list-style: none;
@@ -81,7 +81,7 @@ input {
   .input-error + ul li:before {
     content: '\0021\0021\0021';
     margin-right: 10px;
-    color: #ffa073; }
+    color: #ff7e40; }
 
 /*******************************
  * Site Styles
@@ -161,20 +161,19 @@ aside {
   .message-container:last-child {
     margin-right: 0; }
   .message-container ul {
-    border: 1px solid black;
     list-style: none;
     padding: 10px;
     padding-left: 20px;
     margin: 0 10px; }
 
 .message-container.success ul {
-  background-color: #67a7e6; }
+  background-color: #3991e6; }
 
 .message-container.info ul {
-  background-color: #ffde73; }
+  background-color: #ffd240; }
 
 .message-container.error ul {
-  background-color: #ffa073; }
+  background-color: #ff7e40; }
 
 .box {
   margin-top: 20px;
