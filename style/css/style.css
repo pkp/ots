@@ -129,7 +129,7 @@ aside {
   /* Safari and Chrome */
   -o-animation: fadein 2s;
   /* Opera */
-  margin: 5px 0; }
+  margin: 10px 0; }
   .message-container:last-child {
     margin-right: 0; }
   .message-container ul {

@@ -57,7 +57,7 @@ aside {
   @include span-columns(12);
   @include omega();
   @include fade-in(2s);
-  margin: 5px 0;
+  margin: 10px 0;
 
   ul {
     border: 1px solid black;
