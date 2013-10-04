@@ -27,13 +27,16 @@
 @-webkit-keyframes fadein { @include fade-in-full; }
 @-o-keyframes fadein { @include fade-in-full; }
 
+// Custom list style
 @mixin custom-list {
   ul {
     list-style: none;
-    li { margin-bottom: 5px; }
+    li {
+      margin-bottom: 5px;
+      @include icon('before', true, 'forward');
+    }
     li:before {
-      content: '\25FE';
-      margin-right: 0.8em;
+      margin-right: 0.5em;
       color: $primaryColor1;
     }
   }

@@ -7,6 +7,7 @@
 @import "colors";
 @import "variables";
 @import "fonts";
+@import "icons";
 @import "mixins";
 @import "forms";
 
@@ -75,8 +76,8 @@ aside {
 }
 
 .content {
-  font-size: em(14);
-  line-height: em(21);
+  font-size: em(16);
+  line-height: em(24);
 }
 
 .message-container {
