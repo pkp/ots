@@ -37,7 +37,6 @@ header {
   @include media($mobile) {
     @include span-columns(6);
   }
-  @include omega();
 
   background: $primaryColor1 url('/img/logo.png') no-repeat 10px 5px;
   height: 95px;
@@ -69,7 +68,6 @@ footer {
   @include media($mobile) {
     @include span-columns(6);
   }
-  @include omega();
   padding: 10px;
   background-color: $primaryColor1;
   color: $textColorLight;
@@ -79,26 +77,55 @@ footer {
       display: block;
     }
     margin-left: 0.5em;
-    @include icon('before', true);
-    &:before { margin-right: 0.5em; }
     a {
       text-decoration: none;
       color: $textColorLight;
+      @include icon('before', true);
+      &:before { margin-right: 0.5em; }
     }
   }
-  .copyright {
+  .copyright a {
     @include icon('before', false);
     &:before { content: '\00a9'; }
   }
 
-  .contact {
+  .contact a {
     @include icon('before', false, 'mail-3');
   }
 }
 
+nav {
+  @include span-columns(12);
+  @include media($mobile) {
+    @include span-columns(6);
+  }
+
+  background-color: $navColor;
+  text-align: right;
+  padding: 5px 10px;
+
+  ul { margin: 0; }
+  li {
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    margin-left: 10px;
+  }
+
+  a {
+    text-decoration: none;
+    color: $textColorLight;
+    font-family: $highlightFont;
+    @include icon('before', true);
+    &:before { margin-right: 5px; }
+  }
+
+  .logout a { @include icon('before', false, 'exit'); }
+  .settings a { @include icon('before', false, 'cog'); }
+}
+
 aside {
   @include span-columns(4);
-  @include omega();
   padding: 0 1em;
   border-left: 1px solid $boxBorderColor;
 }
@@ -108,13 +135,11 @@ aside {
   @include media($mobile) {
     @include span-columns(6);
   }
-  @include omega();
   padding: 0 10px;
 }
 
 .message-container {
   @include span-columns(12);
-  @include omega();
   @include fade-in(2s);
   margin: 10px 0;
 

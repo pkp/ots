@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-04 11:20-1000\n"
-"PO-Revision-Date: 2013-10-04 11:20-1000\n"
+"POT-Creation-Date: 2013-10-04 13:34-1000\n"
+"PO-Revision-Date: 2013-10-04 13:34-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -50,7 +50,7 @@ msgid "user.registrationForm.passwordConfirm"
 msgstr "Confirm Password"
 
 #: ../../User/src/User/Form/RegistrationForm.php:65
-#: ../../User/view/user/user/index.phtml:27
+#: ../../User/view/user/user/index.phtml:25
 msgid "user.registrationForm.register"
 msgstr "Register"
 
@@ -79,19 +79,29 @@ msgstr "User %s registered successfully"
 msgid "application.generic.siteTitle"
 msgstr "PKP XML Parsing Service"
 
-#: ../view/layout/layout.phtml:25
-#: ../../Application/view/layout/layout.phtml:25
+#: ../view/layout/layout.phtml:26
+#: ../../Application/view/layout/layout.phtml:26
+msgid "application.layout.logout"
+msgstr "Logout"
+
+#: ../view/layout/layout.phtml:27
+#: ../../Application/view/layout/layout.phtml:27
+msgid "application.layout.settings"
+msgstr "Settings"
+
+#: ../view/layout/layout.phtml:32
+#: ../../Application/view/layout/layout.phtml:32
 msgid "application.layout.subHeading"
 msgstr ""
 "PDF, DOC, DOCX or ODT to XML (%sNML-XML 3.0 compatible%s) document conversion"
 
-#: ../view/layout/layout.phtml:42
-#: ../../Application/view/layout/layout.phtml:42
+#: ../view/layout/layout.phtml:51
+#: ../../Application/view/layout/layout.phtml:51
 msgid "application.layout.contact"
 msgstr "Contact"
 
-#: ../view/layout/layout.phtml:43
-#: ../../Application/view/layout/layout.phtml:43
+#: ../view/layout/layout.phtml:52
+#: ../../Application/view/layout/layout.phtml:52
 msgid "application.layout.copyright"
 msgstr "Public Knowledge Project"
 

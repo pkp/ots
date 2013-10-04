@@ -126,7 +126,6 @@ header {
   float: left;
   margin-right: 2.12766%;
   width: 100%;
-  margin-right: 0;
   background: #0068cc url("/img/logo.png") no-repeat 10px 5px;
   height: 95px; }
   header:last-child {
@@ -164,7 +163,6 @@ footer {
   float: left;
   margin-right: 2.12766%;
   width: 100%;
-  margin-right: 0;
   padding: 10px;
   background-color: #0068cc;
   color: white;
@@ -184,7 +182,56 @@ footer {
     @media screen and (max-width: 480px) {
       footer span {
         display: block; } }
-    footer span:before {
+    footer span a {
+      text-decoration: none;
+      color: white; }
+      footer span a:before {
+        speak: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-transform: none;
+        line-height: 1;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        font-family: 'Icons'; }
+      footer span a:before {
+        margin-right: 0.5em; }
+  footer .copyright a:before {
+    content: '\00a9'; }
+  footer .contact a:before {
+    content: "\e161"; }
+
+nav {
+  display: block;
+  float: left;
+  margin-right: 2.12766%;
+  width: 100%;
+  background-color: black;
+  text-align: right;
+  padding: 5px 10px; }
+  nav:last-child {
+    margin-right: 0; }
+  @media screen and (max-width: 480px) {
+    nav {
+      display: block;
+      float: left;
+      margin-right: 4.34783%;
+      width: 100%; }
+      nav:last-child {
+        margin-right: 0; } }
+  nav ul {
+    margin: 0; }
+  nav li {
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    margin-left: 10px; }
+  nav a {
+    text-decoration: none;
+    color: white;
+    font-family: Oswald, Sans-Serif; }
+    nav a:before {
       speak: none;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -194,22 +241,18 @@ footer {
       font-variant: normal;
       font-weight: normal;
       font-family: 'Icons'; }
-    footer span:before {
-      margin-right: 0.5em; }
-    footer span a {
-      text-decoration: none;
-      color: white; }
-  footer .copyright:before {
-    content: '\00a9'; }
-  footer .contact:before {
-    content: "\e161"; }
+    nav a:before {
+      margin-right: 5px; }
+  nav .logout a:before {
+    content: "\e104"; }
+  nav .settings a:before {
+    content: "\e08e"; }
 
 aside {
   display: block;
   float: left;
   margin-right: 2.12766%;
   width: 31.91489%;
-  margin-right: 0;
   padding: 0 1em;
   border-left: 1px solid #67a7e6; }
   aside:last-child {
@@ -220,7 +263,6 @@ aside {
   float: left;
   margin-right: 2.12766%;
   width: 100%;
-  margin-right: 0;
   padding: 0 10px; }
   .content:last-child {
     margin-right: 0; }
@@ -238,7 +280,6 @@ aside {
   float: left;
   margin-right: 2.12766%;
   width: 100%;
-  margin-right: 0;
   animation: fadein 2s;
   -moz-animation: fadein 2s;
   /* Firefox */
