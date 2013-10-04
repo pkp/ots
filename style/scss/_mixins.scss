@@ -2,8 +2,12 @@
 @mixin button {
   background-color: $buttonColor;
   border: 1px solid $buttonBorderColor;
+  padding: 4px 35px;
+  border-radius: 2px;
+  color: $textColorLight;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 4px 20px;
 }
 
 // Fade in transition

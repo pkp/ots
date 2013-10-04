@@ -13,15 +13,40 @@
 /*******************************
  * Site Styles
  *******************************/
+html {
+  min-height: 100%;
+  position: relative;
+}
+
 body {
-  margin: 0; padding: 0;
-  font-family: 'Istok Web', sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Georgia';
+  background-color: $backgroundColorDark;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Oswald', sans-serif;
+}
+
+ul {
+  list-style: none;
+  li { margin-bottom: 5px; }
+  li:before {
+    content: '\25FE';
+    margin-right: 0.8em;
+    color: $primaryColor1;
+  }
 }
 
 header {
   background: url('/img/logo.png');
+  background-repeat: no-repeat;
+  background-color: $primaryColor1;
+  background-position: 10px 5px;
   width: 889px;
-  height: 122px;
+  height: 95px;
   margin: 0 5px;
 
   span {
@@ -29,23 +54,34 @@ header {
     a { color: $textColorLight; }
     font-size: em(14);
     float: left;
-    margin-top: 85px;
-    margin-left: 180px;
+    margin-top: 65px;
+    margin-left: 167px;
   }
 }
 
 .container {
   @include outer-container;
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  z-index: -1;
+
   background-color: $backgroundColorLight;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
 }
 
 aside {
   @include span-columns(4);
   @include omega();
-  border-left: 1px dashed $backgroundColorDark;
   padding: 0 1em;
+  border-left: 1px solid $boxBorderColor;
+  position: absolute;
+  right: 0;
+  top: 95px;
+  bottom: 0;
 }
 
 .content {
@@ -75,10 +111,13 @@ aside {
   margin-top: 20px;
   margin-bottom: 30px;
   position: relative;
-  border: 1px solid $boxBorderColor;
   background-color: $boxBackgroundColor;
+  border: 1px solid $boxBorderColor;
   padding: 10px;
   z-index: 0;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-top-right-radius: 2px;
 
   label {
     position: absolute;
@@ -89,9 +128,12 @@ aside {
     background-color: $boxBackgroundColor;
     border: 1px solid $boxBorderColor;
     border-bottom: none;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
     z-index: 1;
     padding: 5px 20px 0 20px;
     text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
     font-weight: bold;
   }
 }
@@ -103,10 +145,9 @@ aside {
   @include span-columns(8);
   padding: 1em 0 1em 1em;
 
-  aside {
-    ul { padding-left: 20px; }
-    h4 { margin-top: 0; }
-  }
+}
+ .front-page + aside {
+  ul { padding-left: 5px; }
 }
 
 

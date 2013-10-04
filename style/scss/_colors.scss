@@ -19,8 +19,8 @@ $secondaryColor24: #FF7E40;
 $secondaryColor25: #FFA073;
 
 // Page
-$backgroundColorLight: change-color($primaryColor5, $lightness: 95%);
-$backgroundColorDark: $primaryColor1;
+$backgroundColorLight: #FFF;
+$backgroundColorDark: #EEE;
 
 // Notifications
 $successColor: $primaryColor5;
@@ -32,8 +32,8 @@ $textColorLight: #FFF;
 $textColorDark: #000;
 
 // Box
-$boxBorderColor: #000;
-$boxBackgroundColor: #FFF;
+$boxBackgroundColor: $backgroundColorDark;
+$boxBorderColor: $primaryColor5;
 
 // Form
 $buttonColor: $secondaryColor24;
