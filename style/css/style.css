@@ -57,7 +57,8 @@ input {
   padding: 5px 10px;
   display: block;
   margin-bottom: 5px;
-  border: 1px solid #67a7e6; }
+  border: 1px solid #67a7e6;
+  font-family: 'Georgia'; }
 
 .input-error {
   border: 1px solid #ffa073; }
