@@ -38,6 +38,10 @@
         ?>
         <?php echo $this->content; ?>
       </div>
+      <footer>
+        <span class="contact"><a href="mailto:axfelix@gmail.com"><?php echo $this->translate('application.layout.contact'); ?></a></span>
+        <span class="copyright"><a href="http://pkp.sfu.ca"><?php echo $this->translate('application.layout.copyright'); ?></a> <?php echo date('Y'); ?></span>
+      </footer>
     </div>
     <?php echo $this->inlineScript() ?>
   </body>

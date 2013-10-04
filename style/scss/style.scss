@@ -14,31 +14,32 @@
 /*******************************
  * Site Styles
  *******************************/
-html {
-  min-height: 100%;
-  position: relative;
-}
-
 body {
-  height: 100%;
   margin: 0;
   padding: 0;
   font-family: $pageFont;
   background-color: $backgroundColorDark;
+  font-size: em(14);
+  line-height: em(24);
 }
 
 h1, h2, h3, h4 {
   font-family: $highlightFont;
 }
 
+.container {
+  @include outer-container;
+  background-color: $backgroundColorLight;
+}
+
 header {
+  @include span-columns(12);
+  @include omega();
   background: url('/img/logo.png');
   background-repeat: no-repeat;
   background-color: $primaryColor1;
   background-position: 10px 5px;
-  width: 889px;
   height: 95px;
-  margin: 0 5px;
 
   span {
     color: $textColorLight;
@@ -50,9 +51,30 @@ header {
   }
 }
 
-.container {
-  @include outer-container;
-  background-color: $backgroundColorLight;
+footer {
+  @include span-columns(12);
+  @include omega();
+  padding: 10px;
+  background-color: $primaryColor1;
+  color: $textColorLight;
+  text-align: right;
+  span {
+    margin-left: 0.5em;
+    @include icon('before', true);
+    &:before { margin-right: 0.5em; }
+    a {
+      text-decoration: none;
+      color: $textColorLight;
+    }
+  }
+  .copyright {
+    @include icon('before', false);
+    &:before { content: '\00a9'; }
+  }
+
+  .contact {
+    @include icon('before', false, 'mail-3');
+  }
 }
 
 aside {
@@ -63,8 +85,8 @@ aside {
 }
 
 .content {
-  font-size: em(14);
-  line-height: em(24);
+  @include span-columns(12);
+  @include omega();
 }
 
 .message-container {
