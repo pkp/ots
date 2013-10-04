@@ -6,7 +6,6 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'User',
-        'ZendDeveloperTools',
     ),
 
     // These are various options for the listeners attached to the ModuleManager

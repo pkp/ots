@@ -1,6 +1,9 @@
 <?php
 
 return array(
+    'modules' => array(
+        'ZendDeveloperTools',
+    ),
     'doctrine' => array(
         'connection' => array(
             'orm_default' => array(
