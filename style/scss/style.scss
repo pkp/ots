@@ -126,36 +126,7 @@ aside {
 .message-container.info ul { background-color: $infoColor; }
 .message-container.error ul { background-color: $errorColor; }
 
-.box {
-  margin-top: 20px;
-  margin-bottom: 30px;
-  position: relative;
-  background-color: $boxBackgroundColor;
-  border: 1px solid $boxBorderColor;
-  padding: 10px;
-  z-index: 0;
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
-  border-top-right-radius: 2px;
-
-  label {
-    position: absolute;
-    top: -20px;
-    left: -1px;
-    display: block;
-    height: 20px;
-    background-color: $boxBackgroundColor;
-    border: 1px solid $boxBorderColor;
-    border-bottom: none;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
-    z-index: 1;
-    padding: 5px 20px 0 20px;
-    text-transform: uppercase;
-    font-family: $highlightFont;
-    font-weight: bold;
-  }
-}
+.box { @include box; }
 
 /*******************************
  * Page Styles
