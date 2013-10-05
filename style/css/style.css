@@ -298,8 +298,9 @@ aside {
   /* Safari and Chrome */
   -o-animation: fadein 2s;
   /* Opera */
-  margin: 10px 0;
-  font-family: Oswald, Sans-Serif; }
+  margin: 10px 0 20px 0;
+  font-family: Oswald, Sans-Serif;
+  position: relative; }
   .message-container:last-child {
     margin-right: 0; }
   .message-container ul {
@@ -322,21 +323,36 @@ aside {
       font-family: 'Icons'; }
   .message-container li:before {
     margin-right: 0.5em; }
+  .message-container .triangle {
+    position: absolute;
+    left: 5%;
+    bottom: 0;
+    margin-bottom: -30px;
+    border: 15px solid black;
+    width: 0px;
+    height: 0px;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent; }
 
 .message-container.success li {
   background-color: #3991e6; }
   .message-container.success li:before {
     content: "\e0fb"; }
 
-.message-container.info li {
-  background-color: #ffd240; }
-  .message-container.info li:before {
-    content: "\e0f7"; }
-
 .message-container.error li {
   background-color: #ff7e40; }
   .message-container.error li:before {
     content: "\e0f5"; }
+
+.message-container.success .triangle {
+  border-top-color: #3991e6; }
+
+.message-container.info .triangle {
+  border-top-color: #ffd240; }
+
+.message-container.error .triangle {
+  border-top-color: #ff7e40; }
 
 .box {
   margin-top: 20px;

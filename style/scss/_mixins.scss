@@ -72,3 +72,14 @@
     }
   }
 }
+
+// CSS triangle
+@mixin triangle($size, $color: #000, $top: true, $right: false, $bottom: false, $left: false) {
+  border: $size solid $color;
+  width: 0px;
+  height: 0px;
+  @if $top != true { border-top-color: transparent; }
+  @if $right != true { border-right-color: transparent; }
+  @if $bottom != true { border-bottom-color: transparent; }
+  @if $left != true { border-left-color: transparent; }
+}

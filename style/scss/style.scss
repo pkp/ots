@@ -139,8 +139,9 @@ aside {
 .message-container {
   @include span-columns(12);
   @include fade-in(2s);
-  margin: 10px 0;
+  margin: 10px 0 20px 0;
   font-family: $highlightFont;
+  position: relative;
 
   ul {
     margin: 0;
@@ -156,19 +157,27 @@ aside {
   li:before {
     margin-right: 0.5em;
   }
+
+  .triangle {
+    position: absolute;
+    left: 5%;
+    bottom: 0;
+    margin-bottom: -30px;
+    @include triangle(15px);
+  }
+
 }
 .message-container.success li {
   background-color: $successColor;
   @include icon('before', false, 'checkmark-circle');
 }
-.message-container.info li {
-  background-color: $infoColor;
-  @include icon('before', false, 'info');
-}
 .message-container.error li {
   background-color: $errorColor;
   @include icon('before', false, 'notification');
 }
+.message-container.success .triangle { border-top-color: $successColor; }
+.message-container.info .triangle { border-top-color: $infoColor; }
+.message-container.error .triangle { border-top-color: $errorColor; }
 
 .box { @include box; }
 
