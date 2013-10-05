@@ -205,7 +205,7 @@ aside {
     @include media($desktop) {
       .box-container.first { padding-left: $gutter; }
     }
-    .box { min-height: 160px; }
+    .box { min-height: 166px; }
     input { @include fill-parent; }
     input[type="submit"] {
       width: auto;
