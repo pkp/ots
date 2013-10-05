@@ -161,10 +161,9 @@ header {
       height: 50px; } }
   header span {
     color: white;
-    font-size: 0.875em;
     float: left;
-    margin-top: 65px;
-    margin-left: 167px; }
+    margin-top: 55px;
+    margin-left: 165px; }
     @media screen and (max-width: 960px) {
       header span {
         display: none; } }
@@ -411,7 +410,8 @@ aside {
   .front-page .authenticate input {
     width: 100%; }
   .front-page .authenticate input[type="submit"] {
-    width: auto; }
+    width: auto;
+    margin-left: -1px; }
 
 @media screen and (max-width: 480px) {
   .front-page + aside {

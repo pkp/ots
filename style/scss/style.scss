@@ -56,10 +56,9 @@ header {
     }
     color: $textColorLight;
     a { color: $textColorLight; }
-    font-size: em(14);
     float: left;
-    margin-top: 65px;
-    margin-left: 167px;
+    margin-top: 55px;
+    margin-left: 165px;
   }
 }
 
@@ -195,8 +194,11 @@ aside {
       .box-container.first { padding-left: $gutter; }
     }
     .box { min-height: 160px; }
-    input { width: 100%; }
-    input[type="submit"] { width: auto; }
+    input { @include fill-parent; }
+    input[type="submit"] {
+      width: auto;
+      margin-left: -1px;
+    }
   }
 
 }
