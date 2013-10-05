@@ -18,10 +18,15 @@ input {
 .input-error + ul {
   list-style: none;
   padding-left: 3px;
+  margin: 5px 0 15px 0;
 
+  li {
+    @include icon('before', true, 'pushpin');
+    font-family: $highlightFont;
+    font-size: 12px;
+  }
   li:before {
-    content: '\0021\0021\0021';
-    margin-right: 10px;
     color: $errorColor;
+    margin-right: 0.5em;
   }
 }

@@ -89,11 +89,25 @@ input {
 
 .input-error + ul {
   list-style: none;
-  padding-left: 3px; }
+  padding-left: 3px;
+  margin: 5px 0 15px 0; }
+  .input-error + ul li {
+    font-family: Oswald, Sans-Serif;
+    font-size: 12px; }
+    .input-error + ul li:before {
+      content: "\e041";
+      speak: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-transform: none;
+      line-height: 1;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: normal;
+      font-family: 'Icons'; }
   .input-error + ul li:before {
-    content: '\0021\0021\0021';
-    margin-right: 10px;
-    color: #ff7e40; }
+    color: #ff7e40;
+    margin-right: 0.5em; }
 
 /*******************************
  * Site Styles
