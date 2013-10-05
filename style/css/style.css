@@ -86,7 +86,7 @@ input {
   font-family: Inika, Georgia, Serif; }
 
 .input-error {
-  border: 1px solid #ff7e40; }
+  border: 1px solid #ff9700; }
 
 .input-error + ul {
   list-style: none;
@@ -106,7 +106,7 @@ input {
       font-weight: normal;
       font-family: 'Icons'; }
   .input-error + ul li:before {
-    color: #ff7e40;
+    color: #ff9700;
     margin-right: 0.5em; }
 
 /*******************************
@@ -267,7 +267,7 @@ aside {
   margin-right: 1.05263%;
   width: 32.63158%;
   padding: 0 1em;
-  background-color: #ffde73; }
+  background-color: #ffb140; }
   aside:last-child {
     margin-right: 0; }
 
@@ -337,26 +337,26 @@ aside {
     border-left-color: transparent; }
 
 .message-container.success li {
-  background-color: #3991e6; }
+  background-color: #00d273; }
   .message-container.success li:before {
     content: "\e0fb"; }
 
 .message-container.info li {
-  background-color: #ffd240; }
+  background-color: #67a7e6; }
 
 .message-container.error li {
-  background-color: #ff7e40; }
+  background-color: #ff9700; }
   .message-container.error li:before {
     content: "\e0f5"; }
 
 .message-container.success .triangle {
-  border-top-color: #3991e6; }
+  border-top-color: #00d273; }
 
 .message-container.info .triangle {
-  border-top-color: #ffd240; }
+  border-top-color: #67a7e6; }
 
 .message-container.error .triangle {
-  border-top-color: #ff7e40; }
+  border-top-color: #ff9700; }
 
 .box {
   margin-top: 20px;

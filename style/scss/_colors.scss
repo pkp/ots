@@ -1,31 +1,37 @@
 // Color schema
-// http://colorschemedesigner.com/#3.31T--ILw0w0
+// http://colorschemedesigner.com/#3.61X--ILw0w0
 $primaryColor1: #0068CC;
 $primaryColor2: #266199;
 $primaryColor3: #004385;
 $primaryColor4: #3991E6;
 $primaryColor5: #67A7E6;
 
-$secondaryColor11: #FFC300;
-$secondaryColor12: #BF9E30;
-$secondaryColor13: #A67F00;
-$secondaryColor14: #FFD240;
-$secondaryColor15: #FFDE73;
+$secondaryColor11: #1A00D3;
+$secondaryColor12: #36279E;
+$secondaryColor13: #110089;
+$secondaryColor14: #503AE9;
+$secondaryColor15: #7869E9;
 
-$secondaryColor21: #FF5300;
-$secondaryColor22: #BF5E30;
-$secondaryColor23: #A63600;
-$secondaryColor24: #FF7E40;
-$secondaryColor25: #FFA073;
+$secondaryColor21: #00D273;
+$secondaryColor22: #279E68;
+$secondaryColor23: #00894A;
+$secondaryColor24: #3AE999;
+$secondaryColor25: #69E9AE;
+
+$complementaryColor1: #FF9700;
+$complementaryColor2: #BF8530;
+$complementaryColor3: #A66200;
+$complementaryColor4: #FFB140;
+$complementaryColor5: #FFC673;
 
 // Page
 $backgroundColorLight: #FFF;
 $backgroundColorDark: #EEE;
 
 // Notifications
-$successColor: $primaryColor4;
-$infoColor: $secondaryColor14;
-$errorColor: $secondaryColor24;
+$successColor: $secondaryColor21;
+$infoColor: $primaryColor5;
+$errorColor: $complementaryColor1;
 
 // Nav
 $navColor: #000;
