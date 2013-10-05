@@ -306,7 +306,6 @@ aside {
 
 .box {
   margin-top: 20px;
-  margin-bottom: 30px;
   position: relative;
   background-color: #eeeeee;
   border: 1px solid #67a7e6;
@@ -366,8 +365,12 @@ aside {
         width: 100%; }
         .front-page .authenticate .box-container:last-child {
           margin-right: 0; } }
-  .front-page .authenticate .box-container.first {
-    padding-left: 10px; }
+    @media screen and (max-width: 480px) {
+      .front-page .authenticate .box-container {
+        padding: 10px; } }
+  @media screen and (min-width: 960px) {
+    .front-page .authenticate .box-container.first {
+      padding-left: 10px; } }
   .front-page .authenticate .box {
     min-height: 160px; }
   .front-page .authenticate input {
@@ -377,7 +380,12 @@ aside {
 
 @media screen and (max-width: 480px) {
   .front-page + aside {
-    display: none; } }
+    display: block;
+    float: left;
+    margin-right: 2.12766%;
+    width: 100%; }
+    .front-page + aside:last-child {
+      margin-right: 0; } }
 .front-page + aside ul {
   list-style: none; }
   .front-page + aside ul li {

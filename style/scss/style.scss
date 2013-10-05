@@ -171,8 +171,11 @@ aside {
       @include media($mobile) {
         @include span-columns(6 of 6);
       }
+      @include media($mobile) { padding: $gutter; }
     }
-    .box-container.first { padding-left: $gutter; }
+    @include media($desktop) {
+      .box-container.first { padding-left: $gutter; }
+    }
     .box { min-height: 160px; }
     input { width: 100%; }
     input[type="submit"] { width: auto; }
@@ -181,7 +184,7 @@ aside {
 }
 .front-page + aside {
   @include media($mobile) {
-    display: none;
+    @include span-columns(6 of 6);
   }
 
   @include custom-list;
