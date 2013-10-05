@@ -123,6 +123,26 @@ class UserControllerTest extends AbstractHttpControllerTestCase
     }
 
     /**
+     * Test if a logout attempt is processed correctly
+     *
+     * @return void
+     */
+    public function testLogoutAction()
+    {
+        // Log the testuser in
+        $postData = array(
+            'email' => $this->testUserEmail,
+            'password' => $this->testUserPassword,
+        );
+        $this->dispatch('/user/login', 'POST', $postData);
+        $this->assertResponseStatusCode(302);
+
+        // Log the user out
+        $this->dispatch('/user/logout');
+        $this->assertResponseStatusCode(302);
+    }
+
+    /**
      * Test if a register attempt is processed correctly
      *
      * @return void

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-04 13:34-1000\n"
-"PO-Revision-Date: 2013-10-04 13:34-1000\n"
+"POT-Creation-Date: 2013-10-04 16:08-1000\n"
+"PO-Revision-Date: 2013-10-04 16:09-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -25,7 +25,7 @@ msgid "user.loginForm.password"
 msgstr "Password"
 
 #: ../../User/src/User/Form/LoginForm.php:53
-#: ../../User/view/user/user/index.phtml:20
+#: ../../User/view/user/user/index.phtml:21
 msgid "user.loginForm.login"
 msgstr "Login"
 
@@ -50,7 +50,7 @@ msgid "user.registrationForm.passwordConfirm"
 msgstr "Confirm Password"
 
 #: ../../User/src/User/Form/RegistrationForm.php:65
-#: ../../User/view/user/user/index.phtml:25
+#: ../../User/view/user/user/index.phtml:28
 msgid "user.registrationForm.register"
 msgstr "Register"
 
@@ -66,11 +66,19 @@ msgstr "Successful login by %s"
 msgid "user.authentication.invalidLoginCredentials"
 msgstr "The login credentials you provided are invalid. Please try again."
 
-#: ../../User/src/User/Controller/UserController.php:169
+#: ../../User/src/User/Controller/UserController.php:155
+msgid "user.authentication.sucessfulLogoutThanks"
+msgstr "Thanks for visiting."
+
+#: ../../User/src/User/Controller/UserController.php:162
+msgid "user.authentication.sucessfulLogout"
+msgstr "Successful logout by %s"
+
+#: ../../User/src/User/Controller/UserController.php:202
 msgid "user.registration.sucessfulRegistrationThanks"
 msgstr "Your registration was successful. Thank you."
 
-#: ../../User/src/User/Controller/UserController.php:176
+#: ../../User/src/User/Controller/UserController.php:209
 msgid "user.registration.sucessfulRegistration"
 msgstr "User %s registered successfully"
 
@@ -79,29 +87,29 @@ msgstr "User %s registered successfully"
 msgid "application.generic.siteTitle"
 msgstr "PKP XML Parsing Service"
 
-#: ../view/layout/layout.phtml:26
-#: ../../Application/view/layout/layout.phtml:26
-msgid "application.layout.logout"
-msgstr "Logout"
-
 #: ../view/layout/layout.phtml:27
 #: ../../Application/view/layout/layout.phtml:27
 msgid "application.layout.settings"
 msgstr "Settings"
 
-#: ../view/layout/layout.phtml:32
-#: ../../Application/view/layout/layout.phtml:32
+#: ../view/layout/layout.phtml:28
+#: ../../Application/view/layout/layout.phtml:28
+msgid "application.layout.logout"
+msgstr "Logout"
+
+#: ../view/layout/layout.phtml:34
+#: ../../Application/view/layout/layout.phtml:34
 msgid "application.layout.subHeading"
 msgstr ""
 "PDF, DOC, DOCX or ODT to XML (%sNML-XML 3.0 compatible%s) document conversion"
 
-#: ../view/layout/layout.phtml:51
-#: ../../Application/view/layout/layout.phtml:51
+#: ../view/layout/layout.phtml:53
+#: ../../Application/view/layout/layout.phtml:53
 msgid "application.layout.contact"
 msgstr "Contact"
 
-#: ../view/layout/layout.phtml:52
-#: ../../Application/view/layout/layout.phtml:52
+#: ../view/layout/layout.phtml:54
+#: ../../Application/view/layout/layout.phtml:54
 msgid "application.layout.copyright"
 msgstr "Public Knowledge Project"
 

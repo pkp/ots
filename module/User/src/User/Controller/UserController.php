@@ -99,7 +99,7 @@ class UserController extends AbstractActionController {
                     $flashMessenger->setNamespace('success');
                     $flashMessenger->addMessage(
                         $this->translator->translate(
-                                'user.authentication.sucessfulLoginThanks'
+                            'user.authentication.sucessfulLoginThanks'
                         )
                     );
 
@@ -133,6 +133,39 @@ class UserController extends AbstractActionController {
         $viewModel->setTemplate('user/user/index.phtml');
 
         return $viewModel;
+    }
+
+    /**
+     * Processes logout requests
+     *
+     * @return void
+     */
+    public function logoutAction()
+    {
+        $user = $this->identity();
+        $authService = $this->getServiceLocator()->get(
+            'Zend\Authentication\AuthenticationService'
+        );
+        $authService->clearIdentity();
+
+        $flashMessenger = $this->flashMessenger();
+        $flashMessenger->setNamespace('success');
+        $flashMessenger->addMessage(
+            $this->translator->translate(
+                'user.authentication.sucessfulLogoutThanks'
+            )
+        );
+
+        $this->logger->info(
+            sprintf(
+                $this->translator->translate(
+                    'user.authentication.sucessfulLogout'
+                ),
+                $user->email
+            )
+        );
+
+        return $this->redirect()->toRoute('home');
     }
 
     /**
