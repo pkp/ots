@@ -16,14 +16,18 @@ if (isset($this->registrationForm)) {
 <div class="front-page">
   <?php if (!$user = $this->identity()) : ?>
     <div class="authenticate">
-      <div class="box">
-        <label><?php echo $this->translate('user.loginForm.login') ?></label>
-        <?php echo $loginForm; ?>
-      </div>
+      <div class="box-container first">
+        <div class="box">
+          <label><?php echo $this->translate('user.loginForm.login') ?></label>
+          <?php echo $loginForm; ?>
+        </div>
+     </div>
 
-      <div class="box">
-        <label><?php echo $this->translate('user.registrationForm.register') ?></label>
-        <?php echo $registrationForm; ?>
+      <div class="box-container">
+        <div class="box">
+          <label><?php echo $this->translate('user.registrationForm.register') ?></label>
+          <?php echo $registrationForm; ?>
+        </div>
       </div>
     </div>
   <?php endif ?>

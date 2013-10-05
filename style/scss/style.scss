@@ -135,7 +135,6 @@ aside {
   @include media($mobile) {
     @include span-columns(6);
   }
-  padding: 0 10px;
 }
 
 .message-container {
@@ -167,13 +166,14 @@ aside {
   padding: 10px 0;
 
   .authenticate {
-    .box {
-      min-height: 156px;
+    .box-container {
       @include span-columns(4 of 8);
       @include media($mobile) {
         @include span-columns(6 of 6);
       }
     }
+    .box-container.first { padding-left: $gutter; }
+    .box { min-height: 160px; }
     input { width: 100%; }
     input[type="submit"] { width: auto; }
   }
