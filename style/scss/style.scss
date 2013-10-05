@@ -67,7 +67,7 @@ footer {
   @include media($mobile) {
     @include span-columns(6);
   }
-  padding: 10px;
+  padding: $gutter;
   background-color: $primaryColor1;
   color: $textColorLight;
   text-align: right;
@@ -101,14 +101,14 @@ nav {
 
   background-color: $navColor;
   text-align: right;
-  padding: 5px 10px;
+  padding: 5px $gutter;
 
   ul { margin: 0; }
   li {
     list-style: none;
     display: inline-block;
     margin: 0;
-    margin-left: 10px;
+    margin-left: $gutter;
   }
 
   a {
@@ -116,7 +116,7 @@ nav {
     color: $textColorLight;
     font-family: $highlightFont;
     @include icon('before', true);
-    &:before { margin-right: 5px; }
+    &:before { margin-right: 0.5em; }
   }
 
   .logout a { @include icon('before', false, 'exit'); }
@@ -125,7 +125,7 @@ nav {
 
 aside {
   @include span-columns(4);
-  padding: 0 1em;
+  padding: 0 $gutter;
   background-color: $complementaryColor4;
 }
 
@@ -139,7 +139,7 @@ aside {
 .message-container {
   @include span-columns(12);
   @include fade-in(2s);
-  margin: 10px 0 20px 0;
+  margin: $gutter 0;
   font-family: $highlightFont;
   position: relative;
 
@@ -149,9 +149,9 @@ aside {
   }
   li {
     @include icon('before', true);
-    padding: 10px;
+    padding: $gutter;
     list-style: none;
-    padding-left: 20px;
+    padding-left: 2 * $gutter;
     margin: 0;
   }
   li:before {
@@ -162,8 +162,8 @@ aside {
     position: absolute;
     left: 5%;
     bottom: 0;
-    margin-bottom: -30px;
-    @include triangle(15px);
+    margin-bottom: -2 * $gutter;
+    @include triangle(10px);
   }
 
 }
@@ -192,7 +192,7 @@ aside {
   @include media($mobile) {
     @include span-columns(6);
   }
-  padding: 10px 0;
+  padding: $gutter 0;
 
   .authenticate {
     .box-container {
@@ -220,7 +220,7 @@ aside {
   }
 
   @include custom-list;
-  ul { padding-left: 5px; }
+  ul { padding-left: $gutter; }
 }
 
 

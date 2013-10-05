@@ -12,10 +12,10 @@
 
 // Box
 @mixin box {
-  margin-top: 20px;
+  margin-top: 2 * $gutter;
   position: relative;
   background-color: $boxBackgroundColor;
-  padding: 10px;
+  padding: $gutter;
   z-index: 0;
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
@@ -61,7 +61,7 @@
   ul {
     list-style: none;
     li {
-      margin-bottom: 5px;
+      margin-bottom: $gutter;
       @include icon('before', true, 'forward');
     }
     li:before {

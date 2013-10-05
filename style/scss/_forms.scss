@@ -1,12 +1,12 @@
 input[type="submit"] {
   @include button;
-  margin-top: 10px;
+  margin-top: $gutter;
 }
 
 input {
-  padding: 8px 10px;
+  padding: 0.8 * $gutter $gutter;
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: $gutter;
   border: none;
   font-family: $pageFont;
 }
@@ -19,14 +19,13 @@ input {
 .input-error + ul {
   list-style: none;
   padding-left: 3px;
-  margin: 5px 0 15px 0;
+  margin: $gutter / 2 0 $gutter * 2 0;
 
   li {
     @include icon('before', true, 'notification');
     font-family: $highlightFont;
   }
   li:before {
-    color: $errorColor;
     margin-right: 0.5em;
   }
 }
