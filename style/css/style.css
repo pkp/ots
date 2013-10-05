@@ -340,6 +340,9 @@ aside {
   .message-container.success li:before {
     content: "\e0fb"; }
 
+.message-container.info li {
+  background-color: #ffd240; }
+
 .message-container.error li {
   background-color: #ff7e40; }
   .message-container.error li:before {

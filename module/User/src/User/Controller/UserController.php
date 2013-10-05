@@ -96,7 +96,7 @@ class UserController extends AbstractActionController {
                     $this->sessionRegister($user);
 
                     $flashMessenger = $this->flashMessenger();
-                    $flashMessenger->setNamespace('success');
+                    $flashMessenger->setNamespace('info');
                     $flashMessenger->addMessage(
                         $this->translator->translate(
                             'user.authentication.sucessfulLoginThanks'
@@ -149,7 +149,7 @@ class UserController extends AbstractActionController {
         $authService->clearIdentity();
 
         $flashMessenger = $this->flashMessenger();
-        $flashMessenger->setNamespace('success');
+        $flashMessenger->setNamespace('info');
         $flashMessenger->addMessage(
             $this->translator->translate(
                 'user.authentication.sucessfulLogoutThanks'

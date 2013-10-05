@@ -171,6 +171,9 @@ aside {
   background-color: $successColor;
   @include icon('before', false, 'checkmark-circle');
 }
+.message-container.info li {
+  background-color: $infoColor;
+}
 .message-container.error li {
   background-color: $errorColor;
   @include icon('before', false, 'notification');
