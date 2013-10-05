@@ -141,6 +141,7 @@ aside {
   @include span-columns(12);
   @include fade-in(2s);
   margin: 10px 0;
+  font-family: $highlightFont;
 
   ul {
     list-style: none;

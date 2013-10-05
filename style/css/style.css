@@ -300,7 +300,8 @@ aside {
   /* Safari and Chrome */
   -o-animation: fadein 2s;
   /* Opera */
-  margin: 10px 0; }
+  margin: 10px 0;
+  font-family: Oswald, Sans-Serif; }
   .message-container:last-child {
     margin-right: 0; }
   .message-container ul {
