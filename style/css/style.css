@@ -92,10 +92,9 @@ input {
   padding-left: 3px;
   margin: 5px 0 15px 0; }
   .input-error + ul li {
-    font-family: Oswald, Sans-Serif;
-    font-size: 12px; }
+    font-family: Oswald, Sans-Serif; }
     .input-error + ul li:before {
-      content: "\e041";
+      content: "\e0f5";
       speak: none;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -305,19 +304,40 @@ aside {
   .message-container:last-child {
     margin-right: 0; }
   .message-container ul {
-    list-style: none;
+    margin: 0;
+    padding: 0; }
+  .message-container li {
     padding: 10px;
+    list-style: none;
     padding-left: 20px;
     margin: 0; }
+    .message-container li:before {
+      speak: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-transform: none;
+      line-height: 1;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: normal;
+      font-family: 'Icons'; }
+  .message-container li:before {
+    margin-right: 0.5em; }
 
-.message-container.success ul {
+.message-container.success li {
   background-color: #3991e6; }
+  .message-container.success li:before {
+    content: "\e0fb"; }
 
-.message-container.info ul {
+.message-container.info li {
   background-color: #ffd240; }
+  .message-container.info li:before {
+    content: "\e0f7"; }
 
-.message-container.error ul {
+.message-container.error li {
   background-color: #ff7e40; }
+  .message-container.error li:before {
+    content: "\e0f5"; }
 
 .box {
   margin-top: 20px;

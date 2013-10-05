@@ -21,9 +21,8 @@ input {
   margin: 5px 0 15px 0;
 
   li {
-    @include icon('before', true, 'pushpin');
+    @include icon('before', true, 'notification');
     font-family: $highlightFont;
-    font-size: 12px;
   }
   li:before {
     color: $errorColor;

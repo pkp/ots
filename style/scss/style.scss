@@ -144,15 +144,32 @@ aside {
   font-family: $highlightFont;
 
   ul {
-    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    @include icon('before', true);
     padding: 10px;
+    list-style: none;
     padding-left: 20px;
     margin: 0;
   }
+  li:before {
+    margin-right: 0.5em;
+  }
 }
-.message-container.success ul { background-color: $successColor; }
-.message-container.info ul { background-color: $infoColor; }
-.message-container.error ul { background-color: $errorColor; }
+.message-container.success li {
+  background-color: $successColor;
+  @include icon('before', false, 'checkmark-circle');
+}
+.message-container.info li {
+  background-color: $infoColor;
+  @include icon('before', false, 'info');
+}
+.message-container.error li {
+  background-color: $errorColor;
+  @include icon('before', false, 'notification');
+}
 
 .box { @include box; }
 
