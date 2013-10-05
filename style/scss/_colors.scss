@@ -35,9 +35,8 @@ $textColorLight: #FFF;
 $textColorDark: #000;
 
 // Box
-$boxBackgroundColor: $backgroundColorDark;
-$boxBorderColor: $primaryColor5;
+$boxBackgroundColor: $primaryColor5;
 
 // Form
-$buttonColor: $secondaryColor24;
+$buttonColor: $primaryColor2;
 $buttonBorderColor: change-color($secondaryColor24, $lightness: 70%);
