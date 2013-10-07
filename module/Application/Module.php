@@ -46,7 +46,12 @@ class Module
 
             $flashMessenger->setNamespace('default');
             if ($flashMessenger->hasMessages()) {
-                $messages['info'] = $flashMessenger->getMessages();
+                if (isset($messages['info'])) {
+                    $messages['info'] = array_merge($messages['info'], $flashMessenger->getMessages());
+                }
+                else {
+                    $messages['info'] = $flashMessenger->getMessages();
+                }
             }
             $flashMessenger->clearMessages();
 
