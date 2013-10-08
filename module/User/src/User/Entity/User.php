@@ -103,6 +103,16 @@ class User extends DataObject
     }
 
     /**
+     * Sets lastLogin to the current timestamp
+     *
+     * @return void
+     */
+    public function setLastLogin()
+    {
+        $this->lastLogin = time();
+    }
+
+    /**
      * Returns a users password salt. If the salt is not set it will generate it
      *
      * @return string Password salt

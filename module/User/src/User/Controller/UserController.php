@@ -103,6 +103,10 @@ class UserController extends AbstractActionController {
                     // Register the user in the session
                     $this->sessionRegister($user);
 
+                    // Update last login time
+                    $user->setLastLogin();
+                    $this->userDAO->save($user);
+
                     $flashMessenger = $this->flashMessenger();
                     $flashMessenger->setNamespace('info');
                     $flashMessenger->addMessage(
