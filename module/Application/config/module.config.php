@@ -91,4 +91,9 @@ return array(
             ),
         ),
     ),
+    'controller_plugins' => array(
+        'invokables' => array(
+            'ControllerAcl' => 'Xmlps\Controller\Plugin\ControllerAcl',
+        ),
+    ),
 );

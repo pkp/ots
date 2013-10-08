@@ -26,6 +26,9 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
+        // Attach the ControllerAcl plugin to the event manager
+        $eventManager->attach('route', array($this, 'getAuthorization'), 2);
+
         // Show flashmessages in the view
         $eventManager->attach(MvcEvent::EVENT_RENDER, function($e) {
             $flashMessenger = new FlashMessenger;
@@ -105,5 +108,34 @@ class Module
                 },
             ),
         );
+    }
+
+    /**
+     * Attaches the ControllerAcl plugin to the controller dispatch event
+     *
+     * @param MvcEvent $e
+     * @return void
+     */
+    public function getAuthorization(MvcEvent $e) {
+        $application = $e->getApplication();
+        $sm = $application->getServiceManager();
+        $sharedManager = $application->getEventManager()->getSharedManager();
+
+        $router = $sm->get('router');
+        $request = $sm->get('request');
+
+        $matchedRoute = $router->match($request);
+
+        if ($matchedRoute !== null) {
+            $sharedManager->attach(
+                'Zend\Mvc\Controller\AbstractActionController',
+                'dispatch',
+                function ($e) use ($sm) {
+                    $sm->get('ControllerPluginManager')
+                        ->get('ControllerAcl')
+                        ->authorize($e);
+                }
+            );
+        }
     }
 }

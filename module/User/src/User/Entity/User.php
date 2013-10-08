@@ -56,6 +56,11 @@ class User extends DataObject
     protected $userLevel;
 
     /**
+     * @ORM\Column(type="string", nullable=false)
+     */
+    protected $role;
+
+    /**
      * Sets the registration date timestamp
      *
      * @return void
@@ -80,6 +85,20 @@ class User extends DataObject
     {
         if ($this->userLevel === null) {
             $this->userLevel = USER_USERLEVEL_REGISTERED;
+        }
+    }
+
+    /**
+     * Initializes the role
+     *
+     * @return void
+     *
+     * @ORM\PrePersist
+     */
+    public function setRole()
+    {
+        if ($this->role === null) {
+            $this->role = 'member';
         }
     }
 

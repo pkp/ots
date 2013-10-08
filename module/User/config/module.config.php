@@ -50,4 +50,20 @@ return array(
             ),
         )
     ),
+
+    'acl' => array(
+        'resources' => array(
+            'controller:User\Controller\User:index',
+            'controller:User\Controller\User:login',
+            'controller:User\Controller\User:logout',
+            'controller:User\Controller\User:register',
+        ),
+        'rules' => array(
+            array('allow', 'administrator'),
+            array('allow', 'guest', 'controller:User\Controller\User:index'),
+            array('allow', 'guest', 'controller:User\Controller\User:login'),
+            array('allow', 'guest', 'controller:User\Controller\User:logout'),
+            array('allow', 'guest', 'controller:User\Controller\User:register'),
+        ),
+    )
 );

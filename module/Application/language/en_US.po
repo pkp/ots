@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-04 16:08-1000\n"
-"PO-Revision-Date: 2013-10-04 16:09-1000\n"
+"POT-Creation-Date: 2013-10-07 13:59-1000\n"
+"PO-Revision-Date: 2013-10-07 14:00-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -15,6 +15,7 @@ msgstr ""
 "X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../..\n"
+"X-Poedit-SearchPath-2: ../../../vendor/xmlps\n"
 
 #: ../../User/src/User/Form/LoginForm.php:31
 msgid "user.loginForm.emailAddress"
@@ -81,6 +82,10 @@ msgstr "Your registration was successful. Thank you."
 #: ../../User/src/User/Controller/UserController.php:209
 msgid "user.registration.sucessfulRegistration"
 msgstr "User %s registered successfully"
+
+#: ../../../vendor/xmlps/library/Controller/Plugin/ControllerAcl.php:143
+msgid "application.acl.notAuthorized"
+msgstr "You are not permitted to access the requested resource."
 
 #: ../view/layout/layout.phtml:9 ../../Application/view/layout/layout.phtml:9
 #: ../../User/view/_sideBar.phtml:2
