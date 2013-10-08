@@ -24,6 +24,7 @@
       <?php if ($user = $this->identity()) : ?>
         <nav>
           <ul>
+            <li class="home"><a href="<?php echo $this->url('home')?>"><?php echo $this->translate('application.layout.home'); ?></a></li>
             <li class="settings"><a href="<?php echo $this->url('user', array('action' => 'settings'))?>"><?php echo $this->translate('application.layout.settings'); ?></a></li>
             <li class="logout"><a href="<?php echo $this->url('user', array('action' => 'logout'))?>"><?php echo $this->translate('application.layout.logout'); ?></a></li>
           </ul>

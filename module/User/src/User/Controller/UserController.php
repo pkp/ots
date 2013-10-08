@@ -8,6 +8,8 @@ use User\Form\LoginForm;
 use User\Form\LoginFormInputFilter;
 use User\Form\RegistrationForm;
 use User\Form\RegistrationFormInputFilter;
+use User\Form\PasswordResetForm;
+use User\Form\PasswordResetFormInputFilter;
 use Zend\Mvc\I18n\Translator;
 use Xmlps\Logger\Logger;
 
@@ -19,6 +21,8 @@ class UserController extends AbstractActionController {
     protected $loginFormInputFilter;
     protected $registrationForm;
     protected $registrationFormInputFilter;
+    protected $passwordResetForm;
+    protected $passwordResetFormInputFilter;
 
     /**
      * Constructor
@@ -40,7 +44,9 @@ class UserController extends AbstractActionController {
         LoginForm $loginForm,
         LoginFormInputFilter $loginFormInputFilter,
         RegistrationForm $registrationForm,
-        RegistrationFormInputFilter $registrationFormInputFilter
+        RegistrationFormInputFilter $registrationFormInputFilter,
+        PasswordResetForm $passwordResetForm,
+        PasswordResetFormInputFilter $passwordResetFormInputFilter
     )
     {
         $this->userDAO = $userDAO;
@@ -50,6 +56,8 @@ class UserController extends AbstractActionController {
         $this->loginFormInputFilter = $loginFormInputFilter;
         $this->registrationForm = $registrationForm;
         $this->registrationFormInputFilter = $registrationFormInputFilter;
+        $this->passwordResetForm = $passwordResetForm;
+        $this->passwordResetFormInputFilter = $passwordResetFormInputFilter;
     }
 
     /**
@@ -99,14 +107,14 @@ class UserController extends AbstractActionController {
                     $flashMessenger->setNamespace('info');
                     $flashMessenger->addMessage(
                         $this->translator->translate(
-                            'user.authentication.sucessfulLoginThanks'
+                            'user.authentication.sucessfulLogin'
                         )
                     );
 
                     $this->logger->info(
                         sprintf(
                             $this->translator->translate(
-                                'user.authentication.sucessfulLogin'
+                                'user.authentication.sucessfulLoginLog'
                             ),
                             $user->email
                         )
@@ -152,14 +160,14 @@ class UserController extends AbstractActionController {
         $flashMessenger->setNamespace('info');
         $flashMessenger->addMessage(
             $this->translator->translate(
-                'user.authentication.sucessfulLogoutThanks'
+                'user.authentication.sucessfulLogout'
             )
         );
 
         $this->logger->info(
             sprintf(
                 $this->translator->translate(
-                    'user.authentication.sucessfulLogout'
+                    'user.authentication.sucessfulLogoutLog'
                 ),
                 $user->email
             )
@@ -199,14 +207,14 @@ class UserController extends AbstractActionController {
                 $flashMessenger->setNamespace('success');
                 $flashMessenger->addMessage(
                     $this->translator->translate(
-                        'user.registration.sucessfulRegistrationThanks'
+                        'user.registration.sucessfulRegistration'
                     )
                 );
 
                 $this->logger->info(
                     sprintf(
                         $this->translator->translate(
-                            'user.registration.sucessfulRegistration'
+                            'user.registration.sucessfulRegistrationLog'
                         ),
                         $user->email
                     )
@@ -223,6 +231,55 @@ class UserController extends AbstractActionController {
         $viewModel->setTemplate('user/user/index.phtml');
 
         return $viewModel;
+    }
+
+    /**
+     * Process the settings form
+     *
+     * @return void
+     */
+    public function settingsAction()
+    {
+        // Process settings
+        if ($this->request->isPost()) {
+            $data = $this->request->getPost();
+            $this->passwordResetForm->setInputFilter(
+                $this->passwordResetFormInputFilter->getInputFilter()
+            );
+
+            $this->passwordResetForm->setData($data);
+
+            // Validate form data
+            if ($this->passwordResetForm->isValid()) {
+                // Save the new password
+                $user = $this->identity();
+                $user->password = $data['passwordNew'];
+                $this->userDAO->save($user);
+
+                $flashMessenger = $this->flashMessenger();
+                $flashMessenger->setNamespace('success');
+                $flashMessenger->addMessage(
+                    $this->translator->translate(
+                        'user.settings.saveSuccessConfirm'
+                    )
+                );
+
+                $this->logger->info(
+                    sprintf(
+                        $this->translator->translate(
+                            'user.settings.saveSuccessConfirmLog'
+                        ),
+                        $user->email
+                    )
+                );
+
+                return $this->redirect()->toRoute('home');
+            }
+        }
+
+        return array(
+            'passwordResetForm' => $this->passwordResetForm,
+        );
     }
 
     /**

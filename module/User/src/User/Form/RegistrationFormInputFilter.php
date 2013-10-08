@@ -130,7 +130,7 @@ class RegistrationFormInputFilter implements InputFilterAwareInterface
                         'options' => array(
                             'token' => 'password',
                             'messages' => array(
-                                \Zend\Validator\Identical::NOT_SAME => $this->translator->translate('user.registrationForm.passwordsDontMatch')
+                                \Zend\Validator\Identical::NOT_SAME => $this->translator->translate('user.form.passwordsDontMatch')
                             )
                         ),
                     ),

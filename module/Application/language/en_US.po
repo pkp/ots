@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-07 13:59-1000\n"
-"PO-Revision-Date: 2013-10-07 14:00-1000\n"
+"POT-Creation-Date: 2013-10-07 16:39-1000\n"
+"PO-Revision-Date: 2013-10-07 16:41-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -17,12 +17,36 @@ msgstr ""
 "X-Poedit-SearchPath-1: ../..\n"
 "X-Poedit-SearchPath-2: ../../../vendor/xmlps\n"
 
+#: ../../User/src/User/Form/PasswordResetForm.php:31
+msgid "user.form.passwordCurrent"
+msgstr "Current Password"
+
+#: ../../User/src/User/Form/PasswordResetForm.php:42
+msgid "user.form.newPassword"
+msgstr "New Password"
+
+#: ../../User/src/User/Form/PasswordResetForm.php:53
+#: ../../User/src/User/Form/RegistrationForm.php:53
+msgid "user.form.passwordConfirm"
+msgstr "Confirm Password"
+
+#: ../../User/src/User/Form/PasswordResetForm.php:64
+msgid "user.form.save"
+msgstr "Save"
+
+#: ../../User/src/User/Form/PasswordResetFormInputFilter.php:83
+#: ../../User/src/User/Form/RegistrationFormInputFilter.php:133
+msgid "user.form.passwordsDontMatch"
+msgstr "The provided passwords don't match"
+
 #: ../../User/src/User/Form/LoginForm.php:31
-msgid "user.loginForm.emailAddress"
+#: ../../User/src/User/Form/RegistrationForm.php:31
+msgid "user.form.emailAddress"
 msgstr "Email Address"
 
 #: ../../User/src/User/Form/LoginForm.php:42
-msgid "user.loginForm.password"
+#: ../../User/src/User/Form/RegistrationForm.php:42
+msgid "user.form.password"
 msgstr "Password"
 
 #: ../../User/src/User/Form/LoginForm.php:53
@@ -34,54 +58,46 @@ msgstr "Login"
 msgid "user.registrationForm.userAlreadyExists"
 msgstr "This email address is already registered!"
 
-#: ../../User/src/User/Form/RegistrationFormInputFilter.php:133
-msgid "user.registrationForm.passwordsDontMatch"
-msgstr "The provided passwords don't match"
-
-#: ../../User/src/User/Form/RegistrationForm.php:31
-msgid "user.registrationForm.emailAddress"
-msgstr "Email Address"
-
-#: ../../User/src/User/Form/RegistrationForm.php:42
-msgid "user.registrationForm.password"
-msgstr "Password"
-
-#: ../../User/src/User/Form/RegistrationForm.php:53
-msgid "user.registrationForm.passwordConfirm"
-msgstr "Confirm Password"
-
 #: ../../User/src/User/Form/RegistrationForm.php:65
 #: ../../User/view/user/user/index.phtml:28
 msgid "user.registrationForm.register"
 msgstr "Register"
 
-#: ../../User/src/User/Controller/UserController.php:102
-msgid "user.authentication.sucessfulLoginThanks"
+#: ../../User/src/User/Controller/UserController.php:110
+msgid "user.authentication.sucessfulLogin"
 msgstr "Hi, welcome back!"
 
-#: ../../User/src/User/Controller/UserController.php:109
-msgid "user.authentication.sucessfulLogin"
+#: ../../User/src/User/Controller/UserController.php:117
+msgid "user.authentication.sucessfulLoginLog"
 msgstr "Successful login by %s"
 
-#: ../../User/src/User/Controller/UserController.php:122
+#: ../../User/src/User/Controller/UserController.php:130
 msgid "user.authentication.invalidLoginCredentials"
 msgstr "The login credentials you provided are invalid. Please try again."
 
-#: ../../User/src/User/Controller/UserController.php:155
-msgid "user.authentication.sucessfulLogoutThanks"
+#: ../../User/src/User/Controller/UserController.php:163
+msgid "user.authentication.sucessfulLogout"
 msgstr "Thanks for visiting."
 
-#: ../../User/src/User/Controller/UserController.php:162
-msgid "user.authentication.sucessfulLogout"
+#: ../../User/src/User/Controller/UserController.php:170
+msgid "user.authentication.sucessfulLogoutLog"
 msgstr "Successful logout by %s"
 
-#: ../../User/src/User/Controller/UserController.php:202
-msgid "user.registration.sucessfulRegistrationThanks"
+#: ../../User/src/User/Controller/UserController.php:210
+msgid "user.registration.sucessfulRegistration"
 msgstr "Your registration was successful. Thank you."
 
-#: ../../User/src/User/Controller/UserController.php:209
-msgid "user.registration.sucessfulRegistration"
+#: ../../User/src/User/Controller/UserController.php:217
+msgid "user.registration.sucessfulRegistrationLog"
 msgstr "User %s registered successfully"
+
+#: ../../User/src/User/Controller/UserController.php:263
+msgid "user.settings.saveSuccessConfirm"
+msgstr "Your settings have been updated!"
+
+#: ../../User/src/User/Controller/UserController.php:270
+msgid "user.settings.saveSuccessConfirmLog"
+msgstr "User %s updated settings"
 
 #: ../../../vendor/xmlps/library/Controller/Plugin/ControllerAcl.php:143
 msgid "application.acl.notAuthorized"
@@ -94,27 +110,32 @@ msgstr "PKP XML Parsing Service"
 
 #: ../view/layout/layout.phtml:27
 #: ../../Application/view/layout/layout.phtml:27
-msgid "application.layout.settings"
-msgstr "Settings"
+msgid "application.layout.home"
+msgstr "Home"
 
 #: ../view/layout/layout.phtml:28
 #: ../../Application/view/layout/layout.phtml:28
+msgid "application.layout.settings"
+msgstr "Settings"
+
+#: ../view/layout/layout.phtml:29
+#: ../../Application/view/layout/layout.phtml:29
 msgid "application.layout.logout"
 msgstr "Logout"
 
-#: ../view/layout/layout.phtml:34
-#: ../../Application/view/layout/layout.phtml:34
+#: ../view/layout/layout.phtml:35
+#: ../../Application/view/layout/layout.phtml:35
 msgid "application.layout.subHeading"
 msgstr ""
 "PDF, DOC, DOCX or ODT to XML (%sNML-XML 3.0 compatible%s) document conversion"
 
-#: ../view/layout/layout.phtml:53
-#: ../../Application/view/layout/layout.phtml:53
+#: ../view/layout/layout.phtml:54
+#: ../../Application/view/layout/layout.phtml:54
 msgid "application.layout.contact"
 msgstr "Contact"
 
-#: ../view/layout/layout.phtml:54
-#: ../../Application/view/layout/layout.phtml:54
+#: ../view/layout/layout.phtml:55
+#: ../../Application/view/layout/layout.phtml:55
 msgid "application.layout.copyright"
 msgstr "Public Knowledge Project"
 
@@ -239,6 +260,33 @@ msgid "application.index.sidebarTipsBibliography"
 msgstr ""
 "Any bibliography entries which are not cited in your document are reported "
 "in a warning section at the bottom."
+
+#: ../../User/view/user/user/settings.phtml:2
+msgid "user.settings.title"
+msgstr "Settings"
+
+#: ../../User/view/user/user/settings.phtml:14
+msgid "user.settings.changePassword"
+msgstr "Change Password"
+
+#~ msgid "user.authentication.sucessfulLoginThanks"
+#~ msgstr "Hi, welcome back!"
+
+#~ msgid "user.authentication.sucessfulLogoutThanks"
+#~ msgstr "Thanks for visiting."
+
+#~ msgid "user.registration.sucessfulRegistrationThanks"
+#~ msgstr "Your registration was successful. Thank you."
+
+#, fuzzy
+#~ msgid "user.settings.passwordChangeSuccess"
+#~ msgstr "Change Password"
+
+#~ msgid "user.registrationForm.emailAddress"
+#~ msgstr "Email Address"
+
+#~ msgid "user.registrationForm.password"
+#~ msgstr "Password"
 
 #~ msgid "user.registerForm.register"
 #~ msgstr "Register"

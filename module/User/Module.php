@@ -6,6 +6,8 @@ use User\Form\LoginForm;
 use User\Form\LoginFormInputFilter;
 use User\Form\RegistrationForm;
 use User\Form\RegistrationFormInputFilter;
+use User\Form\PasswordResetForm;
+use User\Form\PasswordResetFormInputFilter;
 use User\Model\DAO\UserDAO;
 
 class Module
@@ -66,6 +68,16 @@ class Module
                 {
                     return new LoginFormInputFilter();
                 },
+                'User\Form\PasswordResetForm' => function($sm)
+                {
+                    $translator = $sm->get('translator');
+                    return new PasswordResetForm($translator);
+                },
+                'User\Form\PasswordResetFormInputFilter' => function($sm)
+                {
+                    $translator = $sm->get('translator');
+                    return new PasswordResetFormInputFilter($translator);
+                },
                 'User\Form\RegistrationForm' => function($sm)
                 {
                     $translator = $sm->get('translator');
@@ -106,6 +118,8 @@ class Module
                     $loginFormInputFilter = $sm->get('User\Form\LoginFormInputFilter');
                     $registrationForm = $sm->get('User\Form\RegistrationForm');
                     $registrationFormInputFilter = $sm->get('User\Form\RegistrationFormInputFilter');
+                    $passwordResetForm = $sm->get('User\Form\PasswordResetForm');
+                    $passwordResetFormInputFilter = $sm->get('User\Form\PasswordResetFormInputFilter');
 
                     return new Controller\UserController(
                         $userDAO,
@@ -114,7 +128,9 @@ class Module
                         $loginForm,
                         $loginFormInputFilter,
                         $registrationForm,
-                        $registrationFormInputFilter
+                        $registrationFormInputFilter,
+                        $passwordResetForm,
+                        $passwordResetFormInputFilter
                     );
                 }
             )

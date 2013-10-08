@@ -5,7 +5,7 @@ namespace User\Form;
 use Zend\Form\Form;
 use Zend\Mvc\I18n\Translator;
 
-class RegistrationForm extends Form
+class PasswordResetForm extends Form
 {
     protected $translator;
 
@@ -18,28 +18,17 @@ class RegistrationForm extends Form
     {
         $this->translator = $translator;
 
-        parent::__construct('register');
+        parent::__construct('passwordReset');
         $this->setAttribute('method', 'post');
-        $this->setAttribute('class', 'register-form');
+        $this->setAttribute('class', 'password-reset-form');
 
-        // Add the email field
+        // Add the new password field
         $this->add(
             array(
-                'name' => 'email',
-                'type' => '\Zend\Form\Element\Email',
-                'attributes' => array(
-                    'placeholder' => $this->translator->translate('user.form.emailAddress')
-                ),
-            )
-        );
-
-        // Add the password field
-        $this->add(
-            array(
-                'name' => 'password',
+                'name' => 'passwordNew',
                 'type' => '\Zend\Form\Element\Password',
                 'attributes' => array(
-                    'placeholder' => $this->translator->translate('user.form.password')
+                    'placeholder' => $this->translator->translate('user.form.newPassword')
                 ),
             )
         );
@@ -55,14 +44,13 @@ class RegistrationForm extends Form
             )
         );
 
-
         // Add the submit button
         $this->add(
             array(
                 'name' => 'submit',
                 'type' => '\Zend\Form\Element\Submit',
                 'attributes' => array(
-                    'value' => $this->translator->translate('user.registrationForm.register'),
+                    'value' => $this->translator->translate('user.form.save'),
                 )
             )
         );

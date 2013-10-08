@@ -28,7 +28,7 @@ class LoginForm extends Form
                 'name' => 'email',
                 'type' => '\Zend\Form\Element\Email',
                 'attributes' => array(
-                    'placeholder' => $this->translator->translate('user.loginForm.emailAddress')
+                    'placeholder' => $this->translator->translate('user.form.emailAddress')
                 ),
             )
         );
@@ -39,7 +39,7 @@ class LoginForm extends Form
                 'name' => 'password',
                 'type' => '\Zend\Form\Element\Password',
                 'attributes' => array(
-                    'placeholder' => $this->translator->translate('user.loginForm.password')
+                    'placeholder' => $this->translator->translate('user.form.password')
                 ),
             )
         );

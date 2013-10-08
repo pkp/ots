@@ -1,0 +1,17 @@
+<?php
+$this->headTitle($this->translate('user.settings.title'));
+
+if (isset($this->passwordResetForm)) {
+  $passwordResetForm->setAttribute('action', $this->url('user', array('action' => 'settings')));
+  $passwordResetForm = $this->passwordResetForm;
+  $passwordResetForm->prepare();
+  $passwordResetForm = $this->form()->render($passwordResetForm);
+}
+?>
+
+<div class="page settings-page">
+  <div class="box">
+    <label><?php echo $this->translate('user.settings.changePassword') ?></label>
+    <?php echo $passwordResetForm; ?>
+  </div>
+</div>

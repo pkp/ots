@@ -121,6 +121,7 @@ nav {
 
   .logout a { @include icon('before', false, 'exit'); }
   .settings a { @include icon('before', false, 'cog'); }
+  .home a { @include icon('before', false, 'home'); }
 }
 
 aside {
@@ -184,14 +185,29 @@ aside {
 
 .box { @include box; }
 
-/*******************************
- * Page Styles
- *******************************/
-.front-page {
+.page {
+  @include span-columns(12);
+  padding: $gutter;
+}
+
+.sidebar-page {
   @include span-columns(8);
   @include media($mobile) {
     @include span-columns(6);
   }
+  padding: $gutter;
+}
+.sidebar-page + aside {
+  @include media($mobile) {
+    @include span-columns(6 of 6);
+  }
+}
+
+/*******************************
+ * Page Styles
+ *******************************/
+// Front page
+.front-page {
   padding: $gutter 0;
 
   .authenticate {
@@ -207,20 +223,20 @@ aside {
     }
     .box { min-height: 191px; }
     input { @include fill-parent; }
-    input[type="submit"] {
-      width: auto;
-      margin-left: -1px;
-    }
   }
-
 }
 .front-page + aside {
-  @include media($mobile) {
-    @include span-columns(6 of 6);
-  }
-
   @include custom-list;
   ul { padding-left: $gutter; }
 }
 
-
+// Settings page
+.settings-page {
+  .box {
+    @include span-columns(6 of 12);
+    @include media($mobile) {
+      @include span-columns(6 of 6);
+    }
+  }
+  input { @include fill-parent; }
+}

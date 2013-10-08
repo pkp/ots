@@ -271,6 +271,8 @@ nav {
     content: "\e104"; }
   nav .settings a:before {
     content: "\e08e"; }
+  nav .home a:before {
+    content: "\e000"; }
 
 aside {
   display: block;
@@ -394,25 +396,46 @@ aside {
     font-family: Oswald, Sans-Serif;
     font-weight: bold; }
 
-/*******************************
- * Page Styles
- *******************************/
-.front-page {
+.page {
+  display: block;
+  float: left;
+  margin-right: 1.05263%;
+  width: 100%;
+  padding: 10px; }
+  .page:last-child {
+    margin-right: 0; }
+
+.sidebar-page {
   display: block;
   float: left;
   margin-right: 1.05263%;
   width: 66.31579%;
-  padding: 10px 0; }
-  .front-page:last-child {
+  padding: 10px; }
+  .sidebar-page:last-child {
     margin-right: 0; }
   @media screen and (max-width: 480px) {
-    .front-page {
+    .sidebar-page {
       display: block;
       float: left;
       margin-right: 2.12766%;
       width: 100%; }
-      .front-page:last-child {
+      .sidebar-page:last-child {
         margin-right: 0; } }
+
+@media screen and (max-width: 480px) {
+  .sidebar-page + aside {
+    display: block;
+    float: left;
+    margin-right: 2.12766%;
+    width: 100%; }
+    .sidebar-page + aside:last-child {
+      margin-right: 0; } }
+
+/*******************************
+ * Page Styles
+ *******************************/
+.front-page {
+  padding: 10px 0; }
   .front-page .authenticate .box-container {
     display: block;
     float: left;
@@ -438,18 +461,7 @@ aside {
     min-height: 191px; }
   .front-page .authenticate input {
     width: 100%; }
-  .front-page .authenticate input[type="submit"] {
-    width: auto;
-    margin-left: -1px; }
 
-@media screen and (max-width: 480px) {
-  .front-page + aside {
-    display: block;
-    float: left;
-    margin-right: 2.12766%;
-    width: 100%; }
-    .front-page + aside:last-child {
-      margin-right: 0; } }
 .front-page + aside ul {
   list-style: none; }
   .front-page + aside ul li {
@@ -470,3 +482,21 @@ aside {
     color: #0068cc; }
 .front-page + aside ul {
   padding-left: 10px; }
+
+.settings-page .box {
+  display: block;
+  float: left;
+  margin-right: 1.05263%;
+  width: 49.47368%; }
+  .settings-page .box:last-child {
+    margin-right: 0; }
+  @media screen and (max-width: 480px) {
+    .settings-page .box {
+      display: block;
+      float: left;
+      margin-right: 2.12766%;
+      width: 100%; }
+      .settings-page .box:last-child {
+        margin-right: 0; } }
+.settings-page input {
+  width: 100%; }

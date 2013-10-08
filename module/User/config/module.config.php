@@ -57,6 +57,7 @@ return array(
             'controller:User\Controller\User:login',
             'controller:User\Controller\User:logout',
             'controller:User\Controller\User:register',
+            'controller:User\Controller\User:settings',
         ),
         'rules' => array(
             array('allow', 'administrator'),
@@ -64,6 +65,7 @@ return array(
             array('allow', 'guest', 'controller:User\Controller\User:login'),
             array('allow', 'guest', 'controller:User\Controller\User:logout'),
             array('allow', 'guest', 'controller:User\Controller\User:register'),
+            array('allow', 'member', 'controller:User\Controller\User:settings'),
         ),
     )
 );
