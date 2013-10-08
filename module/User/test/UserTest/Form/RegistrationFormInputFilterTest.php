@@ -94,7 +94,7 @@ class RegistrationFormInputFilterTest extends ModelTest
 
         // Not empty passwordConfirm
         $testData = $data;
-        $testData['password'] = '';
+        $testData['passwordConfirm'] = '';
         $this->inputFilter->setData($testData);
         $this->assertFalse($this->inputFilter->isValid());
 
