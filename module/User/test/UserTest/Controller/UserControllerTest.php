@@ -2,9 +2,9 @@
 
 namespace UserTest\Controller;
 
-use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
+use Xmlps\UnitTest\ControllerTest;
 
-class UserControllerTest extends AbstractHttpControllerTestCase
+class UserControllerTest extends ControllerTest
 {
     protected $traceError = true;
 
@@ -15,7 +15,6 @@ class UserControllerTest extends AbstractHttpControllerTestCase
     protected $testUser2Password = 'a4a6cb8b60695d718a902afaba4c2765';
     protected $testUser2Role = 'member';
 
-    protected $sm;
     protected $userDAO;
 
     /**
@@ -25,17 +24,12 @@ class UserControllerTest extends AbstractHttpControllerTestCase
      */
     public function setUp()
     {
-        $baseDir = dirname(dirname(dirname(dirname(dirname(__DIR__)))));
-        $this->setApplicationConfig(
-            include $baseDir . '/config/application.config.php'
-        );
+        parent::setUp();
 
-        $this->sm = $this->getApplicationServiceLocator();
         $this->userDAO = $this->sm->get('UserDAO');
 
         $this->resetTestData();
 
-        parent::setUp();
     }
 
     /**
@@ -89,7 +83,8 @@ class UserControllerTest extends AbstractHttpControllerTestCase
      */
     public function testLoginActionCanBeAccessedLoggedIn()
     {
-        $this->mockLogin();
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->mockLogin($user);
         $this->dispatch('/user/login');
         $this->assertResponseStatusCode(403);
     }
@@ -142,7 +137,8 @@ class UserControllerTest extends AbstractHttpControllerTestCase
      */
     public function testLogoutActionLoggedIn()
     {
-        $this->mockLogin();
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->mockLogin($user);
 
         $this->dispatch('/user/logout');
         $this->assertResponseStatusCode(302);
@@ -172,7 +168,8 @@ class UserControllerTest extends AbstractHttpControllerTestCase
      */
     public function testRegisterActionCanBeAccessedLoggedIn()
     {
-        $this->mockLogin();
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->mockLogin($user);
         $this->dispatch('/user/register');
         $this->assertResponseStatusCode(403);
     }
@@ -230,29 +227,6 @@ class UserControllerTest extends AbstractHttpControllerTestCase
     }
 
     /**
-     * Helper function. Make the authentication service always return an
-     * identity
-     *
-     * @return void
-     */
-    protected function mockLogin() {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-
-        $authService = $this->getMock('Zend\Authentication\AuthenticationService');
-        $authService->expects($this->any())
-            ->method('getIdentity')
-            ->will($this->returnValue($user));
-
-        $authService->expects($this->any())
-            ->method('hasIdentity')
-            ->will($this->returnValue(true));
-
-        $this->getApplicationServiceLocator()->setAllowOverride(true);
-        $this->getApplicationServiceLocator()
-            ->setService('Zend\Authentication\AuthenticationService', $authService);
-    }
-
-    /**
      * Creates test data for this test
      *
      * @return void
@@ -279,16 +253,5 @@ class UserControllerTest extends AbstractHttpControllerTestCase
                 $this->userDAO->remove($user);
             }
         }
-    }
-
-    /**
-     * Resets the test data
-     *
-     * @return void
-     */
-    protected function resetTestData()
-    {
-       $this->cleanTestData();
-       $this->createTestData();
     }
 }

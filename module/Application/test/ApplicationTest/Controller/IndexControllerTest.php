@@ -1,22 +1,10 @@
 <?php
-
 namespace IndexTest\Controller;
 
-use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
+use Xmlps\UnitTest\ControllerTest;
 
-class ApplicationControllerTest extends AbstractHttpControllerTestCase
+class IndexControllerTest extends ControllerTest
 {
-    protected $traceError = true;
-
-    public function setUp()
-    {
-        $baseDir = dirname(dirname(dirname(dirname(dirname(__DIR__)))));
-        $this->setApplicationConfig(
-            include $baseDir . '/config/application.config.php'
-        );
-        parent::setUp();
-    }
-
     public function testIndexActionCanBeAccessed()
     {
         $this->dispatch('/');
