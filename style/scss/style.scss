@@ -21,6 +21,10 @@ body {
   background-color: $backgroundColorDark;
   font-size: em(14);
   line-height: em(24);
+
+  @include media($mobile) {
+    font-family: $mobilePageFont;
+  }
 }
 
 h1, h2, h3, h4 {

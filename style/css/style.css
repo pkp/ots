@@ -130,6 +130,9 @@ body {
   background-color: #eeeeee;
   font-size: 0.875em;
   line-height: 1.5em; }
+  @media screen and (max-width: 480px) {
+    body {
+      font-family: Georgia, Serif; } }
 
 h1, h2, h3, h4 {
   font-family: Oswald, Sans-Serif; }
