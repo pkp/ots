@@ -11,7 +11,6 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\Mvc\Controller\Plugin\FlashMessenger;
 
 class Module
 {
@@ -26,12 +25,33 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-        // Attach the ControllerAcl plugin to the event manager
-        $eventManager->attach('route', array($this, 'getAuthorization'), 2);
+        // Attach the ControllerAcl plugin to the route event
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, function($e) {
+            $application = $e->getApplication();
+            $sm = $application->getServiceManager();
+            $authorized = $sm->get('ControllerPluginManager')
+                ->get('ControllerAcl')
+                ->authorize($e);
+
+            if (!$authorized) {
+                $view = $e->getViewModel();
+                $translator = $sm->get('translator');
+                $view->setVariable('messages', array('error' => array(
+                    $translator->translate(
+                        'application.acl.notAuthorized'
+                    )
+                )));
+                $e->getResponse()->setStatusCode(403);
+                $e->stopPropagation();
+            }
+
+        }, 100);
 
         // Show flashmessages in the view
         $eventManager->attach(MvcEvent::EVENT_RENDER, function($e) {
-            $flashMessenger = new FlashMessenger;
+            $application = $e->getApplication();
+            $sm = $application->getServiceManager();
+            $flashMessenger = $sm->get('ControllerPluginManager')->get('flashMessenger');
 
             $messages = array();
 
@@ -108,34 +128,5 @@ class Module
                 },
             ),
         );
-    }
-
-    /**
-     * Attaches the ControllerAcl plugin to the controller dispatch event
-     *
-     * @param MvcEvent $e
-     * @return void
-     */
-    public function getAuthorization(MvcEvent $e) {
-        $application = $e->getApplication();
-        $sm = $application->getServiceManager();
-        $sharedManager = $application->getEventManager()->getSharedManager();
-
-        $router = $sm->get('router');
-        $request = $sm->get('request');
-
-        $matchedRoute = $router->match($request);
-
-        if ($matchedRoute !== null) {
-            $sharedManager->attach(
-                'Zend\Mvc\Controller\AbstractActionController',
-                'dispatch',
-                function ($e) use ($sm) {
-                    $sm->get('ControllerPluginManager')
-                        ->get('ControllerAcl')
-                        ->authorize($e);
-                }
-            );
-        }
     }
 }

@@ -56,9 +56,6 @@ class ControllerAcl extends AbstractPlugin
         $controller = $routeParams['controller'];
         $action = $routeParams['action'];
 
-        // Everyone can access 404 pages
-        if ($action == 'not-found') return;
-
         $application = $e->getApplication();
         $sm = $application->getServiceManager();
 
@@ -130,23 +127,17 @@ class ControllerAcl extends AbstractPlugin
 
         // Set the users role
         $role = 'guest';
-        $identity = $this->getController()->plugin('identity');
+        $identity = $sm->get('ControllerPluginManager')->get('identity');
         if ($user = $identity()) { $role = $user->role; }
 
         // Authorize
-        if (!$acl->isAllowed($role, $resource)) {
-            $flashMessenger = $this->getController()->plugin('flashMessenger');
-            $translator = $sm->get('translator');
-            $flashMessenger->setNamespace('error');
-            $flashMessenger->addMessage(
-                $translator->translate(
-                    'application.acl.notAuthorized'
-                )
-            );
+        try { return $acl->isAllowed($role, $resource); }
 
-            $e->getResponse()->setStatusCode(403);
-            $e->stopPropagation();
-            return false;
+        // Catch invalid resources the router will handle the 404
+        catch (\Zend\Permissions\Acl\Exception\InvalidArgumentException $e) {
+            $logger = $sm->get('Logger');
+            $logger->debug('Invalid ACL ressource requested: ' . $resource);
+            return true;
         }
     }
 }

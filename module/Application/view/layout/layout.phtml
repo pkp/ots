@@ -37,10 +37,13 @@
 
       <div class="content">
         <?php
-          if ($this->flashMessages) {
-            foreach ($this->flashMessages as $context => $messages) {
+          $flashMessages = isset($this->flashMessages) ? $this->flashMessages : array();
+          $messages = isset($this->messages) ? $this->messages : array();
+          $messages = array_merge_recursive($flashMessages, $messages);
+          if ($messages) {
+            foreach ($messages as $context => $contextMessages) {
               echo '<div class="message-container ' . $context . '"><ul>';
-              foreach ($messages as $message) {
+              foreach ($contextMessages as $message) {
                 echo '<li>' . $message . '</li>';
               }
               echo '</ul><div class="triangle"></div></div>';

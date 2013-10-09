@@ -63,8 +63,8 @@ return array(
             array('allow', 'administrator'),
             array('allow', 'guest', 'controller:User\Controller\User:index'),
             array('allow', 'guest', 'controller:User\Controller\User:login'),
-            array('allow', 'guest', 'controller:User\Controller\User:logout'),
             array('allow', 'guest', 'controller:User\Controller\User:register'),
+            array('allow', 'member', 'controller:User\Controller\User:logout'),
             array('allow', 'member', 'controller:User\Controller\User:settings'),
         ),
     )
