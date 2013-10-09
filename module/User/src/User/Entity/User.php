@@ -67,7 +67,7 @@ class User extends DataObject
      *
      * @ORM\PrePersist
      */
-    public function setRegistrationDate()
+    public function initRegistrationDate()
     {
         if ($this->registrationDate === null) {
             $this->registrationDate = time();
@@ -81,7 +81,7 @@ class User extends DataObject
      *
      * @ORM\PrePersist
      */
-    public function setUserLevel()
+    public function initUserLevel()
     {
         if ($this->userLevel === null) {
             $this->userLevel = USER_USERLEVEL_REGISTERED;
@@ -95,7 +95,7 @@ class User extends DataObject
      *
      * @ORM\PrePersist
      */
-    public function setRole()
+    public function initRole()
     {
         if ($this->role === null) {
             $this->role = 'member';

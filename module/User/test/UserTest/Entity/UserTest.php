@@ -28,7 +28,7 @@ class UserEntityTest extends PHPUnit_Framework_TestCase
     public function testUserRegistrationDate()
     {
         $this->assertTrue($this->user->registrationDate === null);
-        $this->user->setRegistrationDate();
+        $this->user->initRegistrationDate();
         $this->assertTrue(is_int($this->user->registrationDate));
         $this->assertTrue($this->user->registrationDate <= time());
     }
@@ -41,7 +41,7 @@ class UserEntityTest extends PHPUnit_Framework_TestCase
     public function testUserLevel()
     {
         $this->assertTrue($this->user->userLevel === null);
-        $this->user->setUserLevel();
+        $this->user->initUserLevel();
         $this->assertSame(USER_USERLEVEL_REGISTERED, $this->user->userLevel);
     }
 
