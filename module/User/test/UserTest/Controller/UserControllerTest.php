@@ -1,6 +1,6 @@
 <?php
 
-namespace IndexTest\Controller;
+namespace UserTest\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
@@ -33,8 +33,7 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         $this->sm = $this->getApplicationServiceLocator();
         $this->userDAO = $this->sm->get('UserDAO');
 
-        $this->cleanTestData();
-        $this->createTestData();
+        $this->resetTestData();
 
         parent::setUp();
     }
@@ -67,11 +66,11 @@ class UserControllerTest extends AbstractHttpControllerTestCase
     }
 
     /**
-     * Test if the login action is accessible
+     * Test if the login action is accessible for logged out users
      *
      * @return void
      */
-    public function testLoginActionCanBeAccessed()
+    public function testLoginActionCanBeAccessedLoggedOut()
     {
         $this->dispatch('/user/login');
         $this->assertResponseStatusCode(200);
@@ -84,11 +83,77 @@ class UserControllerTest extends AbstractHttpControllerTestCase
     }
 
     /**
-     * Test if the login action is accessible
+     * Test if the login action is not accessible by logged in users
      *
      * @return void
      */
-    public function testRegisterActionCanBeAccessed()
+    public function testLoginActionCanBeAccessedLoggedIn()
+    {
+        $this->mockLogin();
+        $this->dispatch('/user/login');
+        $this->assertResponseStatusCode(403);
+    }
+
+    /**
+     * Test if an invalid login attempt is processed correctly
+     *
+     * @return void
+     */
+    public function testLoginActionInvalidLogin()
+    {
+        $postData = array(
+            'email' => 'foo@example.com',
+            'password' => 'password',
+        );
+        $this->dispatch('/user/login', 'POST', $postData);
+        $this->assertResponseStatusCode(200);
+    }
+
+    /**
+     * Test if a correct login attempt is processed correctly
+     *
+     * @return void
+     */
+    public function testLoginActionCorrectLogin()
+    {
+        $postData = array(
+            'email' => $this->testUserEmail,
+            'password' => $this->testUserPassword,
+        );
+        $this->dispatch('/user/login', 'POST', $postData);
+        $this->assertResponseStatusCode(302);
+    }
+
+    /**
+     * Test if a logout attempt for logged out users is processed correctly
+     *
+     * @return void
+     */
+    public function testLogoutActionLoggedOut()
+    {
+        $this->dispatch('/user/logout');
+        $this->assertResponseStatusCode(403);
+    }
+
+    /**
+     * Test if a logout attempt for logged in users is processed correctly
+     *
+     * @return void
+     */
+    public function testLogoutActionLoggedIn()
+    {
+        $this->mockLogin();
+
+        $this->dispatch('/user/logout');
+        $this->assertResponseStatusCode(302);
+    }
+
+    /**
+     * Test if the register action is accessible for logged out users
+     *
+     * @return void
+     */
+    public function testRegisterActionCanBeAccessedLoggedOut()
     {
         $this->dispatch('/user/register');
         $this->assertResponseStatusCode(200);
@@ -101,57 +166,25 @@ class UserControllerTest extends AbstractHttpControllerTestCase
     }
 
     /**
-     * Test if a login attempt is processed correctly
+     * Test if the register action is accessible by logged in users
      *
      * @return void
      */
-    public function testLoginAction()
+    public function testRegisterActionCanBeAccessedLoggedIn()
     {
-        // Invalid user
-        $postData = array(
-            'email' => 'foo@example.com',
-            'password' => 'password',
-        );
-        $this->dispatch('/user/login', 'POST', $postData);
-        $this->assertResponseStatusCode(200);
-
-        // Execute the form submission
-        $postData = array(
-            'email' => $this->testUserEmail,
-            'password' => $this->testUserPassword,
-        );
-        $this->dispatch('/user/login', 'POST', $postData);
-        $this->assertResponseStatusCode(302);
+        $this->mockLogin();
+        $this->dispatch('/user/register');
+        $this->assertResponseStatusCode(403);
     }
 
     /**
-     * Test if a logout attempt is processed correctly
+     * Test if a register attempt with non matching passwords is processed
+     * correctly
      *
      * @return void
      */
-    public function testLogoutAction()
+    public function testRegisterActionPasswordsDontMatch()
     {
-        // Log the testuser in
-        $postData = array(
-            'email' => $this->testUserEmail,
-            'password' => $this->testUserPassword,
-        );
-        $this->dispatch('/user/login', 'POST', $postData);
-        $this->assertResponseStatusCode(302);
-
-        // Log the user out
-        $this->dispatch('/user/logout');
-        $this->assertResponseStatusCode(302);
-    }
-
-    /**
-     * Test if a register attempt is processed correctly
-     *
-     * @return void
-     */
-    public function testRegisterAction()
-    {
-        // Passwords don't match
         $postData = array(
             'email' => $this->testUser2Email,
             'password' => $this->testUserPassword,
@@ -159,8 +192,16 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         );
         $this->dispatch('/user/register', 'POST', $postData);
         $this->assertResponseStatusCode(200);
+    }
 
-        // Register an existing user
+    /**
+     * Test if a register attempt with an existing email is processed
+     * correctly
+     *
+     * @return void
+     */
+    public function testRegisterActionExistingUser()
+    {
         $postData = array(
             'email' => $this->testUserEmail,
             'password' => $this->testUserPassword,
@@ -168,8 +209,15 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         );
         $this->dispatch('/user/register', 'POST', $postData);
         $this->assertResponseStatusCode(200);
+    }
 
-        // Register a new user
+    /**
+     * Test if a valid register attempt is processed correctly
+     *
+     * @return void
+     */
+    public function testRegisterActionValidUser()
+    {
         $postData = array(
             'email' => $this->testUser2Email,
             'password' => $this->testUser2Password,
@@ -177,6 +225,31 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         );
         $this->dispatch('/user/register', 'POST', $postData);
         $this->assertResponseStatusCode(302);
+
+        $this->resetTestData();
+    }
+
+    /**
+     * Helper function. Make the authentication service always return an
+     * identity
+     *
+     * @return void
+     */
+    protected function mockLogin() {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+
+        $authService = $this->getMock('Zend\Authentication\AuthenticationService');
+        $authService->expects($this->any())
+            ->method('getIdentity')
+            ->will($this->returnValue($user));
+
+        $authService->expects($this->any())
+            ->method('hasIdentity')
+            ->will($this->returnValue(true));
+
+        $this->getApplicationServiceLocator()->setAllowOverride(true);
+        $this->getApplicationServiceLocator()
+            ->setService('Zend\Authentication\AuthenticationService', $authService);
     }
 
     /**
@@ -206,5 +279,16 @@ class UserControllerTest extends AbstractHttpControllerTestCase
                 $this->userDAO->remove($user);
             }
         }
+    }
+
+    /**
+     * Resets the test data
+     *
+     * @return void
+     */
+    protected function resetTestData()
+    {
+       $this->cleanTestData();
+       $this->createTestData();
     }
 }
