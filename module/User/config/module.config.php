@@ -66,6 +66,8 @@ return array(
             array('allow', 'guest', 'controller:User\Controller\User:register'),
             array('allow', 'member', 'controller:User\Controller\User:logout'),
             array('allow', 'member', 'controller:User\Controller\User:settings'),
+            array('deny', 'member', 'controller:User\Controller\User:login'),
+            array('deny', 'member', 'controller:User\Controller\User:register'),
         ),
     )
 );
