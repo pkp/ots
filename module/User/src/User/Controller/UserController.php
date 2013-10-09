@@ -94,6 +94,7 @@ class UserController extends AbstractActionController {
             if ($this->loginForm->isValid()) {
                 // Authenticate user
                 $authResult = $this->authenticate($data['email'], $data['password']);
+
                 if ($authResult->isValid()) {
                     // Fetch the user object
                     $user = $this->userDAO->findOneBy(
@@ -317,7 +318,6 @@ class UserController extends AbstractActionController {
         $authService = $this->getServiceLocator()->get(
             'Zend\Authentication\AuthenticationService'
         );
-        $user->lastLogin = time();
         $authService->getStorage()->write($user);
     }
 }
