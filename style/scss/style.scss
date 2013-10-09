@@ -115,13 +115,17 @@ nav {
     text-decoration: none;
     color: $textColorLight;
     font-family: $highlightFont;
-    @include icon('before', true);
-    &:before { margin-right: 0.5em; }
   }
 
-  .logout a { @include icon('before', false, 'exit'); }
-  .settings a { @include icon('before', false, 'cog'); }
-  .home a { @include icon('before', false, 'home'); }
+  @include media($notMobile) {
+    a {
+      @include icon('before', true);
+      &:before { margin-right: 0.5em; }
+    }
+    .logout a { @include icon('before', false, 'exit'); }
+    .settings a { @include icon('before', false, 'cog'); }
+    .home a { @include icon('before', false, 'home'); }
+  }
 }
 
 aside {

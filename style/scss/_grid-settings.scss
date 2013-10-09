@@ -9,6 +9,10 @@ $max-width: 960px;
 //$visual-grid-index: 100;
 
 // Define breakpoints
-$mobile: new-breakpoint(max-width 480px 6);
-$tablet: new-breakpoint(max-width 960px 12);
-$desktop: new-breakpoint(min-width 960px 12);
+$boundaryMobile: 480px;
+$boundaryTablet: 960px;
+$mobile: new-breakpoint(max-width $boundaryMobile, 6);
+$notMobile: new-breakpoint(min-width $boundaryMobile + 1, 6);
+$tablet: new-breakpoint(min-width $boundaryMobile + 1 max-width $boundaryTablet, 12);
+$desktop: new-breakpoint(min-width $boundaryTablet + 1, 12);
+$notDesktop: new-breakpoint(max-width $boundaryTablet, 12);

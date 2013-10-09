@@ -163,7 +163,7 @@ header {
       width: 100%; }
       header:last-child {
         margin-right: 0; } }
-  @media screen and (max-width: 960px) {
+  @media screen and (min-width: 481px) and (max-width: 960px) {
     header {
       background: #0068cc url("/img/logo-tablet.png") no-repeat 10px 5px;
       height: 60px; } }
@@ -176,7 +176,7 @@ header {
     float: left;
     margin-top: 55px;
     margin-left: 165px; }
-    @media screen and (max-width: 960px) {
+    @media screen and (min-width: 481px) and (max-width: 960px) {
       header span {
         display: none; } }
     header span a {
@@ -255,6 +255,7 @@ nav {
     text-decoration: none;
     color: white;
     font-family: Oswald, Sans-Serif; }
+  @media screen and (min-width: 481px) {
     nav a:before {
       speak: none;
       -webkit-font-smoothing: antialiased;
@@ -267,12 +268,12 @@ nav {
       font-family: 'Icons'; }
     nav a:before {
       margin-right: 0.5em; }
-  nav .logout a:before {
-    content: "\e104"; }
-  nav .settings a:before {
-    content: "\e08e"; }
-  nav .home a:before {
-    content: "\e000"; }
+    nav .logout a:before {
+      content: "\e104"; }
+    nav .settings a:before {
+      content: "\e08e"; }
+    nav .home a:before {
+      content: "\e000"; } }
 
 aside {
   display: block;
@@ -454,7 +455,7 @@ aside {
     @media screen and (max-width: 480px) {
       .front-page .authenticate .box-container {
         padding: 10px; } }
-  @media screen and (min-width: 960px) {
+  @media screen and (min-width: 961px) {
     .front-page .authenticate .box-container.first {
       padding-left: 10px; } }
   .front-page .authenticate .box {
