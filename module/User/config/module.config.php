@@ -46,7 +46,7 @@ return array(
                 'identityClass' => 'User\Entity\User',
                 'identityProperty' => 'email',
                 'credentialProperty' => 'password',
-                'credentialCallable' => '\User\Entity\User::validatePassword'
+                'credentialCallable' => 'User\Entity\User::validatePassword'
             ),
         )
     ),
