@@ -10,8 +10,10 @@ class UserControllerTest extends AbstractHttpControllerTestCase
 
     protected $testUserEmail = 'unittestuser@example.com';
     protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
+    protected $testUserRole = 'member';
     protected $testUser2Email = 'unittestuser2@example.com';
     protected $testUser2Password = 'a4a6cb8b60695d718a902afaba4c2765';
+    protected $testUser2Role = 'member';
 
     protected $sm;
     protected $userDAO;
@@ -187,6 +189,7 @@ class UserControllerTest extends AbstractHttpControllerTestCase
         $user = $this->sm->get('User\Entity\User');
         $user->email = $this->testUserEmail;
         $user->password = $this->testUserPassword;
+        $user->role = $this->testUserRole;
         $this->userDAO->save($user);
     }
 
