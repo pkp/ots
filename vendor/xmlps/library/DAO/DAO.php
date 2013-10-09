@@ -27,7 +27,7 @@ abstract class DAO implements DAOInterface {
     /**
      * Returns the repository instance
      *
-     * @return mixed repository instance
+     * @return mixed Repository instance
      */
     public function getRepository()
     {
@@ -36,6 +36,16 @@ abstract class DAO implements DAOInterface {
         }
 
         return $this->repository;
+    }
+
+    /**
+     * Returns the entity manager instance
+     *
+     * @return mixed Entity manager instance
+     */
+    public function getEntityManager()
+    {
+        return $this->em;
     }
 
     /**
