@@ -1,6 +1,6 @@
 <?php
 return array(
-  'Xmlps\Logger\Logger'                   => __DIR__ . '/library/Logger/Logger.php',
+  'Xmlps\Logger\Logger'                   => __DIR__ . '/library/Log/Logger.php',
   'Xmlps\Controller\Plugin\ControllerAcl' => __DIR__ . '/library/Controller/Plugin/ControllerAcl.php',
   'Xmlps\DAO\DAO'                         => __DIR__ . '/library/DAO/DAO.php',
   'Xmlps\DAO\DAOInterface'                => __DIR__ . '/library/DAO/DAOInterface.php',
