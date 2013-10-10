@@ -111,11 +111,20 @@ class Module
     {
         return array(
             'factories' => array(
+                'Application\Entity\Log' => function($sm)
+                {
+                    return new Entity\Log();
+                },
+                'Application\Model\DAO\LogDAO' => function($sm)
+                {
+                    $em = $sm->get('doctrine.entitymanager.orm_default');
+                    return new Model\DAO\LogDAO($em);
+                },
                 'Logger' => function($sm)
                 {
                     $config = $sm->get('config');
-                    $logger = new \Xmlps\Logger\Logger;
-                    $writer = new \Zend\Log\Writer\Stream($config['log']['file']);
+                    $logger = $sm->get('Xmlps\Logger\Logger');
+                    $writer = $sm->get('Xmlps\Log\Writer\Doctrine');
                     if (!empty($config['log']['level'])) {
                         $writer->addFilter($config['log']['level']);
                     }
@@ -125,6 +134,14 @@ class Module
                     $logger->addWriter($writer);
 
                     return $logger;
+                },
+                'Xmlps\Log\Writer\Doctrine' => function($sm) {
+                    $logDAO = $sm->get('Application\Model\DAO\LogDAO');
+                    $logEntity = $sm->get('Application\Entity\Log');
+                    return new \Xmlps\Log\Writer\Doctrine($logDAO, $logEntity);
+                },
+                'Xmlps\Logger\Logger' => function($sm) {
+                    return new \Xmlps\Logger\Logger;
                 },
             ),
         );

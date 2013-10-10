@@ -1,5 +1,6 @@
 <?php
 return array(
+  'Xmlps\Log\Writer\Doctrine'             => __DIR__ . '/library/Log/Writer/Doctrine.php',
   'Xmlps\Logger\Logger'                   => __DIR__ . '/library/Log/Logger.php',
   'Xmlps\Controller\Plugin\ControllerAcl' => __DIR__ . '/library/Controller/Plugin/ControllerAcl.php',
   'Xmlps\DAO\DAO'                         => __DIR__ . '/library/DAO/DAO.php',

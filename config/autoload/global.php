@@ -29,7 +29,6 @@ return array(
         ),
     ),
     'log' => array(
-        'file' => 'var/log/debug.log',
         'level' => 6,
     ),
 );
