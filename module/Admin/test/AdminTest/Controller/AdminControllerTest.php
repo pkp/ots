@@ -87,6 +87,96 @@ class AdminControllerTest extends ControllerTest
     }
 
     /**
+     * Test if the user management action can be accessed
+     *
+     * @return void
+     */
+    public function testuserManagementActionCanBeAccessedAdmin()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
+        $this->mockLogin($user);
+
+        $this->dispatch('/admin/user-management');
+        $this->assertResponseStatusCode(200);
+
+        $this->assertModuleName('Admin');
+        $this->assertControllerName('Admin\Controller\Admin');
+        $this->assertControllerClass('AdminController');
+        $this->assertActionName('user-management');
+        $this->assertMatchedRouteName('admin');
+    }
+
+    /**
+     * Test if the user management action cannot be accessed by guests
+     *
+     * @return void
+     */
+    public function testuserManagementActionCanBeAccessedLoggedOut()
+    {
+        $this->dispatch('/admin/user-management');
+        $this->assertResponseStatusCode(403);
+    }
+
+    /**
+     * Test if the user management action cannot be accessed by regular members
+     *
+     * @return void
+     */
+    public function testuserManagementActionCanBeAccessedLoggedIn()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->mockLogin($user);
+
+        $this->dispatch('/admin/user-management');
+        $this->assertResponseStatusCode(403);
+    }
+
+    /**
+     * Test if the system log action can be accessed
+     *
+     * @return void
+     */
+    public function testSystemLogActionCanBeAccessedAdmin()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
+        $this->mockLogin($user);
+
+        $this->dispatch('/admin/system-log');
+        $this->assertResponseStatusCode(200);
+
+        $this->assertModuleName('Admin');
+        $this->assertControllerName('Admin\Controller\Admin');
+        $this->assertControllerClass('AdminController');
+        $this->assertActionName('system-log');
+        $this->assertMatchedRouteName('admin');
+    }
+
+    /**
+     * Test if the system log action cannot be accessed by guests
+     *
+     * @return void
+     */
+    public function testSystemLogActionCanBeAccessedLoggedOut()
+    {
+        $this->dispatch('/admin/system-log');
+        $this->assertResponseStatusCode(403);
+    }
+
+    /**
+     * Test if the system log action cannot be accessed by regular members
+     *
+     * @return void
+     */
+    public function testSystemLogActionCanBeAccessedLoggedIn()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->mockLogin($user);
+
+        $this->dispatch('/admin/system-log');
+        $this->assertResponseStatusCode(403);
+    }
+
+    /**
      * Creates test data for this test
      *
      * @return void

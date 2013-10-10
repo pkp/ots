@@ -45,9 +45,13 @@ return array(
     'acl' => array(
         'resources' => array(
             'controller:Admin\Controller\Admin:index',
+            'controller:Admin\Controller\Admin:user-management',
+            'controller:Admin\Controller\Admin:system-log',
         ),
         'rules' => array(
-            array('allow', 'administrator'),
+            array('allow', 'administrator', 'controller:Admin\Controller\Admin:index'),
+            array('allow', 'administrator', 'controller:Admin\Controller\Admin:user-management'),
+            array('allow', 'administrator', 'controller:Admin\Controller\Admin:system-log'),
         ),
     )
 );

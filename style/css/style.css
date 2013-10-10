@@ -276,7 +276,11 @@ nav {
     nav .settings a:before {
       content: "\e08e"; }
     nav .home a:before {
-      content: "\e000"; } }
+      content: "\e000"; }
+    nav .system-log a:before {
+      content: "\e0a0"; }
+    nav .user-management a:before {
+      content: "\e071"; } }
 
 aside {
   display: block;

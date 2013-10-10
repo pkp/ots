@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-07 16:39-1000\n"
-"PO-Revision-Date: 2013-10-07 16:41-1000\n"
+"POT-Creation-Date: 2013-10-09 15:02-1000\n"
+"PO-Revision-Date: 2013-10-09 15:03-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -17,24 +17,24 @@ msgstr ""
 "X-Poedit-SearchPath-1: ../..\n"
 "X-Poedit-SearchPath-2: ../../../vendor/xmlps\n"
 
-#: ../../User/src/User/Form/PasswordResetForm.php:31
-msgid "user.form.passwordCurrent"
-msgstr "Current Password"
+#: ../Module.php:41 ../../Application/Module.php:41
+msgid "application.acl.notAuthorized"
+msgstr "You are not permitted to access the requested resource."
 
-#: ../../User/src/User/Form/PasswordResetForm.php:42
+#: ../../User/src/User/Form/PasswordResetForm.php:31
 msgid "user.form.newPassword"
 msgstr "New Password"
 
-#: ../../User/src/User/Form/PasswordResetForm.php:53
+#: ../../User/src/User/Form/PasswordResetForm.php:42
 #: ../../User/src/User/Form/RegistrationForm.php:53
 msgid "user.form.passwordConfirm"
 msgstr "Confirm Password"
 
-#: ../../User/src/User/Form/PasswordResetForm.php:64
+#: ../../User/src/User/Form/PasswordResetForm.php:53
 msgid "user.form.save"
 msgstr "Save"
 
-#: ../../User/src/User/Form/PasswordResetFormInputFilter.php:83
+#: ../../User/src/User/Form/PasswordResetFormInputFilter.php:89
 #: ../../User/src/User/Form/RegistrationFormInputFilter.php:133
 msgid "user.form.passwordsDontMatch"
 msgstr "The provided passwords don't match"
@@ -63,79 +63,85 @@ msgstr "This email address is already registered!"
 msgid "user.registrationForm.register"
 msgstr "Register"
 
-#: ../../User/src/User/Controller/UserController.php:110
+#: ../../User/src/User/Controller/UserController.php:115
 msgid "user.authentication.sucessfulLogin"
 msgstr "Hi, welcome back!"
 
-#: ../../User/src/User/Controller/UserController.php:117
+#: ../../User/src/User/Controller/UserController.php:122
 msgid "user.authentication.sucessfulLoginLog"
 msgstr "Successful login by %s"
 
-#: ../../User/src/User/Controller/UserController.php:130
+#: ../../User/src/User/Controller/UserController.php:135
 msgid "user.authentication.invalidLoginCredentials"
 msgstr "The login credentials you provided are invalid. Please try again."
 
-#: ../../User/src/User/Controller/UserController.php:163
+#: ../../User/src/User/Controller/UserController.php:168
 msgid "user.authentication.sucessfulLogout"
 msgstr "Thanks for visiting."
 
-#: ../../User/src/User/Controller/UserController.php:170
+#: ../../User/src/User/Controller/UserController.php:175
 msgid "user.authentication.sucessfulLogoutLog"
 msgstr "Successful logout by %s"
 
-#: ../../User/src/User/Controller/UserController.php:210
+#: ../../User/src/User/Controller/UserController.php:215
 msgid "user.registration.sucessfulRegistration"
 msgstr "Your registration was successful. Thank you."
 
-#: ../../User/src/User/Controller/UserController.php:217
+#: ../../User/src/User/Controller/UserController.php:222
 msgid "user.registration.sucessfulRegistrationLog"
 msgstr "User %s registered successfully"
 
-#: ../../User/src/User/Controller/UserController.php:263
+#: ../../User/src/User/Controller/UserController.php:268
 msgid "user.settings.saveSuccessConfirm"
 msgstr "Your settings have been updated!"
 
-#: ../../User/src/User/Controller/UserController.php:270
+#: ../../User/src/User/Controller/UserController.php:275
 msgid "user.settings.saveSuccessConfirmLog"
 msgstr "User %s updated settings"
-
-#: ../../../vendor/xmlps/library/Controller/Plugin/ControllerAcl.php:143
-msgid "application.acl.notAuthorized"
-msgstr "You are not permitted to access the requested resource."
 
 #: ../view/layout/layout.phtml:9 ../../Application/view/layout/layout.phtml:9
 #: ../../User/view/_sideBar.phtml:2
 msgid "application.generic.siteTitle"
 msgstr "PKP XML Parsing Service"
 
-#: ../view/layout/layout.phtml:27
-#: ../../Application/view/layout/layout.phtml:27
-msgid "application.layout.home"
-msgstr "Home"
-
 #: ../view/layout/layout.phtml:28
 #: ../../Application/view/layout/layout.phtml:28
-msgid "application.layout.settings"
-msgstr "Settings"
+msgid "application.layout.systemLog"
+msgstr "System Log"
 
 #: ../view/layout/layout.phtml:29
 #: ../../Application/view/layout/layout.phtml:29
+msgid "application.layout.userManagement"
+msgstr "User Management"
+
+#: ../view/layout/layout.phtml:31
+#: ../../Application/view/layout/layout.phtml:31
+msgid "application.layout.home"
+msgstr "Home"
+
+#: ../view/layout/layout.phtml:32
+#: ../../Application/view/layout/layout.phtml:32
+msgid "application.layout.settings"
+msgstr "Settings"
+
+#: ../view/layout/layout.phtml:33
+#: ../../Application/view/layout/layout.phtml:33
 msgid "application.layout.logout"
 msgstr "Logout"
 
-#: ../view/layout/layout.phtml:35
-#: ../../Application/view/layout/layout.phtml:35
+#: ../view/layout/layout.phtml:39
+#: ../../Application/view/layout/layout.phtml:39
 msgid "application.layout.subHeading"
 msgstr ""
 "PDF, DOC, DOCX or ODT to XML (%sNML-XML 3.0 compatible%s) document conversion"
 
-#: ../view/layout/layout.phtml:54
-#: ../../Application/view/layout/layout.phtml:54
+#: ../view/layout/layout.phtml:61
+#: ../../Application/view/layout/layout.phtml:61
 msgid "application.layout.contact"
 msgstr "Contact"
 
-#: ../view/layout/layout.phtml:55
-#: ../../Application/view/layout/layout.phtml:55
+#: ../view/layout/layout.phtml:62
+#: ../../Application/view/layout/layout.phtml:62
 msgid "application.layout.copyright"
 msgstr "Public Knowledge Project"
 
@@ -268,6 +274,9 @@ msgstr "Settings"
 #: ../../User/view/user/user/settings.phtml:14
 msgid "user.settings.changePassword"
 msgstr "Change Password"
+
+#~ msgid "user.form.passwordCurrent"
+#~ msgstr "Current Password"
 
 #~ msgid "user.authentication.sucessfulLoginThanks"
 #~ msgstr "Hi, welcome back!"

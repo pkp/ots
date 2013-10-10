@@ -164,4 +164,14 @@ class User extends DataObject
             $user->password == self::hashPassword($password, $user->getPasswordSalt())
         );
     }
+
+    /**
+     * Checks if the user is an administrator
+     *
+     * @return bool Whether or not the user is an administrator
+     */
+    public function isAdministrator()
+    {
+        return $this->role == 'administrator';
+    }
 }

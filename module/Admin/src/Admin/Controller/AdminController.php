@@ -11,7 +11,19 @@ class AdminController extends AbstractActionController {
      *
      * @return mixed Array containing view variables
      */
-    public function indexAction()
-    {
-    }
+    public function indexAction() {}
+
+    /**
+     * User management action
+     *
+     * @return mixed Array containing view variables
+     */
+    public function userManagementAction() {}
+
+    /**
+     * System log action
+     *
+     * @return mixed Array containing view variables
+     */
+    public function systemLogAction() {}
 }

@@ -25,6 +25,10 @@
         <nav>
           <ul>
             <li class="home"><a href="<?php echo $this->url('home')?>"><?php echo $this->translate('application.layout.home'); ?></a></li>
+            <?php if ($user->isAdministrator()) : ?>
+              <li class="system-log"><a href="<?php echo $this->url('admin', array('action' => 'system-log'))?>"><?php echo $this->translate('application.layout.systemLog'); ?></a></li>
+              <li class="user-management"><a href="<?php echo $this->url('admin', array('action' => 'user-management'))?>"><?php echo $this->translate('application.layout.userManagement'); ?></a></li>
+            <?php endif ?>
             <li class="settings"><a href="<?php echo $this->url('user', array('action' => 'settings'))?>"><?php echo $this->translate('application.layout.settings'); ?></a></li>
             <li class="logout"><a href="<?php echo $this->url('user', array('action' => 'logout'))?>"><?php echo $this->translate('application.layout.logout'); ?></a></li>
           </ul>

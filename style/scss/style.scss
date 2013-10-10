@@ -129,6 +129,8 @@ nav {
     .logout a { @include icon('before', false, 'exit'); }
     .settings a { @include icon('before', false, 'cog'); }
     .home a { @include icon('before', false, 'home'); }
+    .system-log a { @include icon('before', false, 'meter'); }
+    .user-management a { @include icon('before', false, 'users'); }
   }
 }
 
