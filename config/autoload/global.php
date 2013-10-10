@@ -32,12 +32,4 @@ return array(
         'file' => 'var/log/debug.log',
         'level' => 6,
     ),
-
-    'acl' => array(
-        'roles' => array(
-            'guest',
-            array('member', 'guest'),
-            'administrator'
-        ),
-    )
 );

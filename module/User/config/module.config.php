@@ -60,7 +60,7 @@ return array(
             'controller:User\Controller\User:settings',
         ),
         'rules' => array(
-            array('allow', 'administrator'),
+
             array('allow', 'guest', 'controller:User\Controller\User:index'),
             array('allow', 'guest', 'controller:User\Controller\User:login'),
             array('allow', 'guest', 'controller:User\Controller\User:register'),
@@ -68,6 +68,8 @@ return array(
             array('allow', 'member', 'controller:User\Controller\User:settings'),
             array('deny', 'member', 'controller:User\Controller\User:login'),
             array('deny', 'member', 'controller:User\Controller\User:register'),
+            array('deny', 'administrator', 'controller:User\Controller\User:login'),
+            array('deny', 'administrator', 'controller:User\Controller\User:register'),
         ),
     )
 );

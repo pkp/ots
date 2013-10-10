@@ -77,6 +77,9 @@ class ControllerAcl extends AbstractPlugin
 
         $acl = new Acl;
 
+        // Deny as default policy
+        $acl->deny();
+
         // Add the roles
         foreach ($aclConfig['roles'] as $role) {
             $inherit = null;

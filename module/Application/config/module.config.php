@@ -96,4 +96,12 @@ return array(
             'ControllerAcl' => 'Xmlps\Controller\Plugin\ControllerAcl',
         ),
     ),
+
+    'acl' => array(
+        'roles' => array(
+            'guest',
+            array('member', 'guest'),
+            array('administrator', 'member'),
+        ),
+    ),
 );
