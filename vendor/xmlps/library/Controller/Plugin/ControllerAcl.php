@@ -139,7 +139,9 @@ class ControllerAcl extends AbstractPlugin
         // Catch invalid resources the router will handle the 404
         catch (\Zend\Permissions\Acl\Exception\InvalidArgumentException $e) {
             $logger = $sm->get('Logger');
-            $logger->debug('Invalid ACL ressource requested: ' . $resource);
+            $logger->debug(
+                'Invalid ACL ressource requested: ' . $resource . ' (' . $e->getMessage() . ')'
+            );
             return true;
         }
     }
