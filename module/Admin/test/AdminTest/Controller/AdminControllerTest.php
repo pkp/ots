@@ -12,7 +12,7 @@ class AdminControllerTest extends ControllerTest
     protected $testUserRole = 'member';
     protected $testUser2Email = 'unittestadmin@example.com';
     protected $testUser2Password = 'a4a6cb8b60695d718a902afaba4c2765';
-    protected $testUser2Role = 'admin';
+    protected $testUser2Role = 'administrator';
 
     protected $userDAO;
 
