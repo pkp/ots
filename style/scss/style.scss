@@ -277,13 +277,20 @@ aside {
     &:before { font-size: 0.85em; }
 
     padding: $gutter / 2 $gutter;
+
     @include media($mobile) {
       padding: $gutter / 2 $gutter / 2;
       font-size: $pageFontSizeSmaller;
       line-height: $pageLineHeightSmaller;
     }
   }
+
+  a.clickable:hover {
+    background: darken($secondaryColor21, 10%);
+  }
+
   li.disabled a:before { color: $disabledColor; }
+  li.disabled a { cursor: default; }
 
   a.first { @include icon('before', false, 'first'); }
   a.previous { @include icon('before', false, 'previous'); }
@@ -291,6 +298,7 @@ aside {
   a.last { @include icon('before', false, 'last'); }
 
   li.active a {
+    cursor: default;
     background-color: $complementaryColor1;
   }
 }

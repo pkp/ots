@@ -492,8 +492,12 @@ aside {
         padding: 5px 5px;
         font-size: 12px;
         line-height: 18px; } }
+  .pagination a.clickable:hover {
+    background: #009f57; }
   .pagination li.disabled a:before {
     color: #777777; }
+  .pagination li.disabled a {
+    cursor: default; }
   .pagination a.first:before {
     content: "\e10f"; }
   .pagination a.previous:before {
@@ -503,6 +507,7 @@ aside {
   .pagination a.last:before {
     content: "\e110"; }
   .pagination li.active a {
+    cursor: default;
     background-color: #ff9700; }
 
 /*******************************
