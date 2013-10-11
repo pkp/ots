@@ -137,12 +137,27 @@ class ControllerAcl extends AbstractPlugin
         try { return $acl->isAllowed($role, $resource); }
 
         // Catch invalid resources the router will handle the 404
-        catch (\Zend\Permissions\Acl\Exception\InvalidArgumentException $e) {
+        catch (\Zend\Permissions\Acl\Exception\InvalidArgumentException $exception) {
+            // If the route cannot be matched the router will show a 404 page;
+            // everyone can access the 404 page
+            $routeMatch = $e->getRouteMatch();
+            if (!$routeMatch or !$routeMatch->getMatchedRouteName()) {
+                return true;
+            }
+
+            // Check if the controller/action exists. If they don't we return
+            // true to make sure the 404 page is rendered
+            if (!$controllerLoader->canCreate($controller)) { return true; }
+            $controller = $controllerLoader->get($controller);
+            $method = $controller::getMethodFromAction($action);
+            if (!method_exists($controller, $method)) { return true; }
+
             $logger = $sm->get('Logger');
             $logger->debug(
-                'Invalid ACL ressource requested: ' . $resource . ' (' . $e->getMessage() . ')'
+                'Invalid ACL ressource requested: ' . $resource . ' (' . $exception->getMessage() . ')'
             );
-            return true;
+
+            return false;
         }
     }
 }
