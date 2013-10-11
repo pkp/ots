@@ -1,107 +1,109 @@
-<h1><?php echo $this->translate('application.error.404') ?></h1>
-<h2><?php echo $this->message ?></h2>
+<div class="page">
+  <h1><?php echo $this->translate('application.error.404') ?></h1>
+  <h2><?php echo $this->message ?></h2>
 
-<?php if (isset($this->reason) && $this->reason): ?>
+  <?php if (isset($this->reason) && $this->reason): ?>
 
-<?php
-$reasonMessage= '';
-switch ($this->reason) {
-    case 'error-controller-cannot-dispatch':
-        $reasonMessage = $this->translate('application.error.controllerDispatch');
-        break;
-    case 'error-controller-not-found':
-        $reasonMessage = $this->translate('application.error.controlerMap');
-        break;
-    case 'error-controller-invalid':
-        $reasonMessage = $this->translate('application.error.controllerNoDispatch');
-        break;
-    case 'error-router-no-match':
-        $reasonMessage = $this->translate('application.error.noRoute');
-        break;
-    default:
-        $reasonMessage = $this->translate('application.error.unknown404');
-        break;
-}
-?>
+  <?php
+  $reasonMessage= '';
+  switch ($this->reason) {
+      case 'error-controller-cannot-dispatch':
+          $reasonMessage = $this->translate('application.error.controllerDispatch');
+          break;
+      case 'error-controller-not-found':
+          $reasonMessage = $this->translate('application.error.controlerMap');
+          break;
+      case 'error-controller-invalid':
+          $reasonMessage = $this->translate('application.error.controllerNoDispatch');
+          break;
+      case 'error-router-no-match':
+          $reasonMessage = $this->translate('application.error.noRoute');
+          break;
+      default:
+          $reasonMessage = $this->translate('application.error.unknown404');
+          break;
+  }
+  ?>
 
-<p><?php echo $reasonMessage ?></p>
+  <p><?php echo $reasonMessage ?></p>
 
-<?php endif ?>
+  <?php endif ?>
 
-<?php if (isset($this->controller) && $this->controller): ?>
+  <?php if (isset($this->controller) && $this->controller): ?>
 
-<dl>
-    <dt><?php echo $this->translate('application.generic.controller') ?>:</dt>
-    <dd><?php echo $this->escapeHtml($this->controller) ?>
-<?php
-if (isset($this->controller_class)
-    && $this->controller_class
-    && $this->controller_class != $this->controller
-) {
-    echo '(' . sprintf($this->translate('application.error.controlerResolves'), $this->escapeHtml($this->controller_class)) . ')';
-}
-?>
-</dd>
-</dl>
+  <dl>
+      <dt><?php echo $this->translate('application.generic.controller') ?>:</dt>
+      <dd><?php echo $this->escapeHtml($this->controller) ?>
+  <?php
+  if (isset($this->controller_class)
+      && $this->controller_class
+      && $this->controller_class != $this->controller
+  ) {
+      echo '(' . sprintf($this->translate('application.error.controlerResolves'), $this->escapeHtml($this->controller_class)) . ')';
+  }
+  ?>
+  </dd>
+  </dl>
 
-<?php endif ?>
+  <?php endif ?>
 
-<?php if (isset($this->display_exceptions) && $this->display_exceptions): ?>
+  <?php if (isset($this->display_exceptions) && $this->display_exceptions): ?>
 
-<?php if(isset($this->exception) && $this->exception instanceof Exception): ?>
-<hr/>
-<h2><?php echo $this->translate('application.error.additionalInformation') ?>:</h2>
-<h3><?php echo get_class($this->exception); ?></h3>
-<dl>
-    <dt><?php echo $this->translate('application.generic.file') ?>:</dt>
-    <dd>
-        <pre class="prettyprint linenums"><?php echo $this->exception->getFile() ?>:<?php echo $this->exception->getLine() ?></pre>
-    </dd>
-    <dt><?php echo $this->translate('application.generic.message') ?>:</dt>
-    <dd>
-        <pre class="prettyprint linenums"><?php echo $this->exception->getMessage() ?></pre>
-    </dd>
-    <dt><?php echo $this->translate('application.error.stackTrace') ?>:</dt>
-    <dd>
-        <pre class="prettyprint linenums"><?php echo $this->exception->getTraceAsString() ?></pre>
-    </dd>
-</dl>
-<?php
-    $e = $this->exception->getPrevious();
-    if ($e) :
-?>
-<hr/>
-<h2><?php echo $this->translate('application.error.previousExceptions') ?>:</h2>
-<ul class="unstyled">
-    <?php while($e) : ?>
-    <li>
-        <h3><?php echo get_class($e); ?></h3>
-        <dl>
-            <dt><?php echo $this->translate('application.generic.file') ?>:</dt>
-            <dd>
-                <pre class="prettyprint linenums"><?php echo $e->getFile() ?>:<?php echo $e->getLine() ?></pre>
-            </dd>
-            <dt><?php echo $this->translate('application.generic.message') ?>:</dt>
-            <dd>
-                <pre class="prettyprint linenums"><?php echo $e->getMessage() ?></pre>
-            </dd>
-            <dt><?php echo $this->translate('application.error.stackTrace') ?>:</dt>
-            <dd>
-                <pre class="prettyprint linenums"><?php echo $e->getTraceAsString() ?></pre>
-            </dd>
-        </dl>
-    </li>
-    <?php
-        $e = $e->getPrevious();
-        endwhile;
-    ?>
-</ul>
-<?php endif; ?>
+  <?php if(isset($this->exception) && $this->exception instanceof Exception): ?>
+  <hr/>
+  <h2><?php echo $this->translate('application.error.additionalInformation') ?>:</h2>
+  <h3><?php echo get_class($this->exception); ?></h3>
+  <dl>
+      <dt><?php echo $this->translate('application.generic.file') ?>:</dt>
+      <dd>
+          <pre class="prettyprint linenums"><?php echo $this->exception->getFile() ?>:<?php echo $this->exception->getLine() ?></pre>
+      </dd>
+      <dt><?php echo $this->translate('application.generic.message') ?>:</dt>
+      <dd>
+          <pre class="prettyprint linenums"><?php echo $this->exception->getMessage() ?></pre>
+      </dd>
+      <dt><?php echo $this->translate('application.error.stackTrace') ?>:</dt>
+      <dd>
+          <pre class="prettyprint linenums"><?php echo $this->exception->getTraceAsString() ?></pre>
+      </dd>
+  </dl>
+  <?php
+      $e = $this->exception->getPrevious();
+      if ($e) :
+  ?>
+  <hr/>
+  <h2><?php echo $this->translate('application.error.previousExceptions') ?>:</h2>
+  <ul class="unstyled">
+      <?php while($e) : ?>
+      <li>
+          <h3><?php echo get_class($e); ?></h3>
+          <dl>
+              <dt><?php echo $this->translate('application.generic.file') ?>:</dt>
+              <dd>
+                  <pre class="prettyprint linenums"><?php echo $e->getFile() ?>:<?php echo $e->getLine() ?></pre>
+              </dd>
+              <dt><?php echo $this->translate('application.generic.message') ?>:</dt>
+              <dd>
+                  <pre class="prettyprint linenums"><?php echo $e->getMessage() ?></pre>
+              </dd>
+              <dt><?php echo $this->translate('application.error.stackTrace') ?>:</dt>
+              <dd>
+                  <pre class="prettyprint linenums"><?php echo $e->getTraceAsString() ?></pre>
+              </dd>
+          </dl>
+      </li>
+      <?php
+          $e = $e->getPrevious();
+          endwhile;
+      ?>
+  </ul>
+  <?php endif; ?>
 
-<?php else: ?>
+  <?php else: ?>
 
-<h3><?php echo $this->translate('application.error.noExceptionAvailable') ?></h3>
+  <h3><?php echo $this->translate('application.error.noExceptionAvailable') ?></h3>
 
-<?php endif ?>
+  <?php endif ?>
 
-<?php endif ?>
+  <?php endif ?>
+</div>
