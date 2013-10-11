@@ -392,11 +392,17 @@ nav {
       nav:last-child {
         margin-right: 0; } }
   nav ul {
-    margin: 0; }
-  nav li {
     list-style: none;
-    display: inline-block;
+    word-spacing: 0;
+    letter-spacing: 0;
+    font-size: 0;
     margin: 0;
+    padding: 0; }
+  nav li {
+    display: inline; }
+  nav li * {
+    font-size: 14px; }
+  nav li {
     margin-left: 10px; }
   nav a {
     text-decoration: none;
@@ -556,15 +562,18 @@ aside {
     letter-spacing: 0;
     font-size: 0;
     margin: 0;
-    padding: 0;
+    padding: 0; }
+  .pagination li {
+    display: inline; }
+  .pagination li * {
+    font-size: 14px; }
+  .pagination ul {
     margin-top: 10px; }
   .pagination li {
-    display: inline;
     margin-left: 1px; }
   .pagination a {
     background-color: #00d273;
     display: inline-block;
-    font-size: 14px;
     color: black;
     text-decoration: none;
     padding: 5px 10px; }

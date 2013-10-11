@@ -71,6 +71,25 @@
   }
 }
 
+// Creates inline lists with no gap between the elements
+@mixin inline-list($fontSize) {
+  ul {
+    list-style: none;
+    word-spacing: 0;
+    letter-spacing: 0;
+    font-size: 0;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    display: inline;
+  }
+
+  li * {
+    font-size: $fontSize;
+  }
+}
+
 // CSS triangle
 @mixin triangle($size, $color: #000, $top: true, $right: false, $bottom: false, $left: false) {
   border: $size solid $color;

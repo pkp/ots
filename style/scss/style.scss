@@ -140,17 +140,13 @@ nav {
     @include span-columns(6);
   }
 
+  @include inline-list($pageFontSize);
+
   background-color: $navColor;
   text-align: right;
   padding: 5px $gutter;
 
-  ul { margin: 0; }
-  li {
-    list-style: none;
-    display: inline-block;
-    margin: 0;
-    margin-left: $gutter;
-  }
+  li { margin-left: $gutter; }
 
   a {
     text-decoration: none;
@@ -256,24 +252,14 @@ aside {
 
 // Pagination
 .pagination {
+  @include inline-list($pageFontSize);
+
   text-align: right;
-  ul {
-    list-style: none;
-    word-spacing: 0;
-    letter-spacing: 0;
-    font-size: 0;
-    margin: 0;
-    padding: 0;
-    margin-top: $gutter;
-  }
-  li {
-    display: inline;
-    margin-left: 1px;
-  }
+  ul { margin-top: $gutter; }
+  li { margin-left: 1px; }
   a {
     background-color: $secondaryColor21;
     display: inline-block;
-    font-size: $pageFontSize;
     color: $textColorDark;
     text-decoration: none;
     @include icon('before', true);
