@@ -5,6 +5,9 @@
 namespace Xmlps\DAO;
 
 use Doctrine\ORM\EntityManager;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
+use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+use Zend\Paginator\Paginator;
 
 abstract class DAO implements DAOInterface {
     protected $em;
@@ -49,6 +52,21 @@ abstract class DAO implements DAOInterface {
     }
 
     /**
+     * Returns a paginator for a given query
+     *
+     * @param mixed $query
+     *
+     * @return Zend\Paginator\Paginator
+     */
+    public function getPaginator($query)
+    {
+        $query = $this->em->createQuery($query);
+        return new Paginator(
+            new DoctrinePaginator(new ORMPaginator($query))
+        );
+    }
+
+    /**
      * Find one entity
      *
      * @param mixed $args Key/Value pair to search for
@@ -58,6 +76,16 @@ abstract class DAO implements DAOInterface {
     public function findOneBy($args)
     {
        return $this->getRepository()->findOneBy($args);
+    }
+
+    /**
+     * Find all entities
+     *
+     * @return mixed Entities
+     */
+    public function findAll()
+    {
+       return $this->getRepository()->findAll();
     }
 
     /**

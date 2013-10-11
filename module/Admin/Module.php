@@ -44,7 +44,15 @@ class Module
             'factories' => array(
                 'Admin\Controller\Admin' => function($cm)
                 {
-                    return new Controller\AdminController;
+                    $sm = $cm->getServiceLocator();
+                    $translator = $sm->get('translator');
+                    $logDAO = $sm->get('logDAO');
+                    $logger = $sm->get('Logger');
+                    return new Controller\AdminController(
+                        $logger,
+                        $translator,
+                        $logDAO
+                    );
                 }
             )
         );

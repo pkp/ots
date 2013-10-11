@@ -115,7 +115,7 @@ class Module
                 {
                     return new Entity\Log();
                 },
-                'Application\Model\DAO\LogDAO' => function($sm)
+                'LogDAO' => function($sm)
                 {
                     $em = $sm->get('doctrine.entitymanager.orm_default');
                     return new Model\DAO\LogDAO($em);
@@ -136,7 +136,7 @@ class Module
                     return $logger;
                 },
                 'Xmlps\Log\Writer\Doctrine' => function($sm) {
-                    $logDAO = $sm->get('Application\Model\DAO\LogDAO');
+                    $logDAO = $sm->get('LogDAO');
                     $logEntity = $sm->get('Application\Entity\Log');
                     return new \Xmlps\Log\Writer\Doctrine($logDAO, $logEntity);
                 },

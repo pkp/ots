@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-09 15:02-1000\n"
-"PO-Revision-Date: 2013-10-09 15:03-1000\n"
+"POT-Creation-Date: 2013-10-10 12:44-1000\n"
+"PO-Revision-Date: 2013-10-10 12:45-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -20,6 +20,10 @@ msgstr ""
 #: ../Module.php:41 ../../Application/Module.php:41
 msgid "application.acl.notAuthorized"
 msgstr "You are not permitted to access the requested resource."
+
+#: ../../Admin/src/Admin/Controller/AdminController.php:47
+msgid "admin.log.noEntriesFound"
+msgstr "No log entries found."
 
 #: ../../User/src/User/Form/PasswordResetForm.php:31
 msgid "user.form.newPassword"
@@ -104,20 +108,22 @@ msgstr "User %s updated settings"
 msgid "application.generic.siteTitle"
 msgstr "PKP XML Parsing Service"
 
-#: ../view/layout/layout.phtml:28
-#: ../../Application/view/layout/layout.phtml:28
+#: ../view/layout/layout.phtml:27
+#: ../../Application/view/layout/layout.phtml:27
+msgid "application.layout.home"
+msgstr "Home"
+
+#: ../view/layout/layout.phtml:29
+#: ../../Admin/view/admin/admin/system-log.phtml:1
+#: ../../Application/view/layout/layout.phtml:29
 msgid "application.layout.systemLog"
 msgstr "System Log"
 
-#: ../view/layout/layout.phtml:29
-#: ../../Application/view/layout/layout.phtml:29
+#: ../view/layout/layout.phtml:30
+#: ../../Admin/view/admin/admin/user-management.phtml:1
+#: ../../Application/view/layout/layout.phtml:30
 msgid "application.layout.userManagement"
 msgstr "User Management"
-
-#: ../view/layout/layout.phtml:31
-#: ../../Application/view/layout/layout.phtml:31
-msgid "application.layout.home"
-msgstr "Home"
 
 #: ../view/layout/layout.phtml:32
 #: ../../Application/view/layout/layout.phtml:32
@@ -226,6 +232,22 @@ msgstr "Controller"
 #: ../view/error/404.phtml:41 ../../Application/view/error/404.phtml:41
 msgid "application.error.controlerResolves"
 msgstr "resolves to %s"
+
+#: ../../Admin/view/admin/admin/system-log.phtml:8
+msgid "admin.log.time"
+msgstr "Time"
+
+#: ../../Admin/view/admin/admin/system-log.phtml:9
+msgid "admin.log.ipAddress"
+msgstr "IP"
+
+#: ../../Admin/view/admin/admin/system-log.phtml:10
+msgid "admin.log.priority"
+msgstr "Level"
+
+#: ../../Admin/view/admin/admin/system-log.phtml:11
+msgid "admin.log.message"
+msgstr "Message"
 
 #: ../../User/view/_sideBar.phtml:4
 msgid "application.index.sidebarDescription"

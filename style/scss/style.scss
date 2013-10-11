@@ -14,28 +14,60 @@
 /*******************************
  * Site Styles
  *******************************/
+// Body
 body {
   margin: 0;
   padding: 0;
   font-family: $pageFont;
   background-color: $backgroundColorDark;
-  font-size: em(14);
-  line-height: em(24);
+  font-size: $pageFontSize;
+  line-height: $pageLineHeight;
 
   @include media($mobile) {
     font-family: $mobilePageFont;
   }
 }
 
+// Headings
 h1, h2, h3, h4 {
   font-family: $highlightFont;
 }
 
+// Page container
 .container {
   @include outer-container;
   background-color: $backgroundColorLight;
 }
 
+// Content container
+.content {
+  @include span-columns(12);
+  @include media($mobile) {
+    @include span-columns(6);
+  }
+}
+
+// General page style
+.page {
+  @include span-columns(12);
+  padding: $gutter;
+}
+
+// Page with sidebar
+.sidebar-page {
+  @include span-columns(8);
+  @include media($mobile) {
+    @include span-columns(6);
+  }
+  padding: $gutter;
+}
+.sidebar-page + aside {
+  @include media($mobile) {
+    @include span-columns(6 of 6);
+  }
+}
+
+// Page header
 header {
   @include span-columns(12);
   @include media($mobile) {
@@ -66,6 +98,7 @@ header {
   }
 }
 
+// Page footer
 footer {
   @include span-columns(12);
   @include media($mobile) {
@@ -97,6 +130,7 @@ footer {
   }
 }
 
+// Page navigation
 nav {
   @include span-columns(12);
   @include media($mobile) {
@@ -134,19 +168,14 @@ nav {
   }
 }
 
+// Sidebar
 aside {
   @include span-columns(4);
   padding: 0 $gutter;
   background-color: $complementaryColor4;
 }
 
-.content {
-  @include span-columns(12);
-  @include media($mobile) {
-    @include span-columns(6);
-  }
-}
-
+// Page messages 
 .message-container {
   @include span-columns(12);
   @include fade-in(2s);
@@ -193,23 +222,74 @@ aside {
 .message-container.info .triangle { border-top-color: $infoColor; }
 .message-container.error .triangle { border-top-color: $errorColor; }
 
+// General box
 .box { @include box; }
 
-.page {
-  @include span-columns(12);
-  padding: $gutter;
+// Tables
+.table {
+  thead {
+    tr { background-color: $secondaryColor21; }
+    font-family: $highlightFont;
+  }
+
+  tbody {
+    tr {
+      background-color: $primaryColor5;
+      &:hover {
+        background: darken($primaryColor5, 10%);
+      }
+    }
+  }
+
+  tr { border-bottom: 1px solid $backgroundColorLight; }
+
+  td, th {
+    padding: $gutter / 2 $gutter;
+    vertical-align: top;
+  }
+
+  border-collapse: collapse;
 }
 
-.sidebar-page {
-  @include span-columns(8);
-  @include media($mobile) {
-    @include span-columns(6);
+// Pagination
+.pagination {
+  text-align: right;
+  ul {
+    list-style: none;
+    word-spacing: 0;
+    letter-spacing: 0;
+    font-size: 0;
+    margin: 0;
+    padding: 0;
+    margin-top: $gutter;
   }
-  padding: $gutter;
-}
-.sidebar-page + aside {
-  @include media($mobile) {
-    @include span-columns(6 of 6);
+  li {
+    display: inline;
+    margin-left: 1px;
+  }
+  a {
+    background-color: $secondaryColor21;
+    display: inline-block;
+    font-size: $pageFontSize;
+    color: $textColorDark;
+    text-decoration: none;
+    @include icon('before', true);
+    &:before { font-size: 0.85em; }
+
+    padding: $gutter / 2 $gutter;
+    @include media($mobile) {
+      padding: $gutter $gutter / 2;
+    }
+  }
+  li.disabled a:before { color: $disabledColor; }
+
+  a.first { @include icon('before', false, 'first'); }
+  a.previous { @include icon('before', false, 'previous'); }
+  a.next { @include icon('before', false, 'next'); }
+  a.last { @include icon('before', false, 'last'); }
+
+  li.active a {
+    background-color: $complementaryColor1;
   }
 }
 
@@ -249,4 +329,14 @@ aside {
     }
   }
   input { @include fill-parent; }
+}
+
+// System log page
+.system-log-page {
+  .table {
+    @include fill-parent;
+    .time { width: 15%; }
+    .priority { width: 8%; }
+    .ip-address { width: 5%; }
+  }
 }

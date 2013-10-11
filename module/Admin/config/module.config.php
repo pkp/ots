@@ -18,6 +18,21 @@ return array(
 
                 ),
             ),
+            'admin-system-log' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin/system-log[/:page]',
+                    'constraints' => array(
+                        'page' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Admin',
+                        'action' => 'systemLog',
+                        'page' => 1,
+                    ),
+
+                ),
+            ),
         ),
     ),
     'view_manager' => array(
@@ -45,13 +60,13 @@ return array(
     'acl' => array(
         'resources' => array(
             'controller:Admin\Controller\Admin:index',
-            'controller:Admin\Controller\Admin:user-management',
-            'controller:Admin\Controller\Admin:system-log',
+            'controller:Admin\Controller\Admin:userManagement',
+            'controller:Admin\Controller\Admin:systemLog',
         ),
         'rules' => array(
             array('allow', 'administrator', 'controller:Admin\Controller\Admin:index'),
-            array('allow', 'administrator', 'controller:Admin\Controller\Admin:user-management'),
-            array('allow', 'administrator', 'controller:Admin\Controller\Admin:system-log'),
+            array('allow', 'administrator', 'controller:Admin\Controller\Admin:userManagement'),
+            array('allow', 'administrator', 'controller:Admin\Controller\Admin:systemLog'),
         ),
     )
 );

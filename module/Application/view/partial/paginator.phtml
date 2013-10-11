@@ -1,0 +1,36 @@
+<?php if ($this->pageCount): ?>
+  <div class="pagination">
+    <ul>
+      <?php if (isset($this->previous)) : ?>
+        <li><a href="<?php echo $this->url($this->route); ?>/<?php echo $this->first ?>" class="first"></a></li>
+      <?php else: ?>
+        <li class="disabled"><a href="#" class="first"></a></li>
+      <?php endif ?>
+
+      <?php if (isset($this->previous)) : ?>
+        <li><a href="<?php echo $this->url($this->route) ?>/<?php echo $this->previous ?>" class="previous"></a></li>
+      <?php else: ?>
+        <li class="disabled"><a href="#" class="previous"></a></li>
+      <?php endif ?>
+
+      <?php foreach ($this->pagesInRange as $page) : ?>
+        <?php if ($page != $this->current) : ?>
+          <li><a href="<?php echo $this->url($this->route) ?>/<?php echo $page ?>"><?php echo $page ?></a></li>
+        <?php else : ?>
+          <li class="active"><a href="#"><?php echo $page ?></a></li><?php endif ?>
+      <?php endforeach ?>
+
+      <?php if (isset($this->next)) : ?>
+        <li><a href="<?php echo $this->url($this->route) ?>/<?php echo $this->next ?>" class="next"></a></li>
+      <?php else : ?>
+        <li class="disabled"><a href="#" class="next"></a></li>
+      <?php endif ?>
+
+      <?php if (isset($this->next)) : ?>
+        <li><a href="<?php echo $this->url($this->route) ?>/<?php echo $this->last ?>" class="last"></a></li>
+      <?php else : ?>
+        <li class="disabled"><a href="#" class="last"></a></li>
+      <?php endif ?>
+    </ul>
+  </div>
+<?php endif; ?>

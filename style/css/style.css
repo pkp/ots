@@ -128,8 +128,8 @@ body {
   padding: 0;
   font-family: Inika, Georgia, Serif;
   background-color: #eeeeee;
-  font-size: 0.875em;
-  line-height: 1.5em; }
+  font-size: 14px;
+  line-height: 21px; }
   @media screen and (max-width: 480px) {
     body {
       font-family: Georgia, Serif; } }
@@ -148,6 +148,57 @@ h1, h2, h3, h4 {
     display: table; }
   .container:after {
     clear: both; }
+
+.content {
+  display: block;
+  float: left;
+  margin-right: 1.05263%;
+  width: 100%; }
+  .content:last-child {
+    margin-right: 0; }
+  @media screen and (max-width: 480px) {
+    .content {
+      display: block;
+      float: left;
+      margin-right: 2.12766%;
+      width: 100%; }
+      .content:last-child {
+        margin-right: 0; } }
+
+.page {
+  display: block;
+  float: left;
+  margin-right: 1.05263%;
+  width: 100%;
+  padding: 10px; }
+  .page:last-child {
+    margin-right: 0; }
+
+.sidebar-page {
+  display: block;
+  float: left;
+  margin-right: 1.05263%;
+  width: 66.31579%;
+  padding: 10px; }
+  .sidebar-page:last-child {
+    margin-right: 0; }
+  @media screen and (max-width: 480px) {
+    .sidebar-page {
+      display: block;
+      float: left;
+      margin-right: 2.12766%;
+      width: 100%; }
+      .sidebar-page:last-child {
+        margin-right: 0; } }
+
+@media screen and (max-width: 480px) {
+  .sidebar-page + aside {
+    display: block;
+    float: left;
+    margin-right: 2.12766%;
+    width: 100%; }
+    .sidebar-page + aside:last-child {
+      margin-right: 0; } }
 
 header {
   display: block;
@@ -292,22 +343,6 @@ aside {
   aside:last-child {
     margin-right: 0; }
 
-.content {
-  display: block;
-  float: left;
-  margin-right: 1.05263%;
-  width: 100%; }
-  .content:last-child {
-    margin-right: 0; }
-  @media screen and (max-width: 480px) {
-    .content {
-      display: block;
-      float: left;
-      margin-right: 2.12766%;
-      width: 100%; }
-      .content:last-child {
-        margin-right: 0; } }
-
 .message-container {
   display: block;
   float: left;
@@ -404,40 +439,69 @@ aside {
     font-family: Oswald, Sans-Serif;
     font-weight: bold; }
 
-.page {
-  display: block;
-  float: left;
-  margin-right: 1.05263%;
-  width: 100%;
-  padding: 10px; }
-  .page:last-child {
-    margin-right: 0; }
+.table {
+  border-collapse: collapse; }
+  .table thead {
+    font-family: Oswald, Sans-Serif; }
+    .table thead tr {
+      background-color: #00d273; }
+  .table tbody tr {
+    background-color: #67a7e6; }
+    .table tbody tr:hover {
+      background: #3b8edf; }
+  .table tr {
+    border-bottom: 1px solid white; }
+  .table td, .table th {
+    padding: 5px 10px;
+    vertical-align: top; }
 
-.sidebar-page {
-  display: block;
-  float: left;
-  margin-right: 1.05263%;
-  width: 66.31579%;
-  padding: 10px; }
-  .sidebar-page:last-child {
-    margin-right: 0; }
-  @media screen and (max-width: 480px) {
-    .sidebar-page {
-      display: block;
-      float: left;
-      margin-right: 2.12766%;
-      width: 100%; }
-      .sidebar-page:last-child {
-        margin-right: 0; } }
-
-@media screen and (max-width: 480px) {
-  .sidebar-page + aside {
-    display: block;
-    float: left;
-    margin-right: 2.12766%;
-    width: 100%; }
-    .sidebar-page + aside:last-child {
-      margin-right: 0; } }
+.pagination {
+  text-align: right; }
+  .pagination ul {
+    list-style: none;
+    word-spacing: 0;
+    letter-spacing: 0;
+    font-size: 0;
+    margin: 0;
+    padding: 0;
+    margin-top: 10px; }
+  .pagination li {
+    display: inline;
+    margin-left: 1px; }
+  .pagination a {
+    background-color: #00d273;
+    display: inline-block;
+    font-size: 14px;
+    color: black;
+    text-decoration: none;
+    padding: 5px 10px; }
+    .pagination a:before {
+      speak: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-transform: none;
+      line-height: 1;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: normal;
+      font-family: 'Icons'; }
+    .pagination a:before {
+      font-size: 0.85em; }
+    @media screen and (max-width: 480px) {
+      .pagination a {
+        padding: 10px 5px; } }
+  .pagination li.disabled a:before {
+    color: #777777; }
+  .pagination a.first:before {
+    content: "\e10f"; }
+  .pagination a.previous:before {
+    content: "\e111"; }
+  .pagination a.next:before {
+    content: "\e112"; }
+  .pagination a.last:before {
+    content: "\e110"; }
+  .pagination li.active a {
+    background-color: #ff9700; }
 
 /*******************************
  * Page Styles
@@ -508,3 +572,12 @@ aside {
         margin-right: 0; } }
 .settings-page input {
   width: 100%; }
+
+.system-log-page .table {
+  width: 100%; }
+  .system-log-page .table .time {
+    width: 15%; }
+  .system-log-page .table .priority {
+    width: 8%; }
+  .system-log-page .table .ip-address {
+    width: 5%; }
