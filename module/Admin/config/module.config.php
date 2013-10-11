@@ -27,7 +27,7 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Admin',
-                        'action' => 'systemLog',
+                        'action' => 'system-log',
                         'page' => 1,
                     ),
 
@@ -60,13 +60,13 @@ return array(
     'acl' => array(
         'resources' => array(
             'controller:Admin\Controller\Admin:index',
-            'controller:Admin\Controller\Admin:userManagement',
-            'controller:Admin\Controller\Admin:systemLog',
+            'controller:Admin\Controller\Admin:user-management',
+            'controller:Admin\Controller\Admin:system-log',
         ),
         'rules' => array(
             array('allow', 'administrator', 'controller:Admin\Controller\Admin:index'),
-            array('allow', 'administrator', 'controller:Admin\Controller\Admin:userManagement'),
-            array('allow', 'administrator', 'controller:Admin\Controller\Admin:systemLog'),
+            array('allow', 'administrator', 'controller:Admin\Controller\Admin:user-management'),
+            array('allow', 'administrator', 'controller:Admin\Controller\Admin:system-log'),
         ),
     )
 );

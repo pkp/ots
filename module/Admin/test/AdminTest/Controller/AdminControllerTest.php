@@ -148,7 +148,7 @@ class AdminControllerTest extends ControllerTest
         $this->assertControllerName('Admin\Controller\Admin');
         $this->assertControllerClass('AdminController');
         $this->assertActionName('system-log');
-        $this->assertMatchedRouteName('admin');
+        $this->assertMatchedRouteName('admin-system-log');
     }
 
     /**
