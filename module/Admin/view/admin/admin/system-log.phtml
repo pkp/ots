@@ -3,10 +3,10 @@
 <div class="page system-log-page">
   <?php
   if ($this->logEntries) {
-    echo '<table class="table table-system-log"><thead><tr>';
-    echo '<th class="time">' . $this->translate('admin.log.time') . '</th>';
-    echo '<th class="ip-address">' . $this->translate('admin.log.ipAddress') . '</th>';
-    echo '<th class="priority">' . $this->translate('admin.log.priority') . '</th>';
+    echo '<table class="table table-system-log footable"><thead><tr>';
+    echo '<th class="time" data-toggle="true">' . $this->translate('admin.log.time') . '</th>';
+    echo '<th class="ip-address" data-hide="phone">' . $this->translate('admin.log.ipAddress') . '</th>';
+    echo '<th class="priority" data-hide="phone">' . $this->translate('admin.log.priority') . '</th>';
     echo '<th class="message">' . $this->translate('admin.log.message') . '</th>';
     echo '</tr></thead><tbody>';
 

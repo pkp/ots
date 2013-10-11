@@ -8,4 +8,6 @@ stylesheets:
 
 javascripts:
   public/js/script.min:
+    - javascript/jquery-2.0.3.js
+    - javascript/footable.js
     - javascript/script.js

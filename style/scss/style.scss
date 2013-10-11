@@ -11,6 +11,9 @@
 @import "mixins";
 @import "forms";
 
+// Plugins
+@import "footable";
+
 /*******************************
  * Site Styles
  *******************************/
@@ -345,7 +348,7 @@ aside {
 .system-log-page {
   .table {
     @include fill-parent;
-    .time { width: 15%; }
+    .time { width: 10%; }
     .priority { width: 8%; }
     .ip-address { width: 5%; }
   }
