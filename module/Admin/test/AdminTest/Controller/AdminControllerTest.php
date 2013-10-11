@@ -152,6 +152,20 @@ class AdminControllerTest extends ControllerTest
     }
 
     /**
+     * Test the system log action paging
+     *
+     * @return void
+     */
+    public function testSystemLogActionPaging()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
+        $this->mockLogin($user);
+
+        $this->dispatch('/admin/system-log/1');
+        $this->assertResponseStatusCode(200);
+    }
+
+    /**
      * Test if the system log action cannot be accessed by guests
      *
      * @return void
