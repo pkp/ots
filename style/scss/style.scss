@@ -241,7 +241,7 @@ aside {
     }
   }
 
-  tr { border-bottom: 1px solid $backgroundColorLight; }
+  tr { border: 1px solid $backgroundColorLight; }
 
   td, th {
     padding: $gutter / 2 $gutter;
@@ -278,7 +278,9 @@ aside {
 
     padding: $gutter / 2 $gutter;
     @include media($mobile) {
-      padding: $gutter $gutter / 2;
+      padding: $gutter / 2 $gutter / 2;
+      font-size: $pageFontSizeSmaller;
+      line-height: $pageLineHeightSmaller;
     }
   }
   li.disabled a:before { color: $disabledColor; }

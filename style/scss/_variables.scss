@@ -1,6 +1,8 @@
 // Fonts
 $pageFontSize: 14px;
-$pageLineHeight: 21px;
+$pageFontSizeSmaller: $pageFontSize - 2px;
+$pageLineHeight: $pageFontSize * 1.5;
+$pageLineHeightSmaller: $pageFontSizeSmaller * 1.5;
 $pageFont: Inika, Georgia, Serif;
 $highlightFont: Oswald, Sans-Serif;
 $mobilePageFont: Georgia, Serif;

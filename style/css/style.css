@@ -450,7 +450,7 @@ aside {
     .table tbody tr:hover {
       background: #3b8edf; }
   .table tr {
-    border-bottom: 1px solid white; }
+    border: 1px solid white; }
   .table td, .table th {
     padding: 5px 10px;
     vertical-align: top; }
@@ -489,7 +489,9 @@ aside {
       font-size: 0.85em; }
     @media screen and (max-width: 480px) {
       .pagination a {
-        padding: 10px 5px; } }
+        padding: 5px 5px;
+        font-size: 12px;
+        line-height: 18px; } }
   .pagination li.disabled a:before {
     color: #777777; }
   .pagination a.first:before {
