@@ -54,12 +54,12 @@ Module Description
  * Authentication [X]
  * Registration [X]
  * Lost password retrieval
- * New password
+ * New password [X]
 * Admin
  * User management
   * Confirm registration
   * Set user's document conversion rate
-  * System log viewer
+  * System log viewer [X]
 * Manager
  * Receives conversion jobs
  * Queues jobs for individual workers
