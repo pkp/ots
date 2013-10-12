@@ -51,13 +51,13 @@ class UserManagementControllerTest extends ControllerTest
         $user = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
         $this->mockLogin($user);
 
-        $this->dispatch('/admin/user-management/view');
+        $this->dispatch('/admin/user-management/list');
         $this->assertResponseStatusCode(200);
 
         $this->assertModuleName('Admin');
         $this->assertControllerName('Admin\Controller\UserManagement');
         $this->assertControllerClass('UserManagementController');
-        $this->assertActionName('view');
+        $this->assertActionName('list');
         $this->assertMatchedRouteName('admin/user-management');
     }
 
@@ -68,7 +68,7 @@ class UserManagementControllerTest extends ControllerTest
      */
     public function testViewActionCanBeAccessedLoggedOut()
     {
-        $this->dispatch('/admin/user-management/view');
+        $this->dispatch('/admin/user-management/list');
         $this->assertResponseStatusCode(403);
     }
 
@@ -82,7 +82,7 @@ class UserManagementControllerTest extends ControllerTest
         $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
         $this->mockLogin($user);
 
-        $this->dispatch('/admin/user-management/view');
+        $this->dispatch('/admin/user-management/list');
         $this->assertResponseStatusCode(403);
     }
 
@@ -96,7 +96,7 @@ class UserManagementControllerTest extends ControllerTest
         $user = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
         $this->mockLogin($user);
 
-        $this->dispatch('/admin/user-management/view/page/1');
+        $this->dispatch('/admin/user-management/list/page/1');
         $this->assertResponseStatusCode(200);
     }
 

@@ -51,13 +51,13 @@ class SystemLogControllerTest extends ControllerTest
         $user = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
         $this->mockLogin($user);
 
-        $this->dispatch('/admin/system-log');
+        $this->dispatch('/admin/system-log/list');
         $this->assertResponseStatusCode(200);
 
         $this->assertModuleName('Admin');
         $this->assertControllerName('Admin\Controller\SystemLog');
         $this->assertControllerClass('SystemLogController');
-        $this->assertActionName('view');
+        $this->assertActionName('list');
         $this->assertMatchedRouteName('admin/system-log');
     }
 
@@ -68,7 +68,7 @@ class SystemLogControllerTest extends ControllerTest
      */
     public function testViewActionCanBeAccessedLoggedOut()
     {
-        $this->dispatch('/admin/system-log');
+        $this->dispatch('/admin/system-log/list');
         $this->assertResponseStatusCode(403);
     }
 
@@ -82,7 +82,7 @@ class SystemLogControllerTest extends ControllerTest
         $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
         $this->mockLogin($user);
 
-        $this->dispatch('/admin/system-log');
+        $this->dispatch('/admin/system-log/list');
         $this->assertResponseStatusCode(403);
     }
 
@@ -96,7 +96,7 @@ class SystemLogControllerTest extends ControllerTest
         $user = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
         $this->mockLogin($user);
 
-        $this->dispatch('/admin/system-log/page/1');
+        $this->dispatch('/admin/system-log/list/page/1');
         $this->assertResponseStatusCode(200);
     }
 
