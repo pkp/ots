@@ -5,21 +5,43 @@ return array(
     'router' => array(
         'routes' => array(
             'admin' => array(
-                'type' => 'segment',
+                'type' => 'literal',
                 'options' => array(
-                    'route' => '/admin/:action[/page/:page][/user/:userId]',
-                    'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'page' => '[0-9]*',
-                        'id' => '[0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\Admin',
-                        'action' => 'index',
-                        'page' => 1,
-                    ),
-
+                    'route' => '/admin',
                 ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'user-management' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/user-management/:action[/page/:page][/user/:userId]',
+                            'constraints' => array(
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'page' => '[0-9]*',
+                                'userId' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Admin\Controller\UserManagement',
+                                'action' => 'view',
+                                'page' => 1,
+                            ),
+                        ),
+                    ),
+                    'system-log' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/system-log[/page/:page]',
+                            'constraints' => array(
+                                'page' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Admin\Controller\SystemLog',
+                                'action' => 'view',
+                                'page' => 1,
+                            ),
+                        ),
+                    ),
+                )
             ),
         ),
     ),
@@ -47,14 +69,12 @@ return array(
 
     'acl' => array(
         'resources' => array(
-            'controller:Admin\Controller\Admin:index',
-            'controller:Admin\Controller\Admin:user-management',
-            'controller:Admin\Controller\Admin:system-log',
+            'controller:Admin\Controller\SystemLog:view',
+            'controller:Admin\Controller\UserManagement:view',
         ),
         'rules' => array(
-            array('allow', 'administrator', 'controller:Admin\Controller\Admin:index'),
-            array('allow', 'administrator', 'controller:Admin\Controller\Admin:user-management'),
-            array('allow', 'administrator', 'controller:Admin\Controller\Admin:system-log'),
+            array('allow', 'administrator', 'controller:Admin\Controller\SystemLog:view'),
+            array('allow', 'administrator', 'controller:Admin\Controller\UserManagement:view'),
         ),
     )
 );

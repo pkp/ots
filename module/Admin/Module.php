@@ -42,20 +42,30 @@ class Module
     {
         return array(
             'factories' => array(
-                'Admin\Controller\Admin' => function($cm)
+                'Admin\Controller\UserManagement' => function($cm)
+                {
+                    $sm = $cm->getServiceLocator();
+                    $translator = $sm->get('translator');
+                    $userDAO = $sm->get('userDAO');
+                    $logger = $sm->get('Logger');
+                    return new Controller\UserManagementController(
+                        $logger,
+                        $translator,
+                        $userDAO
+                    );
+                },
+                'Admin\Controller\SystemLog' => function($cm)
                 {
                     $sm = $cm->getServiceLocator();
                     $translator = $sm->get('translator');
                     $logDAO = $sm->get('logDAO');
-                    $userDAO = $sm->get('userDAO');
                     $logger = $sm->get('Logger');
-                    return new Controller\AdminController(
+                    return new Controller\SystemLogController(
                         $logger,
                         $translator,
-                        $logDAO,
-                        $userDAO
+                        $logDAO
                     );
-                }
+                },
             )
         );
     }
