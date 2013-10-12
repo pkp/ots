@@ -15,7 +15,7 @@ class UserManagementController extends AbstractActionController {
     protected $userDAO;
 
     /**
-     * Constructor 
+     * Constructor
      *
      * @param Logger $logger
      * @param Translator $translator
@@ -53,5 +53,25 @@ class UserManagementController extends AbstractActionController {
         }
 
         return array('users' => $paginator);
+    }
+
+    /**
+     * Edit a user
+     *
+     * @return void
+     */
+    public function editAction()
+    {
+
+    }
+
+    /**
+     * Remove a user
+     *
+     * @return void
+     */
+    public function removeAction()
+    {
+
     }
 }

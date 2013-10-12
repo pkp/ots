@@ -70,10 +70,14 @@ return array(
     'acl' => array(
         'resources' => array(
             'controller:Admin\Controller\SystemLog:view',
+            'controller:Admin\Controller\UserManagement:edit',
+            'controller:Admin\Controller\UserManagement:remove',
             'controller:Admin\Controller\UserManagement:view',
         ),
         'rules' => array(
             array('allow', 'administrator', 'controller:Admin\Controller\SystemLog:view'),
+            array('allow', 'administrator', 'controller:Admin\Controller\UserManagement:edit'),
+            array('allow', 'administrator', 'controller:Admin\Controller\UserManagement:remove'),
             array('allow', 'administrator', 'controller:Admin\Controller\UserManagement:view'),
         ),
     )
