@@ -22,7 +22,7 @@ return array(
                             ),
                             'defaults' => array(
                                 'controller' => 'Admin\Controller\UserManagement',
-                                'action' => 'view',
+                                'action' => 'list',
                                 'page' => 1,
                             ),
                         ),
@@ -30,13 +30,14 @@ return array(
                     'system-log' => array(
                         'type' => 'segment',
                         'options' => array(
-                            'route' => '/system-log[/page/:page]',
+                            'route' => '/system-log/:action[/page/:page]',
                             'constraints' => array(
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'page' => '[0-9]*',
                             ),
                             'defaults' => array(
                                 'controller' => 'Admin\Controller\SystemLog',
-                                'action' => 'view',
+                                'action' => 'list',
                                 'page' => 1,
                             ),
                         ),
@@ -69,16 +70,16 @@ return array(
 
     'acl' => array(
         'resources' => array(
-            'controller:Admin\Controller\SystemLog:view',
+            'controller:Admin\Controller\SystemLog:list',
             'controller:Admin\Controller\UserManagement:edit',
             'controller:Admin\Controller\UserManagement:remove',
-            'controller:Admin\Controller\UserManagement:view',
+            'controller:Admin\Controller\UserManagement:list',
         ),
         'rules' => array(
-            array('allow', 'administrator', 'controller:Admin\Controller\SystemLog:view'),
+            array('allow', 'administrator', 'controller:Admin\Controller\SystemLog:list'),
             array('allow', 'administrator', 'controller:Admin\Controller\UserManagement:edit'),
             array('allow', 'administrator', 'controller:Admin\Controller\UserManagement:remove'),
-            array('allow', 'administrator', 'controller:Admin\Controller\UserManagement:view'),
+            array('allow', 'administrator', 'controller:Admin\Controller\UserManagement:list'),
         ),
     )
 );

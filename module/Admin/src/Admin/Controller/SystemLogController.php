@@ -30,11 +30,11 @@ class SystemLogController extends AbstractActionController {
     }
 
     /**
-     * System log action
+     * List log entries
      *
      * @return mixed Array containing view variables
      */
-    public function viewAction()
+    public function listAction()
     {
         // Get the paginator
         $paginator = $this->logDAO->getLogPaginator();

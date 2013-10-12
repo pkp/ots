@@ -24,8 +24,8 @@
         <nav>
           <ul>
             <?php if ($user->isAdministrator()) : ?>
-              <li class="system-log"><a href="<?php echo $this->url('admin/system-log', array('action' => 'view'))?>"><?php echo $this->translate('application.layout.systemLog'); ?></a></li>
-              <li class="user-management"><a href="<?php echo $this->url('admin/user-management', array('action' => 'view'))?>"><?php echo $this->translate('application.layout.userManagement'); ?></a></li>
+              <li class="system-log"><a href="<?php echo $this->url('admin/system-log', array('action' => 'list'))?>"><?php echo $this->translate('application.layout.systemLog'); ?></a></li>
+              <li class="user-management"><a href="<?php echo $this->url('admin/user-management', array('action' => 'list'))?>"><?php echo $this->translate('application.layout.userManagement'); ?></a></li>
             <?php endif ?>
             <li class="settings"><a href="<?php echo $this->url('user', array('action' => 'settings'))?>"><?php echo $this->translate('application.layout.settings'); ?></a></li>
             <li class="logout"><a href="<?php echo $this->url('user', array('action' => 'logout'))?>"><?php echo $this->translate('application.layout.logout'); ?></a></li>

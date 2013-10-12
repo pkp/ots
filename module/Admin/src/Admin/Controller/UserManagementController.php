@@ -30,11 +30,11 @@ class UserManagementController extends AbstractActionController {
     }
 
     /**
-     * User management action
+     * List users
      *
      * @return mixed Array containing view variables
      */
-    public function viewAction()
+    public function listAction()
     {
         // Get the paginator
         $paginator = $this->userDAO->getUserPaginator();
