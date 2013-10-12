@@ -17,9 +17,9 @@ class LogDAO extends DAO {
     }
 
     /**
-     * Returns a log entry paginator with all log results ordered by id
+     * Returns a entry paginator with all log results ordered by id
      */
-    public function getLogEntryPaginator()
+    public function getLogPaginator()
     {
         return $this->getPaginator(
             'SELECT l from Application\Entity\Log l ORDER BY l.id DESC'

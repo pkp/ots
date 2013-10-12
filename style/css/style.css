@@ -196,6 +196,9 @@ span.footable-toggle:before {
   display: table-row;
   line-height: 1.5em; }
 
+.footable-row-detail-cell {
+  text-align: left !important; }
+
 .footable-row-detail-group {
   display: block;
   line-height: 2em;
@@ -558,6 +561,28 @@ aside {
     padding: 5px 10px;
     vertical-align: top; }
 
+a.action {
+  text-decoration: none;
+  color: black; }
+  a.action:before {
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-transform: none;
+    line-height: 1;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-family: 'Icons'; }
+  a.action:hover {
+    color: #ff9700; }
+
+a.edit-action:before {
+  content: "\e005"; }
+
+a.remove-action:before {
+  content: "\e0a8"; }
+
 .pagination {
   text-align: right; }
   .pagination ul {
@@ -694,3 +719,16 @@ aside {
     width: 8%; }
   .system-log-page .table .ip-address {
     width: 5%; }
+  .system-log-page .table tr td:nth-child(1),
+  .system-log-page .table tr td:nth-child(2),
+  .system-log-page .table tr td:nth-child(3) {
+    text-align: center; }
+
+.user-management-page .table tr td:nth-child(1),
+.user-management-page .table tr td:nth-child(3),
+.user-management-page .table tr td:nth-child(4),
+.user-management-page .table tr td:nth-child(5),
+.user-management-page .table tr td:nth-child(6) {
+  text-align: center; }
+.user-management-page .table .action {
+  margin-left: 3px; }

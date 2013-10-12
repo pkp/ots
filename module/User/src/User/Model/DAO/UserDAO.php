@@ -15,4 +15,14 @@ class UserDAO extends DAO {
     {
         return 'User\Entity\User';
     }
+
+    /**
+     * Returns a user paginator with all results ordered by email
+     */
+    public function getUserPaginator()
+    {
+        return $this->getPaginator(
+            'SELECT u from User\Entity\User u ORDER BY u.email'
+        );
+    }
 }

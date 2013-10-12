@@ -2,32 +2,32 @@
   <div class="pagination">
     <ul>
       <?php if (isset($this->previous)) : ?>
-        <li><a href="<?php echo $this->url($this->route); ?>/<?php echo $this->first ?>" class="first clickable"></a></li>
+        <li><a href="<?php echo $this->url($this->route, $this->routeParams); ?>/page/<?php echo $this->first ?>" class="first clickable"></a></li>
       <?php else: ?>
         <li class="disabled"><a href="#" class="first"></a></li>
       <?php endif ?>
 
       <?php if (isset($this->previous)) : ?>
-        <li><a href="<?php echo $this->url($this->route) ?>/<?php echo $this->previous ?>" class="previous clickable"></a></li>
+        <li><a href="<?php echo $this->url($this->route, $this->routeParams) ?>/page/<?php echo $this->previous ?>" class="previous clickable"></a></li>
       <?php else: ?>
         <li class="disabled"><a href="#" class="previous"></a></li>
       <?php endif ?>
 
       <?php foreach ($this->pagesInRange as $page) : ?>
         <?php if ($page != $this->current) : ?>
-          <li><a href="<?php echo $this->url($this->route) ?>/<?php echo $page ?>" class="clickable"><?php echo $page ?></a></li>
+          <li><a href="<?php echo $this->url($this->route, $this->routeParams) ?>/page/<?php echo $page ?>" class="clickable"><?php echo $page ?></a></li>
         <?php else : ?>
           <li class="active"><a href="#"><?php echo $page ?></a></li><?php endif ?>
       <?php endforeach ?>
 
       <?php if (isset($this->next)) : ?>
-        <li><a href="<?php echo $this->url($this->route) ?>/<?php echo $this->next ?>" class="next clickable"></a></li>
+        <li><a href="<?php echo $this->url($this->route, $this->routeParams) ?>/page/<?php echo $this->next ?>" class="next clickable"></a></li>
       <?php else : ?>
         <li class="disabled"><a href="#" class="next"></a></li>
       <?php endif ?>
 
       <?php if (isset($this->next)) : ?>
-        <li><a href="<?php echo $this->url($this->route) ?>/<?php echo $this->last ?>" class="last clickable"></a></li>
+        <li><a href="<?php echo $this->url($this->route, $this->routeParams) ?>/page/<?php echo $this->last ?>" class="last clickable"></a></li>
       <?php else : ?>
         <li class="disabled"><a href="#" class="last"></a></li>
       <?php endif ?>

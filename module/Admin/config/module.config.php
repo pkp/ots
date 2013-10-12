@@ -7,27 +7,15 @@ return array(
             'admin' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/admin[/:action]',
+                    'route' => '/admin/:action[/page/:page][/user/:userId]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'page' => '[0-9]*',
+                        'id' => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Admin',
                         'action' => 'index',
-                    ),
-
-                ),
-            ),
-            'admin-system-log' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route' => '/admin/system-log[/:page]',
-                    'constraints' => array(
-                        'page' => '[0-9]*',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\Admin',
-                        'action' => 'system-log',
                         'page' => 1,
                     ),
 

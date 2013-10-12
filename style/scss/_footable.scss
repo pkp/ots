@@ -66,6 +66,9 @@ span.footable-toggle:before {
   display: table-row;
   line-height: 1.5em;
 }
+.footable-row-detail-cell {
+  text-align: left !important;
+}
 .footable-row-detail-group {
   display: block;
   line-height: 2em;

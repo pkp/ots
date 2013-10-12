@@ -256,6 +256,17 @@ aside {
   border-collapse: collapse;
 }
 
+// Action links
+a.action {
+  @include icon('before', true);
+  text-decoration: none;
+  color: $textColorDark;
+
+  &:hover { color: $complementaryColor1; }
+}
+a.edit-action { @include icon('before', false, 'pencil'); }
+a.remove-action { @include icon('before', false, 'remove-2'); }
+
 // Pagination
 .pagination {
   @include inline-list($pageFontSize);
@@ -343,5 +354,26 @@ aside {
     .time { width: 10%; }
     .priority { width: 8%; }
     .ip-address { width: 5%; }
+
+    tr {
+      td:nth-child(1),
+      td:nth-child(2),
+      td:nth-child(3) { text-align: center; }
+    }
+  }
+}
+
+// User management table
+.user-management-page {
+  .table {
+    tr {
+      td:nth-child(1),
+      td:nth-child(3),
+      td:nth-child(4),
+      td:nth-child(5),
+      td:nth-child(6) { text-align: center; }
+    }
+
+    .action { margin-left: 3px; }
   }
 }

@@ -47,11 +47,13 @@ class Module
                     $sm = $cm->getServiceLocator();
                     $translator = $sm->get('translator');
                     $logDAO = $sm->get('logDAO');
+                    $userDAO = $sm->get('userDAO');
                     $logger = $sm->get('Logger');
                     return new Controller\AdminController(
                         $logger,
                         $translator,
-                        $logDAO
+                        $logDAO,
+                        $userDAO
                     );
                 }
             )

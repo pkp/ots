@@ -1,1 +1,39 @@
-<?php $this->headTitle($this->translate('application.layout.userManagement'));
+<?php $this->headTitle($this->translate('application.layout.userManagement')); ?>
+
+<div class="page user-management-page">
+  <?php
+  if ($this->users) {
+    echo '<table class="table table-user-management footable"><thead><tr>';
+    echo '<th class="id" data-hide="phone">' . $this->translate('admin.userManagement.id') . '</th>';
+    echo '<th class="email" data-toggle="true">' . $this->translate('admin.userManagement.email') . '</th>';
+    echo '<th class="role" data-hide="phone">' . $this->translate('admin.userManagement.role') . '</th>';
+    echo '<th class="level" data-hide="phone">' . $this->translate('admin.userManagement.level') . '</th>';
+    echo '<th class="lastLogin" data-hide="phone">' . $this->translate('admin.userManagement.lastLogin') . '</th>';
+    echo '<th class="actions">' . $this->translate('application.generic.actions') . '</th>';
+    echo '</tr></thead><tbody>';
+
+    foreach ($this->users as $user) {
+      echo '<tr>';
+      echo '<td>' . $this->escapeHtml($user->id) . '</td>';
+      echo '<td>' . $this->escapeHtml($user->email) . '</td>';
+      echo '<td>' . $this->escapeHtml($user->role) . '</td>';
+      echo '<td>' . $this->escapeHtml($user->userLevel) . '</td>';
+      echo '<td>' . $this->dateFormat($user->lastLogin, IntlDateFormatter::SHORT, IntlDateFormatter::SHORT, 'en_Us') . '</td>';
+      echo '<td>';
+      echo '<a href="' . $this->url('admin', array('action' => 'user-edit', 'userId' => $user->id)) . '" title="' . $this->translate('application.generic.edit') . '" class="action edit-action"></a>';
+      echo '<a href="' . $this->url('admin', array('action' => 'user-remove', 'userId' => $user->id)) . '" title="' . $this->translate('application.generic.remove') . '" class="action remove-action"></a>';
+      echo '</td></tr>';
+    }
+
+    echo '</tbody></table>';
+
+    echo $this->paginationControl(
+      $this->users,
+      'sliding',
+      array('partial/paginator.phtml', 'Application'),
+      array('route' => 'admin', 'routeParams' => array('action' => 'user-management'))
+    );
+  }
+
+  ?>
+</div>
