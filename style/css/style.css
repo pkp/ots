@@ -676,6 +676,9 @@ a.remove-action:before {
 /*******************************
  * Page Styles
  *******************************/
+.application-error pre {
+  overflow: auto; }
+
 .front-page {
   padding: 10px 0; }
   .front-page .authenticate .box-container {

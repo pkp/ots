@@ -319,6 +319,11 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
 /*******************************
  * Page Styles
  *******************************/
+// Error page
+.application-error {
+  pre { overflow: auto; }
+}
+
 // Front page
 .front-page {
   padding: $gutter 0;
