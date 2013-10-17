@@ -54,6 +54,7 @@ h1, h2, h3, h4 {
 .page {
   @include span-columns(12);
   padding: $gutter;
+  min-height: 600px;
 }
 
 // Page with sidebar
@@ -180,7 +181,7 @@ aside {
   background-color: $complementaryColor4;
 }
 
-// Page messages 
+// Page messages
 .message-container {
   @include span-columns(12);
   @include fade-in(2s);
@@ -229,6 +230,12 @@ aside {
 
 // General box
 .box { @include box; }
+
+// Dialog
+.dialog {
+  @include box;
+  @include span-columns(6);
+}
 
 // Tables
 .table {
@@ -336,7 +343,7 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
   ul { padding-left: $gutter; }
 }
 
-// Settings page
+// User - settings
 .settings-page {
   .box {
     @include span-columns(6 of 12);
@@ -347,7 +354,7 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
   input { @include fill-parent; }
 }
 
-// System log page
+// Admin - SystemLog - list
 .system-log-page {
   .table {
     @include fill-parent;
@@ -363,8 +370,8 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
   }
 }
 
-// User management table
-.user-management-page {
+// Admin UserManagement - list
+.user-management-list-page {
   .table {
     tr {
       td:nth-child(1),

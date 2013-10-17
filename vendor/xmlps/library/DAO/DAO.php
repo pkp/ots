@@ -67,6 +67,18 @@ abstract class DAO implements DAOInterface {
     }
 
     /**
+     * Find a entity by its primary key
+     *
+     * @param mixed $key Entity primary key
+     *
+     * @return mixed Entity
+     */
+    public function find($key)
+    {
+       return $this->getRepository()->find($key);
+    }
+
+    /**
      * Find one entity
      *
      * @param mixed $args Key/Value pair to search for

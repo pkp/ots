@@ -2,6 +2,8 @@
 
 namespace Admin;
 
+use Admin\Form\UserRemovalForm;
+
 class Module
 {
     /**
@@ -34,6 +36,24 @@ class Module
     }
 
     /**
+     * Get service config
+     *
+     * @return array
+     */
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'Admin\Form\UserRemovalForm' => function($sm)
+                {
+                    $translator = $sm->get('translator');
+                    return new UserRemovalForm($translator);
+                },
+            ),
+        );
+    }
+
+    /**
      * Get controller config
      *
      * @return array
@@ -48,10 +68,12 @@ class Module
                     $translator = $sm->get('translator');
                     $userDAO = $sm->get('userDAO');
                     $logger = $sm->get('Logger');
+                    $userRemovalForm = $sm->get('Admin\Form\UserRemovalForm');
                     return new Controller\UserManagementController(
                         $logger,
                         $translator,
-                        $userDAO
+                        $userDAO,
+                        $userRemovalForm
                     );
                 },
                 'Admin\Controller\SystemLog' => function($cm)

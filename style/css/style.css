@@ -266,7 +266,8 @@ h1, h2, h3, h4 {
   float: left;
   margin-right: 1.05263%;
   width: 100%;
-  padding: 10px; }
+  padding: 10px;
+  min-height: 600px; }
   .page:last-child {
     margin-right: 0; }
 
@@ -545,6 +546,37 @@ aside {
     font-family: Oswald, Sans-Serif;
     font-weight: bold; }
 
+.dialog {
+  margin-top: 20px;
+  position: relative;
+  background-color: #67a7e6;
+  padding: 10px;
+  z-index: 0;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-top-right-radius: 2px;
+  display: block;
+  float: left;
+  margin-right: 1.05263%;
+  width: 49.47368%; }
+  .dialog label {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    display: block;
+    height: 20px;
+    background-color: #67a7e6;
+    border-bottom: none;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    z-index: 1;
+    padding: 5px 40px 0 40px;
+    text-transform: uppercase;
+    font-family: Oswald, Sans-Serif;
+    font-weight: bold; }
+  .dialog:last-child {
+    margin-right: 0; }
+
 .table {
   border-collapse: collapse; }
   .table thead {
@@ -724,11 +756,11 @@ a.remove-action:before {
   .system-log-page .table tr td:nth-child(3) {
     text-align: center; }
 
-.user-management-page .table tr td:nth-child(1),
-.user-management-page .table tr td:nth-child(3),
-.user-management-page .table tr td:nth-child(4),
-.user-management-page .table tr td:nth-child(5),
-.user-management-page .table tr td:nth-child(6) {
+.user-management-list-page .table tr td:nth-child(1),
+.user-management-list-page .table tr td:nth-child(3),
+.user-management-list-page .table tr td:nth-child(4),
+.user-management-list-page .table tr td:nth-child(5),
+.user-management-list-page .table tr td:nth-child(6) {
   text-align: center; }
-.user-management-page .table .action {
+.user-management-list-page .table .action {
   margin-left: 3px; }

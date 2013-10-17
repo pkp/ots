@@ -1,4 +1,19 @@
-<?php $this->headTitle($this->translate('application.admin.userManagement.remove')); ?>
-<div class="page user-management-page">
-  Edit
+<?php
+$this->headTitle($this->translate('admin.userManagement.removeUser'));
+
+if (isset($this->userRemovalForm)) {
+  $userRemovalForm->setAttribute('action', $this->url('admin/user-management', array('action' => 'remove')));
+  $userRemovalForm = $this->userRemovalForm;
+  $userRemovalForm->setData(array('userId' => $user->id));
+  $userRemovalForm->prepare();
+  $userRemovalForm = $this->form()->render($userRemovalForm);
+}
+
+?>
+<div class="page">
+  <div class="dialog">
+    <label><?php echo $this->translate('application.generic.confirm') ?></label>
+    <p class="description"><?php echo $this->escapeHtml(sprintf($this->translate('admin.userManagement.userRemovalConfirm'), $user->email)) ?></p>
+    <?php echo $userRemovalForm; ?>
+  </div>
 </div>

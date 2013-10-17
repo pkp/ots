@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-11 16:21-1000\n"
-"PO-Revision-Date: 2013-10-11 16:23-1000\n"
+"POT-Creation-Date: 2013-10-17 12:22-1000\n"
+"PO-Revision-Date: 2013-10-17 12:22-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -21,13 +21,26 @@ msgstr ""
 msgid "application.acl.notAuthorized"
 msgstr "You are not permitted to access the requested resource."
 
+#: ../../Admin/src/Admin/Form/UserRemovalForm.php:38
+#: ../../Admin/view/admin/user-management/list.phtml:24
+msgid "application.generic.remove"
+msgstr "Remove"
+
 #: ../../Admin/src/Admin/Controller/SystemLogController.php:49
 msgid "admin.log.noEntriesFound"
 msgstr "No log entries found."
 
-#: ../../Admin/src/Admin/Controller/UserManagementController.php:49
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:58
 msgid "admin.user.noEntriesFound"
 msgstr "No user records found."
+
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:105
+msgid "admin.userManagement.userRemovalSuccess"
+msgstr "Sucessfully removed user \"%s\""
+
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:115
+msgid "admin.userManagement.userRemovalSuccessLog"
+msgstr "Removed user \"%s\""
 
 #: ../../User/src/User/Form/PasswordResetForm.php:31
 msgid "user.form.newPassword"
@@ -113,7 +126,6 @@ msgid "application.generic.siteTitle"
 msgstr "PKP XML Parsing Service"
 
 #: ../view/layout/layout.phtml:27
-#: ../../Admin/view/admin/system-log/view.phtml:1
 #: ../../Application/view/layout/layout.phtml:27
 msgid "application.layout.systemLog"
 msgstr "System Log"
@@ -231,65 +243,73 @@ msgstr "Controller"
 msgid "application.error.controlerResolves"
 msgstr "resolves to %s"
 
-#: ../../Admin/view/admin/system-log/view.phtml:7
+#: ../../Admin/view/admin/system-log/list.phtml:1
+msgid "application.layout.systemLog.list"
+msgstr "System Log"
+
+#: ../../Admin/view/admin/system-log/list.phtml:7
 msgid "admin.log.time"
 msgstr "Time"
 
-#: ../../Admin/view/admin/system-log/view.phtml:8
+#: ../../Admin/view/admin/system-log/list.phtml:8
 msgid "admin.log.ipAddress"
 msgstr "IP"
 
-#: ../../Admin/view/admin/system-log/view.phtml:9
+#: ../../Admin/view/admin/system-log/list.phtml:9
 msgid "admin.log.priority"
 msgstr "Level"
 
-#: ../../Admin/view/admin/system-log/view.phtml:10
+#: ../../Admin/view/admin/system-log/list.phtml:10
 msgid "admin.log.message"
 msgstr "Message"
 
-#: ../../Admin/view/admin/user-management/view.phtml:1
-msgid "application.admin.userManagement.view"
-msgstr "View Users"
+#: ../../Admin/view/admin/user-management/edit.phtml:1
+msgid "admin.userManagement.edit"
+msgstr "Edit User"
 
-#: ../../Admin/view/admin/user-management/view.phtml:7
+#: ../../Admin/view/admin/user-management/list.phtml:1
+msgid "admin.userManagement.list"
+msgstr "List Users"
+
+#: ../../Admin/view/admin/user-management/list.phtml:7
 msgid "admin.userManagement.id"
 msgstr "ID"
 
-#: ../../Admin/view/admin/user-management/view.phtml:8
+#: ../../Admin/view/admin/user-management/list.phtml:8
 msgid "admin.userManagement.email"
 msgstr "Email"
 
-#: ../../Admin/view/admin/user-management/view.phtml:9
+#: ../../Admin/view/admin/user-management/list.phtml:9
 msgid "admin.userManagement.role"
 msgstr "Role"
 
-#: ../../Admin/view/admin/user-management/view.phtml:10
+#: ../../Admin/view/admin/user-management/list.phtml:10
 msgid "admin.userManagement.level"
 msgstr "Level"
 
-#: ../../Admin/view/admin/user-management/view.phtml:11
+#: ../../Admin/view/admin/user-management/list.phtml:11
 msgid "admin.userManagement.lastLogin"
 msgstr "Last Login"
 
-#: ../../Admin/view/admin/user-management/view.phtml:12
+#: ../../Admin/view/admin/user-management/list.phtml:12
 msgid "application.generic.actions"
 msgstr "Actions"
 
-#: ../../Admin/view/admin/user-management/view.phtml:23
+#: ../../Admin/view/admin/user-management/list.phtml:23
 msgid "application.generic.edit"
 msgstr "Edit"
 
-#: ../../Admin/view/admin/user-management/view.phtml:24
-msgid "application.generic.remove"
-msgstr "Remove"
-
-#: ../../Admin/view/admin/user-management/edit.phtml:1
-msgid "application.admin.userManagement.edit"
-msgstr "Edit User"
-
-#: ../../Admin/view/admin/user-management/remove.phtml:1
-msgid "application.admin.userManagement.remove"
+#: ../../Admin/view/admin/user-management/remove.phtml:2
+msgid "admin.userManagement.removeUser"
 msgstr "Remove User"
+
+#: ../../Admin/view/admin/user-management/remove.phtml:15
+msgid "application.generic.confirm"
+msgstr "Confirm"
+
+#: ../../Admin/view/admin/user-management/remove.phtml:16
+msgid "admin.userManagement.userRemovalConfirm"
+msgstr "Do you really want to remove user \"%s\"?"
 
 #: ../../User/view/_sideBar.phtml:4
 msgid "application.index.sidebarDescription"
@@ -338,6 +358,19 @@ msgstr "Settings"
 #: ../../User/view/user/user/settings.phtml:14
 msgid "user.settings.changePassword"
 msgstr "Change Password"
+
+#, fuzzy
+#~ msgid "admin.userManagement.remove"
+#~ msgstr "Role"
+
+#~ msgid "application.admin.userManagement.view"
+#~ msgstr "View Users"
+
+#~ msgid "application.admin.userManagement.edit"
+#~ msgstr "Edit User"
+
+#~ msgid "application.admin.userManagement.remove"
+#~ msgstr "Remove User"
 
 #~ msgid "application.layout.home"
 #~ msgstr "Home"
