@@ -324,8 +324,8 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
   pre { overflow: auto; }
 }
 
-// Front page
-.front-page {
+// User - User - index
+.user-user-index {
   padding: $gutter 0;
 
   .authenticate {
@@ -343,13 +343,13 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
     input { @include fill-parent; }
   }
 }
-.front-page + aside {
+.user-user-index + aside {
   @include custom-list;
   ul { padding-left: $gutter; }
 }
 
-// User - settings
-.settings-page {
+// User - User - settings
+.user-user-settings {
   .box {
     @include span-columns(6 of 12);
     @include media($mobile) {
@@ -360,12 +360,12 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
 }
 
 // Admin - SystemLog - list
-.system-log-page {
+.admin-system-log-list {
   .table {
     @include fill-parent;
-    .time { width: 10%; }
-    .priority { width: 8%; }
+    .time { width: 15%; }
     .ip-address { width: 5%; }
+    .priority { width: 8%; }
 
     tr {
       td:nth-child(1),
@@ -376,7 +376,7 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
 }
 
 // Admin UserManagement - list
-.user-management-list-page {
+.admin-user-management-list {
   .table {
     tr {
       td:nth-child(1),

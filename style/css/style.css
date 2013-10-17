@@ -679,39 +679,39 @@ a.remove-action:before {
 .application-error pre {
   overflow: auto; }
 
-.front-page {
+.user-user-index {
   padding: 10px 0; }
-  .front-page .authenticate .box-container {
+  .user-user-index .authenticate .box-container {
     display: block;
     float: left;
     margin-right: 1.5873%;
     width: 49.20635%; }
-    .front-page .authenticate .box-container:last-child {
+    .user-user-index .authenticate .box-container:last-child {
       margin-right: 0; }
     @media screen and (max-width: 480px) {
-      .front-page .authenticate .box-container {
+      .user-user-index .authenticate .box-container {
         display: block;
         float: left;
         margin-right: 2.12766%;
         width: 100%; }
-        .front-page .authenticate .box-container:last-child {
+        .user-user-index .authenticate .box-container:last-child {
           margin-right: 0; } }
     @media screen and (max-width: 480px) {
-      .front-page .authenticate .box-container {
+      .user-user-index .authenticate .box-container {
         padding: 10px; } }
   @media screen and (min-width: 961px) {
-    .front-page .authenticate .box-container.first {
+    .user-user-index .authenticate .box-container.first {
       padding-left: 10px; } }
-  .front-page .authenticate .box {
+  .user-user-index .authenticate .box {
     min-height: 191px; }
-  .front-page .authenticate input {
+  .user-user-index .authenticate input {
     width: 100%; }
 
-.front-page + aside ul {
+.user-user-index + aside ul {
   list-style: none; }
-  .front-page + aside ul li {
+  .user-user-index + aside ul li {
     margin-bottom: 10px; }
-    .front-page + aside ul li:before {
+    .user-user-index + aside ul li:before {
       content: "\e068";
       speak: none;
       -webkit-font-smoothing: antialiased;
@@ -722,48 +722,48 @@ a.remove-action:before {
       font-variant: normal;
       font-weight: normal;
       font-family: 'Icons'; }
-  .front-page + aside ul li:before {
+  .user-user-index + aside ul li:before {
     margin-right: 0.5em;
     color: #0068cc; }
-.front-page + aside ul {
+.user-user-index + aside ul {
   padding-left: 10px; }
 
-.settings-page .box {
+.user-user-settings .box {
   display: block;
   float: left;
   margin-right: 1.05263%;
   width: 49.47368%; }
-  .settings-page .box:last-child {
+  .user-user-settings .box:last-child {
     margin-right: 0; }
   @media screen and (max-width: 480px) {
-    .settings-page .box {
+    .user-user-settings .box {
       display: block;
       float: left;
       margin-right: 2.12766%;
       width: 100%; }
-      .settings-page .box:last-child {
+      .user-user-settings .box:last-child {
         margin-right: 0; } }
-.settings-page input {
+.user-user-settings input {
   width: 100%; }
 
-.system-log-page .table {
+.admin-system-log-list .table {
   width: 100%; }
-  .system-log-page .table .time {
-    width: 10%; }
-  .system-log-page .table .priority {
-    width: 8%; }
-  .system-log-page .table .ip-address {
+  .admin-system-log-list .table .time {
+    width: 15%; }
+  .admin-system-log-list .table .ip-address {
     width: 5%; }
-  .system-log-page .table tr td:nth-child(1),
-  .system-log-page .table tr td:nth-child(2),
-  .system-log-page .table tr td:nth-child(3) {
+  .admin-system-log-list .table .priority {
+    width: 8%; }
+  .admin-system-log-list .table tr td:nth-child(1),
+  .admin-system-log-list .table tr td:nth-child(2),
+  .admin-system-log-list .table tr td:nth-child(3) {
     text-align: center; }
 
-.user-management-list-page .table tr td:nth-child(1),
-.user-management-list-page .table tr td:nth-child(3),
-.user-management-list-page .table tr td:nth-child(4),
-.user-management-list-page .table tr td:nth-child(5),
-.user-management-list-page .table tr td:nth-child(6) {
+.admin-user-management-list .table tr td:nth-child(1),
+.admin-user-management-list .table tr td:nth-child(3),
+.admin-user-management-list .table tr td:nth-child(4),
+.admin-user-management-list .table tr td:nth-child(5),
+.admin-user-management-list .table tr td:nth-child(6) {
   text-align: center; }
-.user-management-list-page .table .action {
+.admin-user-management-list .table .action {
   margin-left: 3px; }
