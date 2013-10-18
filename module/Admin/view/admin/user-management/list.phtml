@@ -20,8 +20,8 @@
       echo '<td>' . $this->escapeHtml($user->userLevel) . '</td>';
       echo '<td>' . $this->dateFormat($user->lastLogin, IntlDateFormatter::SHORT, IntlDateFormatter::SHORT, 'en_Us') . '</td>';
       echo '<td>';
-      echo '<a href="' . $this->url('admin/user-management', array('action' => 'edit', 'userId' => $user->id)) . '" title="' . $this->translate('application.generic.edit') . '" class="action edit-action"></a>';
-      echo '<a href="' . $this->url('admin/user-management', array('action' => 'remove', 'userId' => $user->id)) . '" title="' . $this->translate('application.generic.remove') . '" class="action remove-action"></a>';
+      echo '<a href="' . $this->url('admin/user-management', array('action' => 'edit', 'id' => $user->id)) . '" title="' . $this->translate('application.generic.edit') . '" class="action edit-action"></a>';
+      echo '<a href="' . $this->url('admin/user-management', array('action' => 'remove', 'id' => $user->id)) . '" title="' . $this->translate('application.generic.remove') . '" class="action remove-action"></a>';
       echo '</td></tr>';
     }
 
