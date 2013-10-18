@@ -42,11 +42,11 @@ class UserManagementControllerTest extends ControllerTest
     }
 
     /**
-     * Test if the view action can be accessed
+     * Test if the list action can be accessed
      *
      * @return void
      */
-    public function testViewActionCanBeAccessedAdmin()
+    public function testListActionCanBeAccessedAdmin()
     {
         $user = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
         $this->mockLogin($user);
@@ -62,22 +62,22 @@ class UserManagementControllerTest extends ControllerTest
     }
 
     /**
-     * Test if the view action cannot be accessed by guests
+     * Test if the list action cannot be accessed by guests
      *
      * @return void
      */
-    public function testViewActionCanBeAccessedLoggedOut()
+    public function testListActionCanBeAccessedLoggedOut()
     {
         $this->dispatch('/admin/user-management/list');
         $this->assertResponseStatusCode(403);
     }
 
     /**
-     * Test if the view action cannot be accessed by regular members
+     * Test if the list action cannot be accessed by regular members
      *
      * @return void
      */
-    public function testViewActionCanBeAccessedLoggedIn()
+    public function testListActionCanBeAccessedLoggedIn()
     {
         $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
         $this->mockLogin($user);
@@ -91,7 +91,7 @@ class UserManagementControllerTest extends ControllerTest
      *
      * @return void
      */
-    public function testUserManagementActionPaging()
+    public function testListActionPaging()
     {
         $user = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
         $this->mockLogin($user);
