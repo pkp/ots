@@ -129,7 +129,6 @@ class UserManagementControllerTest extends ControllerTest
     public function testEditActionCanBeAccessedLoggedOut()
     {
         $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-
         $this->dispatch('/admin/user-management/edit/user/' . $user->id);
         $this->assertResponseStatusCode(403);
     }
@@ -146,6 +145,80 @@ class UserManagementControllerTest extends ControllerTest
 
         $this->dispatch('/admin/user-management/edit/user/' . $user->id);
         $this->assertResponseStatusCode(403);
+    }
+
+    /**
+     * Test if the remove action can be accessed
+     *
+     * @return void
+     */
+    public function testRemoveActionCanBeAccessedAdmin()
+    {
+        $adminUser = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+
+        $this->mockLogin($adminUser);
+
+        $this->dispatch('/admin/user-management/remove/user/' . $user->id);
+        $this->assertResponseStatusCode(200);
+
+        $this->assertModuleName('Admin');
+        $this->assertControllerName('Admin\Controller\UserManagement');
+        $this->assertControllerClass('UserManagementController');
+        $this->assertActionName('remove');
+        $this->assertMatchedRouteName('admin/user-management');
+    }
+
+    /**
+     * Test if the remove action can not be accessed by logged out users
+     *
+     * @return void
+     */
+    public function testRemoveActionCanBeAccessedLoggedOut()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->dispatch('/admin/user-management/remove/user/' . $user->id);
+        $this->assertResponseStatusCode(403);
+    }
+
+    /**
+     * Test if the remove action can not be accessed by logged in users
+     *
+     * @return void
+     */
+    public function testRemoveActionCanBeAccessedLoggedIn()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->mockLogin($user);
+
+        $this->dispatch('/admin/user-management/remove/user/' . $user->id);
+        $this->assertResponseStatusCode(403);
+    }
+
+    /**
+     * Test if a user can be removed
+     *
+     * @return void
+     */
+    public function testRemoveActionRemoveUser()
+    {
+        $adminUser = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+
+        $this->mockLogin($adminUser);
+
+        $this->dispatch(
+            '/admin/user-management/remove',
+            'POST',
+            array('userId' => $user->id)
+        );
+
+        $this->assertResponseStatusCode(302);
+
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->assertNull($user);
+
+        $this->resetTestData();
     }
 
     /**
