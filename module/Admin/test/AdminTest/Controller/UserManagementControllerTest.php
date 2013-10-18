@@ -210,7 +210,7 @@ class UserManagementControllerTest extends ControllerTest
         $this->dispatch(
             '/admin/user-management/remove',
             'POST',
-            array('userId' => $user->id)
+            array('id' => $user->id)
         );
 
         $this->assertResponseStatusCode(302);

@@ -14,11 +14,11 @@ return array(
                     'user-management' => array(
                         'type' => 'segment',
                         'options' => array(
-                            'route' => '/user-management/:action[/page/:page][/user/:userId]',
+                            'route' => '/user-management/:action[/page/:page][/user/:id]',
                             'constraints' => array(
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'page' => '[0-9]*',
-                                'userId' => '[0-9]*',
+                                'id' => '[0-9]*',
                             ),
                             'defaults' => array(
                                 'controller' => 'Admin\Controller\UserManagement',
