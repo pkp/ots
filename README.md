@@ -59,7 +59,9 @@ Module Description
  * User management
   * Confirm registration
   * Set user's document conversion rate
-  * System log viewer [X]
+  * Delete user [X]
+  * Edit User [X]
+ * System log viewer [X]
 * Manager
  * Receives conversion jobs
  * Queues jobs for individual workers
