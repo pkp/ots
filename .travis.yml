@@ -1,0 +1,16 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+
+before_install:
+ - mysql -e 'create database xmlps;'
+ - php composer.phar self-update
+ - php composer.phar install
+ - cp config/autoload/travis.php.dist config/autoload/local.php
+ - vendor/doctrine/doctrine-module/bin/doctrine-module  orm:schema-tool:update --force
+
+notifications:
+  email: true

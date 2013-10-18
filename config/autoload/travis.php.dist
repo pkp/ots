@@ -1,0 +1,18 @@
+<?php
+
+return array(
+    'modules' => array(),
+    'doctrine' => array(
+        'connection' => array(
+            'orm_default' => array(
+                'params' => array(
+                    'user' => 'travis',
+                    'password' => '',
+                ),
+            ),
+        ),
+    ),
+    'log' => array(
+        'level' => 6,
+    ),
+);
