@@ -227,6 +227,77 @@ class UserControllerTest extends ControllerTest
     }
 
     /**
+     * Test if the settings page can be accessed by logged in users
+     *
+     * @return void
+     */
+    public function testSettingsActionCanBeAccessedLoggedIn()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->mockLogin($user);
+
+        $this->dispatch('/user/settings');
+        $this->assertResponseStatusCode(200);
+
+        $this->assertModuleName('User');
+        $this->assertControllerName('User\Controller\User');
+        $this->assertControllerClass('UserController');
+        $this->assertActionName('settings');
+        $this->assertMatchedRouteName('user');
+    }
+
+    /**
+     * Test if the settings page cannot be accessed by logged out users
+     *
+     * @return void
+     */
+    public function testSettingsActionCanBeAccessedLoggedOut()
+    {
+        $this->dispatch('/user/settings');
+        $this->assertResponseStatusCode(403);
+    }
+
+    /**
+     * Test if the password can be changed
+     *
+     * NOTE: Test data will be changed after this test. Will be reset in
+     * testSettingsActionLoginAfterChangePassword()
+     *
+     * @return void
+     */
+    public function testSettingsActionChangePassword()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->mockLogin($user);
+
+        // Change the password
+        $postData = array(
+            'passwordNew' => $this->testUser2Password,
+            'passwordConfirm' => $this->testUser2Password,
+        );
+
+        $this->dispatch('/user/settings', 'POST', $postData);
+        $this->assertResponseStatusCode(302);
+    }
+
+    /**
+     * Test if login is possible with the new password
+     *
+     * @return void
+     */
+    public function testSettingsActionLoginAfterChangePassword()
+    {
+        $postData = array(
+            'email' => $this->testUserEmail,
+            'password' => $this->testUserPassword,
+        );
+        $this->dispatch('/user/login', 'POST', $postData);
+        $this->assertResponseStatusCode(302);
+
+        $this->resetTestData();
+    }
+
+    /**
      * Creates test data for this test
      *
      * @return void
