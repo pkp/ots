@@ -36,7 +36,7 @@ class UserEditForm extends Form
         // Add the user level field
         $this->add(
             array(
-                'name' => 'userLevel',
+                'name' => 'level',
                 'type' => '\Zend\Form\Element\Select',
                 'options' => array(
                     'label' => $this->translator->translate('user.user.level'),

@@ -36,15 +36,15 @@ class UserEntityTest extends ModelTest
     }
 
     /**
-     * Test if the user level is initialized properly
+     * Test if the level is initialized properly
      *
      * @return void
      */
     public function testUserLevel()
     {
-        $this->assertTrue($this->user->userLevel === null);
-        $this->user->initUserLevel();
-        $this->assertSame(USER_LEVEL_REGISTERED, $this->user->userLevel);
+        $this->assertTrue($this->user->level === null);
+        $this->user->initLevel();
+        $this->assertSame(USER_LEVEL_REGISTERED, $this->user->level);
     }
 
     /**

@@ -56,7 +56,7 @@ class User extends DataObject
     /**
      * @ORM\Column(type="smallint", nullable=false)
      */
-    protected $userLevel;
+    protected $level;
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -89,16 +89,16 @@ class User extends DataObject
     }
 
     /**
-     * Initializes the user level
+     * Initializes the level
      *
      * @return void
      *
      * @ORM\PrePersist
      */
-    public function initUserLevel()
+    public function initLevel()
     {
-        if ($this->userLevel === null) {
-            $this->userLevel = USER_LEVEL_REGISTERED;
+        if ($this->level === null) {
+            $this->level = USER_LEVEL_REGISTERED;
         }
     }
 
