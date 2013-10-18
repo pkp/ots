@@ -49,4 +49,27 @@ class DataObject {
         $setFunc = 'set' . ucfirst($name);
         return $this->$setFunc($value);
     }
+
+    /**
+     * Populates the objects properties from an array
+     * NOTE: overwrite if you want the propery access to be more strict
+     *
+     * @return void
+     */
+    public function exchangeArray($data) {
+        foreach (array_keys($this->getArrayCopy()) as $key) {
+            if (isset($data[$key])) { $this->$key = $data[$key]; }
+        }
+    }
+
+    /**
+     * Returns an array with the objects properties as keys and the
+     * property values as values
+     *
+     * @return void
+     */
+    public function getArrayCopy()
+    {
+        return get_object_vars($this);
+    }
 }

@@ -7,6 +7,7 @@ use Zend\View\Model\ViewModel;
 use Xmlps\Logger\Logger;
 use Zend\Mvc\I18n\Translator;
 use User\Model\DAO\UserDAO;
+use Admin\Form\UserEditForm;
 use Admin\Form\UserRemovalForm;
 
 class UserManagementController extends AbstractActionController {
@@ -14,6 +15,7 @@ class UserManagementController extends AbstractActionController {
     protected $translator;
 
     protected $userDAO;
+    protected $userEditForm;
     protected $userRemovalForm;
 
     /**
@@ -22,6 +24,7 @@ class UserManagementController extends AbstractActionController {
      * @param Logger $logger
      * @param Translator $translator
      * @param UserDAO $userDAO
+     * @param UserEditFrom $userEditForm
      * @param UserRemovalFrom $userRemovalForm
      * @return void
      */
@@ -29,12 +32,14 @@ class UserManagementController extends AbstractActionController {
         Logger $logger,
         Translator $translator,
         UserDAO $userDAO,
+        UserEditForm $userEditForm,
         UserRemovalForm $userRemovalForm
     )
     {
         $this->logger = $logger;
         $this->translator = $translator;
         $this->userDAO = $userDAO;
+        $this->userEditForm = $userEditForm;
         $this->userRemovalForm = $userRemovalForm;
     }
 
@@ -71,7 +76,68 @@ class UserManagementController extends AbstractActionController {
      */
     public function editAction()
     {
+        // Process POST requests
+        if ($this->request->isPost()) {
+            $data = $this->request->getPost();
+            $this->userEditForm->setData($data);
 
+            // Fetch the user object
+            $user = $this->userDAO->find($data['id']);
+            if (!$user) {
+                throw new \Exception('Couldn\'t find user with id ' . $id);
+            }
+
+            if ($this->userEditForm->isValid()) {
+                // Update the user
+                $user->exchangeArray($data);
+                $this->userDAO->save($user);
+
+                $flashMessenger = $this->flashMessenger();
+                $flashMessenger->setNamespace('success');
+                $flashMessenger->addMessage(
+                    $this->translator->translate(
+                        sprintf(
+                            $this->translator->translate(
+                                'admin.userManagement.userEditSuccess'
+                            ),
+                            $user->email
+                        )
+                    )
+                );
+
+                $this->logger->info(
+                    sprintf(
+                        $this->translator->translate(
+                            'admin.userManagement.userEditSuccessLog'
+                        ),
+                        $user->email
+                    )
+                );
+
+                return $this->redirect()->toRoute(
+                    'admin/user-management',
+                    array('action' => 'list')
+                );
+            }
+        }
+
+        // Process GET requests
+        else {
+            $id = $this->params()->fromRoute('id');
+            $user = $this->userDAO->find($id);
+
+            if (!$user) {
+                $this->getResponse()->setStatusCode(404);
+                return;
+            }
+        }
+
+        $this->userEditForm->bind($user);
+
+        return array(
+            'userEditForm' => $this->userEditForm,
+            'user' => $user,
+        );
     }
 
     /**
@@ -84,13 +150,13 @@ class UserManagementController extends AbstractActionController {
         // Process user removal requests
         if ($this->request->isPost()) {
             $data = $this->request->getPost();
-            $userId = (int) $data['userId'];
+            $id = (int) $data['id'];
 
             // Fetch the user object
-            $user = $this->userDAO->find($userId);
+            $user = $this->userDAO->find($id);
 
             if (!$user) {
-                throw new \Exception('Couldn\'t find user with id ' . $userId);
+                throw new \Exception('Couldn\'t find user with id ' . $id);
             }
 
             // Remove the user
@@ -124,13 +190,15 @@ class UserManagementController extends AbstractActionController {
             );
         }
 
-        $userId = $this->params()->fromRoute('userId');
-        $user = $this->userDAO->find($userId);
+        $id = $this->params()->fromRoute('id');
+        $user = $this->userDAO->find($id);
 
         if (!$user) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
+
+        $this->userRemovalForm->bind($user);
 
         return array(
             'userRemovalForm' => $this->userRemovalForm,

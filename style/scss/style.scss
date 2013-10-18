@@ -339,24 +339,16 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
     @include media($desktop) {
       .box-container.first { padding-left: $gutter; }
     }
-    .box { min-height: 191px; }
+    .box {
+      min-height: 191px;
+      @include fill-parent;
+    }
     input { @include fill-parent; }
   }
 }
 .user-user-index + aside {
   @include custom-list;
   ul { padding-left: $gutter; }
-}
-
-// User - User - settings
-.user-user-settings {
-  .box {
-    @include span-columns(6 of 12);
-    @include media($mobile) {
-      @include span-columns(6 of 6);
-    }
-  }
-  input { @include fill-parent; }
 }
 
 // Admin - SystemLog - list

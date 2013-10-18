@@ -24,7 +24,7 @@ class UserRemovalForm extends Form
         // Add the user id field
         $this->add(
             array(
-                'name' => 'userId',
+                'name' => 'id',
                 'type' => '\Zend\Form\Element\Hidden',
             )
         );

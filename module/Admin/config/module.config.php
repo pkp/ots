@@ -18,7 +18,7 @@ return array(
                             'constraints' => array(
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'page' => '[0-9]*',
-                                'id' => '[0-9]*',
+                                'id' => '[0-9]+',
                             ),
                             'defaults' => array(
                                 'controller' => 'Admin\Controller\UserManagement',

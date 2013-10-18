@@ -3,7 +3,7 @@ input[type="submit"] {
   margin-top: $gutter;
 }
 
-input {
+input, select {
   padding: 0.8 * $gutter $gutter;
   display: block;
   margin-bottom: $gutter;
@@ -28,4 +28,9 @@ input {
   li:before {
     margin-right: 0.5em;
   }
+}
+
+// Form labels
+form label {
+  font-family: $highlightFont;
 }

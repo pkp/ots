@@ -4,8 +4,9 @@ namespace UserTest\Entity;
 
 use PHPUnit_Framework_TestCase;
 use User\Entity\User;
+use Xmlps\UnitTest\ModelTest;
 
-class UserEntityTest extends PHPUnit_Framework_TestCase
+class UserEntityTest extends ModelTest
 {
     protected $traceError = true;
 
@@ -17,7 +18,8 @@ class UserEntityTest extends PHPUnit_Framework_TestCase
      * @return void
      */
     public function setUp() {
-        $this->user = new User;
+        parent::setUp();
+        $this->user = $this->sm->get('User\Entity\User');
     }
 
     /**
@@ -42,7 +44,7 @@ class UserEntityTest extends PHPUnit_Framework_TestCase
     {
         $this->assertTrue($this->user->userLevel === null);
         $this->user->initUserLevel();
-        $this->assertSame(USER_USERLEVEL_REGISTERED, $this->user->userLevel);
+        $this->assertSame(USER_LEVEL_REGISTERED, $this->user->userLevel);
     }
 
     /**

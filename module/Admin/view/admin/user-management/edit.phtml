@@ -1,4 +1,16 @@
-<?php $this->headTitle($this->translate('admin.userManagement.edit')); ?>
-<div class="page user-management-page">
-  Edit
+<?php $this->headTitle($this->translate('admin.userManagement.edit'));
+
+if (isset($this->userEditForm)) {
+  $userEditForm->setAttribute('action', $this->url('admin/user-management', array('action' => 'edit')));
+  $userEditForm = $this->userEditForm;
+  $userEditForm->prepare();
+  $userEditForm = $this->form()->render($userEditForm);
+}
+
+?>
+<div class="page admin-user-management-edit">
+  <div class="box">
+    <label><?php echo $this->translate('admin.userManagement.edit') ?></label>
+    <?php echo $userEditForm; ?>
+  </div>
 </div>

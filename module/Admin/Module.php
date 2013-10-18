@@ -3,6 +3,7 @@
 namespace Admin;
 
 use Admin\Form\UserRemovalForm;
+use Admin\Form\UserEditForm;
 
 class Module
 {
@@ -44,6 +45,12 @@ class Module
     {
         return array(
             'factories' => array(
+                'Admin\Form\UserEditForm' => function($sm)
+                {
+                    $translator = $sm->get('translator');
+                    $user = $sm->get('User\Entity\User');
+                    return new UserEditForm($translator, $user);
+                },
                 'Admin\Form\UserRemovalForm' => function($sm)
                 {
                     $translator = $sm->get('translator');
@@ -68,11 +75,13 @@ class Module
                     $translator = $sm->get('translator');
                     $userDAO = $sm->get('userDAO');
                     $logger = $sm->get('Logger');
+                    $userEditForm = $sm->get('Admin\Form\UserEditForm');
                     $userRemovalForm = $sm->get('Admin\Form\UserRemovalForm');
                     return new Controller\UserManagementController(
                         $logger,
                         $translator,
                         $userDAO,
+                        $userEditForm,
                         $userRemovalForm
                     );
                 },

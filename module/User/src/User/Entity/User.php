@@ -5,9 +5,10 @@ namespace User\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Xmlps\DataObject\DataObject;
+use Zend\Mvc\I18n\Translator;
 
-define('USER_USERLEVEL_REGISTERED', 0);
-define('USER_USERLEVEL_REGISTRATION_CONFIRMED', 1);
+define('USER_LEVEL_REGISTERED', 0);
+define('USER_LEVEL_REGISTRATION_CONFIRMED', 1);
 
 /**
  * User
@@ -18,6 +19,8 @@ define('USER_USERLEVEL_REGISTRATION_CONFIRMED', 1);
  */
 class User extends DataObject
 {
+    protected $translator;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -61,6 +64,17 @@ class User extends DataObject
     protected $role;
 
     /**
+     * Constructor
+     *
+     * @param Translator $translator
+     * @return void
+     */
+    public function __construct(Translator $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
      * Sets the registration date timestamp
      *
      * @return void
@@ -84,7 +98,7 @@ class User extends DataObject
     public function initUserLevel()
     {
         if ($this->userLevel === null) {
-            $this->userLevel = USER_USERLEVEL_REGISTERED;
+            $this->userLevel = USER_LEVEL_REGISTERED;
         }
     }
 
@@ -173,5 +187,31 @@ class User extends DataObject
     public function isAdministrator()
     {
         return $this->role == 'administrator';
+    }
+
+    /**
+     * Maps user levels to display strings
+     *
+     * @return array map of user levels to display strings
+     */
+    public function getLevelMap()
+    {
+        return array(
+            USER_LEVEL_REGISTERED => $this->translator->translate('user.user.level.registered'),
+            USER_LEVEL_REGISTRATION_CONFIRMED => $this->translator->translate('user.user.level.registrationConfirmed'),
+        );
+    }
+
+    /**
+     * Maps user roles to display strings
+     *
+     * @return array map of user roles to display strings
+     */
+    public function getRoleMap()
+    {
+        return array(
+            'member' => $this->translator->translate('user.user.role.member'),
+            'administrator' => $this->translator->translate('user.user.role.administrator'),
+        );
     }
 }

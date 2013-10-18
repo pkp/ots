@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-17 12:22-1000\n"
-"PO-Revision-Date: 2013-10-17 12:22-1000\n"
+"POT-Creation-Date: 2013-10-17 17:05-1000\n"
+"PO-Revision-Date: 2013-10-17 17:06-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -26,19 +26,39 @@ msgstr "You are not permitted to access the requested resource."
 msgid "application.generic.remove"
 msgstr "Remove"
 
+#: ../../Admin/src/Admin/Form/UserEditForm.php:42
+msgid "user.user.level"
+msgstr "Level"
+
+#: ../../Admin/src/Admin/Form/UserEditForm.php:54
+msgid "user.user.role"
+msgstr "Role"
+
+#: ../../Admin/src/Admin/Form/UserEditForm.php:66
+msgid "application.generic.save"
+msgstr "Save"
+
 #: ../../Admin/src/Admin/Controller/SystemLogController.php:49
 msgid "admin.log.noEntriesFound"
 msgstr "No log entries found."
 
-#: ../../Admin/src/Admin/Controller/UserManagementController.php:58
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:63
 msgid "admin.user.noEntriesFound"
 msgstr "No user records found."
 
-#: ../../Admin/src/Admin/Controller/UserManagementController.php:105
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:102
+msgid "admin.userManagement.userEditSuccess"
+msgstr "Sucessfully edited user \"%s\""
+
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:112
+msgid "admin.userManagement.userEditSuccessLog"
+msgstr "Edited user \"%s\""
+
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:169
 msgid "admin.userManagement.userRemovalSuccess"
 msgstr "Sucessfully removed user \"%s\""
 
-#: ../../Admin/src/Admin/Controller/UserManagementController.php:115
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:179
 msgid "admin.userManagement.userRemovalSuccessLog"
 msgstr "Removed user \"%s\""
 
@@ -83,6 +103,22 @@ msgstr "This email address is already registered!"
 #: ../../User/view/user/user/index.phtml:28
 msgid "user.registrationForm.register"
 msgstr "Register"
+
+#: ../../User/src/User/Entity/User.php:200
+msgid "user.user.level.registered"
+msgstr "Registration Pending"
+
+#: ../../User/src/User/Entity/User.php:201
+msgid "user.user.level.registrationConfirmed"
+msgstr "Registration Confirmed"
+
+#: ../../User/src/User/Entity/User.php:213
+msgid "user.user.role.member"
+msgstr "Member"
+
+#: ../../User/src/User/Entity/User.php:214
+msgid "user.user.role.administrator"
+msgstr "Administrator"
 
 #: ../../User/src/User/Controller/UserController.php:115
 msgid "user.authentication.sucessfulLogin"
@@ -161,51 +197,51 @@ msgstr "Contact"
 msgid "application.layout.copyright"
 msgstr "Public Knowledge Project"
 
-#: ../view/error/index.phtml:1 ../../Application/view/error/index.phtml:1
+#: ../view/error/index.phtml:2 ../../Application/view/error/index.phtml:2
 msgid "application.error.generic"
 msgstr "An error occurred"
 
-#: ../view/error/index.phtml:8 ../view/error/404.phtml:54
-#: ../../Application/view/error/index.phtml:8
+#: ../view/error/index.phtml:9 ../view/error/404.phtml:54
+#: ../../Application/view/error/index.phtml:9
 #: ../../Application/view/error/404.phtml:54
 msgid "application.error.additionalInformation"
 msgstr "Additional information"
 
-#: ../view/error/index.phtml:11 ../view/error/index.phtml:35
+#: ../view/error/index.phtml:12 ../view/error/index.phtml:36
 #: ../view/error/404.phtml:57 ../view/error/404.phtml:81
-#: ../../Application/view/error/index.phtml:11
-#: ../../Application/view/error/index.phtml:35
+#: ../../Application/view/error/index.phtml:12
+#: ../../Application/view/error/index.phtml:36
 #: ../../Application/view/error/404.phtml:57
 #: ../../Application/view/error/404.phtml:81
 msgid "application.generic.file"
 msgstr "File"
 
-#: ../view/error/index.phtml:15 ../view/error/index.phtml:39
+#: ../view/error/index.phtml:16 ../view/error/index.phtml:40
 #: ../view/error/404.phtml:61 ../view/error/404.phtml:85
-#: ../../Application/view/error/index.phtml:15
-#: ../../Application/view/error/index.phtml:39
+#: ../../Application/view/error/index.phtml:16
+#: ../../Application/view/error/index.phtml:40
 #: ../../Application/view/error/404.phtml:61
 #: ../../Application/view/error/404.phtml:85
 msgid "application.generic.message"
 msgstr "Message"
 
-#: ../view/error/index.phtml:19 ../view/error/index.phtml:43
+#: ../view/error/index.phtml:20 ../view/error/index.phtml:44
 #: ../view/error/404.phtml:65 ../view/error/404.phtml:89
-#: ../../Application/view/error/index.phtml:19
-#: ../../Application/view/error/index.phtml:43
+#: ../../Application/view/error/index.phtml:20
+#: ../../Application/view/error/index.phtml:44
 #: ../../Application/view/error/404.phtml:65
 #: ../../Application/view/error/404.phtml:89
 msgid "application.error.stackTrace"
 msgstr "Stack trace"
 
-#: ../view/error/index.phtml:29 ../view/error/404.phtml:75
-#: ../../Application/view/error/index.phtml:29
+#: ../view/error/index.phtml:30 ../view/error/404.phtml:75
+#: ../../Application/view/error/index.phtml:30
 #: ../../Application/view/error/404.phtml:75
 msgid "application.error.previousExceptions"
 msgstr "Previous exceptions"
 
-#: ../view/error/index.phtml:58 ../view/error/404.phtml:104
-#: ../../Application/view/error/index.phtml:58
+#: ../view/error/index.phtml:59 ../view/error/404.phtml:104
+#: ../../Application/view/error/index.phtml:59
 #: ../../Application/view/error/404.phtml:104
 msgid "application.error.noExceptionAvailable"
 msgstr "No Exception available"
@@ -264,6 +300,7 @@ msgid "admin.log.message"
 msgstr "Message"
 
 #: ../../Admin/view/admin/user-management/edit.phtml:1
+#: ../../Admin/view/admin/user-management/edit.phtml:13
 msgid "admin.userManagement.edit"
 msgstr "Edit User"
 
@@ -303,11 +340,11 @@ msgstr "Edit"
 msgid "admin.userManagement.removeUser"
 msgstr "Remove User"
 
-#: ../../Admin/view/admin/user-management/remove.phtml:15
+#: ../../Admin/view/admin/user-management/remove.phtml:14
 msgid "application.generic.confirm"
 msgstr "Confirm"
 
-#: ../../Admin/view/admin/user-management/remove.phtml:16
+#: ../../Admin/view/admin/user-management/remove.phtml:15
 msgid "admin.userManagement.userRemovalConfirm"
 msgstr "Do you really want to remove user \"%s\"?"
 
@@ -358,6 +395,9 @@ msgstr "Settings"
 #: ../../User/view/user/user/settings.phtml:14
 msgid "user.settings.changePassword"
 msgstr "Change Password"
+
+#~ msgid "admin.userManagement.userLevel"
+#~ msgstr "Level"
 
 #, fuzzy
 #~ msgid "admin.userManagement.remove"

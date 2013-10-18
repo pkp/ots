@@ -12,6 +12,10 @@
 
 // Box
 @mixin box {
+  @include span-columns(6 of 12);
+  @include media($mobile) {
+    @include span-columns(6 of 6);
+  }
   margin-top: 2 * $gutter;
   position: relative;
   background-color: $boxBackgroundColor;
@@ -37,6 +41,8 @@
     font-family: $highlightFont;
     font-weight: bold;
   }
+
+  input, select { @include fill-parent; }
 }
 
 // Fade in transition

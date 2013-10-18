@@ -90,7 +90,7 @@ input[type="submit"] {
   text-transform: uppercase;
   margin-top: 10px; }
 
-input {
+input, select {
   padding: 8px 10px;
   display: block;
   margin-bottom: 10px;
@@ -119,6 +119,9 @@ input {
       font-family: 'Icons'; }
   .input-error + ul li:before {
     margin-right: 0.5em; }
+
+form label {
+  font-family: Oswald, Sans-Serif; }
 
 .footable {
   width: 100%; }
@@ -522,6 +525,10 @@ aside {
   border-top-color: #ff9700; }
 
 .box {
+  display: block;
+  float: left;
+  margin-right: 1.05263%;
+  width: 49.47368%;
   margin-top: 20px;
   position: relative;
   background-color: #67a7e6;
@@ -530,6 +537,16 @@ aside {
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px; }
+  .box:last-child {
+    margin-right: 0; }
+  @media screen and (max-width: 480px) {
+    .box {
+      display: block;
+      float: left;
+      margin-right: 2.12766%;
+      width: 100%; }
+      .box:last-child {
+        margin-right: 0; } }
   .box > label {
     position: absolute;
     top: -20px;
@@ -545,8 +562,14 @@ aside {
     text-transform: uppercase;
     font-family: Oswald, Sans-Serif;
     font-weight: bold; }
+  .box input, .box select {
+    width: 100%; }
 
 .dialog {
+  display: block;
+  float: left;
+  margin-right: 1.05263%;
+  width: 49.47368%;
   margin-top: 20px;
   position: relative;
   background-color: #67a7e6;
@@ -559,6 +582,16 @@ aside {
   float: left;
   margin-right: 1.05263%;
   width: 49.47368%; }
+  .dialog:last-child {
+    margin-right: 0; }
+  @media screen and (max-width: 480px) {
+    .dialog {
+      display: block;
+      float: left;
+      margin-right: 2.12766%;
+      width: 100%; }
+      .dialog:last-child {
+        margin-right: 0; } }
   .dialog > label {
     position: absolute;
     top: -20px;
@@ -574,6 +607,8 @@ aside {
     text-transform: uppercase;
     font-family: Oswald, Sans-Serif;
     font-weight: bold; }
+  .dialog input, .dialog select {
+    width: 100%; }
   .dialog:last-child {
     margin-right: 0; }
 
@@ -703,7 +738,8 @@ a.remove-action:before {
     .user-user-index .authenticate .box-container.first {
       padding-left: 10px; } }
   .user-user-index .authenticate .box {
-    min-height: 191px; }
+    min-height: 191px;
+    width: 100%; }
   .user-user-index .authenticate input {
     width: 100%; }
 
@@ -727,24 +763,6 @@ a.remove-action:before {
     color: #0068cc; }
 .user-user-index + aside ul {
   padding-left: 10px; }
-
-.user-user-settings .box {
-  display: block;
-  float: left;
-  margin-right: 1.05263%;
-  width: 49.47368%; }
-  .user-user-settings .box:last-child {
-    margin-right: 0; }
-  @media screen and (max-width: 480px) {
-    .user-user-settings .box {
-      display: block;
-      float: left;
-      margin-right: 2.12766%;
-      width: 100%; }
-      .user-user-settings .box:last-child {
-        margin-right: 0; } }
-.user-user-settings input {
-  width: 100%; }
 
 .admin-system-log-list .table {
   width: 100%; }
