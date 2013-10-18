@@ -50,14 +50,13 @@ Module Description
 * User
  * Authentication [X]
  * Registration [X]
- * Lost password retrieval
  * New password [X]
+ * Lost password retrieval
 * Admin
- * User management
-  * Confirm registration
-  * Set user's document conversion rate
-  * Delete user [X]
-  * Edit User [X]
+ * Confirm registrations [X]
+ * Set a user's document conversion rate [X]
+ * Delete user [X]
+ * Edit User [X]
  * System log viewer [X]
 * Manager
  * Receives conversion jobs
