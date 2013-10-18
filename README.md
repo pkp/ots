@@ -21,12 +21,6 @@ Installation
 cp config/autoload/local.php.dist config/autoload/local.php
 ```
 * Change local.php according to your environment
-* Make sure var/log is writable by your webserver. I.e.:
-
-```
-# sudo chown :www-data var/log
-# chmod g+w var/log
-```
 
 * Initialize the database
 
