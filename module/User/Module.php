@@ -57,8 +57,7 @@ class Module
                 },
                 'User\Entity\User' => function($sm)
                 {
-                    $translator = $sm->get('translator');
-                    return new User($translator);
+                    return new User();
                 },
                 'User\Form\LoginForm' => function($sm)
                 {

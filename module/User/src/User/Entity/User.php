@@ -5,7 +5,6 @@ namespace User\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Xmlps\DataObject\DataObject;
-use Zend\Mvc\I18n\Translator;
 
 define('USER_LEVEL_REGISTERED', 0);
 define('USER_LEVEL_REGISTRATION_CONFIRMED', 1);
@@ -22,8 +21,6 @@ define('USER_ROLE_MEMBER', 'member');
  */
 class User extends DataObject
 {
-    protected $translator;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -65,17 +62,6 @@ class User extends DataObject
      * @ORM\Column(type="string", nullable=false)
      */
     protected $role;
-
-    /**
-     * Constructor
-     *
-     * @param Translator $translator
-     * @return void
-     */
-    public function __construct(Translator $translator)
-    {
-        $this->translator = $translator;
-    }
 
     /**
      * Sets the registration date timestamp
@@ -199,9 +185,10 @@ class User extends DataObject
      */
     public function getLevelMap()
     {
+        $translator = $this->getServiceLocator()->get('Translator');
         return array(
-            USER_LEVEL_REGISTERED => $this->translator->translate('user.user.level.registered'),
-            USER_LEVEL_REGISTRATION_CONFIRMED => $this->translator->translate('user.user.level.registrationConfirmed'),
+            USER_LEVEL_REGISTERED => $translator->translate('user.user.level.registered'),
+            USER_LEVEL_REGISTRATION_CONFIRMED => $translator->translate('user.user.level.registrationConfirmed'),
         );
     }
 
@@ -212,9 +199,10 @@ class User extends DataObject
      */
     public function getRoleMap()
     {
+        $translator = $this->getServiceLocator()->get('Translator');
         return array(
-            USER_ROLE_MEMBER => $this->translator->translate('user.user.role.member'),
-            USER_ROLE_ADMINISTRATOR => $this->translator->translate('user.user.role.administrator'),
+            USER_ROLE_MEMBER => $translator->translate('user.user.role.member'),
+            USER_ROLE_ADMINISTRATOR => $translator->translate('user.user.role.administrator'),
         );
     }
 }

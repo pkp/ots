@@ -12,6 +12,8 @@ namespace Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
+use Xmlps\Doctrine\Listener\ServiceManagerListener;
+
 class Module
 {
     public function onBootstrap(MvcEvent $e)
@@ -46,6 +48,13 @@ class Module
             }
 
         }, 100);
+
+        // Make service manageer available to doctrine entities
+        $sm = $e->getApplication()->getServiceManager();
+        $em = $sm->get('doctrine.entitymanager.orm_default');
+        $dem = $em->getEventManager();
+        $dem->addEventListener(array(\Doctrine\ORM\Events::postLoad), new ServiceManagerListener($sm));
+
 
         // Show flashmessages in the view
         $eventManager->attach(MvcEvent::EVENT_RENDER, function($e) {
