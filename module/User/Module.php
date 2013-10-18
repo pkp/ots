@@ -96,6 +96,9 @@ class Module
                     return $sm->get('doctrine.authenticationservice.orm_default');
                 }
             ),
+            'shared' => array(
+                'User\Entity\User' => false
+            )
         );
     }
 

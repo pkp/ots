@@ -28,7 +28,6 @@ class UserManagementControllerTest extends ControllerTest
         $this->userDAO = $this->sm->get('userDAO');
 
         $this->resetTestData();
-
     }
 
     /**
@@ -98,6 +97,55 @@ class UserManagementControllerTest extends ControllerTest
 
         $this->dispatch('/admin/user-management/list/page/1');
         $this->assertResponseStatusCode(200);
+    }
+
+    /**
+     * Test if the edit action can be accessed
+     *
+     * @return void
+     */
+    public function testEditActionCanBeAccessedAdmin()
+    {
+        $adminUser = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+
+        $this->mockLogin($adminUser);
+
+        $this->dispatch('/admin/user-management/edit/user/' . $user->id);
+        $this->assertResponseStatusCode(200);
+
+        $this->assertModuleName('Admin');
+        $this->assertControllerName('Admin\Controller\UserManagement');
+        $this->assertControllerClass('UserManagementController');
+        $this->assertActionName('edit');
+        $this->assertMatchedRouteName('admin/user-management');
+    }
+
+    /**
+     * Test if the edit action can not be accessed by logged out users
+     *
+     * @return void
+     */
+    public function testEditActionCanBeAccessedLoggedOut()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+
+        $this->dispatch('/admin/user-management/edit/user/' . $user->id);
+        $this->assertResponseStatusCode(403);
+    }
+
+    /**
+     * Test if the edit action can not be accessed by logged in users
+     *
+     * @return void
+     */
+    public function testEditActionCanBeAccessedLoggedIn()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->mockLogin($user);
+
+        $this->dispatch('/admin/user-management/edit/user/' . $user->id);
+        $this->assertResponseStatusCode(403);
     }
 
     /**
