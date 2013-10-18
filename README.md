@@ -1,5 +1,8 @@
 PKP XML Parsing Service
 =======================
+Build status
+------------
+[![Build Status](https://travis-ci.org/MichaelThessel/xmlps.png?branch=master)](https://travis-ci.org/MichaelThessel/xmlps)
 
 Installation
 ------------
