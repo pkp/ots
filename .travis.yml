@@ -13,4 +13,4 @@ before_install:
  - vendor/doctrine/doctrine-module/bin/doctrine-module  orm:schema-tool:update --force
 
 notifications:
-  email: true
+  email: false
