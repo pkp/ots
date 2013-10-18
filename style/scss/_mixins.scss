@@ -21,7 +21,7 @@
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;
 
-  label {
+  & > label {
     position: absolute;
     top: -20px;
     left: 0;

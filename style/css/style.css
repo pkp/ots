@@ -530,7 +530,7 @@ aside {
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px; }
-  .box label {
+  .box > label {
     position: absolute;
     top: -20px;
     left: 0;
@@ -559,7 +559,7 @@ aside {
   float: left;
   margin-right: 1.05263%;
   width: 49.47368%; }
-  .dialog label {
+  .dialog > label {
     position: absolute;
     top: -20px;
     left: 0;
