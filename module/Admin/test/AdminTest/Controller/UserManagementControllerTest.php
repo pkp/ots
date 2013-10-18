@@ -148,6 +148,34 @@ class UserManagementControllerTest extends ControllerTest
     }
 
     /**
+     * Test if the user can be edited
+     *
+     * @return void
+     */
+    public function testEditActionEditUser()
+    {
+        $adminUser = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+
+        $this->mockLogin($adminUser);
+
+        $testData = array(
+            'id' => $user->id,
+            'role' => 'administrator',
+            'level' => '1',
+        );
+        $this->dispatch('/admin/user-management/edit', 'POST', $testData);
+
+        $this->assertResponseStatusCode(302);
+
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->assertSame($user->role, $testData['role']);
+        $this->assertSame($user->level, $testData['level']);
+
+        $this->resetTestData();
+    }
+
+    /**
      * Test if the remove action can be accessed
      *
      * @return void
