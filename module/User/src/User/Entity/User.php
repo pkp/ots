@@ -10,6 +10,9 @@ use Zend\Mvc\I18n\Translator;
 define('USER_LEVEL_REGISTERED', 0);
 define('USER_LEVEL_REGISTRATION_CONFIRMED', 1);
 
+define('USER_ROLE_ADMINISTRATOR', 'administrator');
+define('USER_ROLE_MEMBER', 'member');
+
 /**
  * User
  *
@@ -112,7 +115,7 @@ class User extends DataObject
     public function initRole()
     {
         if ($this->role === null) {
-            $this->role = 'member';
+            $this->role = USER_ROLE_MEMBER;
         }
     }
 
@@ -186,7 +189,7 @@ class User extends DataObject
      */
     public function isAdministrator()
     {
-        return $this->role == 'administrator';
+        return $this->role == USER_ROLE_ADMINISTRATOR;
     }
 
     /**
@@ -210,8 +213,8 @@ class User extends DataObject
     public function getRoleMap()
     {
         return array(
-            'member' => $this->translator->translate('user.user.role.member'),
-            'administrator' => $this->translator->translate('user.user.role.administrator'),
+            USER_ROLE_MEMBER => $this->translator->translate('user.user.role.member'),
+            USER_ROLE_ADMINISTRATOR => $this->translator->translate('user.user.role.administrator'),
         );
     }
 }
