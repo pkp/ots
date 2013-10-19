@@ -8,7 +8,8 @@ namespace Xmlps\DataObject;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class DataObject implements ServiceLocatorAwareInterface {
+class DataObject implements ServiceLocatorAwareInterface
+{
     protected $sm;
 
     /*
