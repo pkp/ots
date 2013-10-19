@@ -1,5 +1,6 @@
 <?php
 return array(
+  'Xmlps\Event\Handler\UserRegisterHandler'        => __DIR__ . '/library/Event/Handler/UserRegister.php',
   'Xmlps\Event\AclDispatch'                        => __DIR__ . '/library/Event/AclDispatch.php',
   'Xmlps\Event\FlashMessengerRender'               => __DIR__ . '/library/Event/FlashMessengerRender.php',
   'Xmlps\Log\Writer\Doctrine'                      => __DIR__ . '/library/Log/Writer/Doctrine.php',

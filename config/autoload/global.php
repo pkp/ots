@@ -31,4 +31,7 @@ return array(
     'log' => array(
         'level' => 6,
     ),
+    'notification' => array(
+        'adminEmail' => 'axfelix@gmail.com',
+    )
 );

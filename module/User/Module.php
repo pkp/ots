@@ -1,6 +1,8 @@
 <?php
 
 namespace User;
+use Zend\Mvc\MvcEvent;
+
 use User\Entity\User;
 use User\Form\LoginForm;
 use User\Form\LoginFormInputFilter;
@@ -12,6 +14,19 @@ use User\Model\DAO\UserDAO;
 
 class Module
 {
+    public function onBootstrap(MvcEvent $e)
+    {
+        $application = $e->getApplication();
+        $sem = $application->getEventManager()->getSharedManager();
+        $sm = $application->getServiceManager();
+
+        // Send emails after user registration
+        $sem->attach('User\Controller\UserController', 'user-register', function($e) use ($sm) {
+            $handler = $sm->get('Xmlps\Event\Handler\UserRegisterHandler');
+            $handler->sendEmails($e);
+        });
+    }
+
     /**
      * Get config
      *
@@ -95,6 +110,9 @@ class Module
                 'Zend\Authentication\AuthenticationService' => function($sm) {
                     return $sm->get('doctrine.authenticationservice.orm_default');
                 }
+            ),
+            'invokables' => array(
+                'Xmlps\Event\Handler\UserRegisterHandler' => 'Xmlps\Event\Handler\UserRegisterHandler'
             ),
             'shared' => array(
                 'User\Entity\User' => false

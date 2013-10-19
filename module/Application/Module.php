@@ -16,6 +16,9 @@ use Xmlps\Doctrine\Listener\ServiceManagerListener;
 use Xmlps\Event\AclDispatch;
 use Xmlps\Event\FlashMessengerRender;
 
+use Zend\Mail\Message;
+use Zend\Mail\Transport\Sendmail;
+
 class Module
 {
     public function onBootstrap(MvcEvent $e)
@@ -93,6 +96,12 @@ class Module
 
                     return $logger;
                 },
+                'Mail' => function($sm) {
+                    return new Message;
+                },
+                'MailTransport' => function($sm) {
+                    return new Sendmail;
+                },
                 'Xmlps\Log\Writer\Doctrine' => function($sm) {
                     $logDAO = $sm->get('LogDAO');
                     $logEntity = $sm->get('Application\Entity\Log');
@@ -102,6 +111,9 @@ class Module
                     return new \Xmlps\Logger\Logger;
                 },
             ),
+            'shared' => array(
+                'Mail' => false
+            )
         );
     }
 }

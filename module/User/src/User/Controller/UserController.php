@@ -205,8 +205,8 @@ class UserController extends AbstractActionController {
                 $user->password = $data['password'];
                 $this->userDAO->save($user);
 
-                // Authenticate user and register in the session
-                $this->authenticate($data['email'], $data['password']);
+                // Trigger the user register event
+                $this->getEventManager()->trigger('user-register', $this, array('user' => $user));
 
                 $flashMessenger = $this->flashMessenger();
                 $flashMessenger->setNamespace('success');
