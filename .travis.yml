@@ -7,7 +7,7 @@ php:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -y -qq sendmail
+  - sudo apt-get install -y -qq postfix
   - mysql -e 'create database xmlps;'
   - php composer.phar self-update
   - php composer.phar install
