@@ -13,6 +13,8 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
 use Xmlps\Doctrine\Listener\ServiceManagerListener;
+use Xmlps\Event\AclDispatch;
+use Xmlps\Event\FlashMessengerRender;
 
 class Module
 {
@@ -27,74 +29,21 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-        // Attach the ControllerAcl plugin to the route event
+        // Attach the ControllerAcl plugin to the dispatch event
         $eventManager->attach(MvcEvent::EVENT_DISPATCH, function($e) {
-            $application = $e->getApplication();
-            $sm = $application->getServiceManager();
-            $authorized = $sm->get('ControllerPluginManager')
-                ->get('ControllerAcl')
-                ->authorize($e);
-
-            if (!$authorized) {
-                $view = $e->getViewModel();
-                $translator = $sm->get('translator');
-                $view->setVariable('messages', array('error' => array(
-                    $translator->translate(
-                        'application.acl.notAuthorized'
-                    )
-                )));
-                $e->getResponse()->setStatusCode(403);
-                $e->stopPropagation();
-            }
-
+            AclDispatch::processAcls($e);
         }, 100);
 
-        // Make service manageer available to doctrine entities
+        // Show flashmessages in the view
+        $eventManager->attach(MvcEvent::EVENT_RENDER, function($e) {
+           FlashMessengerRender::registerMessages($e);
+        });
+
+        // Make service manager available to doctrine entities
         $sm = $e->getApplication()->getServiceManager();
         $em = $sm->get('doctrine.entitymanager.orm_default');
         $dem = $em->getEventManager();
         $dem->addEventListener(array(\Doctrine\ORM\Events::postLoad), new ServiceManagerListener($sm));
-
-
-        // Show flashmessages in the view
-        $eventManager->attach(MvcEvent::EVENT_RENDER, function($e) {
-            $application = $e->getApplication();
-            $sm = $application->getServiceManager();
-            $flashMessenger = $sm->get('ControllerPluginManager')->get('flashMessenger');
-
-            $messages = array();
-
-            $flashMessenger->setNamespace('success');
-            if ($flashMessenger->hasMessages()) {
-                $messages['success'] = $flashMessenger->getMessages();
-            }
-            $flashMessenger->clearMessages();
-
-            $flashMessenger->setNamespace('info');
-            if ($flashMessenger->hasMessages()) {
-                $messages['info'] = $flashMessenger->getMessages();
-            }
-            $flashMessenger->clearMessages();
-
-            $flashMessenger->setNamespace('default');
-            if ($flashMessenger->hasMessages()) {
-                if (isset($messages['info'])) {
-                    $messages['info'] = array_merge($messages['info'], $flashMessenger->getMessages());
-                }
-                else {
-                    $messages['info'] = $flashMessenger->getMessages();
-                }
-            }
-            $flashMessenger->clearMessages();
-
-            $flashMessenger->setNamespace('error');
-            if ($flashMessenger->hasMessages()) {
-                $messages['error'] = $flashMessenger->getMessages();
-            }
-            $flashMessenger->clearMessages();
-
-            $e->getViewModel()->setVariable('flashMessages', $messages);
-        });
     }
 
     public function getConfig()

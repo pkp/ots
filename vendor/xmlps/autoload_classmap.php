@@ -1,5 +1,7 @@
 <?php
 return array(
+  'Xmlps\Event\AclDispatch'                        => __DIR__ . '/library/Event/AclDispatch.php',
+  'Xmlps\Event\FlashMessengerRender'               => __DIR__ . '/library/Event/FlashMessengerRender.php',
   'Xmlps\Log\Writer\Doctrine'                      => __DIR__ . '/library/Log/Writer/Doctrine.php',
   'Xmlps\Logger\Logger'                            => __DIR__ . '/library/Log/Logger.php',
   'Xmlps\Doctrine\Listener\ServiceManagerListener' => __DIR__ . '/library/Doctrine/Listener/ServiceManagerListener.php',
