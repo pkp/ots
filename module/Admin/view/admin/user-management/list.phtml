@@ -13,11 +13,13 @@
     echo '</tr></thead><tbody>';
 
     foreach ($this->users as $user) {
+      if (!isset($roleMap)) $roleMap = $user->getRoleMap();
+      if (!isset($levelMap)) $levelMap = $user->getLevelMap();
       echo '<tr>';
       echo '<td>' . $this->escapeHtml($user->id) . '</td>';
       echo '<td>' . $this->escapeHtml($user->email) . '</td>';
-      echo '<td>' . $this->escapeHtml($user->role) . '</td>';
-      echo '<td>' . $this->escapeHtml($user->level) . '</td>';
+      echo '<td>' . $this->escapeHtml($roleMap[$user->role]) . '</td>';
+      echo '<td>' . $this->escapeHtml($levelMap[$user->level]) . '</td>';
       echo '<td>' . $this->dateFormat($user->lastLogin, IntlDateFormatter::SHORT, IntlDateFormatter::SHORT, 'en_Us') . '</td>';
       echo '<td>';
       echo '<a href="' . $this->url('admin/user-management', array('action' => 'edit', 'id' => $user->id)) . '" title="' . $this->translate('application.generic.edit') . '" class="action edit-action"></a>';
