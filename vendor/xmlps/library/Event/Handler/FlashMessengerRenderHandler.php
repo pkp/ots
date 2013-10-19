@@ -1,6 +1,6 @@
 <?php
 
-namespace Xmlps\Event;
+namespace Xmlps\Event\Handler;
 
 /**
  * Registeres flash messages in the view
@@ -14,7 +14,7 @@ namespace Xmlps\Event;
  *     });
  * }
  */
-class FlashMessengerRender
+class FlashMessengerRenderHandler
 {
    public static function registerMessages(&$e)
    {

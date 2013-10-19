@@ -1,5 +1,5 @@
 <?php
-namespace Xmlps\Event;
+namespace Xmlps\Event\Handler;
 
 /**
  * Processes controller ACLs. Registers controller ACL plugin and handles ACL
@@ -14,7 +14,7 @@ namespace Xmlps\Event;
  *     }, 100);
  * }
  */
-class AclDispatch
+class AclDispatchHandler
 {
    public static function processAcls(&$e)
    {

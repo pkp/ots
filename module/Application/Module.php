@@ -13,8 +13,8 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
 use Xmlps\Doctrine\Listener\ServiceManagerListener;
-use Xmlps\Event\AclDispatch;
-use Xmlps\Event\FlashMessengerRender;
+use Xmlps\Event\Handler\AclDispatchHandler;
+use Xmlps\Event\Handler\FlashMessengerRenderHandler;
 
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail;
@@ -34,12 +34,12 @@ class Module
 
         // Attach the ControllerAcl plugin to the dispatch event
         $eventManager->attach(MvcEvent::EVENT_DISPATCH, function($e) {
-            AclDispatch::processAcls($e);
+            AclDispatchHandler::processAcls($e);
         }, 100);
 
         // Show flashmessages in the view
         $eventManager->attach(MvcEvent::EVENT_RENDER, function($e) {
-           FlashMessengerRender::registerMessages($e);
+           FlashMessengerRenderHandler::registerMessages($e);
         });
 
         // Make service manager available to doctrine entities
