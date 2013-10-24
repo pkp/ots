@@ -22,7 +22,7 @@ class Module
 
         // Send emails after user registration
         $sem->attach('User\Controller\UserController', 'user-register', function($e) use ($sm) {
-            $handler = $sm->get('Xmlps\Event\Handler\UserRegisterHandler');
+            $handler = $sm->get('User\Event\Handler\UserRegisterHandler');
             $handler->sendEmails($e);
         });
     }
@@ -112,7 +112,7 @@ class Module
                 }
             ),
             'invokables' => array(
-                'Xmlps\Event\Handler\UserRegisterHandler' => 'Xmlps\Event\Handler\UserRegisterHandler'
+                'User\Event\Handler\UserRegisterHandler' => 'User\Event\Handler\UserRegisterHandler'
             ),
             'shared' => array(
                 'User\Entity\User' => false

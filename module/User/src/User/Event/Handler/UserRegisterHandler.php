@@ -1,6 +1,6 @@
 <?php
 
-namespace Xmlps\Event\Handler;
+namespace User\Event\Handler;
 
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
