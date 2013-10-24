@@ -14,5 +14,14 @@ before_install:
   - cp config/autoload/travis.php.dist config/autoload/local.php
   - vendor/doctrine/doctrine-module/bin/doctrine-module  orm:schema-tool:update --force
 
+before_script:
+  - sudo service postfix stop
+  - smtp-sink -d "%d.%H.%M.%S" localhost:2500 1000 &
+  - chmod +x test/fakesendmail.sh
+  - sudo mkdir -p /var/qmail/bin
+  - sudo cp test/fakesendmail.sh /var/qmail/bin/sendmail
+  - sudo cp test/fakesendmail.sh /usr/sbin/sendmail
+  - echo 'sendmail_path = "/usr/sbin/sendmail -t -i "' | sudo tee "/home/travis/.phpenv/versions/`php -i|grep "PHP Version"|head -n 1|grep -o -P '\d+\.\d+\.\d+.*'`/etc/conf.d/sendmail.ini"
+
 notifications:
   email: false
