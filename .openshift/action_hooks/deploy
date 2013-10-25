@@ -1,4 +1,5 @@
 #!/bin/sh
+cd $OPENSHIFT_REPO_DIR
 echo "Executing OpenShift deploy hook"
 cp config/autoload/openshift.php.dist config/autoload/local.php
 ./composer.phar self-update
