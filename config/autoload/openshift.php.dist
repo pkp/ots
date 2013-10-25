@@ -6,6 +6,7 @@ return array(
         'connection' => array(
             'orm_default' => array(
                 'params' => array(
+                    'host' => '127.11.252.130',
                     'user' => 'adminr1GY8rZ',
                     'password' => 'pXz9a_YntYbD',
                 ),
