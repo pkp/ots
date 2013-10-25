@@ -45,7 +45,7 @@ Technical notes
     # guard
 ```
 
-* We are using [Travis CI](https://travis-ci.org/) to run automated tests and deploy to the staging server the configuration is in .travis.yml
+* We are using [Travis CI](https://travis-ci.org/) to run automated tests and deploy to the staging server. The configuration is in .travis.yml
 
 * The staging server is run on the OpenShift infrastructure. The OpenShift PHP cartridge requires a direcrory called php to contain the public files. Hence the php -> public symlink.
 
