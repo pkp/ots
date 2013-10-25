@@ -1,27 +1,32 @@
 language: php
-
 php:
-  - 5.3
-  - 5.4
-  - 5.5
-
+- 5.3
+- 5.4
+- 5.5
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y -qq postfix
-  - mysql -e 'create database xmlps;'
-  - php composer.phar self-update
-  - php composer.phar install
-  - cp config/autoload/travis.php.dist config/autoload/local.php
-  - vendor/doctrine/doctrine-module/bin/doctrine-module  orm:schema-tool:update --force
-
+- sudo apt-get update -qq
+- sudo apt-get install -y -qq postfix
+- mysql -e 'create database xmlps;'
+- php composer.phar self-update
+- php composer.phar install
+- cp config/autoload/travis.php.dist config/autoload/local.php
+- vendor/doctrine/doctrine-module/bin/doctrine-module  orm:schema-tool:update --force
 before_script:
-  - sudo service postfix stop
-  - smtp-sink -d "%d.%H.%M.%S" localhost:2500 1000 &
-  - chmod +x test/fakesendmail.sh
-  - sudo mkdir -p /var/qmail/bin
-  - sudo cp test/fakesendmail.sh /var/qmail/bin/sendmail
-  - sudo cp test/fakesendmail.sh /usr/sbin/sendmail
-  - echo 'sendmail_path = "/usr/sbin/sendmail -t -i "' | sudo tee "/home/travis/.phpenv/versions/`php -i|grep "PHP Version"|head -n 1|grep -o -P '\d+\.\d+\.\d+.*'`/etc/conf.d/sendmail.ini"
-
+- sudo service postfix stop
+- smtp-sink -d "%d.%H.%M.%S" localhost:2500 1000 &
+- chmod +x test/fakesendmail.sh
+- sudo mkdir -p /var/qmail/bin
+- sudo cp test/fakesendmail.sh /var/qmail/bin/sendmail
+- sudo cp test/fakesendmail.sh /usr/sbin/sendmail
+- echo 'sendmail_path = "/usr/sbin/sendmail -t -i "' | sudo tee "/home/travis/.phpenv/versions/`php -i|grep "PHP Version"|head -n 1|grep -o -P '\d+\.\d+\.\d+.*'`/etc/conf.d/sendmail.ini"
 notifications:
   email: false
+deploy:
+  provider: openshift
+  user: michael.thessel@gmx.de
+  password:
+    secure: ADUHcinu/3KF2Q3F6CrvEoFFUSQemd4LsUqF0uariH7aaBNhy6vgbP2eMT/3v+SEFaH1geJ5fcbqk02fFRSCPMeXo8hkpONkp6qptralkgXsG1xDi1wArahZrDihyiLQkXHugv4eDZ9yjzOA3wcrClvoV1NLQt5ofUNkt9Dc6Ns=
+  app: xmlps
+  domain: ''
+  on:
+    repo: MichaelThessel/xmlps
