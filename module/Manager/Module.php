@@ -9,6 +9,25 @@ use Manager\Form\UploadFormInputFilter;
 class Module
 {
     /**
+     * Bootstrap
+     *
+     * @param MvcEvent $e
+     * @return void
+     */
+    public function onBootstrap(MvcEvent $e)
+    {
+        $application = $e->getApplication();
+        $sem = $application->getEventManager()->getSharedManager();
+        $sm = $application->getServiceManager();
+
+        // Handle file upload events
+        $sem->attach('Manager\Controller\ManagerController', 'file-upload', function($e) use ($sm) {
+            $handler = $sm->get('Manager\Event\Handler\FileUploadHandler');
+            $handler->handle($e);
+        });
+    }
+
+    /**
      * Get config
      *
      * @return array
@@ -55,6 +74,9 @@ class Module
                 {
                     return new UploadFormInputFilter();
                 },
+            ),
+            'invokables' => array(
+                'Manager\Event\Handler\FileUploadHandler' => 'Manager\Event\Handler\FileUploadHandler'
             ),
         );
     }
