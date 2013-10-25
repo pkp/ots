@@ -12,6 +12,13 @@ if (isset($this->registrationForm)) {
   $registrationForm->prepare();
   $registrationForm = $this->form()->render($registrationForm);
 }
+
+if (isset($this->uploadForm)) {
+  $uploadForm->setAttribute('action', $this->url('manager', array('action' => 'upload')));
+  $uploadForm = $this->uploadForm;
+  $uploadForm->prepare();
+  $uploadForm = $this->form()->render($uploadForm);
+}
 ?>
 <div class="sidebar-page user-user-index">
   <?php if (!$user = $this->identity()) : ?>
@@ -28,6 +35,15 @@ if (isset($this->registrationForm)) {
           <label><?php echo $this->translate('user.registrationForm.register') ?></label>
           <?php echo $registrationForm; ?>
         </div>
+      </div>
+    </div>
+  <?php endif ?>
+
+  <?php if ($this->uploadForm) : ?>
+    <div class="upload">
+      <div class="box">
+        <label><?php echo $this->translate('manager.uploadForm.uploadDocument') ?></label>
+        <?php echo $uploadForm; ?>
       </div>
     </div>
   <?php endif ?>

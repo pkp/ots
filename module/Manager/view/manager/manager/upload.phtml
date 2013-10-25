@@ -1,0 +1,20 @@
+<?php
+$this->headTitle($this->translate('application.manager.index'));
+
+if (isset($this->uploadForm)) {
+  $uploadForm->setAttribute('action', $this->url('manager', array('action' => 'upload')));
+  $uploadForm = $this->uploadForm;
+  $uploadForm->prepare();
+  $uploadForm = $this->form()->render($uploadForm);
+}
+?>
+<div class="page manager-manager-upload">
+
+  <div class="upload">
+    <div class="box">
+      <label><?php echo $this->translate('manager.uploadForm.uploadDocument') ?></label>
+      <?php echo $uploadForm; ?>
+    </div>
+  </div>
+
+</div>

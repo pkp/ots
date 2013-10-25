@@ -10,6 +10,8 @@ use User\Form\RegistrationForm;
 use User\Form\RegistrationFormInputFilter;
 use User\Form\PasswordResetForm;
 use User\Form\PasswordResetFormInputFilter;
+use Manager\Form\UploadForm;
+use Manager\Form\UploadFormInputFilter;
 use Zend\Mvc\I18n\Translator;
 use Xmlps\Logger\Logger;
 
@@ -23,6 +25,8 @@ class UserController extends AbstractActionController {
     protected $registrationFormInputFilter;
     protected $passwordResetForm;
     protected $passwordResetFormInputFilter;
+    protected $uploadForm;
+    protected $uploadFormInputFilter;
 
     /**
      * Constructor
@@ -46,7 +50,9 @@ class UserController extends AbstractActionController {
         RegistrationForm $registrationForm,
         RegistrationFormInputFilter $registrationFormInputFilter,
         PasswordResetForm $passwordResetForm,
-        PasswordResetFormInputFilter $passwordResetFormInputFilter
+        PasswordResetFormInputFilter $passwordResetFormInputFilter,
+        UploadForm $uploadForm,
+        UploadFormInputFilter $uploadFormInputFilter
     )
     {
         $this->userDAO = $userDAO;
@@ -58,6 +64,8 @@ class UserController extends AbstractActionController {
         $this->registrationFormInputFilter = $registrationFormInputFilter;
         $this->passwordResetForm = $passwordResetForm;
         $this->passwordResetFormInputFilter = $passwordResetFormInputFilter;
+        $this->uploadForm = $uploadForm;
+        $this->uploadFormInputFilter = $uploadFormInputFilter;
     }
 
     /**
@@ -71,6 +79,11 @@ class UserController extends AbstractActionController {
             return array(
                 'loginForm' => $this->loginForm,
                 'registrationForm' => $this->registrationForm,
+            );
+        }
+        else {
+            return array(
+                'uploadForm' => $this->uploadForm,
             );
         }
     }

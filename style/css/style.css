@@ -742,6 +742,24 @@ a.remove-action:before {
     width: 100%; }
   .user-user-index .authenticate input {
     width: 100%; }
+  .user-user-index .upload {
+    display: block;
+    float: left;
+    margin-right: 1.5873%;
+    width: 74.60317%;
+    padding: 0 10px; }
+    .user-user-index .upload:last-child {
+      margin-right: 0; }
+    @media screen and (max-width: 480px) {
+      .user-user-index .upload {
+        display: block;
+        float: left;
+        margin-right: 2.12766%;
+        width: 100%; }
+        .user-user-index .upload:last-child {
+          margin-right: 0; } }
+    .user-user-index .upload .box {
+      width: 100%; }
 
 .user-user-index + aside ul {
   list-style: none; }

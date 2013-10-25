@@ -345,6 +345,18 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
     }
     input { @include fill-parent; }
   }
+
+  .upload {
+    @include span-columns(6 of 8);
+    @include media($mobile) {
+      @include span-columns(6 of 6);
+    }
+    padding: 0 $gutter;
+
+    .box {
+      @include fill-parent;
+    }
+  }
 }
 .user-user-index + aside {
   @include custom-list;

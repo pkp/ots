@@ -13,7 +13,6 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'Manager\Controller\Manager',
-                        'action' => 'index',
                     ),
 
                 ),
@@ -27,10 +26,10 @@ return array(
     ),
     'acl' => array(
         'resources' => array(
-            'controller:Manager\Controller\Manager:index',
+            'controller:Manager\Controller\Manager:upload',
         ),
         'rules' => array(
-            array('allow', 'guest', 'controller:Manager\Controller\Manager:index'),
+            array('allow', 'guest', 'controller:Manager\Controller\Manager:upload'),
         ),
     )
 );

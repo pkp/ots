@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-18 16:19-1000\n"
-"PO-Revision-Date: 2013-10-18 16:22-1000\n"
+"POT-Creation-Date: 2013-10-24 15:30-1000\n"
+"PO-Revision-Date: 2013-10-24 15:32-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -16,6 +16,21 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../..\n"
 "X-Poedit-SearchPath-2: ../../../vendor/xmlps\n"
+
+#: ../../Manager/src/Manager/Form/UploadForm.php:39
+#: ../../Manager/view/manager/manager/upload.phtml:15
+#: ../../User/view/user/user/index.phtml:44
+msgid "manager.uploadForm.uploadDocument"
+msgstr "Upload Document"
+
+#: ../../Manager/src/Manager/Controller/ManagerController.php:61
+msgid "manager.upload.success"
+msgstr ""
+"Your document has been successfully uploaded. It is now being processed."
+
+#: ../../Manager/src/Manager/Controller/ManagerController.php:68
+msgid "manager.upload.successLog"
+msgstr "User uploaded document (%s)."
 
 #: ../../Admin/src/Admin/Form/UserRemovalForm.php:38
 #: ../../Admin/view/admin/user-management/list.phtml:26
@@ -58,6 +73,41 @@ msgstr "Sucessfully removed user \"%s\""
 msgid "admin.userManagement.userRemovalSuccessLog"
 msgstr "Removed user \"%s\""
 
+#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:95
+msgid "user.registration.confirmationEmailBody"
+msgstr ""
+"Hi, \n"
+"Thanks for registering for the PKP XML Parsing Service. An administrator "
+"will activate your account shortly. You will be notified once your account "
+"is active.\n"
+"\n"
+"Your PKP XML Parsing Service Team."
+
+#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:99
+#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:132
+msgid "application.generic.adminName"
+msgstr "PKP XML Parsing Service"
+
+#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:103
+msgid "user.registration.confirmationEmailSubject"
+msgstr "PKP XML Parsing Service account creation confirmation"
+
+#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:108
+msgid "user.registration.confirmationEmailSentLog"
+msgstr "User registration confirmation email has been sent to \"%s\""
+
+#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:126
+msgid "user.registration.adminNotificationEmailBody"
+msgstr "A new user (%s) has registered please activate the account."
+
+#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:136
+msgid "user.registration.adminNotificationEmailSubject"
+msgstr "PKP XML Parsing Service account awaits activation"
+
+#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:141
+msgid "user.registration.adminNotificationEmailSentLog"
+msgstr "User registration admin notification email has been sent to \"%s\""
+
 #: ../../User/src/User/Form/PasswordResetForm.php:31
 msgid "user.form.newPassword"
 msgstr "New Password"
@@ -87,7 +137,7 @@ msgid "user.form.password"
 msgstr "Password"
 
 #: ../../User/src/User/Form/LoginForm.php:53
-#: ../../User/view/user/user/index.phtml:21
+#: ../../User/view/user/user/index.phtml:28
 msgid "user.loginForm.login"
 msgstr "Login"
 
@@ -96,7 +146,7 @@ msgid "user.registrationForm.userAlreadyExists"
 msgstr "This email address is already registered!"
 
 #: ../../User/src/User/Form/RegistrationForm.php:65
-#: ../../User/view/user/user/index.phtml:28
+#: ../../User/view/user/user/index.phtml:35
 msgid "user.registrationForm.register"
 msgstr "Register"
 
@@ -116,82 +166,47 @@ msgstr "Member"
 msgid "user.user.role.administrator"
 msgstr "Administrator"
 
-#: ../../User/src/User/Controller/UserController.php:118
+#: ../../User/src/User/Controller/UserController.php:128
 msgid "user.authentication.sucessfulLogin"
 msgstr "Hi, welcome back!"
 
-#: ../../User/src/User/Controller/UserController.php:125
+#: ../../User/src/User/Controller/UserController.php:135
 msgid "user.authentication.sucessfulLoginLog"
 msgstr "Successful login by %s"
 
-#: ../../User/src/User/Controller/UserController.php:138
+#: ../../User/src/User/Controller/UserController.php:148
 msgid "user.authentication.invalidLoginCredentials"
 msgstr "The login credentials you provided are invalid. Please try again."
 
-#: ../../User/src/User/Controller/UserController.php:171
+#: ../../User/src/User/Controller/UserController.php:181
 msgid "user.authentication.sucessfulLogout"
 msgstr "Thanks for visiting."
 
-#: ../../User/src/User/Controller/UserController.php:178
+#: ../../User/src/User/Controller/UserController.php:188
 msgid "user.authentication.sucessfulLogoutLog"
 msgstr "Successful logout by %s"
 
-#: ../../User/src/User/Controller/UserController.php:218
+#: ../../User/src/User/Controller/UserController.php:228
 msgid "user.registration.sucessfulRegistration"
 msgstr ""
 "Thanks for registering. An administrator will review your registration "
 "shortly. You will be notified via email once your account has been activated."
 
-#: ../../User/src/User/Controller/UserController.php:225
+#: ../../User/src/User/Controller/UserController.php:235
 msgid "user.registration.sucessfulRegistrationLog"
 msgstr "User %s registered successfully"
 
-#: ../../User/src/User/Controller/UserController.php:271
+#: ../../User/src/User/Controller/UserController.php:281
 msgid "user.settings.saveSuccessConfirm"
 msgstr "Your settings have been updated!"
 
-#: ../../User/src/User/Controller/UserController.php:278
+#: ../../User/src/User/Controller/UserController.php:288
 msgid "user.settings.saveSuccessConfirmLog"
 msgstr "User %s updated settings"
 
-#: ../../../vendor/xmlps/library/Event/AclDispatch.php:32
+#: ../../../vendor/xmlps/library/Event/Handler/AclDispatchHandler.php:32
 msgid "application.acl.notAuthorized"
 msgstr "You are not permitted to access the requested resource."
-
-#: ../../../vendor/xmlps/library/Event/Handler/UserRegister.php:74
-msgid "user.registration.confirmationEmailBody"
-msgstr ""
-"Hi, \n"
-"Thanks for registering for the PKP XML Parsing Service. An administrator "
-"will activate your account shortly. You will be notified once your account "
-"is active.\n"
-"\n"
-"Your PKP XML Parsing Service Team."
-
-#: ../../../vendor/xmlps/library/Event/Handler/UserRegister.php:78
-#: ../../../vendor/xmlps/library/Event/Handler/UserRegister.php:109
-msgid "application.generic.adminName"
-msgstr "PKP XML Parsing Service"
-
-#: ../../../vendor/xmlps/library/Event/Handler/UserRegister.php:82
-msgid "user.registration.confirmationEmailSubject"
-msgstr "PKP XML Parsing Service account creation confirmation"
-
-#: ../../../vendor/xmlps/library/Event/Handler/UserRegister.php:87
-msgid "user.registration.confirmationEmailSentLog"
-msgstr "User registration confirmation email has been sent to \"%s\""
-
-#: ../../../vendor/xmlps/library/Event/Handler/UserRegister.php:105
-msgid "user.registration.adminNotificationEmailBody"
-msgstr "A new user (%s) has registered please activate the account."
-
-#: ../../../vendor/xmlps/library/Event/Handler/UserRegister.php:113
-msgid "user.registration.adminNotificationEmailSubject"
-msgstr "PKP XML Parsing Service account awaits activation"
-
-#: ../../../vendor/xmlps/library/Event/Handler/UserRegister.php:118
-msgid "user.registration.adminNotificationEmailSentLog"
-msgstr "User registration admin notification email has been sent to \"%s\""
 
 #: ../view/layout/layout.phtml:8 ../../Application/view/layout/layout.phtml:8
 #: ../../User/view/_sideBar.phtml:2
@@ -316,6 +331,10 @@ msgstr "Controller"
 msgid "application.error.controlerResolves"
 msgstr "resolves to %s"
 
+#: ../../Manager/view/manager/manager/upload.phtml:2
+msgid "application.manager.index"
+msgstr "Document Management"
+
 #: ../../Admin/view/admin/system-log/list.phtml:1
 msgid "application.layout.systemLog.list"
 msgstr "System Log"
@@ -432,6 +451,10 @@ msgstr "Settings"
 #: ../../User/view/user/user/settings.phtml:14
 msgid "user.settings.changePassword"
 msgstr "Change Password"
+
+#, fuzzy
+#~ msgid "manage.uploadForm.uploadDocument"
+#~ msgstr "Upload Document"
 
 #~ msgid "user.registration.confirmationEmailFrom"
 #~ msgstr "PKP XML Parsing Service"

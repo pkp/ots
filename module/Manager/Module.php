@@ -3,6 +3,9 @@ namespace Manager;
 
 use Zend\Mvc\MvcEvent;
 
+use Manager\Form\UploadForm;
+use Manager\Form\UploadFormInputFilter;
+
 class Module
 {
     /**
@@ -35,6 +38,28 @@ class Module
     }
 
     /**
+     * Get service config
+     *
+     * @return array
+     */
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'Manager\Form\UploadForm' => function($sm)
+                {
+                    $translator = $sm->get('translator');
+                    return new UploadForm($translator);
+                },
+                'Manager\Form\UploadFormInputFilter' => function($sm)
+                {
+                    return new UploadFormInputFilter();
+                },
+            ),
+        );
+    }
+
+    /**
      * Get controller config
      *
      * @return array
@@ -48,10 +73,14 @@ class Module
                     $sm = $cm->getServiceLocator();
                     $logger = $sm->get('Logger');
                     $translator = $sm->get('Translator');
+                    $uploadForm = $sm->get('Manager\Form\UploadForm');
+                    $uploadFormInputFilter = $sm->get('Manager\Form\UploadFormInputFilter');
 
                     return new Controller\ManagerController(
                         $logger,
-                        $translator
+                        $translator,
+                        $uploadForm,
+                        $uploadFormInputFilter
                     );
                 }
             )

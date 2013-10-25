@@ -141,6 +141,8 @@ class Module
                     $registrationFormInputFilter = $sm->get('User\Form\RegistrationFormInputFilter');
                     $passwordResetForm = $sm->get('User\Form\PasswordResetForm');
                     $passwordResetFormInputFilter = $sm->get('User\Form\PasswordResetFormInputFilter');
+                    $uploadForm = $sm->get('Manager\Form\UploadForm');
+                    $uploadFormInputFilter = $sm->get('Manager\Form\UploadFormInputFilter');
 
                     return new Controller\UserController(
                         $userDAO,
@@ -151,7 +153,9 @@ class Module
                         $registrationForm,
                         $registrationFormInputFilter,
                         $passwordResetForm,
-                        $passwordResetFormInputFilter
+                        $passwordResetFormInputFilter,
+                        $uploadForm,
+                        $uploadFormInputFilter
                     );
                 }
             )
