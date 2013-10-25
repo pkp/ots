@@ -27,3 +27,7 @@ deploy:
   domain: 'derthes'
   on:
     repo: MichaelThessel/xmlps
+after_deploy:
+- cp config/autoload/openshift.php.dist config/autoload/openshift.php
+- ./composer.phar self-update
+- ./composer.phar install
