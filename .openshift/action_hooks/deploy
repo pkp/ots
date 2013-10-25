@@ -1,4 +1,5 @@
-cp config/autoload/openshift.php.dist config/autoload/openshift.php
+echo "Executing OpenShift deploy hook"
+cp config/autoload/openshift.php.dist config/autoload/local.php
 ./composer.phar self-update
 ./composer.phar install
 vendor/bin/doctrine-module  orm:schema-tool:update --force
