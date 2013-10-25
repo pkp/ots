@@ -1,0 +1,4 @@
+cp config/autoload/openshift.php.dist config/autoload/openshift.php
+./composer.phar self-update
+./composer.phar install
+vendor/bin/doctrine-module  orm:schema-tool:update --force
