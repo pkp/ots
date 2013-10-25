@@ -27,6 +27,6 @@ deploy:
   password:
     secure: ADUHcinu/3KF2Q3F6CrvEoFFUSQemd4LsUqF0uariH7aaBNhy6vgbP2eMT/3v+SEFaH1geJ5fcbqk02fFRSCPMeXo8hkpONkp6qptralkgXsG1xDi1wArahZrDihyiLQkXHugv4eDZ9yjzOA3wcrClvoV1NLQt5ofUNkt9Dc6Ns=
   app: xmlps
-  domain: ''
+  domain: 'xmlps-derthes.rhcloud.com'
   on:
     repo: MichaelThessel/xmlps
