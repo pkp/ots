@@ -1,0 +1,18 @@
+<?php
+
+return array(
+    'modules' => array(),
+    'doctrine' => array(
+        'connection' => array(
+            'orm_default' => array(
+                'params' => array(
+                    'user' => 'adminr1GY8rZ',
+                    'password' => 'pXz9a_YntYbD',
+                ),
+            ),
+        ),
+    ),
+    'log' => array(
+        'level' => 7,
+    ),
+);
