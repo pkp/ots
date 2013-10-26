@@ -12,7 +12,7 @@
 
     foreach ($this->logEntries as $logEntry) {
       echo '<tr>';
-      echo '<td>' . $this->dateFormat($logEntry->timestamp, IntlDateFormatter::SHORT, IntlDateFormatter::SHORT, 'en_Us') . '</td>';
+      echo '<td>' . date('Y/m/d H:i:s', $logEntry->timestamp) . '</td>';
       echo '<td>' . $this->escapeHtml($logEntry->ip) . '</td>';
       echo '<td>' . $this->escapeHtml($this->priorities[$logEntry->priority]) . '</td>';
       echo '<td>' . $this->escapeHtml($logEntry->message) . '</td>';

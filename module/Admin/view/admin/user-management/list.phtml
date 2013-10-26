@@ -20,7 +20,7 @@
       echo '<td>' . $this->escapeHtml($user->email) . '</td>';
       echo '<td>' . $this->escapeHtml($roleMap[$user->role]) . '</td>';
       echo '<td>' . $this->escapeHtml($levelMap[$user->level]) . '</td>';
-      echo '<td>' . $this->dateFormat($user->lastLogin, IntlDateFormatter::SHORT, IntlDateFormatter::SHORT, 'en_Us') . '</td>';
+      echo '<td>' . date('Y/m/d H:i:s', $user->lastLogin) . '</td>';
       echo '<td>';
       echo '<a href="' . $this->url('admin/user-management', array('action' => 'edit', 'id' => $user->id)) . '" title="' . $this->translate('application.generic.edit') . '" class="action edit-action"></a>';
       echo '<a href="' . $this->url('admin/user-management', array('action' => 'remove', 'id' => $user->id)) . '" title="' . $this->translate('application.generic.remove') . '" class="action remove-action"></a>';
