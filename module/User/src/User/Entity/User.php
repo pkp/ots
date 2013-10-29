@@ -64,6 +64,16 @@ class User extends DataObject
     protected $role;
 
     /**
+     * @ORM\Column(type="string", length=40, nullable=false)
+     */
+    protected $activationKey;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    protected $active;
+
+    /**
      * Sets the registration date timestamp
      *
      * @return void
@@ -102,6 +112,34 @@ class User extends DataObject
     {
         if ($this->role === null) {
             $this->role = USER_ROLE_MEMBER;
+        }
+    }
+
+    /**
+     * Sets the activation key
+     *
+     * @return void
+     *
+     * @ORM\PrePersist
+     */
+    public function initActivationKey()
+    {
+        if ($this->activationKey === null) {
+            $this->activationKey = uniqid('');
+        }
+    }
+
+    /**
+     * Sets the active flag
+     *
+     * @return void
+     *
+     * @ORM\PrePersist
+     */
+    public function initActive()
+    {
+        if ($this->active === null) {
+            $this->active = 0;
         }
     }
 
@@ -204,5 +242,26 @@ class User extends DataObject
             USER_ROLE_MEMBER => $translator->translate('user.user.role.member'),
             USER_ROLE_ADMINISTRATOR => $translator->translate('user.user.role.administrator'),
         );
+    }
+
+    /**
+     * Checks whether the user is active or not
+     *
+     * @return bool Whether the user is active or not
+     */
+    public function isActive()
+    {
+        return $this->active === 1;
+    }
+
+    /**
+     * Activate user account
+     *
+     * @return void
+     */
+    public function activate()
+    {
+       $this->active = 1;
+       $this->activationKey = null;
     }
 }

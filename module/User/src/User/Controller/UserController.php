@@ -114,6 +114,20 @@ class UserController extends AbstractActionController {
                         array('email' => $data['email'])
                     );
 
+                    // Check if the user account has been activated
+                    if (!$user->isActive()) {
+                        $this->deAuthenticate();
+                        $flashMessenger = $this->flashMessenger();
+                        $flashMessenger->setNamespace('error');
+                        $flashMessenger->addMessage(
+                            $this->translator->translate(
+                                'user.authentication.emailNotVerified'
+                            )
+                        );
+
+                        return $this->redirect()->toRoute('home');
+                    }
+
                     // Register the user in the session
                     $this->sessionRegister($user);
 
@@ -140,13 +154,13 @@ class UserController extends AbstractActionController {
 
                     return $this->redirect()->toRoute('home');
                 }
-                else {
-                    $flashMessenger = $this->flashMessenger();
-                    $flashMessenger->setNamespace('error');
-                    $flashMessenger->addMessage(
-                        $this->translator->translate(
-                            'user.authentication.invalidLoginCredentials'
-                        )
+               else {
+                    $this->layout()->messages = array(
+                        'error' => array(
+                            $this->translator->translate(
+                                'user.authentication.invalidLoginCredentials'
+                            ),
+                        ),
                     );
                 }
             }
@@ -169,10 +183,7 @@ class UserController extends AbstractActionController {
     public function logoutAction()
     {
         $user = $this->identity();
-        $authService = $this->getServiceLocator()->get(
-            'Zend\Authentication\AuthenticationService'
-        );
-        $authService->clearIdentity();
+        $this->deAuthenticate();
 
         $flashMessenger = $this->flashMessenger();
         $flashMessenger->setNamespace('info');
@@ -219,7 +230,13 @@ class UserController extends AbstractActionController {
                 $this->userDAO->save($user);
 
                 // Trigger the user register event
-                $this->getEventManager()->trigger('user-register', $this, array('user' => $user));
+                $this->getEventManager()->trigger(
+                    'user-register',
+                    $this,
+                    array(
+                        'user' => $user,
+                    )
+                );
 
                 $flashMessenger = $this->flashMessenger();
                 $flashMessenger->setNamespace('success');
@@ -249,6 +266,57 @@ class UserController extends AbstractActionController {
         $viewModel->setTemplate('user/user/index.phtml');
 
         return $viewModel;
+    }
+
+    /**
+     * Proces user activation requests
+     *
+     * @return void
+     */
+    public function activateAction()
+    {
+        // Check if a activation key is provided
+        $activationKey = $this->params()->fromRoute('id');
+        if (empty($activationKey)) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        // Fetch the user account for that activation key
+        $user = $this->userDAO->findOneBy(array('activationKey' => $activationKey));
+
+        // Check if the user exists and is not alredy active
+        if (!$user or $user->isActive()) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        // Register the user in the session
+        $this->sessionRegister($user);
+
+        // Update last login time and activate the account
+        $user->activate();
+        $user->setLastLogin();
+        $this->userDAO->save($user);
+
+        $flashMessenger = $this->flashMessenger();
+        $flashMessenger->setNamespace('info');
+        $flashMessenger->addMessage(
+            $this->translator->translate(
+                'user.register.sucessfulActivation'
+            )
+        );
+
+        $this->logger->info(
+            sprintf(
+                $this->translator->translate(
+                    'user.register.sucessfulActivationLog'
+                ),
+                $user->email
+            )
+        );
+
+        return $this->redirect()->toRoute('home');
     }
 
     /**
@@ -317,6 +385,19 @@ class UserController extends AbstractActionController {
         $adapter->setIdentityValue($identityProperty);
         $adapter->setCredentialValue($credentialProperty);
         return $authService->authenticate();
+    }
+
+    /**
+     * De-authenticate a user
+     *
+     * @param mixed $user User object
+     */
+    protected function deAuthenticate($user)
+    {
+        $authService = $this->getServiceLocator()->get(
+            'Zend\Authentication\AuthenticationService'
+        );
+        $authService->clearIdentity();
     }
 
     /**

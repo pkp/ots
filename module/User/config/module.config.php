@@ -7,7 +7,7 @@ return array(
             'user' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/user[/:action]',
+                    'route' => '/user[/:action][/id/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
@@ -15,7 +15,6 @@ return array(
                         'controller' => 'User\Controller\User',
                         'action' => 'index',
                     ),
-
                 ),
             ),
         ),
@@ -53,6 +52,7 @@ return array(
 
     'acl' => array(
         'resources' => array(
+            'controller:User\Controller\User:activate',
             'controller:User\Controller\User:index',
             'controller:User\Controller\User:login',
             'controller:User\Controller\User:logout',
@@ -60,13 +60,16 @@ return array(
             'controller:User\Controller\User:settings',
         ),
         'rules' => array(
+            array('allow', 'guest', 'controller:User\Controller\User:activate'),
             array('allow', 'guest', 'controller:User\Controller\User:index'),
             array('allow', 'guest', 'controller:User\Controller\User:login'),
             array('allow', 'guest', 'controller:User\Controller\User:register'),
             array('allow', 'member', 'controller:User\Controller\User:logout'),
             array('allow', 'member', 'controller:User\Controller\User:settings'),
             array('deny', 'member', 'controller:User\Controller\User:login'),
+            array('deny', 'member', 'controller:User\Controller\User:activate'),
             array('deny', 'member', 'controller:User\Controller\User:register'),
+            array('deny', 'administrator', 'controller:User\Controller\User:activate'),
             array('deny', 'administrator', 'controller:User\Controller\User:login'),
             array('deny', 'administrator', 'controller:User\Controller\User:register'),
         ),

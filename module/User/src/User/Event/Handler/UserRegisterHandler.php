@@ -78,9 +78,6 @@ class UserRegisterHandler implements ServiceLocatorAwareInterface
 
         // Send the confirmation email to the user
         $this->sendConfirmationEmail();
-
-        // Send a notification to the admin
-        $this->sendAdminNotificationEmail();
     }
 
     /**
@@ -90,9 +87,23 @@ class UserRegisterHandler implements ServiceLocatorAwareInterface
      */
     protected function sendConfirmationEmail()
     {
+        $url = $this->sm->get('UrlHelper');
+        $activationUrl = $url(
+            'user',
+            array(
+                'action' => 'activate',
+                'id' => $this->user->activationKey
+            ),
+            array('force_canonical' => true)
+        );
+
         $mail = $this->sm->get('Mail');
         $mail->setBody(
-            $this->translator->translate('user.registration.confirmationEmailBody')
+            sprintf(
+                $this->translator->translate('user.registration.confirmationEmailBody'),
+                $this->user->email,
+                $activationUrl
+            )
         );
         $mail->setFrom(
             $this->adminEmail,
@@ -107,39 +118,6 @@ class UserRegisterHandler implements ServiceLocatorAwareInterface
             sprintf(
                 $this->translator->translate('user.registration.confirmationEmailSentLog'),
                 $this->user->email
-            )
-        );
-
-        $this->transport->send($mail);
-    }
-
-    /**
-     * Send a notification email to the admin
-     *
-     * @return void
-     */
-    protected function sendAdminNotificationEmail()
-    {
-        $mail = $this->sm->get('Mail');
-        $mail->setBody(
-            sprintf(
-                $this->translator->translate('user.registration.adminNotificationEmailBody'),
-                $this->user->email
-            )
-        );
-        $mail->setFrom(
-            $this->adminEmail,
-            $this->translator->translate('application.generic.adminName')
-        );
-        $mail->addTo($this->user->email);
-        $mail->setSubject(
-            $this->translator->translate('user.registration.adminNotificationEmailSubject')
-        );
-
-        $this->logger->info(
-            sprintf(
-                $this->translator->translate('user.registration.adminNotificationEmailSentLog'),
-                $this->adminEmail
             )
         );
 

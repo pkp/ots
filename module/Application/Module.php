@@ -102,6 +102,10 @@ class Module
                 'MailTransport' => function($sm) {
                     return new Sendmail;
                 },
+                'UrlHelper' => function($sm) {
+                    $viewHelperManager = $sm->get('viewhelpermanager');
+                    return $viewHelperManager->get('url');
+                },
                 'Xmlps\Log\Writer\Doctrine' => function($sm) {
                     $logDAO = $sm->get('LogDAO');
                     $logEntity = $sm->get('Application\Entity\Log');
