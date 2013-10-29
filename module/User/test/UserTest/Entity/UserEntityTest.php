@@ -44,7 +44,7 @@ class UserEntityTest extends ModelTest
     {
         $this->assertTrue($this->user->level === null);
         $this->user->initLevel();
-        $this->assertSame(USER_LEVEL_REGISTERED, $this->user->level);
+        $this->assertSame(USER_LEVEL_BASIC, $this->user->level);
     }
 
     /**

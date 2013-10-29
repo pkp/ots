@@ -564,6 +564,8 @@ aside {
     font-weight: bold; }
   .box input, .box select {
     width: 100%; }
+  .box input[type="checkbox"], .box input[type="radio"] {
+    width: auto; }
 
 .dialog {
   display: block;
@@ -609,6 +611,8 @@ aside {
     font-weight: bold; }
   .dialog input, .dialog select {
     width: 100%; }
+  .dialog input[type="checkbox"], .dialog input[type="radio"] {
+    width: auto; }
   .dialog:last-child {
     margin-right: 0; }
 

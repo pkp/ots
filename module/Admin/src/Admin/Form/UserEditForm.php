@@ -57,6 +57,17 @@ class UserEditForm extends Form
             )
         );
 
+        // Add the active field
+        $this->add(
+            array(
+                'name' => 'active',
+                'type' => '\Zend\Form\Element\Checkbox',
+                'options' => array(
+                    'label' => $this->translator->translate('user.user.active'),
+                )
+            )
+        );
+
         // Add the submit button
         $this->add(
             array(

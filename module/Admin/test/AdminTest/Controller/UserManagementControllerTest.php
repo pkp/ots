@@ -163,6 +163,7 @@ class UserManagementControllerTest extends ControllerTest
             'id' => $user->id,
             'role' => 'administrator',
             'level' => '1',
+            'active' => '1',
         );
         $this->dispatch('/admin/user-management/edit', 'POST', $testData);
 

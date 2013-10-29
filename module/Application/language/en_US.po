@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-28 17:02-1000\n"
-"PO-Revision-Date: 2013-10-28 17:03-1000\n"
+"POT-Creation-Date: 2013-10-29 12:16-1000\n"
+"PO-Revision-Date: 2013-10-29 12:16-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -46,6 +46,10 @@ msgid "user.user.role"
 msgstr "Role"
 
 #: ../../Admin/src/Admin/Form/UserEditForm.php:66
+msgid "user.user.active"
+msgstr "Active"
+
+#: ../../Admin/src/Admin/Form/UserEditForm.php:77
 msgid "application.generic.save"
 msgstr "Save"
 
@@ -139,12 +143,12 @@ msgid "user.registrationForm.register"
 msgstr "Register"
 
 #: ../../User/src/User/Entity/User.php:228
-msgid "user.user.level.registered"
-msgstr "Registration Pending"
+msgid "user.user.level.basic"
+msgstr "Basic"
 
 #: ../../User/src/User/Entity/User.php:229
-msgid "user.user.level.registrationConfirmed"
-msgstr "Registration Confirmed"
+msgid "user.user.level.infinite"
+msgstr "Infinite"
 
 #: ../../User/src/User/Entity/User.php:242
 msgid "user.user.role.member"
@@ -154,55 +158,55 @@ msgstr "Member"
 msgid "user.user.role.administrator"
 msgstr "Administrator"
 
-#: ../../User/src/User/Controller/UserController.php:122
+#: ../../User/src/User/Controller/UserController.php:124
 msgid "user.authentication.emailNotVerified"
 msgstr ""
 "Your email address has not been verified. Please follow the instructions in "
 "the confirmation email you received to activate your account."
 
-#: ../../User/src/User/Controller/UserController.php:140
+#: ../../User/src/User/Controller/UserController.php:142
 msgid "user.authentication.sucessfulLogin"
 msgstr "Hi, welcome back!"
 
-#: ../../User/src/User/Controller/UserController.php:147
+#: ../../User/src/User/Controller/UserController.php:149
 msgid "user.authentication.sucessfulLoginLog"
 msgstr "Successful login by %s"
 
-#: ../../User/src/User/Controller/UserController.php:160
+#: ../../User/src/User/Controller/UserController.php:161
 msgid "user.authentication.invalidLoginCredentials"
 msgstr "The login credentials you provided are invalid. Please try again."
 
-#: ../../User/src/User/Controller/UserController.php:190
+#: ../../User/src/User/Controller/UserController.php:192
 msgid "user.authentication.sucessfulLogout"
 msgstr "Thanks for visiting."
 
-#: ../../User/src/User/Controller/UserController.php:197
+#: ../../User/src/User/Controller/UserController.php:199
 msgid "user.authentication.sucessfulLogoutLog"
 msgstr "Successful logout by %s"
 
-#: ../../User/src/User/Controller/UserController.php:243
+#: ../../User/src/User/Controller/UserController.php:245
 msgid "user.registration.sucessfulRegistration"
 msgstr ""
 "Thanks for registering. A confirmation email has been sent to you. Please "
 "follow the instructions in the email to activate your account."
 
-#: ../../User/src/User/Controller/UserController.php:250
+#: ../../User/src/User/Controller/UserController.php:252
 msgid "user.registration.sucessfulRegistrationLog"
 msgstr "User %s registered successfully"
 
-#: ../../User/src/User/Controller/UserController.php:295
+#: ../../User/src/User/Controller/UserController.php:306
 msgid "user.register.sucessfulActivation"
 msgstr "Your account has been successfully activated."
 
-#: ../../User/src/User/Controller/UserController.php:302
+#: ../../User/src/User/Controller/UserController.php:313
 msgid "user.register.sucessfulActivationLog"
 msgstr "Successful account activation by %s"
 
-#: ../../User/src/User/Controller/UserController.php:338
+#: ../../User/src/User/Controller/UserController.php:349
 msgid "user.settings.saveSuccessConfirm"
 msgstr "Your settings have been updated!"
 
-#: ../../User/src/User/Controller/UserController.php:345
+#: ../../User/src/User/Controller/UserController.php:356
 msgid "user.settings.saveSuccessConfirmLog"
 msgstr "User %s updated settings"
 
@@ -453,6 +457,12 @@ msgstr "Settings"
 #: ../../User/view/user/user/settings.phtml:14
 msgid "user.settings.changePassword"
 msgstr "Change Password"
+
+#~ msgid "user.user.level.registered"
+#~ msgstr "Registration Pending"
+
+#~ msgid "user.user.level.registrationConfirmed"
+#~ msgstr "Registration Confirmed"
 
 #~ msgid "user.registration.adminNotificationEmailBody"
 #~ msgstr "A new user (%s) has registered please activate the account."

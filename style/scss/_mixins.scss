@@ -43,6 +43,7 @@
   }
 
   input, select { @include fill-parent; }
+  input[type="checkbox"], input[type="radio"] { width: auto; }
 }
 
 // Fade in transition

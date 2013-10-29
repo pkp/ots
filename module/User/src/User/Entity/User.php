@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Xmlps\DataObject\DataObject;
 
-define('USER_LEVEL_REGISTERED', 0);
-define('USER_LEVEL_REGISTRATION_CONFIRMED', 1);
+define('USER_LEVEL_BASIC', 0);
+define('USER_LEVEL_INFINITE', 1);
 
 define('USER_ROLE_ADMINISTRATOR', 'administrator');
 define('USER_ROLE_MEMBER', 'member');
@@ -97,7 +97,7 @@ class User extends DataObject
     public function initLevel()
     {
         if ($this->level === null) {
-            $this->level = USER_LEVEL_REGISTERED;
+            $this->level = USER_LEVEL_BASIC;
         }
     }
 
@@ -225,8 +225,8 @@ class User extends DataObject
     {
         $translator = $this->getServiceLocator()->get('Translator');
         return array(
-            USER_LEVEL_REGISTERED => $translator->translate('user.user.level.registered'),
-            USER_LEVEL_REGISTRATION_CONFIRMED => $translator->translate('user.user.level.registrationConfirmed'),
+            USER_LEVEL_BASIC => $translator->translate('user.user.level.basic'),
+            USER_LEVEL_INFINITE => $translator->translate('user.user.level.infinite'),
         );
     }
 
