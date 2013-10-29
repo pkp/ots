@@ -76,4 +76,50 @@ class UserEntityTest extends ModelTest
         $this->assertTrue($user::validatePassword($user, $password));
         $this->assertFalse($user::validatePassword($user, 'wrongpassword'));
     }
+
+    /**
+     * Tests if the active flag is initialized propperly
+     *
+     * @return void
+     */
+    public function testUserActive()
+    {
+        $user = $this->user;
+        $this->assertTrue($user->active === null);
+
+        // Validate that the active flag is initialized properly
+        $user->initActive();
+        $this->assertTrue($user->active === false);
+    }
+
+    /**
+     * Tests if the activation key is initialized propperly
+     *
+     * @return void
+     */
+    public function testUserActivationKey()
+    {
+        $user = $this->user;
+        $this->assertTrue($user->activationKey === null);
+
+        // Validate that the activation key is initialized properly
+        $user->initActivationKey();
+        $this->assertTrue(strlen($user->activationKey) == 13);
+    }
+
+    /**
+     * Test test if user activation works properly
+     *
+     * @return void
+     */
+    public function testUserActivation()
+    {
+        $user = $this->user;
+        $user->activationKey = uniqid();
+        $user->active = true;
+
+        $user->activate();
+        $this->assertTrue($user->active === true);
+        $this->assertTrue($user->activationKey === null);
+    }
 }

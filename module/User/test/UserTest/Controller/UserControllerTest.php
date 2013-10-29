@@ -12,12 +12,10 @@ class UserControllerTest extends ControllerTest
     protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
     protected $testUserRole = 'member';
     protected $testUserActive = true;
-    protected $testUserActivationKey = 'activation key';
     protected $testUser2Email = 'unittestuser2@example.com';
     protected $testUser2Password = 'a4a6cb8b60695d718a902afaba4c2765';
     protected $testUser2Role = 'member';
     protected $testUser2Active = true;
-    protected $testUser2ActivationKey = 'activation key';
 
     protected $userDAO;
 
@@ -302,6 +300,73 @@ class UserControllerTest extends ControllerTest
     }
 
     /**
+     * Test if the activation action cannot be accedded by a logged in user
+     *
+     * @return void
+     */
+    public function testActivateActionCanBeAccessedLoggedIn()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->mockLogin($user);
+
+        $this->dispatch('/user/activate/id/' . uniqid());
+        $this->assertResponseStatusCode(403);
+    }
+
+    /**
+     * Test if the activation action cannot be accedded by an administrator
+     *
+     * @return void
+     */
+    public function testActivateActionCanBeAccessedAdmin()
+    {
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+
+        $user->role = USER_ROLE_ADMINISTRATOR;
+        $this->userDAO->save($user);
+
+        $this->mockLogin($user);
+
+        $this->dispatch('/user/activate/id/' . uniqid());
+        $this->assertResponseStatusCode(403);
+        $this->resetTestData();
+    }
+
+    /**
+     * Test if the activation works correctly
+     *
+     * @return void
+     */
+    public function testActivateAction()
+    {
+        $activationKey = uniqid();
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $user->active = false;
+        $user->activationKey = $activationKey;
+        $this->userDAO->save($user);
+
+        $this->dispatch('/user/activate/id/' . $activationKey);
+        $this->assertResponseStatusCode(302);
+
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->assertTrue($user->isActive());
+        $this->assertNull($user->activationKey);
+
+        $this->resetTestData();
+    }
+
+    /**
+     * Test if an invalid activation redirects correctly
+     *
+     * @return void
+     */
+    public function testActivateActionInvalidKey()
+    {
+        $this->dispatch('/user/activate/id/' . uniqid());
+        $this->assertResponseStatusCode(404);
+    }
+
+    /**
      * Creates test data for this test
      *
      * @return void
@@ -313,7 +378,6 @@ class UserControllerTest extends ControllerTest
         $user->password = $this->testUserPassword;
         $user->role = $this->testUserRole;
         $user->active = $this->testUserActive;
-        $user->activationKey = $this->testUserActivationKey;
         $this->userDAO->save($user);
     }
 

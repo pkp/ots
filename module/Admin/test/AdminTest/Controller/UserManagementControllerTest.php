@@ -172,6 +172,7 @@ class UserManagementControllerTest extends ControllerTest
         $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
         $this->assertSame($user->role, $testData['role']);
         $this->assertSame($user->level, $testData['level']);
+        $this->assertSame($user->active, $testData['active']);
 
         $this->resetTestData();
     }
