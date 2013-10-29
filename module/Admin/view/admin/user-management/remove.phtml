@@ -10,7 +10,7 @@ if (isset($this->userRemovalForm)) {
 
 ?>
 <div class="page">
-  <div class="dialog">
+  <div class="box dialog">
     <label><?php echo $this->translate('application.generic.confirm') ?></label>
     <p class="description"><?php echo $this->escapeHtml(sprintf($this->translate('admin.userManagement.userRemovalConfirm'), $user->email)) ?></p>
     <?php echo $userRemovalForm; ?>

@@ -571,48 +571,7 @@ aside {
   display: block;
   float: left;
   margin-right: 1.05263%;
-  width: 66.31579%;
-  margin-top: 20px;
-  position: relative;
-  background-color: #67a7e6;
-  padding: 10px;
-  z-index: 0;
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
-  border-top-right-radius: 2px;
-  display: block;
-  float: left;
-  margin-right: 1.05263%;
   width: 49.47368%; }
-  .dialog:last-child {
-    margin-right: 0; }
-  @media screen and (max-width: 480px) {
-    .dialog {
-      display: block;
-      float: left;
-      margin-right: 2.12766%;
-      width: 100%; }
-      .dialog:last-child {
-        margin-right: 0; } }
-  .dialog > label {
-    position: absolute;
-    top: -20px;
-    left: 0;
-    display: block;
-    height: 20px;
-    background-color: #67a7e6;
-    border-bottom: none;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
-    z-index: 1;
-    padding: 5px 40px 0 40px;
-    text-transform: uppercase;
-    font-family: Oswald, Sans-Serif;
-    font-weight: bold; }
-  .dialog input, .dialog select {
-    width: 100%; }
-  .dialog input[type="checkbox"], .dialog input[type="radio"] {
-    width: auto; }
   .dialog:last-child {
     margin-right: 0; }
 
