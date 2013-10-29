@@ -328,34 +328,15 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
 .user-user-index {
   padding: $gutter 0;
 
-  .authenticate {
-    .box-container {
-      @include span-columns(4 of 8);
+  .box-wrapper {
+    .box {
+      @include span-columns(8 of 8);
       @include media($mobile) {
         @include span-columns(6 of 6);
       }
-      @include media($mobile) { padding: $gutter; }
-    }
-    @include media($desktop) {
-      .box-container.first { padding-left: $gutter; }
-    }
-    .box {
-      min-height: 191px;
-      @include fill-parent;
-    }
-    input { @include fill-parent; }
-  }
-
-  .upload {
-    @include span-columns(6 of 8);
-    @include media($mobile) {
-      @include span-columns(6 of 6);
+      margin-bottom: $gutter;
     }
     padding: 0 $gutter;
-
-    .box {
-      @include fill-parent;
-    }
   }
 }
 .user-user-index + aside {

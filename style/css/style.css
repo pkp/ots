@@ -528,7 +528,7 @@ aside {
   display: block;
   float: left;
   margin-right: 1.05263%;
-  width: 49.47368%;
+  width: 66.31579%;
   margin-top: 20px;
   position: relative;
   background-color: #67a7e6;
@@ -571,7 +571,7 @@ aside {
   display: block;
   float: left;
   margin-right: 1.05263%;
-  width: 49.47368%;
+  width: 66.31579%;
   margin-top: 20px;
   position: relative;
   background-color: #67a7e6;
@@ -720,50 +720,24 @@ a.remove-action:before {
 
 .user-user-index {
   padding: 10px 0; }
-  .user-user-index .authenticate .box-container {
-    display: block;
-    float: left;
-    margin-right: 1.5873%;
-    width: 49.20635%; }
-    .user-user-index .authenticate .box-container:last-child {
-      margin-right: 0; }
-    @media screen and (max-width: 480px) {
-      .user-user-index .authenticate .box-container {
-        display: block;
-        float: left;
-        margin-right: 2.12766%;
-        width: 100%; }
-        .user-user-index .authenticate .box-container:last-child {
-          margin-right: 0; } }
-    @media screen and (max-width: 480px) {
-      .user-user-index .authenticate .box-container {
-        padding: 10px; } }
-  @media screen and (min-width: 961px) {
-    .user-user-index .authenticate .box-container.first {
-      padding-left: 10px; } }
-  .user-user-index .authenticate .box {
-    min-height: 191px;
-    width: 100%; }
-  .user-user-index .authenticate input {
-    width: 100%; }
-  .user-user-index .upload {
-    display: block;
-    float: left;
-    margin-right: 1.5873%;
-    width: 74.60317%;
+  .user-user-index .box-wrapper {
     padding: 0 10px; }
-    .user-user-index .upload:last-child {
-      margin-right: 0; }
-    @media screen and (max-width: 480px) {
-      .user-user-index .upload {
-        display: block;
-        float: left;
-        margin-right: 2.12766%;
-        width: 100%; }
-        .user-user-index .upload:last-child {
-          margin-right: 0; } }
-    .user-user-index .upload .box {
-      width: 100%; }
+    .user-user-index .box-wrapper .box {
+      display: block;
+      float: left;
+      margin-right: 1.5873%;
+      width: 100%;
+      margin-bottom: 10px; }
+      .user-user-index .box-wrapper .box:last-child {
+        margin-right: 0; }
+      @media screen and (max-width: 480px) {
+        .user-user-index .box-wrapper .box {
+          display: block;
+          float: left;
+          margin-right: 2.12766%;
+          width: 100%; }
+          .user-user-index .box-wrapper .box:last-child {
+            margin-right: 0; } }
 
 .user-user-index + aside ul {
   list-style: none; }

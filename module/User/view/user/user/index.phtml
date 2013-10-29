@@ -22,25 +22,21 @@ if (isset($this->uploadForm)) {
 ?>
 <div class="sidebar-page user-user-index">
   <?php if (!$user = $this->identity()) : ?>
-    <div class="authenticate">
-      <div class="box-container first">
-        <div class="box">
-          <label><?php echo $this->translate('user.loginForm.login') ?></label>
-          <?php echo $loginForm; ?>
-        </div>
-     </div>
+    <div class="box-wrapper">
+      <div class="box">
+        <label><?php echo $this->translate('user.loginForm.login') ?></label>
+        <?php echo $loginForm; ?>
+      </div>
 
-      <div class="box-container">
-        <div class="box">
-          <label><?php echo $this->translate('user.registrationForm.register') ?></label>
-          <?php echo $registrationForm; ?>
-        </div>
+      <div class="box">
+        <label><?php echo $this->translate('user.registrationForm.register') ?></label>
+        <?php echo $registrationForm; ?>
       </div>
     </div>
   <?php endif ?>
 
   <?php if ($this->uploadForm) : ?>
-    <div class="upload">
+    <div class="box-wrapper">
       <div class="box">
         <label><?php echo $this->translate('manager.uploadForm.uploadDocument') ?></label>
         <?php echo $uploadForm; ?>

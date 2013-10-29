@@ -12,7 +12,7 @@
 
 // Box
 @mixin box {
-  @include span-columns(6 of 12);
+  @include span-columns(8 of 12);
   @include media($mobile) {
     @include span-columns(6 of 6);
   }
