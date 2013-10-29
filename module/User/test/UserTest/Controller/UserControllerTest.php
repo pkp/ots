@@ -11,9 +11,13 @@ class UserControllerTest extends ControllerTest
     protected $testUserEmail = 'unittestuser@example.com';
     protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
     protected $testUserRole = 'member';
+    protected $testUserActive = true;
+    protected $testUserActivationKey = 'activation key';
     protected $testUser2Email = 'unittestuser2@example.com';
     protected $testUser2Password = 'a4a6cb8b60695d718a902afaba4c2765';
     protected $testUser2Role = 'member';
+    protected $testUser2Active = true;
+    protected $testUser2ActivationKey = 'activation key';
 
     protected $userDAO;
 
@@ -308,6 +312,8 @@ class UserControllerTest extends ControllerTest
         $user->email = $this->testUserEmail;
         $user->password = $this->testUserPassword;
         $user->role = $this->testUserRole;
+        $user->active = $this->testUserActive;
+        $user->activationKey = $this->testUserActivationKey;
         $this->userDAO->save($user);
     }
 

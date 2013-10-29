@@ -389,10 +389,8 @@ class UserController extends AbstractActionController {
 
     /**
      * De-authenticate a user
-     *
-     * @param mixed $user User object
      */
-    protected function deAuthenticate($user)
+    protected function deAuthenticate()
     {
         $authService = $this->getServiceLocator()->get(
             'Zend\Authentication\AuthenticationService'

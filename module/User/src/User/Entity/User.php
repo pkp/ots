@@ -69,7 +69,7 @@ class User extends DataObject
     protected $activationKey;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $active;
 
@@ -139,7 +139,7 @@ class User extends DataObject
     public function initActive()
     {
         if ($this->active === null) {
-            $this->active = 0;
+            $this->active = false;
         }
     }
 
@@ -251,7 +251,7 @@ class User extends DataObject
      */
     public function isActive()
     {
-        return $this->active === 1;
+        return $this->active;
     }
 
     /**
@@ -261,7 +261,7 @@ class User extends DataObject
      */
     public function activate()
     {
-       $this->active = 1;
+       $this->active = true;
        $this->activationKey = null;
     }
 }
