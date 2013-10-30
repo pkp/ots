@@ -3,8 +3,12 @@ namespace Manager;
 
 use Zend\Mvc\MvcEvent;
 
+use Manager\Entity\Document;
+use Manager\Entity\Job;
 use Manager\Form\UploadForm;
 use Manager\Form\UploadFormInputFilter;
+use Manager\Model\DAO\DocumentDAO;
+use Manager\Model\DAO\JobDAO;
 
 class Module
 {
@@ -65,6 +69,14 @@ class Module
     {
         return array(
             'factories' => array(
+                'Manager\Entity\Document' => function($sm)
+                {
+                    return new Document;
+                },
+                'Manager\Entity\Job' => function($sm)
+                {
+                    return new Job;
+                },
                 'Manager\Form\UploadForm' => function($sm)
                 {
                     $translator = $sm->get('translator');
@@ -74,10 +86,24 @@ class Module
                 {
                     return new UploadFormInputFilter();
                 },
+                'Manager\Model\DAO\DocumentDAO' => function($sm)
+                {
+                    $em = $sm->get('doctrine.entitymanager.orm_default');
+                    return new DocumentDAO($em);
+                },
+                'Manager\Model\DAO\JobDAO' => function($sm)
+                {
+                    $em = $sm->get('doctrine.entitymanager.orm_default');
+                    return new JobDAO($em);
+                },
             ),
             'invokables' => array(
                 'Manager\Event\Handler\FileUploadHandler' => 'Manager\Event\Handler\FileUploadHandler'
             ),
+            'shared' => array(
+                'Manager\Entity\Job' => false,
+                'Manager\Entity\Document' => false
+            )
         );
     }
 

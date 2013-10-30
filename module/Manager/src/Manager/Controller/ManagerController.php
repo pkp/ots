@@ -66,6 +66,22 @@ class ManagerController extends AbstractActionController {
                     )
                 );
 
+                // Create new document
+                $upload = $data['upload'];
+                $documentDAO = $this->getServiceLocator()->get('Manager\Model\DAO\DocumentDAO');
+                $document = $documentDAO->getInstance();
+                $document->path = $upload['tmp_name'];
+                $document->uploadFileName = $upload['name'];
+                $document->mimeType = $upload['type'];
+                $document->size = $upload['size'];
+
+                // Create a new job
+                $jobDAO = $this->getServiceLocator()->get('Manager\Model\DAO\JobDAO');
+                $job = $jobDAO->getInstance();
+                $job->user = $this->identity();
+                $job->document = $document;
+                $jobDAO->save($job);
+
                 // Trigger the file upload event to create a new job
                 $this->getEventManager()->trigger('file-upload', $this, array('data' => $data));
 
