@@ -31,13 +31,37 @@ class ModelTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Reset test data
+     * Clean up after test
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        $this->cleanTestData();
+    }
+
+    /**
+     * Creates test data for this test
+     *
+     * @return void
+     */
+    protected function createTestData() {}
+
+    /**
+     * Cleans test data after test
+     *
+     * @return void
+     */
+    protected function cleanTestData() {}
+
+    /**
+     * Resets the test data
      *
      * @return void
      */
     protected function resetTestData()
     {
-        $this->removeTestData();
-        $this->createTestData();
+       $this->cleanTestData();
+       $this->createTestData();
     }
 }

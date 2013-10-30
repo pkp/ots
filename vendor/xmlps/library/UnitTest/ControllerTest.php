@@ -41,24 +41,28 @@ class ControllerTest extends AbstractHttpControllerTestCase
     }
 
     /**
+     * Clean up after test
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        $this->cleanTestData();
+    }
+
+    /**
      * Creates test data for this test
      *
      * @return void
      */
-    protected function createTestData()
-    {
-        throw new Exception('Missing implementation');
-    }
+    protected function createTestData() {}
 
     /**
      * Cleans test data after test
      *
      * @return void
      */
-    protected function cleanTestData()
-    {
-        throw new Exception('Missing implementation');
-    }
+    protected function cleanTestData() {}
 
     /**
      * Resets the test data
