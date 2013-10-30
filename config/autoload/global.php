@@ -27,6 +27,11 @@ return array(
                 ),
             ),
         ),
+        'configuration' => array(
+            'orm_default' => array(
+                'proxy_dir' => 'var/doctrine/DoctrineORMModule/Proxy'
+            ),
+        ),
     ),
     'log' => array(
         'level' => 6,
