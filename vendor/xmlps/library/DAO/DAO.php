@@ -9,8 +9,14 @@ use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use Zend\Paginator\Paginator;
 
-abstract class DAO implements DAOInterface {
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
+abstract class DAO implements DAOInterface, ServiceLocatorAwareInterface {
+
     protected $em;
+    protected $sm;
+
     protected $repositoryName;
     protected $repository;
 
@@ -42,6 +48,28 @@ abstract class DAO implements DAOInterface {
     }
 
     /**
+     * Set the service locator
+     *
+     * @param ServiceLocatorInterface $sm
+     *
+     * @return void
+     */
+    public function setServiceLocator(ServiceLocatorInterface $sm)
+    {
+        $this->sm = $sm;
+    }
+
+    /**
+     * Get the service locator
+     *
+     * @return ServiceLocator ServiceLocator instance
+     */
+    public function getServiceLocator()
+    {
+        return $this->sm;
+    }
+
+    /**
      * Returns the entity manager instance
      *
      * @return mixed Entity manager instance
@@ -64,6 +92,17 @@ abstract class DAO implements DAOInterface {
         return new Paginator(
             new DoctrinePaginator(new ORMPaginator($query))
         );
+    }
+
+    /**
+     * Returns a new instance
+     *
+     * @return mixed Instance
+     */
+    public function getInstance()
+    {
+        // Retrieve the instance from the service manager
+        return $this->sm->get($this->repositoryName);
     }
 
     /**
