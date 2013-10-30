@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-30 10:43-1000\n"
-"PO-Revision-Date: 2013-10-30 10:43-1000\n"
+"POT-Creation-Date: 2013-10-30 11:59-1000\n"
+"PO-Revision-Date: 2013-10-30 11:59-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -45,8 +45,8 @@ msgstr ""
 "Your document has been successfully uploaded. It is now being processed."
 
 #: ../../Manager/src/Manager/Controller/ManagerController.php:97
-msgid "manager.upload.successLog"
-msgstr "User uploaded document (%s)."
+msgid "manager.job.createLog"
+msgstr "A new job has been created (%d)"
 
 #: ../../Manager/src/Manager/Controller/ManagerController.php:127
 msgid "manager.job.noEntriesFound"
@@ -500,6 +500,9 @@ msgstr "Settings"
 #: ../../User/view/user/user/settings.phtml:14
 msgid "user.settings.changePassword"
 msgstr "Change Password"
+
+#~ msgid "manager.upload.successLog"
+#~ msgstr "User uploaded document (%s)."
 
 #~ msgid "user.user.level.registered"
 #~ msgstr "Registration Pending"

@@ -94,9 +94,9 @@ class ManagerController extends AbstractActionController {
                 $this->logger->info(
                     sprintf(
                         $this->translator->translate(
-                            'manager.upload.successLog'
+                            'manager.job.createLog'
                         ),
-                        $data['upload']['tmp_name']
+                        $job->id
                     )
                 );
 
