@@ -42,6 +42,21 @@ class Document extends DataObject
     protected $size;
 
     /**
+     * Sets path to file, will throw an exception if the file doesn't exist
+     *
+     * @param string $path Path to document file
+     *
+     * @return void
+     */
+    public function setPath($path) {
+        if (!file_exists($path)) {
+            throw new \Exception('File doesn\'t exist');
+        }
+
+        $this->path = $path;
+    }
+
+    /**
      * Removes the document from the file system
      *
      * @return void
