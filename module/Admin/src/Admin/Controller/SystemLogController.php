@@ -43,7 +43,7 @@ class SystemLogController extends AbstractActionController {
         $paginator->setItemCountPerPage(15);
 
         // Display error if we got no messages
-        if (empty($paginator)) {
+        if ($paginator->count() == 0) {
             $this->layout()->messages = array(
                 'info' => array( $this->translator->translate(
                     'admin.log.noEntriesFound'
