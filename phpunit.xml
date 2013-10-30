@@ -3,6 +3,7 @@
       <testsuite name="XMLPS">
         <directory>module/Admin/test</directory>
         <directory>module/Application/test</directory>
+        <directory>module/Manager/test</directory>
         <directory>module/User/test</directory>
       </testsuite>
     </testsuites>
