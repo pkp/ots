@@ -22,7 +22,7 @@ class UserDAO extends DAO {
     public function getUserPaginator()
     {
         return $this->getPaginator(
-            'SELECT u from User\Entity\User u ORDER BY u.email'
+            'SELECT u FROM User\Entity\User u ORDER BY u.email'
         );
     }
 }
