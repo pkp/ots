@@ -130,6 +130,18 @@ abstract class DAO implements DAOInterface, ServiceLocatorAwareInterface {
     }
 
     /**
+     * Find entites
+     *
+     * @param mixed $args Key/Value pair to search for
+     *
+     * @return mixed Entities
+     */
+    public function findBy($args)
+    {
+       return $this->getRepository()->findBy($args);
+    }
+
+    /**
      * Find all entities
      *
      * @return mixed Entities
