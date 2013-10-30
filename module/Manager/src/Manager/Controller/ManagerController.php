@@ -6,12 +6,16 @@ use Zend\Mvc\I18n\Translator;
 use Xmlps\Logger\Logger;
 use Manager\Form\UploadForm;
 use Manager\Form\UploadFormInputFilter;
+use Manager\Model\DAO\DocumentDAO;
+use Manager\Model\DAO\JobDAO;
 
 class ManagerController extends AbstractActionController {
     protected $logger;
     protected $translator;
     protected $uploadForm;
     protected $uploadFormInputFilter;
+    protected $documentDAO;
+    protected $jobDAO;
 
     /**
      * Constructor
@@ -25,13 +29,17 @@ class ManagerController extends AbstractActionController {
         Logger $logger,
         Translator $translator,
         UploadForm $uploadForm,
-        UploadFormInputFilter $uploadFormInputFilter
+        UploadFormInputFilter $uploadFormInputFilter,
+        DocumentDAO $documentDAO,
+        JobDAO $jobDAO
     )
     {
         $this->logger = $logger;
         $this->translator = $translator;
         $this->uploadForm = $uploadForm;
         $this->uploadFormInputFilter = $uploadFormInputFilter;
+        $this->documentDAO = $documentDAO;
+        $this->jobDAO = $jobDAO;
     }
 
     /**
@@ -68,19 +76,17 @@ class ManagerController extends AbstractActionController {
 
                 // Create new document
                 $upload = $data['upload'];
-                $documentDAO = $this->getServiceLocator()->get('Manager\Model\DAO\DocumentDAO');
-                $document = $documentDAO->getInstance();
+                $document = $this->documentDAO->getInstance();
                 $document->path = $upload['tmp_name'];
                 $document->uploadFileName = $upload['name'];
                 $document->mimeType = $upload['type'];
                 $document->size = $upload['size'];
 
                 // Create a new job
-                $jobDAO = $this->getServiceLocator()->get('Manager\Model\DAO\JobDAO');
-                $job = $jobDAO->getInstance();
+                $job = $this->jobDAO->getInstance();
                 $job->user = $this->identity();
                 $job->document = $document;
-                $jobDAO->save($job);
+                $this->jobDAO->save($job);
 
                 // Trigger the file upload event to create a new job
                 $this->getEventManager()->trigger('file-upload', $this, array('data' => $data));

@@ -123,12 +123,16 @@ class Module
                     $translator = $sm->get('Translator');
                     $uploadForm = $sm->get('Manager\Form\UploadForm');
                     $uploadFormInputFilter = $sm->get('Manager\Form\UploadFormInputFilter');
+                    $documentDAO = $sm->get('Manager\Model\DAO\DocumentDAO');
+                    $jobDAO = $sm->get('Manager\Model\DAO\JobDAO');
 
                     return new Controller\ManagerController(
                         $logger,
                         $translator,
                         $uploadForm,
-                        $uploadFormInputFilter
+                        $uploadFormInputFilter,
+                        $documentDAO,
+                        $jobDAO
                     );
                 }
             )
