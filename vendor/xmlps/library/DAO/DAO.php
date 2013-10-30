@@ -83,12 +83,19 @@ abstract class DAO implements DAOInterface, ServiceLocatorAwareInterface {
      * Returns a paginator for a given query
      *
      * @param mixed $query
+     * @param array $params Query parameters
      *
      * @return Zend\Paginator\Paginator
      */
-    public function getPaginator($query)
+    public function getPaginator($query, $params = array())
     {
         $query = $this->em->createQuery($query);
+
+        if ($params) {
+            if (is_scalar($params)) { $query->setParameter(1, $params); }
+            if (is_array($params)) { $query->setParameters($params); }
+        }
+
         return new Paginator(
             new DoctrinePaginator(new ORMPaginator($query))
         );
