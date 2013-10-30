@@ -52,8 +52,12 @@ class ManagerController extends AbstractActionController {
                 $this->uploadFormInputFilter->getInputFilter()
             );
             $this->uploadForm->setData($data);
-
             if ($this->uploadForm->isValid()) {
+                // Run file input filters (move the file)
+                $data = $this->uploadFormInputFilter
+                    ->getInputFilter()
+                    ->getValues();
+
                 $flashMessenger = $this->flashMessenger();
                 $flashMessenger->setNamespace('success');
                 $flashMessenger->addMessage(

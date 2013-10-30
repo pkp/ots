@@ -52,7 +52,6 @@ class UploadFormInputFilter implements InputFilterAwareInterface
                 'required' => true,
                 'filters' => array(
                     array(
-                        // TODO: this doesn't work!
                         'name' => 'Zend\Filter\File\RenameUpload',
                         'options' => array(
                             'target' => './var/uploads',
