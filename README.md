@@ -64,5 +64,6 @@ Module Description
  * Edit User [X]
  * System log viewer [X]
 * Manager
- * Receives conversion jobs
+ * Receives conversion jobs [X]
+ * Job list [X]
  * Queues jobs for individual workers
