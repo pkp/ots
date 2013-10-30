@@ -6,8 +6,6 @@ use Xmlps\UnitTest\ControllerTest;
 
 class UserControllerTest extends ControllerTest
 {
-    protected $traceError = true;
-
     protected $testUserEmail = 'unittestuser@example.com';
     protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
     protected $testUserRole = 'member';
@@ -31,7 +29,6 @@ class UserControllerTest extends ControllerTest
         $this->userDAO = $this->sm->get('UserDAO');
 
         $this->resetTestData();
-
     }
 
     /**
