@@ -436,8 +436,8 @@ nav {
       content: "\e104"; }
     nav .settings a:before {
       content: "\e08e"; }
-    nav .home a:before {
-      content: "\e000"; }
+    nav .jobs a:before {
+      content: "\e048"; }
     nav .system-log a:before {
       content: "\e0a0"; }
     nav .user-management a:before {
