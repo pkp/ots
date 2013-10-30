@@ -32,16 +32,6 @@ class UserControllerTest extends ControllerTest
     }
 
     /**
-     * Clean up after test
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
-        $this->cleanTestData();
-    }
-
-    /**
      * Test if the index action can be accessed
      *
      * @return void

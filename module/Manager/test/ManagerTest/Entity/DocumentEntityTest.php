@@ -26,15 +26,6 @@ class DocumentEntityTest extends ModelTest
     }
 
     /**
-     * Clean up after the test
-     *
-     * @return void
-     */
-    public function tearDown() {
-        $this->removeTestData();
-    }
-
-    /**
      * Test if the associated file is deleted when the document is deleted
      *
      * @return void
@@ -82,7 +73,7 @@ class DocumentEntityTest extends ModelTest
      *
      * @return void
      */
-    protected function removeTestData()
+    protected function cleanTestData()
     {
         if ($this->document) {
             $this->documentDAO->remove($this->document);

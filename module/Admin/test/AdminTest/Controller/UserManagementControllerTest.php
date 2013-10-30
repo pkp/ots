@@ -31,16 +31,6 @@ class UserManagementControllerTest extends ControllerTest
     }
 
     /**
-     * Clean up after test
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
-        $this->cleanTestData();
-    }
-
-    /**
      * Test if the list action can be accessed
      *
      * @return void

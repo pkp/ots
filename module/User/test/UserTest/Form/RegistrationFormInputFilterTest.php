@@ -33,16 +33,6 @@ class RegistrationFormInputFilterTest extends ModelTest
     }
 
     /**
-     * Clean up after test
-     *
-     * @return void
-     */
-    public function tearDown()
-    {
-        $this->cleanTestData();
-    }
-
-    /**
      * Test the input filter validation
      *
      * @return void
