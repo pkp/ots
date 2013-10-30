@@ -29,4 +29,15 @@ class ModelTest extends PHPUnit_Framework_TestCase
         );
         $this->sm->get('ModuleManager')->loadModules();
     }
+
+    /**
+     * Reset test data
+     *
+     * @return void
+     */
+    protected function resetTestData()
+    {
+        $this->removeTestData();
+        $this->createTestData();
+    }
 }
