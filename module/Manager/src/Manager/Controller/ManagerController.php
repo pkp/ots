@@ -100,10 +100,36 @@ class ManagerController extends AbstractActionController {
                     )
                 );
 
-                return $this->redirect()->toRoute('home');
+                return $this->redirect()->toRoute('manager', array('action' => 'list'));
             }
         }
 
         return array('uploadForm' => $this->uploadForm);
+    }
+
+    /**
+     * List action
+     *
+     * @return mixed Array containing view variables
+     */
+    public function listAction()
+    {
+        // Get the paginator
+        $paginator = $this->jobDAO->getJobPaginator($this->identity());
+        $page = $this->params()->fromRoute('page');
+        $paginator ->setCurrentPageNumber($page);
+        $paginator->setItemCountPerPage(20);
+
+        // Display error if we got no messages
+        if ($paginator->count() == 0) {
+            $this->layout()->messages = array(
+                'info' => array( $this->translator->translate(
+                    'manager.job.noEntriesFound'
+                )),
+            );
+            return;
+        }
+
+        return array('jobs' => $paginator);
     }
 }

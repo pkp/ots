@@ -7,14 +7,16 @@ return array(
             'manager' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/manager[/:action]',
+                    'route' => '/manager/:action[/page/:page]',
                     'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                        'page' => '[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Manager\Controller\Manager',
+                        'action' => 'list',
+                        'page' => 1,
                     ),
-
                 ),
             ),
         ),
@@ -42,10 +44,12 @@ return array(
     ),
     'acl' => array(
         'resources' => array(
+            'controller:Manager\Controller\Manager:list',
             'controller:Manager\Controller\Manager:upload',
         ),
         'rules' => array(
-            array('allow', 'guest', 'controller:Manager\Controller\Manager:upload'),
+            array('allow', 'member', 'controller:Manager\Controller\Manager:list'),
+            array('allow', 'member', 'controller:Manager\Controller\Manager:upload'),
         ),
     )
 );

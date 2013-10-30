@@ -15,4 +15,15 @@ class JobDAO extends DAO {
     {
         return 'Manager\Entity\Job';
     }
+
+    /**
+     * Returns a user paginator with all results ordered by creation
+     */
+    public function getJobPaginator($user)
+    {
+        return $this->getPaginator(
+            'SELECT j FROM Manager\Entity\Job AS j WHERE j.user = :userId ORDER BY j.id DESC',
+            array('userId' => $user->id)
+        );
+    }
 }

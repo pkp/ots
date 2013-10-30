@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-29 12:16-1000\n"
-"PO-Revision-Date: 2013-10-29 13:05-1000\n"
+"POT-Creation-Date: 2013-10-30 10:43-1000\n"
+"PO-Revision-Date: 2013-10-30 10:43-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -19,18 +19,38 @@ msgstr ""
 
 #: ../../Manager/src/Manager/Form/UploadForm.php:41
 #: ../../Manager/view/manager/manager/upload.phtml:15
-#: ../../User/view/user/user/index.phtml:45
+#: ../../User/view/user/user/index.phtml:41
 msgid "manager.uploadForm.uploadDocument"
 msgstr "Upload Document"
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:61
+#: ../../Manager/src/Manager/Entity/Job.php:88
+msgid "manager.job.status.pending"
+msgstr "Pending"
+
+#: ../../Manager/src/Manager/Entity/Job.php:89
+msgid "manager.job.status.processing"
+msgstr "Processing"
+
+#: ../../Manager/src/Manager/Entity/Job.php:90
+msgid "manager.job.status.completed"
+msgstr "Completed"
+
+#: ../../Manager/src/Manager/Entity/Job.php:91
+msgid "manager.job.status.failed"
+msgstr "Failed"
+
+#: ../../Manager/src/Manager/Controller/ManagerController.php:73
 msgid "manager.upload.success"
 msgstr ""
 "Your document has been successfully uploaded. It is now being processed."
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:71
+#: ../../Manager/src/Manager/Controller/ManagerController.php:97
 msgid "manager.upload.successLog"
 msgstr "User uploaded document (%s)."
+
+#: ../../Manager/src/Manager/Controller/ManagerController.php:127
+msgid "manager.job.noEntriesFound"
+msgstr "No jobs found."
 
 #: ../../Admin/src/Admin/Form/UserRemovalForm.php:38
 #: ../../Admin/view/admin/user-management/list.phtml:26
@@ -130,7 +150,7 @@ msgid "user.form.password"
 msgstr "Password"
 
 #: ../../User/src/User/Form/LoginForm.php:53
-#: ../../User/view/user/user/index.phtml:28
+#: ../../User/view/user/user/index.phtml:27
 msgid "user.loginForm.login"
 msgstr "Login"
 
@@ -139,7 +159,7 @@ msgid "user.registrationForm.userAlreadyExists"
 msgstr "This email address is already registered!"
 
 #: ../../User/src/User/Form/RegistrationForm.php:65
-#: ../../User/view/user/user/index.phtml:35
+#: ../../User/view/user/user/index.phtml:32
 msgid "user.registrationForm.register"
 msgstr "Register"
 
@@ -231,28 +251,34 @@ msgid "application.layout.userManagement"
 msgstr "User Management"
 
 #: ../view/layout/layout.phtml:30
+#: ../../Manager/view/manager/manager/list.phtml:1
 #: ../../Application/view/layout/layout.phtml:30
-msgid "application.layout.settings"
-msgstr "Settings"
+msgid "manager.job.list"
+msgstr "Jobs"
 
 #: ../view/layout/layout.phtml:31
 #: ../../Application/view/layout/layout.phtml:31
+msgid "application.layout.settings"
+msgstr "Settings"
+
+#: ../view/layout/layout.phtml:32
+#: ../../Application/view/layout/layout.phtml:32
 msgid "application.layout.logout"
 msgstr "Logout"
 
-#: ../view/layout/layout.phtml:37
-#: ../../Application/view/layout/layout.phtml:37
+#: ../view/layout/layout.phtml:38
+#: ../../Application/view/layout/layout.phtml:38
 msgid "application.layout.subHeading"
 msgstr ""
 "PDF, DOC, DOCX or ODT to XML (%sNML-XML 3.0 compatible%s) document conversion"
 
-#: ../view/layout/layout.phtml:60
-#: ../../Application/view/layout/layout.phtml:60
+#: ../view/layout/layout.phtml:61
+#: ../../Application/view/layout/layout.phtml:61
 msgid "application.layout.contact"
 msgstr "Contact"
 
-#: ../view/layout/layout.phtml:61
-#: ../../Application/view/layout/layout.phtml:61
+#: ../view/layout/layout.phtml:62
+#: ../../Application/view/layout/layout.phtml:62
 msgid "application.layout.copyright"
 msgstr "Public Knowledge Project"
 
@@ -342,6 +368,22 @@ msgstr "resolves to %s"
 msgid "application.manager.index"
 msgstr "Document Management"
 
+#: ../../Manager/view/manager/manager/list.phtml:7
+msgid "manager.job.id"
+msgstr "Job Id"
+
+#: ../../Manager/view/manager/manager/list.phtml:8
+msgid "manager.job.status"
+msgstr "Status"
+
+#: ../../Manager/view/manager/manager/list.phtml:9
+msgid "manager.job.creationDate"
+msgstr "Creation Date"
+
+#: ../../Manager/view/manager/manager/list.phtml:10
+msgid "manager.job.fileName"
+msgstr "File Name"
+
 #: ../../Admin/view/admin/system-log/list.phtml:1
 msgid "application.layout.systemLog.list"
 msgstr "System Log"
@@ -373,7 +415,7 @@ msgstr "List Users"
 
 #: ../../Admin/view/admin/user-management/list.phtml:7
 msgid "admin.userManagement.id"
-msgstr "ID"
+msgstr "User Id"
 
 #: ../../Admin/view/admin/user-management/list.phtml:8
 msgid "admin.userManagement.email"

@@ -740,3 +740,15 @@ a.remove-action:before {
   text-align: center; }
 .admin-user-management-list .table .action {
   margin-left: 3px; }
+
+.manager-manager-list .table .id {
+  width: 10%; }
+.manager-manager-list .table .status {
+  width: 15%; }
+.manager-manager-list .table .creation-date {
+  width: 15%; }
+.manager-manager-list .table tr td:nth-child(1),
+.manager-manager-list .table tr td:nth-child(2) {
+  text-align: center; }
+.manager-manager-list .table .action {
+  margin-left: 3px; }

@@ -406,3 +406,19 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
     .action { margin-left: 3px; }
   }
 }
+
+// Manager Manager - list
+.manager-manager-list {
+  .table {
+    .id { width: 10%; }
+    .status { width: 15%; }
+    .creation-date { width: 15%; }
+
+    tr {
+      td:nth-child(1),
+      td:nth-child(2) { text-align: center; }
+    }
+
+    .action { margin-left: 3px; }
+  }
+}

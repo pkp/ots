@@ -1,0 +1,33 @@
+<?php $this->headTitle($this->translate('manager.job.list')); ?>
+
+<div class="page manager-manager-list">
+  <?php
+  if ($this->jobs) {
+    echo '<table class="table footable"><thead><tr>';
+    echo '<th class="id" data-hide="phone">' . $this->translate('manager.job.id') . '</th>';
+    echo '<th class="id" data-hide="phone">' . $this->translate('manager.job.status') . '</th>';
+    echo '<th class="creation-date" data-hide="phone">' . $this->translate('manager.job.creationDate') . '</th>';
+    echo '<th class="file-name" data-toggle="true">' . $this->translate('manager.job.fileName') . '</th>';
+    echo '</tr></thead><tbody>';
+
+    foreach ($this->jobs as $job) {
+      if (!isset($statusMap)) $statusMap = $job->getStatusMap();
+      echo '<tr>';
+      echo '<td>' . $this->escapeHtml($job->id) . '</td>';
+      echo '<td>' . $this->escapeHtml($statusMap[$job->status]) . '</td>';
+      echo '<td>' . date('Y/m/d H:i:s', $job->creationDate) . '</td>';
+      echo '<td>' . $this->escapeHtml($job->document->uploadFileName) . '</td>';
+      echo '</tr>';
+    }
+
+    echo '</tbody></table>';
+
+    echo $this->paginationControl(
+      $this->jobs,
+      'sliding',
+      array('partial/paginator.phtml', 'Application'),
+      array('route/manager')
+    );
+  }
+  ?>
+</div>
