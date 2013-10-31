@@ -24,7 +24,7 @@ class LoginFormInputFilterTest extends ModelTest
         $this->inputFilter = new LoginFormInputFilter;
         $this->inputFilter = $this->inputFilter->getInputFilter();
 
-        $this->userDAO = $this->sm->get('UserDAO');
+        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
     }
 
     /**

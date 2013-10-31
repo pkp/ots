@@ -26,7 +26,7 @@ class RegistrationFormInputFilterTest extends ModelTest
         $this->inputFilter = $this->sm->get('User\Form\RegistrationFormInputFilter');
         $this->inputFilter = $this->inputFilter->getInputFilter();
 
-        $this->userDAO = $this->sm->get('UserDAO');
+        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
 
         $this->cleanTestData();
         $this->createTestData();

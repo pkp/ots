@@ -73,7 +73,7 @@ class Module
                 {
                     $sm = $cm->getServiceLocator();
                     $translator = $sm->get('translator');
-                    $userDAO = $sm->get('userDAO');
+                    $userDAO = $sm->get('User\Model\DAO\UserDAO');
                     $logger = $sm->get('Logger');
                     $userEditForm = $sm->get('Admin\Form\UserEditForm');
                     $userRemovalForm = $sm->get('Admin\Form\UserRemovalForm');

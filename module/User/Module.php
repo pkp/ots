@@ -65,7 +65,7 @@ class Module
     {
         return array(
             'factories' => array(
-                'UserDAO' => function($sm)
+                'User\Model\DAO\UserDAO' => function($sm)
                 {
                     $em = $sm->get('doctrine.entitymanager.orm_default');
                     return new UserDAO($em);
@@ -100,7 +100,7 @@ class Module
                 },
                 'User\Form\RegistrationFormInputFilter' => function($sm)
                 {
-                    $userDAO = $sm->get('UserDAO');
+                    $userDAO = $sm->get('User\Model\DAO\UserDAO');
                     $translator = $sm->get('translator');
                     return new RegistrationFormInputFilter(
                         $translator,
@@ -132,7 +132,7 @@ class Module
                 'User\Controller\User' => function($cm)
                 {
                     $sm = $cm->getServiceLocator();
-                    $userDAO = $sm->get('UserDAO');
+                    $userDAO = $sm->get('User\Model\DAO\UserDAO');
                     $logger = $sm->get('Logger');
                     $translator = $sm->get('Translator');
                     $loginForm = $sm->get('User\Form\LoginForm');

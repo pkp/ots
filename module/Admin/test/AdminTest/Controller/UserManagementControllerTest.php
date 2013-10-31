@@ -25,7 +25,7 @@ class UserManagementControllerTest extends ControllerTest
     {
         parent::setUp();
 
-        $this->userDAO = $this->sm->get('userDAO');
+        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
 
         $this->resetTestData();
     }
