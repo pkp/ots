@@ -1,7 +1,7 @@
 <?php $this->headTitle($this->translate('admin.userManagement.edit'));
 
 if (isset($this->userEditForm)) {
-  $userEditForm->setAttribute('action', $this->url('admin/user-management', array('action' => 'edit')));
+  $userEditForm->setAttribute('action', $this->url('admin/user_management', array('action' => 'edit')));
   $userEditForm = $this->userEditForm;
   $userEditForm->prepare();
   $userEditForm = $this->form()->render($userEditForm);

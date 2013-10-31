@@ -2,7 +2,7 @@
 $this->headTitle($this->translate('admin.userManagement.removeUser'));
 
 if (isset($this->userRemovalForm)) {
-  $userRemovalForm->setAttribute('action', $this->url('admin/user-management', array('action' => 'remove')));
+  $userRemovalForm->setAttribute('action', $this->url('admin/user_management', array('action' => 'remove')));
   $userRemovalForm = $this->userRemovalForm;
   $userRemovalForm->prepare();
   $userRemovalForm = $this->form()->render($userRemovalForm);

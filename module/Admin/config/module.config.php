@@ -11,7 +11,7 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
-                    'user-management' => array(
+                    'user_management' => array(
                         'type' => 'segment',
                         'options' => array(
                             'route' => '/user-management/:action[/page/:page][/user/:id]',
@@ -27,7 +27,7 @@ return array(
                             ),
                         ),
                     ),
-                    'system-log' => array(
+                    'system_log' => array(
                         'type' => 'segment',
                         'options' => array(
                             'route' => '/system-log/:action[/page/:page]',

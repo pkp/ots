@@ -47,7 +47,7 @@ class UserManagementControllerTest extends ControllerTest
         $this->assertControllerName('Admin\Controller\UserManagement');
         $this->assertControllerClass('UserManagementController');
         $this->assertActionName('list');
-        $this->assertMatchedRouteName('admin/user-management');
+        $this->assertMatchedRouteName('admin/user_management');
     }
 
     /**
@@ -108,7 +108,7 @@ class UserManagementControllerTest extends ControllerTest
         $this->assertControllerName('Admin\Controller\UserManagement');
         $this->assertControllerClass('UserManagementController');
         $this->assertActionName('edit');
-        $this->assertMatchedRouteName('admin/user-management');
+        $this->assertMatchedRouteName('admin/user_management');
     }
 
     /**
@@ -186,7 +186,7 @@ class UserManagementControllerTest extends ControllerTest
         $this->assertControllerName('Admin\Controller\UserManagement');
         $this->assertControllerClass('UserManagementController');
         $this->assertActionName('remove');
-        $this->assertMatchedRouteName('admin/user-management');
+        $this->assertMatchedRouteName('admin/user_management');
     }
 
     /**

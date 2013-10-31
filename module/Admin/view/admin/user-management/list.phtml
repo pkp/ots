@@ -22,8 +22,8 @@
       echo '<td>' . $this->escapeHtml($levelMap[$user->level]) . '</td>';
       echo '<td>' . date('Y/m/d H:i:s', $user->lastLogin) . '</td>';
       echo '<td>';
-      echo '<a href="' . $this->url('admin/user-management', array('action' => 'edit', 'id' => $user->id)) . '" title="' . $this->translate('application.generic.edit') . '" class="action edit-action"></a>';
-      echo '<a href="' . $this->url('admin/user-management', array('action' => 'remove', 'id' => $user->id)) . '" title="' . $this->translate('application.generic.remove') . '" class="action remove-action"></a>';
+      echo '<a href="' . $this->url('admin/user_management', array('action' => 'edit', 'id' => $user->id)) . '" title="' . $this->translate('application.generic.edit') . '" class="action edit-action"></a>';
+      echo '<a href="' . $this->url('admin/user_management', array('action' => 'remove', 'id' => $user->id)) . '" title="' . $this->translate('application.generic.remove') . '" class="action remove-action"></a>';
       echo '</td></tr>';
     }
 
@@ -33,7 +33,7 @@
       $this->users,
       'sliding',
       array('partial/paginator.phtml', 'Application'),
-      array('route/user-management')
+      array('route/user_management')
     );
   }
 

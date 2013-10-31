@@ -48,7 +48,7 @@ class SystemLogControllerTest extends ControllerTest
         $this->assertControllerName('Admin\Controller\SystemLog');
         $this->assertControllerClass('SystemLogController');
         $this->assertActionName('list');
-        $this->assertMatchedRouteName('admin/system-log');
+        $this->assertMatchedRouteName('admin/system_log');
     }
 
     /**

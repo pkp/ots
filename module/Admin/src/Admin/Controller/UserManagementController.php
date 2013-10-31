@@ -115,7 +115,7 @@ class UserManagementController extends AbstractActionController {
                 );
 
                 return $this->redirect()->toRoute(
-                    'admin/user-management',
+                    'admin/user_management',
                     array('action' => 'list')
                 );
             }
@@ -185,7 +185,7 @@ class UserManagementController extends AbstractActionController {
             );
 
             return $this->redirect()->toRoute(
-                'admin/user-management',
+                'admin/user_management',
                 array('action' => 'list')
             );
         }
