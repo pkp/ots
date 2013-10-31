@@ -7,6 +7,8 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'Manager',
+        'SlmQueue',
+        'SlmQueueDoctrine',
         'User',
     ),
 
