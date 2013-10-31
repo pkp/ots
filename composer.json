@@ -16,7 +16,6 @@
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.2.*",
         "doctrine/doctrine-orm-module": "0.*",
-        "zendframework/zend-queue": "dev-master",
         "zendframework/zend-developer-tools": "dev-master",
         "phpunit/phpunit": "3.7.*"
     }
