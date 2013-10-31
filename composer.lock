@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "665563f8fd219dc7eb4a6c5d750db314",
+    "hash": "db634fe94fc7f6483c68e5290a395618",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1077,6 +1077,129 @@
             "time": "2013-01-13 10:24:48"
         },
         {
+            "name": "slm/queue",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/juriansluiman/SlmQueue.git",
+                "reference": "c7cd7021235b6349b9d1bfb2a13601f06d98ccfc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/juriansluiman/SlmQueue/zipball/c7cd7021235b6349b9d1bfb2a13601f06d98ccfc",
+                "reference": "c7cd7021235b6349b9d1bfb2a13601f06d98ccfc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "zendframework/zend-servicemanager": "2.*",
+                "zendframework/zend-stdlib": "2.*"
+            },
+            "require-dev": {
+                "zendframework/zendframework": "2.*"
+            },
+            "suggest": {
+                "slm/queue-beanstalkd": "If you are using Beanstalk",
+                "slm/queue-doctrine": "If you are using Doctrine ORM",
+                "slm/queue-sqs": "If you are using Amazon SQS"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "SlmQueue": "src/"
+                },
+                "classmap": [
+                    "./Module.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Jurian Sluiman",
+                    "email": "jurian@juriansluiman.nl",
+                    "homepage": "http://juriansluiman.nl"
+                },
+                {
+                    "name": "Michaël Gallego",
+                    "email": "mic.gallego@gmail.com",
+                    "homepage": "http://www.michaelgallego.fr"
+                }
+            ],
+            "description": "Zend Framework 2 module that integrates with various queue management systems",
+            "homepage": "https://github.com/juriansluiman/SlmQueue",
+            "keywords": [
+                "job",
+                "queue",
+                "zf2"
+            ],
+            "time": "2013-10-25 16:21:39"
+        },
+        {
+            "name": "slm/queue-doctrine",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/juriansluiman/SlmQueueDoctrine.git",
+                "reference": "6504d55cdf00b229482b0950097210db099fc18e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/juriansluiman/SlmQueueDoctrine/zipball/6504d55cdf00b229482b0950097210db099fc18e",
+                "reference": "6504d55cdf00b229482b0950097210db099fc18e",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/doctrine-orm-module": ">=0.6",
+                "php": ">=5.3.3",
+                "slm/queue": ">=0.3.0-dev",
+                "zendframework/zend-config": "2.*",
+                "zendframework/zend-mvc": "2.*",
+                "zendframework/zend-servicemanager": "2.*",
+                "zendframework/zend-stdlib": "2.*"
+            },
+            "require-dev": {
+                "zendframework/zendframework": "2.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "SlmQueueDoctrine": "src/"
+                },
+                "classmap": [
+                    "./Module.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Stefan Kleff",
+                    "email": "s.kleff@goalio.de",
+                    "homepage": "http://www.goalio.de"
+                }
+            ],
+            "description": "Zend Framework 2 module that integrates Doctrine as queuing system",
+            "homepage": "https://github.com/juriansluiman/SlmQueueDoctrine",
+            "keywords": [
+                "database",
+                "db",
+                "doctrine",
+                "job",
+                "queue",
+                "zf2"
+            ],
+            "time": "2013-08-09 13:32:47"
+        },
+        {
             "name": "symfony/console",
             "version": "v2.3.6",
             "target-dir": "Symfony/Component/Console",
@@ -1363,7 +1486,9 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "zendframework/zend-developer-tools": 20
+        "zendframework/zend-developer-tools": 20,
+        "slm/queue": 20,
+        "slm/queue-doctrine": 20
     },
     "platform": {
         "php": ">=5.3.3"

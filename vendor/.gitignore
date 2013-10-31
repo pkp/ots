@@ -5,6 +5,6 @@ autoload.php
 
 doctrine
 phpunit
+slm
 symfony
 zendframework
-
