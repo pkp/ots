@@ -1145,12 +1145,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/juriansluiman/SlmQueueDoctrine.git",
-                "reference": "6504d55cdf00b229482b0950097210db099fc18e"
+                "reference": "75e5589a313de8481e26b4cef021e93bd3c7e43d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/juriansluiman/SlmQueueDoctrine/zipball/6504d55cdf00b229482b0950097210db099fc18e",
-                "reference": "6504d55cdf00b229482b0950097210db099fc18e",
+                "url": "https://api.github.com/repos/juriansluiman/SlmQueueDoctrine/zipball/75e5589a313de8481e26b4cef021e93bd3c7e43d",
+                "reference": "75e5589a313de8481e26b4cef021e93bd3c7e43d",
                 "shasum": ""
             },
             "require": {
@@ -1197,7 +1197,7 @@
                 "queue",
                 "zf2"
             ],
-            "time": "2013-08-09 13:32:47"
+            "time": "2013-11-01 22:21:18"
         },
         {
             "name": "symfony/console",
@@ -1365,17 +1365,17 @@
         },
         {
             "name": "zendframework/zendframework",
-            "version": "2.2.4",
+            "version": "2.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zf2.git",
-                "reference": "5b03d868755c181fc9b5dc56c1f8c26e73ca0bed"
+                "reference": "4a7cf6a4cf791244e14aa0ca49d1f06916b63202"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zf2/zipball/5b03d868755c181fc9b5dc56c1f8c26e73ca0bed",
-                "reference": "5b03d868755c181fc9b5dc56c1f8c26e73ca0bed",
-                "shasum": ""
+                "url": "https://packages.zendframework.com/composer/zendframework-zendframework-4a7cf6a4cf791244e14aa0ca49d1f06916b63202-zip-2661de.zip",
+                "reference": "2.2.5",
+                "shasum": "3c699626517e16aa7b3d9a0c811fe41a2586179d"
             },
             "require": {
                 "php": ">=5.3.3"
@@ -1435,6 +1435,7 @@
             },
             "require-dev": {
                 "doctrine/annotations": ">=1.0",
+                "fabpot/php-cs-fixer": "*@dev",
                 "ircmaxell/random-lib": "dev-master",
                 "ircmaxell/security-lib": "dev-master",
                 "ocramius/proxy-manager": "0.4.*",
@@ -1465,7 +1466,6 @@
                     "Zend\\": "library/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -1475,7 +1475,11 @@
                 "framework",
                 "zf2"
             ],
-            "time": "2013-08-26 15:09:04"
+            "support": {
+                "source": "https://github.com/zendframework/zf2/tree/release-2.2.5",
+                "issues": "https://github.com/zendframework/zf2/issues"
+            },
+            "time": "2013-10-31 15:48:16"
         }
     ],
     "packages-dev": [
