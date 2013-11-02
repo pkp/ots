@@ -51,5 +51,5 @@ return array(
             array('allow', 'member', 'controller:Manager\Controller\Manager:list'),
             array('allow', 'member', 'controller:Manager\Controller\Manager:upload'),
         ),
-    )
+    ),
 );
