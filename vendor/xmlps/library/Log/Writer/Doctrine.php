@@ -15,20 +15,17 @@ use Xmlps\DAO\DAO;
 class Doctrine extends AbstractWriter
 {
     protected $logEntityDAO;
-    protected $logEntity;
 
     /**
      * Constructor
      *
      * @param DAO $logEntityDAO
-     * @param mixed $logEntity
      *
      * @return void
      */
-    public function __construct(DAO $logEntityDAO, $logEntity)
+    public function __construct(DAO $logEntityDAO)
     {
         $this->logEntityDAO = $logEntityDAO;
-        $this->logEntity= $logEntity;
     }
 
     /**
@@ -52,11 +49,13 @@ class Doctrine extends AbstractWriter
      */
     protected function doWrite(array $event)
     {
-        $this->logEntity->timestamp = time();
-        $this->logEntity->priority = $event['priority'];
-        $this->logEntity->message = $event['message'];
-        $this->logEntity->ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
+        $logEntity = $this->logEntityDAO->getInstance();
 
-        $this->logEntityDAO->save($this->logEntity);
+        $logEntity->timestamp = time();
+        $logEntity->priority = $event['priority'];
+        $logEntity->message = $event['message'];
+        $logEntity->ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;
+
+        $this->logEntityDAO->save($logEntity);
     }
 }
