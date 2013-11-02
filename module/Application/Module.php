@@ -108,15 +108,15 @@ class Module
                 },
                 'Xmlps\Log\Writer\Doctrine' => function($sm) {
                     $logDAO = $sm->get('LogDAO');
-                    $logEntity = $sm->get('Application\Entity\Log');
-                    return new \Xmlps\Log\Writer\Doctrine($logDAO, $logEntity);
+                    return new \Xmlps\Log\Writer\Doctrine($logDAO);
                 },
                 'Xmlps\Logger\Logger' => function($sm) {
                     return new \Xmlps\Logger\Logger;
                 },
             ),
             'shared' => array(
-                'Mail' => false
+                'Mail' => false,
+                'Application\Entity\Log' => false
             )
         );
     }
