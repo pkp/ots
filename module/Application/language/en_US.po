@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-30 11:59-1000\n"
-"PO-Revision-Date: 2013-10-30 11:59-1000\n"
+"POT-Creation-Date: 2013-11-01 16:23-1000\n"
+"PO-Revision-Date: 2013-11-01 16:23-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -39,18 +39,26 @@ msgstr "Completed"
 msgid "manager.job.status.failed"
 msgstr "Failed"
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:73
+#: ../../Manager/src/Manager/Controller/ManagerController.php:77
 msgid "manager.upload.success"
 msgstr ""
 "Your document has been successfully uploaded. It is now being processed."
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:97
+#: ../../Manager/src/Manager/Controller/ManagerController.php:98
 msgid "manager.job.createLog"
 msgstr "A new job has been created (%d)"
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:127
+#: ../../Manager/src/Manager/Controller/ManagerController.php:131
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
+
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:46
+msgid "manager.queue.receivedProcessingLog"
+msgstr "Processing queue received job (%d)"
+
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:102
+msgid "manager.queue.receivedQueueLog"
+msgstr "Queued job (%d) in queue %s"
 
 #: ../../Admin/src/Admin/Form/UserRemovalForm.php:38
 #: ../../Admin/view/admin/user-management/list.phtml:26

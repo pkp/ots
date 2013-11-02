@@ -9,28 +9,10 @@ use Manager\Form\UploadForm;
 use Manager\Form\UploadFormInputFilter;
 use Manager\Model\DAO\DocumentDAO;
 use Manager\Model\DAO\JobDAO;
+use Manager\Model\Queue\Manager;
 
 class Module
 {
-    /**
-     * Bootstrap
-     *
-     * @param MvcEvent $e
-     * @return void
-     */
-    public function onBootstrap(MvcEvent $e)
-    {
-        $application = $e->getApplication();
-        $sem = $application->getEventManager()->getSharedManager();
-        $sm = $application->getServiceManager();
-
-        // Handle file upload events
-        $sem->attach('Manager\Controller\ManagerController', 'file-upload', function($e) use ($sm) {
-            $handler = $sm->get('Manager\Event\Handler\FileUploadHandler');
-            $handler->handle($e);
-        });
-    }
-
     /**
      * Get config
      *
@@ -96,13 +78,25 @@ class Module
                     $em = $sm->get('doctrine.entitymanager.orm_default');
                     return new JobDAO($em);
                 },
-            ),
-            'invokables' => array(
-                'Manager\Event\Handler\FileUploadHandler' => 'Manager\Event\Handler\FileUploadHandler'
+                'Manager\Model\Queue\Manager' => function($sm)
+                {
+                    $logger = $sm->get('Logger');
+                    $translator = $sm->get('translator');
+                    $queueManager = $sm->get('SlmQueue\Queue\QueuePluginManager');
+                    $jobManager = $sm->get('SlmQueue\Job\JobPluginManager');
+                    $jobDAO = $sm->get('Manager\Model\DAO\JobDAO');
+                    return new Manager(
+                        $logger,
+                        $translator,
+                        $queueManager,
+                        $jobManager,
+                        $jobDAO
+                    );
+                },
             ),
             'shared' => array(
                 'Manager\Entity\Job' => false,
-                'Manager\Entity\Document' => false
+                'Manager\Entity\Document' => false,
             )
         );
     }
@@ -121,6 +115,7 @@ class Module
                     $sm = $cm->getServiceLocator();
                     $logger = $sm->get('Logger');
                     $translator = $sm->get('Translator');
+                    $queueManager = $sm->get('Manager\Model\Queue\Manager');
                     $uploadForm = $sm->get('Manager\Form\UploadForm');
                     $uploadFormInputFilter = $sm->get('Manager\Form\UploadFormInputFilter');
                     $documentDAO = $sm->get('Manager\Model\DAO\DocumentDAO');
@@ -129,6 +124,7 @@ class Module
                     return new Controller\ManagerController(
                         $logger,
                         $translator,
+                        $queueManager,
                         $uploadForm,
                         $uploadFormInputFilter,
                         $documentDAO,

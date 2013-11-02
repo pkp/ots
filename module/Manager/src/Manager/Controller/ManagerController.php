@@ -4,6 +4,7 @@ namespace Manager\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\I18n\Translator;
 use Xmlps\Logger\Logger;
+use Manager\Model\Queue\Manager;
 use Manager\Form\UploadForm;
 use Manager\Form\UploadFormInputFilter;
 use Manager\Model\DAO\DocumentDAO;
@@ -12,6 +13,7 @@ use Manager\Model\DAO\JobDAO;
 class ManagerController extends AbstractActionController {
     protected $logger;
     protected $translator;
+    protected $queueManager;
     protected $uploadForm;
     protected $uploadFormInputFilter;
     protected $documentDAO;
@@ -28,6 +30,7 @@ class ManagerController extends AbstractActionController {
     public function __construct(
         Logger $logger,
         Translator $translator,
+        Manager $queueManager,
         UploadForm $uploadForm,
         UploadFormInputFilter $uploadFormInputFilter,
         DocumentDAO $documentDAO,
@@ -36,6 +39,7 @@ class ManagerController extends AbstractActionController {
     {
         $this->logger = $logger;
         $this->translator = $translator;
+        $this->queueManager = $queueManager;
         $this->uploadForm = $uploadForm;
         $this->uploadFormInputFilter = $uploadFormInputFilter;
         $this->documentDAO = $documentDAO;
@@ -88,9 +92,6 @@ class ManagerController extends AbstractActionController {
                 $job->document = $document;
                 $this->jobDAO->save($job);
 
-                // Trigger the file upload event to create a new job
-                $this->getEventManager()->trigger('file-upload', $this, array('data' => $data));
-
                 $this->logger->info(
                     sprintf(
                         $this->translator->translate(
@@ -99,6 +100,9 @@ class ManagerController extends AbstractActionController {
                         $job->id
                     )
                 );
+
+                // Send the job to the queue manager
+                $this->queueManager->addJob($job->id);
 
                 return $this->redirect()->toRoute('manager', array('action' => 'list'));
             }

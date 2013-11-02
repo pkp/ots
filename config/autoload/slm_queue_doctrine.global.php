@@ -13,9 +13,16 @@ return array(
             'connection' => 'doctrine.connection.orm_default',
             'table_name' => 'queue',
         ),
+        'job_manager' => array(
+            'factories' => array(
+                'Manager\Model\Queue\Job\DocxJob' => function($locator) {
+                    return new Manager\Model\Queue\Job\DocxJob();
+                }
+            ),
+        ),
         'queue_manager' => array(
             'factories' => array(
-                'foo' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'docx' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
             ),
         ),
     ),
