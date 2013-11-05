@@ -3,6 +3,7 @@
 composer
 autoload.php
 
+dagwieers
 doctrine
 phpunit
 slm

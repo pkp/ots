@@ -9,6 +9,18 @@
         {
             "type": "composer",
             "url": "https://packages.zendframework.com/"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "dagwieers/unoconv",
+                "version": "0.6",
+                "source": {
+                    "url": "https://github.com/dagwieers/unoconv.git",
+                    "type": "git",
+                    "reference": "6600705d40f06338f839d8dee7edc4c2e89f51a1"
+                }
+            }
         }
     ],
     "homepage": "http://framework.zend.com/",
@@ -19,6 +31,7 @@
         "zendframework/zend-developer-tools": "dev-master",
         "phpunit/phpunit": "3.7.*",
         "slm/queue": "0.3.x-dev",
-        "slm/queue-doctrine": "0.3.x-dev"
+        "slm/queue-doctrine": "0.3.x-dev",
+        "dagwieers/unoconv": "0.6"
     }
 }

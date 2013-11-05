@@ -3,8 +3,18 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "db634fe94fc7f6483c68e5290a395618",
+    "hash": "39b913ba8aedff0f712d1c39ef175254",
     "packages": [
+        {
+            "name": "dagwieers/unoconv",
+            "version": "0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dagwieers/unoconv.git",
+                "reference": "6600705d40f06338f839d8dee7edc4c2e89f51a1"
+            },
+            "type": "library"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.1.2",
@@ -1082,12 +1092,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/juriansluiman/SlmQueue.git",
-                "reference": "c7cd7021235b6349b9d1bfb2a13601f06d98ccfc"
+                "reference": "e1c6d98e81aa2943eb4d8ab340efeebc1f55b208"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/juriansluiman/SlmQueue/zipball/c7cd7021235b6349b9d1bfb2a13601f06d98ccfc",
-                "reference": "c7cd7021235b6349b9d1bfb2a13601f06d98ccfc",
+                "url": "https://api.github.com/repos/juriansluiman/SlmQueue/zipball/e1c6d98e81aa2943eb4d8ab340efeebc1f55b208",
+                "reference": "e1c6d98e81aa2943eb4d8ab340efeebc1f55b208",
                 "shasum": ""
             },
             "require": {
@@ -1137,7 +1147,7 @@
                 "queue",
                 "zf2"
             ],
-            "time": "2013-10-25 16:21:39"
+            "time": "2013-11-02 12:01:55"
         },
         {
             "name": "slm/queue-doctrine",
