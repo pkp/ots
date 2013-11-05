@@ -10,6 +10,7 @@ return array(
         'SlmQueueDoctrine',
         'Manager',
         'User',
+        'DocxConversion',
     ),
 
     // These are various options for the listeners attached to the ModuleManager

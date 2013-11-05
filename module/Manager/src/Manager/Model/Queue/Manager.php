@@ -20,8 +20,9 @@ class Manager {
     protected $jobDAO;
 
     // Maps the queue name to the processing class
+    // TODO: this should come from the config
     protected $queueMap = array(
-        'docx' => 'Manager\Model\Queue\Job\DocxJob',
+        'docx' => 'DocxConversion\Model\Queue\Job\DocxJob',
     );
 
     /**

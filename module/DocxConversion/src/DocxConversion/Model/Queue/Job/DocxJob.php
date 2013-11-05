@@ -1,6 +1,6 @@
 <?php
 
-namespace Manager\Model\Queue\Job;
+namespace DocxConversion\Model\Queue\Job;
 
 use Manager\Model\Queue\Job\AbstractQueueJob;
 use Manager\Entity\Job;

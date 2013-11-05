@@ -15,8 +15,8 @@ return array(
         ),
         'job_manager' => array(
             'factories' => array(
-                'Manager\Model\Queue\Job\DocxJob' => function($locator) {
-                    return new Manager\Model\Queue\Job\DocxJob();
+                'DocxConversion\Model\Queue\Job\DocxJob' => function($locator) {
+                    return new DocxConversion\Model\Queue\Job\DocxJob();
                 }
             ),
         ),
