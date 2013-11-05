@@ -66,4 +66,6 @@ Module Description
 * Manager
  * Receives conversion jobs [X]
  * Job list [X]
- * Queues jobs for individual workers
+ * Handles job distribution to queues
+* DocxConversion
+ * Converts documents to DocX format
