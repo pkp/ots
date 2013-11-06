@@ -32,7 +32,7 @@ class Log extends DataObject
     protected $priority;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="text", nullable=false)
      */
     protected $message;
 
