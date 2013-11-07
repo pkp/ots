@@ -4,13 +4,23 @@ namespace ManagerTest\Entity;
 
 use PHPUnit_Framework_TestCase;
 use Xmlps\UnitTest\ModelTest;
+use Manager\Entity\Job;
 
 class DocumentEntityTest extends ModelTest
 {
     protected $document;
     protected $documentDAO;
+    protected $job;
+    protected $jobDAO;
+    protected $user;
+    protected $userDAO;
 
     protected $testFile = 'var/uploads/unittest';
+
+    protected $testUserEmail = 'unittestuser@example.com';
+    protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
+    protected $testUserRole = 'member';
+    protected $testUserActive = true;
 
     /**
      * Initialize the test
@@ -21,6 +31,8 @@ class DocumentEntityTest extends ModelTest
         parent::setUp();
 
         $this->documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
+        $this->jobDAO = $this->sm->get('Manager\Model\DAO\JobDAO');
+        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
 
         $this->resetTestData();
     }
@@ -57,15 +69,27 @@ class DocumentEntityTest extends ModelTest
      * @return void
      */
     protected function createTestData() {
+        $this->user = $this->userDAO->getInstance();
+        $this->user->email = $this->testUserEmail;
+        $this->user->password = $this->testUserPassword;
+        $this->user->role = $this->testUserRole;
+        $this->user->active = $this->testUserActive;
+        $this->userDAO->save($this->user);
+
+        $this->job = $this->jobDAO->getInstance();
+        $this->job->user = $this->user;
+
         $this->document = $this->documentDAO->getInstance();
+        $this->document->job = $this->job;
 
         touch($this->testFile);
         $this->document->path = $this->testFile;
         $this->document->mimeType = 'text/plain';
-        $this->document->uploadFileName = 'UNITTEST';
+        $this->document->conversionStage = JOB_CONVERSION_STAGE_UNCONVERTED;
         $this->document->size = filesize($this->testFile);
 
-        $this->documentDAO->save($this->document);
+        $this->job->documents[] = $this->document;
+        $this->jobDAO->save($this->job);
     }
 
     /**
@@ -75,9 +99,13 @@ class DocumentEntityTest extends ModelTest
      */
     protected function cleanTestData()
     {
-        if ($this->document) {
-            $this->documentDAO->remove($this->document);
+        if ($this->job) {
+            $this->jobDAO->remove($this->job);
         }
+
+        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        if ($user) { $this->userDAO->remove($user); }
+
         @unlink($this->testFile);
     }
 }
