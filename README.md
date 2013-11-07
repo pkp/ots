@@ -69,3 +69,15 @@ Module Description
  * Handles job distribution to queues
 * DocxConversion
  * Converts documents to DocX format
+
+DocXConversion Module Requirements
+----------------------------------
+
+The DocXConversion module needs LibreOffice installed. The server  works and is tested to work with LibreOffice 4.1.3.
+
+```
+wget http://download.documentfoundation.org/libreoffice/stable/4.1.3/deb/x86_64/LibreOffice_4.1.3_Linux_x86-64_deb.tar.gz
+tar -xzf LibreOffice_4.1.3_Linux_x86-64_deb.tar.gz
+sudo dpkg -i LibreOffice_4.1.3.2_Linux_x86-64_deb/DEBS/*.deb
+```
+

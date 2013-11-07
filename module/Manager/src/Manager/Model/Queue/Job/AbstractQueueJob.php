@@ -103,6 +103,6 @@ abstract class AbstractQueueJob extends AbstractJob implements
 
         // Return the job to the queue manager
         $queueManager = $this->sm->get('Manager\Model\Queue\Manager');
-        $queueManager->queue($job->id);
+        $queueManager->queue($job);
     }
 }

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-01 16:23-1000\n"
-"PO-Revision-Date: 2013-11-01 16:23-1000\n"
+"POT-Creation-Date: 2013-11-05 17:30-1000\n"
+"PO-Revision-Date: 2013-11-05 17:30-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -52,11 +52,11 @@ msgstr "A new job has been created (%d)"
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:46
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:64
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:102
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:127
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
@@ -238,6 +238,14 @@ msgstr "Your settings have been updated!"
 #: ../../User/src/User/Controller/UserController.php:356
 msgid "user.settings.saveSuccessConfirmLog"
 msgstr "User %s updated settings"
+
+#: ../../DocxConversion/src/DocxConversion/Model/Unoconv.php:98
+msgid "docxconversion.unoconv.executeCommandLog"
+msgstr "Unoconv is executing: %s "
+
+#: ../../DocxConversion/src/DocxConversion/Model/Unoconv.php:107
+msgid "docxconversion.unoconv.executeCommandOutputLog"
+msgstr "Unoconf output: %s"
 
 #: ../../../vendor/xmlps/library/Event/Handler/AclDispatchHandler.php:32
 msgid "application.acl.notAuthorized"

@@ -27,19 +27,25 @@ class Document extends DataObject
     protected $path;
 
     /**
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    protected $conversionStage;
+
+    /**
      * @ORM\Column(type="string")
      */
     protected $mimeType;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    protected $uploadFileName;
-
-    /**
      * @ORM\Column(type="integer")
      */
     protected $size;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Manager\Entity\Job", inversedBy="documents")
+     * @ORM\JoinColumn(name="jobId", referencedColumnName="id", nullable=false)
+     */
+    protected $job;
 
     /**
      * Sets path to file, will throw an exception if the file doesn't exist
@@ -54,6 +60,18 @@ class Document extends DataObject
         }
 
         $this->path = $path;
+
+        // Set the file size
+        if (!$this->size) {
+            $this->size = filesize($this->path);
+        }
+
+        // Set the mime type if the Fileinfo extension is available
+        if (!$this->mimeType and function_exists('finfo_open')) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $this->mimeType = finfo_file($finfo, $this->path);
+            finfo_close($finfo);
+        }
     }
 
     /**

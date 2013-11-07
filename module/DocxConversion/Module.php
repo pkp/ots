@@ -2,6 +2,8 @@
 
 namespace DocxConversion;
 
+use DocxConversion\Model\Unoconv;
+
 class Module
 {
     /**
@@ -32,4 +34,30 @@ class Module
             ),
         );
     }
+
+    /**
+     * Get service config
+     *
+     * @return array
+     */
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'DocxConversion\Model\Unoconv' => function($sm)
+                {
+                    $config = $sm->get('Config');
+                    $logger = $sm->get('Logger');
+                    $translator = $sm->get('Translator');
+                    if (!isset($config['conversion']['docx']['unoconv'])) {
+                        throw new \Exception('Unoconv configuration is missing');
+                    }
+                    $config = $config['conversion']['docx']['unoconv'];
+
+                    return new Unoconv($config, $logger, $translator);
+                },
+            ),
+        );
+    }
+
 }

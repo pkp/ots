@@ -58,65 +58,67 @@ class Manager {
      */
     public function addJob($jobId)
     {
+        $job = $this->jobDAO->find($jobId);
+
+        if (empty($job)) {
+           throw new \Exception('Invalid job id');
+        }
+
         $this->logger->info(
             sprintf(
                 $this->translator->translate(
                     'manager.queue.receivedProcessingLog'
                 ),
-                $jobId
+                $job->id
             )
         );
 
         // Queue the job
-        $this->queue($jobId);
+        $this->queue($job);
     }
 
     /**
      * Implements the queueing logic and distributes jobs to the queues
      * depending on their conversion state
      *
-     * @param mixed $jobId Job id to queue
+     * @param mixed $job Job to queue
      *
      * @return void
      */
-    public function queue($jobId)
+    public function queue($job)
     {
-        $job = $this->jobDAO->find($jobId);
-
         // Stop if the job is completed or failed
         if (in_array($job->status, array(JOB_STATUS_COMPLETED, JOB_STATUS_FAILED))) {
             return;
         }
 
         // TODO: implement queuing logic lets just go for a docxjob for now
-        $this->docxJob($jobId);
+        $this->docxJob($job);
+        $job->status = JOB_STATUS_COMPLETED;
+
+        $this->jobDAO->save($job);
     }
 
     /**
      * Queue a docX conversion job
      *
-     * @param mixed $jobId Job id to queue
+     * @param mixed $job Job to queue
      * @return void
      */
-    protected function docxJob($jobId)
+    protected function docxJob($job)
     {
-        $this->queueJob($jobId, 'docx');
+        $this->queueJob($job, 'docx');
     }
 
     /**
      * Queues a job in its corresponding queue
      *
-     * @param mixed $jobId Job id to queue
+     * @param mixed $job Job to queue
      * @param mixed $queue Queue to use
      *
      * @return void
      */
-    protected function queueJob($jobId, $queue) {
-        $jobId = (int) $jobId;
-        if (empty($jobId)) {
-           throw new \Exception('Invalid job id');
-        }
-
+    protected function queueJob($job, $queue) {
         if (!isset($this->queueMap[$queue])) {
            throw new \Exception('Invalid queue');
         }
@@ -126,13 +128,13 @@ class Manager {
                 $this->translator->translate(
                     'manager.queue.receivedQueueLog'
                 ),
-                $jobId,
+                $job->id,
                 $queue
             )
         );
 
-        $job = $this->jobManager->get($this->queueMap[$queue]);
-        $job->setContent(array('jobId' => $jobId));
-        $this->queueManager->get($queue)->push($job);
+        $queueJob = $this->jobManager->get($this->queueMap[$queue]);
+        $queueJob->setContent(array('jobId' => $job->id));
+        $this->queueManager->get($queue)->push($queueJob);
     }
 }

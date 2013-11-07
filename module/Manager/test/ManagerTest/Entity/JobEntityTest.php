@@ -48,4 +48,17 @@ class JobEntityTest extends ModelTest
         $job->initStatus();
         $this->assertSame($job->status, JOB_STATUS_PENDING);
     }
+
+    /**
+     * Test if the conversion stage is initialized correctly
+     *
+     * @return void
+     */
+    public function testConversionStageInitialization()
+    {
+        $job = $this->jobDAO->getInstance();
+        $this->assertNull($job->conversionStage);
+        $job->initConversionStage();
+        $this->assertSame($job->conversionStage, JOB_CONVERSION_STAGE_UNCONVERTED);
+    }
 }

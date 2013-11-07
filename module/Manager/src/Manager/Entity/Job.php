@@ -4,11 +4,15 @@ namespace Manager\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Xmlps\DataObject\DataObject;
+use Doctrine\Common\Collections\ArrayCollection;
 
 define('JOB_STATUS_PENDING', 0);
 define('JOB_STATUS_PROCESSING', 1);
 define('JOB_STATUS_COMPLETED', 2);
 define('JOB_STATUS_FAILED', 3);
+
+define('JOB_CONVERSION_STAGE_UNCONVERTED', 0);
+define('JOB_CONVERSION_STAGE_DOCX', 1);
 
 /**
  * Job
@@ -33,10 +37,9 @@ class Job extends DataObject
     protected $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Manager\Entity\Document", cascade={"all"})
-     * @ORM\JoinColumn(name="documentId", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="Manager\Entity\Document", mappedBy="job", cascade={"all"})
      */
-    protected $document;
+    protected $documents;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
@@ -47,6 +50,21 @@ class Job extends DataObject
      * @ORM\Column(type="smallint", nullable=false)
      */
     protected $status;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    protected $conversionStage;
+
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->documents = new ArrayCollection();
+    }
 
     /**
      * Sets the creation date timestamp
@@ -77,6 +95,21 @@ class Job extends DataObject
     }
 
     /**
+     * Sets the initial conversion stage
+     *
+     * @return void
+     *
+     * @ORM\PrePersist
+     */
+    public function initConversionStage()
+    {
+        if ($this->conversionStage === null) {
+            $this->conversionStage = JOB_CONVERSION_STAGE_UNCONVERTED;
+        }
+    }
+
+
+    /**
      * Maps job status to display strings
      *
      * @return array map of job status to display strings
@@ -90,5 +123,25 @@ class Job extends DataObject
             JOB_STATUS_COMPLETED => $translator->translate('manager.job.status.completed'),
             JOB_STATUS_FAILED => $translator->translate('manager.job.status.failed'),
         );
+    }
+
+    /**
+     * Returns the document storage location for converted documents
+     *
+     * @return void
+     */
+    public function getDocumentPath()
+    {
+        if (!$this->user->id) { throw new \Exception('User id is not set'); }
+        if (!$this->id) { throw new \Exception('Job id is not set'); }
+
+        $documentPath = 'var/documents/' . $this->user->id . '/' . $this->id;
+        if (!is_dir($documentPath)) { mkdir($documentPath, 0777, true); }
+
+        if (!is_dir($documentPath)) {
+            throw new \Exception('Couldn\'t create document directory');
+        }
+
+        return $documentPath;
     }
 }

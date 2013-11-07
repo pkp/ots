@@ -78,19 +78,22 @@ class ManagerController extends AbstractActionController {
                     )
                 );
 
-                // Create new document
-                $upload = $data['upload'];
-                $document = $this->documentDAO->getInstance();
-                $document->path = $upload['tmp_name'];
-                $document->uploadFileName = $upload['name'];
-                $document->mimeType = $upload['type'];
-                $document->size = $upload['size'];
-
                 // Create a new job
                 $job = $this->jobDAO->getInstance();
                 $job->user = $this->identity();
-                $job->document = $document;
                 $this->jobDAO->save($job);
+
+                // Move the uploaded file to its job directory
+                $upload = $data['upload'];
+                $upload['path'] = $job->getDocumentPath() . '/' . $upload['name'];
+                rename($upload['tmp_name'], $upload['path']);
+
+                // Create new document
+                $document = $this->documentDAO->getInstance();
+                $document->job = $job;
+                $document->conversionStage = $job->conversionStage;
+                $document->path = $upload['path'];
+                $this->documentDAO->save($document);
 
                 $this->logger->info(
                     sprintf(
