@@ -131,12 +131,18 @@ class DocumentEntityTest extends ModelTest
      */
     protected function cleanTestData()
     {
-        if ($this->job) {
-            $this->jobDAO->remove($this->job);
-        }
-
         $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        if ($user) { $this->userDAO->remove($user); }
+        if (!$user) return;
+
+        $jobs = $this->jobDAO->findBy(array('user' => $user->id));
+        foreach ($jobs as $job) {
+            $documents = $this->documentDAO->findBy(array('job' => $job->id));
+            foreach ($documents as $document) {
+                $this->documentDAO->remove($document);
+            }
+            $this->jobDAO->remove($job);
+        }
+        $this->userDAO->remove($user);
 
         @unlink($this->testFile);
     }
