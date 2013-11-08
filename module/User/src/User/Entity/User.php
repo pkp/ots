@@ -144,6 +144,23 @@ class User extends DataObject
     }
 
     /**
+     * Removes jobs associated with this user before the user is removed
+     *
+     * @return void
+     *
+     * @ORM\PreRemove
+     */
+    public function removeJobData()
+    {
+        $jobDAO = $this->sm->get('Manager\Model\DAO\JobDAO');
+        $jobs = $jobDAO->findBy(array('user' => $this->id));
+        foreach ($jobs as $job) { $jobDAO->remove($job); }
+
+        @unlink($this->getDocumentPath());
+    }
+
+
+    /**
      * Sets lastLogin to the current timestamp
      *
      * @return void
@@ -242,6 +259,25 @@ class User extends DataObject
             USER_ROLE_MEMBER => $translator->translate('user.user.role.member'),
             USER_ROLE_ADMINISTRATOR => $translator->translate('user.user.role.administrator'),
         );
+    }
+
+    /**
+     * Returns the users document path
+     *
+     * @return string Document path
+     */
+    public function getDocumentPath()
+    {
+        if (!$this->id) { throw new \Exception('User id is not set'); }
+
+        $documentPath = 'var/documents/' . $this->id;
+        if (!is_dir($documentPath)) { @mkdir($documentPath, 0777, true); }
+
+        if (!is_dir($documentPath)) {
+            throw new \Exception('Couldn\'t create document directory');
+        }
+
+        return $documentPath;
     }
 
     /**

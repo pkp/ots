@@ -135,8 +135,8 @@ class Job extends DataObject
         if (!$this->user->id) { throw new \Exception('User id is not set'); }
         if (!$this->id) { throw new \Exception('Job id is not set'); }
 
-        $documentPath = 'var/documents/' . $this->user->id . '/' . $this->id;
-        if (!is_dir($documentPath)) { mkdir($documentPath, 0777, true); }
+        $documentPath = $this->user->getDocumentPath() . '/' . $this->id;
+        if (!is_dir($documentPath)) { @mkdir($documentPath, 0777, true); }
 
         if (!is_dir($documentPath)) {
             throw new \Exception('Couldn\'t create document directory');
