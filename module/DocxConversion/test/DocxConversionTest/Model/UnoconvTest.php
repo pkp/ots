@@ -49,7 +49,7 @@ class UnoconvTest extends ModelTest
         $this->unoconv->setOutputFile($this->testFile2);
         $this->unoconv->setFilter('docx7');
         $this->unoconv->convert();
-var_dump($this->unoconv->getOutput()); die();
+
         $this->assertSame($this->unoconv->getStatus(), 0);
         $this->assertNotNull($this->unoconv->getOutput());
         $this->assertNotSame(
