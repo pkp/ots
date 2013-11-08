@@ -84,3 +84,5 @@ Technical notes
 ```
 
 * We are using [Travis CI](https://travis-ci.org/) to run automated tests and deploy to the staging server. The configuration is in .travis.yml
+
+* MeTypeset requires a JAVA VM to be installed

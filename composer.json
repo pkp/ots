@@ -21,6 +21,18 @@
                     "reference": "6600705d40f06338f839d8dee7edc4c2e89f51a1"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "MartinPaulEve/meTypeset",
+                "version": "dev-master",
+                "source": {
+                    "url": "https://github.com/MartinPaulEve/meTypeset.git",
+                    "type": "git",
+                    "reference": "70adf87b56d41d4c4416e37df8c660a7454d29f9"
+                }
+            }
         }
     ],
     "homepage": "http://framework.zend.com/",
@@ -32,6 +44,7 @@
         "phpunit/phpunit": "3.7.*",
         "slm/queue": "0.3.x-dev",
         "slm/queue-doctrine": "0.3.x-dev",
-        "dagwieers/unoconv": "0.6"
+        "dagwieers/unoconv": "0.6",
+        "MartinPaulEve/meTypeset": "dev-master"
     }
 }

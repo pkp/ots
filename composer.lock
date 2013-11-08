@@ -3,8 +3,19 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "39b913ba8aedff0f712d1c39ef175254",
+    "hash": "9e6c9e0c1dfa9bb069f0d3e15066e84f",
     "packages": [
+        {
+            "name": "MartinPaulEve/meTypeset",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MartinPaulEve/meTypeset.git",
+                "reference": "70adf87b56d41d4c4416e37df8c660a7454d29f9"
+            },
+            "type": "library",
+            "time": "2013-11-06 14:49:40"
+        },
         {
             "name": "dagwieers/unoconv",
             "version": "0.6",
@@ -1155,12 +1166,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/juriansluiman/SlmQueueDoctrine.git",
-                "reference": "75e5589a313de8481e26b4cef021e93bd3c7e43d"
+                "reference": "31e95ab8c4cece79009259e95efe83e2fe041e46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/juriansluiman/SlmQueueDoctrine/zipball/75e5589a313de8481e26b4cef021e93bd3c7e43d",
-                "reference": "75e5589a313de8481e26b4cef021e93bd3c7e43d",
+                "url": "https://api.github.com/repos/juriansluiman/SlmQueueDoctrine/zipball/31e95ab8c4cece79009259e95efe83e2fe041e46",
+                "reference": "31e95ab8c4cece79009259e95efe83e2fe041e46",
                 "shasum": ""
             },
             "require": {
@@ -1207,7 +1218,7 @@
                 "queue",
                 "zf2"
             ],
-            "time": "2013-11-01 22:21:18"
+            "time": "2013-11-08 08:06:08"
         },
         {
             "name": "symfony/console",
@@ -1502,7 +1513,8 @@
     "stability-flags": {
         "zendframework/zend-developer-tools": 20,
         "slm/queue": 20,
-        "slm/queue-doctrine": 20
+        "slm/queue-doctrine": 20,
+        "martinpauleve/metypeset": 20
     },
     "platform": {
         "php": ">=5.3.3"
