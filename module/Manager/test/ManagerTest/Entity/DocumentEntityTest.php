@@ -58,9 +58,39 @@ class DocumentEntityTest extends ModelTest
      */
     public function testPathValidation()
     {
-       $this->setExpectedException('Exception');
+        $this->setExpectedException('Exception');
 
-       $this->document->setPath($this->testFile . rand());
+        $this->document->setPath($this->testFile . rand());
+
+        $this->resetTestData();
+    }
+
+    /**
+     * Tests if the file size is initialized properly
+     *
+     * @return void
+     */
+    public function testSizeInitialization()
+    {
+        $this->document->size = null;
+        $this->assertNull($this->document->size);
+        $this->document->setPath($this->testFile);
+        $this->assertSame($this->document->size, filesize($this->testFile));
+        $this->resetTestData();
+    }
+
+    /**
+     * Tests if the mime type is initialized properly
+     *
+     * @return void
+     */
+    public function testMimeTypeInitialization()
+    {
+        $this->document->mimeType = null;
+        $this->assertNull($this->document->mimeType);
+        $this->document->setPath($this->testFile);
+        $this->assertSame($this->document->mimeType, 'text/plain');
+        $this->resetTestData();
     }
 
     /**
@@ -83,6 +113,8 @@ class DocumentEntityTest extends ModelTest
         $this->document->job = $this->job;
 
         touch($this->testFile);
+        file_put_contents($this->testFile, md5(time()));
+
         $this->document->path = $this->testFile;
         $this->document->mimeType = 'text/plain';
         $this->document->conversionStage = JOB_CONVERSION_STAGE_UNCONVERTED;
