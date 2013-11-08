@@ -5,6 +5,7 @@
         <directory>module/Application/test</directory>
         <directory>module/Manager/test</directory>
         <directory>module/User/test</directory>
+        <directory>module/DocxConversion/test</directory>
       </testsuite>
     </testsuites>
 </phpunit>
