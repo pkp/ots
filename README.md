@@ -48,7 +48,7 @@ cp config/autoload/local.php.dist config/autoload/local.php
 * Initialize the database
 
 ```
-    # vendor/doctrine/doctrine-module/bin/doctrine-module  orm:schema-tool:update --force
+# vendor/doctrine/doctrine-module/bin/doctrine-module  orm:schema-tool:update --force
 ```
 * The DocXConversion module needs LibreOffice installed. The server is tested to work with LibreOffice 4.1.3.
 
@@ -60,12 +60,18 @@ sudo dpkg -i LibreOffice_4.1.3.2_Linux_x86-64_deb/DEBS/*.deb
 rm -rf LibreOffice_4.1.3.2_Linux_x86-64_deb
 ```
 
+* Run the shell script that starts the conversion queues
+
+```
+./start_queues.sh
+```
+
 Unit tests
 ----------
 * After a successful installation the unit tests should complete without errors
 
 ```
-    # ./unittest.sh
+# ./unittest.sh
 ```
 
 Technical notes
@@ -74,7 +80,7 @@ Technical notes
 * After making changes to Javascript (javascript/) or style files (style/scss/) recompile/recompress the style and Javascript files by running
 
 ```
-    # guard
+# guard
 ```
 
 * We are using [Travis CI](https://travis-ci.org/) to run automated tests and deploy to the staging server. The configuration is in .travis.yml
