@@ -1,6 +1,6 @@
 <?php
 
-namespace DocxConversionTest\Entity;
+namespace DocxConversionTest\Model\Converter;
 
 use PHPUnit_Framework_TestCase;
 use Xmlps\UnitTest\ModelTest;
