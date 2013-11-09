@@ -20,7 +20,7 @@ class UnoconvTest extends ModelTest
     public function setUp() {
         parent::setUp();
 
-        $this->unoconv = $this->sm->get('DocxConversion\Model\Unoconv');
+        $this->unoconv = $this->sm->get('DocxConversion\Model\Converter\Unoconv');
 
         $this->resetTestData();
     }

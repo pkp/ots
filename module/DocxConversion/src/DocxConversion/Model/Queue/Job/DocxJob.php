@@ -18,7 +18,7 @@ class DocxJob extends AbstractQueueJob
      */
     public function process(Job $job)
     {
-        $unoconv = $this->sm->get('DocxConversion\Model\Unoconv');
+        $unoconv = $this->sm->get('DocxConversion\Model\Converter\Unoconv');
 
         // Fetch the document to convert
         $unconvertedDocument = $this->getStageDocument($job, JOB_CONVERSION_STAGE_UNCONVERTED);

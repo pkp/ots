@@ -1,14 +1,16 @@
 <?php
 
-namespace NlmxmlConversion\Model;
+namespace NlmxmlConversion\Model\Converter;
 
 use Xmlps\Logger\Logger;
 use Zend\Mvc\I18n\Translator;
 
+use Manager\Model\Converter\AbstractConverter;
+
 /**
  * Converts documents to NLM-XML using meTypeset
  */
-class Metypeset
+class Metypeset extends AbstractConverter
 {
     protected $config;
     protected $logger;
@@ -16,9 +18,6 @@ class Metypeset
 
     protected $inputFile;
     protected $outputDirectory;
-
-    protected $output;
-    protected $status;
 
     /**
      * Constructor
@@ -66,26 +65,6 @@ class Metypeset
     public function setOutputDirectory($outputDirectory)
     {
         $this->outputDirectory = $outputDirectory;
-    }
-
-    /**
-     * Returns the unoconv conversion output
-     *
-     * @return string Conversion output
-     */
-    public function getOutput()
-    {
-        return $this->output;
-    }
-
-    /**
-     * Returns the conversion status (0 == success)
-     *
-     * @return void
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**

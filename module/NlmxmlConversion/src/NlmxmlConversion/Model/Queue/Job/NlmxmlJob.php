@@ -18,7 +18,7 @@ class NlmxmlJob extends AbstractQueueJob
      */
     public function process(Job $job)
     {
-        $metypeset = $this->sm->get('NlmxmlConversion\Model\Metypeset');
+        $metypeset = $this->sm->get('NlmxmlConversion\Model\Converter\Metypeset');
 
         // Fetch the document to convert
         $docxDocument = $this->getStageDocument($job, JOB_CONVERSION_STAGE_DOCX);

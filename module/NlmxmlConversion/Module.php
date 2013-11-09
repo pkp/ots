@@ -2,7 +2,7 @@
 
 namespace NlmxmlConversion;
 
-use NlmxmlConversion\Model\Metypeset;
+use NlmxmlConversion\Model\Converter\Metypeset;
 
 class Module
 {
@@ -44,7 +44,7 @@ class Module
     {
         return array(
             'factories' => array(
-                'NlmxmlConversion\Model\Metypeset' => function($sm)
+                'NlmxmlConversion\Model\Converter\Metypeset' => function($sm)
                 {
                     $config = $sm->get('Config');
                     $logger = $sm->get('Logger');

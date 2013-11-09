@@ -1,14 +1,16 @@
 <?php
 
-namespace DocxConversion\Model;
+namespace DocxConversion\Model\Converter;
 
 use Xmlps\Logger\Logger;
 use Zend\Mvc\I18n\Translator;
 
+use Manager\Model\Converter\AbstractConverter;
+
 /**
  * Converts documents using Open/Libreoffice and unoconv
  */
-class Unoconv
+class Unoconv extends AbstractConverter
 {
     protected $config;
     protected $logger;
@@ -18,9 +20,6 @@ class Unoconv
     protected $inputFile;
     protected $outputFile;
     protected $verbose = true;
-
-    protected $output;
-    protected $status;
 
     /**
      * Constructor
@@ -92,26 +91,6 @@ class Unoconv
     public function setVerbose(Bool $verbose)
     {
         $this->verbose = $verbose;
-    }
-
-    /**
-     * Returns the unoconv conversion output
-     *
-     * @return string Conversion output
-     */
-    public function getOutput()
-    {
-        return $this->output;
-    }
-
-    /**
-     * Returns the conversion status (0 == success)
-     *
-     * @return void
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**

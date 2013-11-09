@@ -2,7 +2,7 @@
 
 namespace DocxConversion;
 
-use DocxConversion\Model\Unoconv;
+use DocxConversion\Model\Converter\Unoconv;
 
 class Module
 {
@@ -44,7 +44,7 @@ class Module
     {
         return array(
             'factories' => array(
-                'DocxConversion\Model\Unoconv' => function($sm)
+                'DocxConversion\Model\Converter\Unoconv' => function($sm)
                 {
                     $config = $sm->get('Config');
                     $logger = $sm->get('Logger');
