@@ -140,7 +140,7 @@ class Unoconv extends AbstractConverter
         $this->logger->debug(
             sprintf(
                 $this->translator->translate('docxconversion.unoconv.executeCommandOutputLog'),
-                implode(' | ', $this->getOutput())
+                implode("\n", $this->getOutput())
             )
         );
     }

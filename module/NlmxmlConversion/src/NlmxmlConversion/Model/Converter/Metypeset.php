@@ -108,7 +108,7 @@ class Metypeset extends AbstractConverter
         $this->logger->debug(
             sprintf(
                 $this->translator->translate('nlmxmlconversion.metypeset.executeCommandOutputLog'),
-                implode(' | ', $this->getOutput())
+                implode("\n", $this->getOutput())
             )
         );
     }

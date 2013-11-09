@@ -15,7 +15,7 @@
       echo '<td>' . date('Y/m/d H:i:s', $logEntry->timestamp) . '</td>';
       echo '<td>' . $this->escapeHtml($logEntry->ip) . '</td>';
       echo '<td>' . $this->escapeHtml($this->priorities[$logEntry->priority]) . '</td>';
-      echo '<td>' . $this->escapeHtml($logEntry->message) . '</td>';
+      echo '<td>' . str_replace("\n", '<br />', $this->escapeHtml($logEntry->message)) . '</td>';
       echo '</tr>';
     }
 
