@@ -156,7 +156,23 @@ class User extends DataObject
         $jobs = $jobDAO->findBy(array('user' => $this->id));
         foreach ($jobs as $job) { $jobDAO->remove($job); }
 
-        @unlink($this->getDocumentPath());
+        // Remove the documents directory for this user
+        $it = new \RecursiveDirectoryIterator($this->getDocumentPath());
+        $files = new \RecursiveIteratorIterator(
+            $it,
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+        foreach($files as $file) {
+            if ($file->getFilename() === '.' or $file->getFilename() === '..') {
+                continue;
+            }
+            if ($file->isDir()){
+                rmdir($file->getRealPath());
+            } else {
+                unlink($file->getRealPath());
+            }
+        }
+        rmdir($this->getDocumentPath());
     }
 
 
