@@ -100,6 +100,15 @@ class Manager {
             $this->nlmxmlJob($job);
         }
         else {
+            $this->logger->info(
+                sprintf(
+                    $this->translator->translate(
+                        'manager.queue.jobCompletedLog'
+                    ),
+                    $job->id
+                )
+            );
+
             $job->status = JOB_STATUS_COMPLETED;
             $this->jobDAO->save($job);
         }

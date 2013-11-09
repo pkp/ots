@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-08 13:33-1000\n"
-"PO-Revision-Date: 2013-11-08 13:33-1000\n"
+"POT-Creation-Date: 2013-11-08 17:08-1000\n"
+"PO-Revision-Date: 2013-11-08 17:08-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -17,11 +17,11 @@ msgstr ""
 "X-Poedit-SearchPath-1: ../..\n"
 "X-Poedit-SearchPath-2: ../../../vendor/xmlps\n"
 
-#: ../../NLMXMLConversion/src/NLMXMLConversion/Model/Metypeset.php:121
+#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:100
 msgid "nlmxmlconversion.metypeset.executeCommandLog"
 msgstr "meTypeset is executing: %s "
 
-#: ../../NLMXMLConversion/src/NLMXMLConversion/Model/Metypeset.php:131
+#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:110
 msgid "nlmxmlconversion.metypeset.executeCommandOutputLog"
 msgstr "meTypeset output: %s"
 
@@ -31,19 +31,19 @@ msgstr "meTypeset output: %s"
 msgid "manager.uploadForm.uploadDocument"
 msgstr "Upload Document"
 
-#: ../../Manager/src/Manager/Entity/Job.php:121
+#: ../../Manager/src/Manager/Entity/Job.php:122
 msgid "manager.job.status.pending"
 msgstr "Pending"
 
-#: ../../Manager/src/Manager/Entity/Job.php:122
+#: ../../Manager/src/Manager/Entity/Job.php:123
 msgid "manager.job.status.processing"
 msgstr "Processing"
 
-#: ../../Manager/src/Manager/Entity/Job.php:123
+#: ../../Manager/src/Manager/Entity/Job.php:124
 msgid "manager.job.status.completed"
 msgstr "Completed"
 
-#: ../../Manager/src/Manager/Entity/Job.php:124
+#: ../../Manager/src/Manager/Entity/Job.php:125
 msgid "manager.job.status.failed"
 msgstr "Failed"
 
@@ -60,11 +60,15 @@ msgstr "A new job has been created (%d)"
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:70
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:71
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:129
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:106
+msgid "manager.queue.jobCompletedLog"
+msgstr "Job %d is completed"
+
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:156
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
@@ -179,19 +183,19 @@ msgstr "This email address is already registered!"
 msgid "user.registrationForm.register"
 msgstr "Register"
 
-#: ../../User/src/User/Entity/User.php:245
+#: ../../User/src/User/Entity/User.php:261
 msgid "user.user.level.basic"
 msgstr "Basic"
 
-#: ../../User/src/User/Entity/User.php:246
+#: ../../User/src/User/Entity/User.php:262
 msgid "user.user.level.infinite"
 msgstr "Infinite"
 
-#: ../../User/src/User/Entity/User.php:259
+#: ../../User/src/User/Entity/User.php:275
 msgid "user.user.role.member"
 msgstr "Member"
 
-#: ../../User/src/User/Entity/User.php:260
+#: ../../User/src/User/Entity/User.php:276
 msgid "user.user.role.administrator"
 msgstr "Administrator"
 
@@ -247,11 +251,11 @@ msgstr "Your settings have been updated!"
 msgid "user.settings.saveSuccessConfirmLog"
 msgstr "User %s updated settings"
 
-#: ../../DocxConversion/src/DocxConversion/Model/Unoconv.php:153
+#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:132
 msgid "docxconversion.unoconv.executeCommandLog"
 msgstr "Unoconv is executing: %s "
 
-#: ../../DocxConversion/src/DocxConversion/Model/Unoconv.php:163
+#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:142
 msgid "docxconversion.unoconv.executeCommandOutputLog"
 msgstr "Unoconf output: %s"
 
