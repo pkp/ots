@@ -105,4 +105,23 @@ abstract class AbstractQueueJob extends AbstractJob implements
         $queueManager = $this->sm->get('Manager\Model\Queue\Manager');
         $queueManager->queue($job);
     }
+
+    /**
+     * Returns a document of a specific conversion stage for a given job
+     *
+     * @param Job $job Job to fetch document from
+     * @param int $stage Stage to retrieve
+     *
+     * @return Document Document for the requested conversion stage
+     */
+    public function getStageDocument(Job $job, $stage)
+    {
+        foreach ($job->documents as $document) {
+            if ($document->conversionStage === $stage) {
+                return $document;
+            }
+        }
+
+        throw new \Exception('Couldn\'t find the stage document');
+    }
 }

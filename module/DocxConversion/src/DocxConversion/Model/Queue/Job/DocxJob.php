@@ -20,17 +20,8 @@ class DocxJob extends AbstractQueueJob
     {
         $unoconv = $this->sm->get('DocxConversion\Model\Unoconv');
 
-        $unconvertedDocument = null;
-        foreach ($job->documents as $document) {
-            if ($document->conversionStage === JOB_CONVERSION_STAGE_UNCONVERTED) {
-                $unconvertedDocument = $document;
-                break;
-            }
-        }
-
-        if (empty($unconvertedDocument)) {
-            throw new \Exception('Couldn\'t find unconverted document');
-        }
+        // Fetch the document to convert
+        $unconvertedDocument = $this->getStageDocument($job, JOB_CONVERSION_STAGE_UNCONVERTED);
 
         // Convert the document
         $unoconv->setFilter('docx7');
