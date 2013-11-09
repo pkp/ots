@@ -17,12 +17,16 @@ return array(
             'factories' => array(
                 'DocxConversion\Model\Queue\Job\DocxJob' => function($locator) {
                     return new DocxConversion\Model\Queue\Job\DocxJob();
-                }
+                },
+                'NlmxmlConversion\Model\Queue\Job\NlmxmlJob' => function($locator) {
+                    return new NlmxmlConversion\Model\Queue\Job\NlmxmlJob();
+                },
             ),
         ),
         'queue_manager' => array(
             'factories' => array(
                 'docx' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'nlmxml' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
             ),
         ),
     ),

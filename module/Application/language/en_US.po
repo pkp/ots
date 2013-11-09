@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-05 17:30-1000\n"
-"PO-Revision-Date: 2013-11-05 17:30-1000\n"
+"POT-Creation-Date: 2013-11-08 13:33-1000\n"
+"PO-Revision-Date: 2013-11-08 13:33-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -17,25 +17,33 @@ msgstr ""
 "X-Poedit-SearchPath-1: ../..\n"
 "X-Poedit-SearchPath-2: ../../../vendor/xmlps\n"
 
+#: ../../NLMXMLConversion/src/NLMXMLConversion/Model/Metypeset.php:121
+msgid "nlmxmlconversion.metypeset.executeCommandLog"
+msgstr "meTypeset is executing: %s "
+
+#: ../../NLMXMLConversion/src/NLMXMLConversion/Model/Metypeset.php:131
+msgid "nlmxmlconversion.metypeset.executeCommandOutputLog"
+msgstr "meTypeset output: %s"
+
 #: ../../Manager/src/Manager/Form/UploadForm.php:41
 #: ../../Manager/view/manager/manager/upload.phtml:15
 #: ../../User/view/user/user/index.phtml:41
 msgid "manager.uploadForm.uploadDocument"
 msgstr "Upload Document"
 
-#: ../../Manager/src/Manager/Entity/Job.php:88
+#: ../../Manager/src/Manager/Entity/Job.php:121
 msgid "manager.job.status.pending"
 msgstr "Pending"
 
-#: ../../Manager/src/Manager/Entity/Job.php:89
+#: ../../Manager/src/Manager/Entity/Job.php:122
 msgid "manager.job.status.processing"
 msgstr "Processing"
 
-#: ../../Manager/src/Manager/Entity/Job.php:90
+#: ../../Manager/src/Manager/Entity/Job.php:123
 msgid "manager.job.status.completed"
 msgstr "Completed"
 
-#: ../../Manager/src/Manager/Entity/Job.php:91
+#: ../../Manager/src/Manager/Entity/Job.php:124
 msgid "manager.job.status.failed"
 msgstr "Failed"
 
@@ -44,19 +52,19 @@ msgid "manager.upload.success"
 msgstr ""
 "Your document has been successfully uploaded. It is now being processed."
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:98
+#: ../../Manager/src/Manager/Controller/ManagerController.php:101
 msgid "manager.job.createLog"
 msgstr "A new job has been created (%d)"
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:131
+#: ../../Manager/src/Manager/Controller/ManagerController.php:134
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:64
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:70
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:127
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:129
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
@@ -171,19 +179,19 @@ msgstr "This email address is already registered!"
 msgid "user.registrationForm.register"
 msgstr "Register"
 
-#: ../../User/src/User/Entity/User.php:228
+#: ../../User/src/User/Entity/User.php:245
 msgid "user.user.level.basic"
 msgstr "Basic"
 
-#: ../../User/src/User/Entity/User.php:229
+#: ../../User/src/User/Entity/User.php:246
 msgid "user.user.level.infinite"
 msgstr "Infinite"
 
-#: ../../User/src/User/Entity/User.php:242
+#: ../../User/src/User/Entity/User.php:259
 msgid "user.user.role.member"
 msgstr "Member"
 
-#: ../../User/src/User/Entity/User.php:243
+#: ../../User/src/User/Entity/User.php:260
 msgid "user.user.role.administrator"
 msgstr "Administrator"
 
@@ -239,11 +247,11 @@ msgstr "Your settings have been updated!"
 msgid "user.settings.saveSuccessConfirmLog"
 msgstr "User %s updated settings"
 
-#: ../../DocxConversion/src/DocxConversion/Model/Unoconv.php:98
+#: ../../DocxConversion/src/DocxConversion/Model/Unoconv.php:153
 msgid "docxconversion.unoconv.executeCommandLog"
 msgstr "Unoconv is executing: %s "
 
-#: ../../DocxConversion/src/DocxConversion/Model/Unoconv.php:107
+#: ../../DocxConversion/src/DocxConversion/Model/Unoconv.php:163
 msgid "docxconversion.unoconv.executeCommandOutputLog"
 msgstr "Unoconf output: %s"
 
@@ -397,8 +405,9 @@ msgid "manager.job.creationDate"
 msgstr "Creation Date"
 
 #: ../../Manager/view/manager/manager/list.phtml:10
-msgid "manager.job.fileName"
-msgstr "File Name"
+#: ../../Admin/view/admin/user-management/list.phtml:12
+msgid "application.generic.actions"
+msgstr "Actions"
 
 #: ../../Admin/view/admin/system-log/list.phtml:1
 msgid "application.layout.systemLog.list"
@@ -448,10 +457,6 @@ msgstr "Level"
 #: ../../Admin/view/admin/user-management/list.phtml:11
 msgid "admin.userManagement.lastLogin"
 msgstr "Last Login"
-
-#: ../../Admin/view/admin/user-management/list.phtml:12
-msgid "application.generic.actions"
-msgstr "Actions"
 
 #: ../../Admin/view/admin/user-management/list.phtml:25
 msgid "application.generic.edit"
@@ -516,6 +521,9 @@ msgstr "Settings"
 #: ../../User/view/user/user/settings.phtml:14
 msgid "user.settings.changePassword"
 msgstr "Change Password"
+
+#~ msgid "manager.job.fileName"
+#~ msgstr "File Name"
 
 #~ msgid "manager.upload.successLog"
 #~ msgstr "User uploaded document (%s)."

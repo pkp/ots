@@ -23,6 +23,7 @@ class Manager {
     // TODO: this should come from the config
     protected $queueMap = array(
         'docx' => 'DocxConversion\Model\Queue\Job\DocxJob',
+        'nlmxml' => 'NLMXMLConversion\Model\Queue\Job\NLMXMLJob',
     );
 
     /**
@@ -92,11 +93,16 @@ class Manager {
             return;
         }
 
-        // TODO: implement queuing logic lets just go for a docxjob for now
-        $this->docxJob($job);
-        $job->status = JOB_STATUS_COMPLETED;
-
-        $this->jobDAO->save($job);
+        if ($job->conversionStage == JOB_CONVERSION_STAGE_UNCONVERTED) {
+            $this->docxJob($job);
+        }
+        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_DOCX) {
+            $this->nlmxmlJob($job);
+        }
+        else {
+            $job->status = JOB_STATUS_COMPLETED;
+            $this->jobDAO->save($job);
+        }
     }
 
     /**
@@ -108,6 +114,17 @@ class Manager {
     protected function docxJob($job)
     {
         $this->queueJob($job, 'docx');
+    }
+
+    /**
+     * Queue a NLMXML conversion job
+     *
+     * @param mixed $job Job to queue
+     * @return void
+     */
+    protected function nlmxmlJob($job)
+    {
+        $this->queueJob($job, 'nlmxml');
     }
 
     /**

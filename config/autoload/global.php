@@ -45,5 +45,10 @@ return array(
                 'command' => '/opt/libreoffice4.1/program/python vendor/dagwieers/unoconv/unoconv',
             ),
         ),
+        'nlmxml' => array(
+            'metypeset' => array(
+                'command' => 'vendor/MartinPaulEve/meTypeset/tools/gennlm.sh',
+            ),
+        ),
     ),
 );
