@@ -29,15 +29,15 @@ class NlmxmlJob extends AbstractQueueJob
         $metypeset->setOutputDirectory($outputDirectory);
         $metypeset->convert();
 
-        $meTypesetOutputPath = $outputDirectory . '/document.xml';
+        $xmlFile = basename($docxDocument->path, '.docx') . '.xml';
+        $meTypesetOutputPath = $outputDirectory . '/' . $xmlFile;
 
         if ($metypeset->getStatus() !== 0 or !file_exists($meTypesetOutputPath)) {
-            @unlink($outputDirectory);
             $job->status = JOB_STATUS_FAILED;
             return $job;
         }
 
-        $outputPath = $job->getDocumentPath() . '/document.xml';
+        $outputPath = $job->getDocumentPath() . '/' . $xmlFile;
         @rename($meTypesetOutputPath, $outputPath);
 
         $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
