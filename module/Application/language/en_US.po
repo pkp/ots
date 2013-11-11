@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-08 17:08-1000\n"
-"PO-Revision-Date: 2013-11-08 17:08-1000\n"
+"POT-Creation-Date: 2013-11-11 13:09-1000\n"
+"PO-Revision-Date: 2013-11-11 13:09-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -64,11 +64,15 @@ msgstr "No jobs found."
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:106
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:97
+msgid "manager.queue.jobFailedLog"
+msgstr "Job %d failed."
+
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:116
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:156
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:165
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 

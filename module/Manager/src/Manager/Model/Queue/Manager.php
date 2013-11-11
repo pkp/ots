@@ -90,6 +90,16 @@ class Manager {
     {
         // Stop if the job is completed or failed
         if (in_array($job->status, array(JOB_STATUS_COMPLETED, JOB_STATUS_FAILED))) {
+            if ($job->status == JOB_STATUS_FALIED) {
+                $this->logger->info(
+                    sprintf(
+                        $this->translator->translate(
+                            'manager.queue.jobFailedLog'
+                        ),
+                        $job->id
+                    )
+                );
+            }
             return;
         }
 
