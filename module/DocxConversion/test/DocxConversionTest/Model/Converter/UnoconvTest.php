@@ -9,7 +9,7 @@ class UnoconvTest extends ModelTest
 {
     protected $unoconv;
 
-    protected $testFile = '/tmp/UNITTEST_unoconv_inputfile';
+    protected $testFile = 'tests/assets/document.odt';
     protected $testFile2 = '/tmp/UNITTEST_unoconv_outputfile';
 
     /**
@@ -62,23 +62,12 @@ class UnoconvTest extends ModelTest
     }
 
     /**
-     * Create test data
-     *
-     * @return void
-     */
-    protected function createTestData() {
-        touch($this->testFile);
-        file_put_contents($this->testFile, md5(time()));
-    }
-
-    /**
      * Remove test data
      *
      * @return void
      */
     protected function cleanTestData()
     {
-        @unlink($this->testFile);
         @unlink($this->testFile2);
     }
 }
