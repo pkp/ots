@@ -113,13 +113,13 @@ class Unoconv extends AbstractConverter
         if (!$this->outputFile) {
             throw new \Exception('No output file given');
         }
-        $cmd .= ' -o ' . $this->outputFile;
+        $cmd .= ' -o "' . addslashes($this->outputFile) . '"';
 
         // Add the input file
         if (!$this->inputFile) {
             throw new \Exception('No input file given');
         }
-        $cmd .= ' ' . $this->inputFile;
+        $cmd .= ' "' . addslashes($this->inputFile) . '"';
 
         // Escape the command
         $cmd = escapeshellcmd($cmd);

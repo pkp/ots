@@ -81,13 +81,13 @@ class Metypeset extends AbstractConverter
         if (!$this->inputFile) {
             throw new \Exception('No input file given');
         }
-        $cmd .= ' ' . $this->inputFile;
+        $cmd .= ' "' . addslashes($this->inputFile) . '"';
 
         // Add the output directory
         if (!$this->outputDirectory) {
             throw new \Exception('No output directory given');
         }
-        $cmd .= ' ' . $this->outputDirectory;
+        $cmd .= ' "' . addslashes($this->outputDirectory) . '"';
 
         // Escape the command
         $cmd = escapeshellcmd($cmd);
