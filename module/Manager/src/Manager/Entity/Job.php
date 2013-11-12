@@ -145,4 +145,20 @@ class Job extends DataObject
 
         return $documentPath;
     }
+
+    /**
+     * Returns a document of a particular stage
+     *
+     * @param int $stage
+     *
+     * @return Document of a particular stage
+     */
+    public function getStageDocument($stage)
+    {
+        foreach ($this->documents as $document) {
+            if ($document->conversionStage === $stage) {
+                return $document;
+            }
+        }
+    }
 }
