@@ -21,7 +21,10 @@ class NlmxmlJob extends AbstractQueueJob
         $metypeset = $this->sm->get('NlmxmlConversion\Model\Converter\Metypeset');
 
         // Fetch the document to convert
-        $docxDocument = $this->getStageDocument($job, JOB_CONVERSION_STAGE_DOCX);
+        $docxDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_DOCX);
+        if (!$docxDocument) {
+            throw new \Exception('Couldn\'t find the stage document');
+        }
 
         // Convert the document
         $metypeset->setInputFile($docxDocument->path);
@@ -29,7 +32,7 @@ class NlmxmlJob extends AbstractQueueJob
         $metypeset->setOutputDirectory($outputDirectory);
         $metypeset->convert();
 
-        $xmlFile = basename($docxDocument->path, '.docx') . '.xml';
+        $xmlFile = $docxDocument->getFileName(true) . '.xml';
         $meTypesetOutputPath = $outputDirectory . '/' . $xmlFile;
 
         if ($metypeset->getStatus() !== 0 or !file_exists($meTypesetOutputPath)) {

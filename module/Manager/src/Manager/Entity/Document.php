@@ -75,6 +75,24 @@ class Document extends DataObject
     }
 
     /**
+     * Returns the file name of the document
+     *
+     * @param bool $stripSuffix Whether or not to strip the suffix
+     *
+     * @return string File name of document
+     */
+    public function getFileName($stripSuffix = false)
+    {
+        $fileName =  basename($this->path);
+
+        if ($stripSuffix) {
+            $fileName = preg_replace('/\.[^.]*$/', '', $fileName);
+        }
+
+        return $fileName;
+    }
+
+    /**
      * Removes the document from the file system
      *
      * @return void
