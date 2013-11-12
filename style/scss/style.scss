@@ -37,6 +37,14 @@ h1, h2, h3, h4 {
   font-family: $highlightFont;
 }
 
+a {
+  color: $textColorLight;
+  text-decoration: none;
+}
+a:hover {
+  color: $complementaryColor1;
+}
+
 // Page container
 .container {
   @include outer-container;
@@ -259,6 +267,7 @@ aside {
     text-transform: uppercase;
     font-family: $highlightFont;
     font-weight: bold;
+    white-space: nowrap;
   }
 
   input, select { @include fill-parent; }
@@ -306,6 +315,7 @@ a.action {
 }
 a.edit-action { @include icon('before', false, 'pencil'); }
 a.remove-action { @include icon('before', false, 'remove-2'); }
+a.details-action { @include icon('before', false, 'eye'); }
 
 // Pagination
 .pagination {
@@ -393,7 +403,7 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
   }
 }
 
-// Admin UserManagement - list
+// Admin - UserManagement - list
 .admin-user-management-list {
   .table {
     tr {
@@ -408,18 +418,35 @@ a.remove-action { @include icon('before', false, 'remove-2'); }
   }
 }
 
-// Manager Manager - list
+// Manager - Manager - list
 .manager-manager-list {
   .table {
     .id { width: 10%; }
     .status { width: 15%; }
-    .creation-date { width: 15%; }
+    .actions { width: 10%; }
 
     tr {
       td:nth-child(1),
-      td:nth-child(2) { text-align: center; }
+      td:nth-child(2),
+      td:nth-child(3),
+      td:nth-child(5) { text-align: center; }
     }
 
     .action { margin-left: 3px; }
+  }
+}
+
+// Manager - Manager - details
+.manager-manager-details {
+  ul.details {
+    @include vertical-list;
+
+    label { font-family: $highlightFont; }
+
+    #documents {
+      padding-left: $gutter;
+      a { @include icon('after', true, 'download-3'); }
+      a:after { margin-left: $gutter; }
+    }
   }
 }

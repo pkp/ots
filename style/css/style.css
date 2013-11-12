@@ -237,6 +237,13 @@ body {
 h1, h2, h3, h4 {
   font-family: Oswald, Sans-Serif; }
 
+a {
+  color: white;
+  text-decoration: none; }
+
+a:hover {
+  color: #ff9700; }
+
 .container {
   *zoom: 1;
   max-width: 960px;
@@ -562,7 +569,8 @@ aside {
     padding: 5px 40px 0 40px;
     text-transform: uppercase;
     font-family: Oswald, Sans-Serif;
-    font-weight: bold; }
+    font-weight: bold;
+    white-space: nowrap; }
   .box input, .box select {
     width: 100%; }
   .box input[type="checkbox"], .box input[type="radio"] {
@@ -613,6 +621,9 @@ a.edit-action:before {
 
 a.remove-action:before {
   content: "\e0a8"; }
+
+a.details-action:before {
+  content: "\e0c6"; }
 
 .pagination {
   text-align: right; }
@@ -746,10 +757,35 @@ a.remove-action:before {
   width: 10%; }
 .manager-manager-list .table .status {
   width: 15%; }
-.manager-manager-list .table .creation-date {
-  width: 15%; }
+.manager-manager-list .table .actions {
+  width: 10%; }
 .manager-manager-list .table tr td:nth-child(1),
-.manager-manager-list .table tr td:nth-child(2) {
+.manager-manager-list .table tr td:nth-child(2),
+.manager-manager-list .table tr td:nth-child(3),
+.manager-manager-list .table tr td:nth-child(5) {
   text-align: center; }
 .manager-manager-list .table .action {
   margin-left: 3px; }
+
+.manager-manager-details ul.details {
+  list-style: none;
+  padding-left: 0; }
+  .manager-manager-details ul.details label {
+    margin-right: 10px; }
+  .manager-manager-details ul.details label {
+    font-family: Oswald, Sans-Serif; }
+  .manager-manager-details ul.details #documents {
+    padding-left: 10px; }
+    .manager-manager-details ul.details #documents a:after {
+      content: "\e0bf";
+      speak: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-transform: none;
+      line-height: 1;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: normal;
+      font-family: 'Icons'; }
+    .manager-manager-details ul.details #documents a:after {
+      margin-left: 10px; }

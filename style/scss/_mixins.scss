@@ -61,6 +61,13 @@
   }
 }
 
+// Regular lists
+@mixin vertical-list {
+  list-style: none;
+  padding-left: 0;
+  label { margin-right: $gutter; }
+}
+
 // CSS triangle
 @mixin triangle($size, $color: #000, $top: true, $right: false, $bottom: false, $left: false) {
   border: $size solid $color;

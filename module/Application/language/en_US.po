@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-11 13:09-1000\n"
-"PO-Revision-Date: 2013-11-11 13:09-1000\n"
+"POT-Creation-Date: 2013-11-12 11:37-1000\n"
+"PO-Revision-Date: 2013-11-12 11:37-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -283,7 +283,7 @@ msgid "application.layout.userManagement"
 msgstr "User Management"
 
 #: ../view/layout/layout.phtml:30
-#: ../../Manager/view/manager/manager/list.phtml:1
+#: ../../Manager/view/manager/manager/list.phtml:3
 #: ../../Application/view/layout/layout.phtml:30
 msgid "manager.job.list"
 msgstr "Jobs"
@@ -400,22 +400,46 @@ msgstr "resolves to %s"
 msgid "application.manager.index"
 msgstr "Document Management"
 
-#: ../../Manager/view/manager/manager/list.phtml:7
+#: ../../Manager/view/manager/manager/details.phtml:2
+#: ../../Manager/view/manager/manager/details.phtml:8
+msgid "manager.job.details"
+msgstr "Job Details"
+
+#: ../../Manager/view/manager/manager/details.phtml:11
+#: ../../Manager/view/manager/manager/list.phtml:10
 msgid "manager.job.id"
 msgstr "Job Id"
 
-#: ../../Manager/view/manager/manager/list.phtml:8
-msgid "manager.job.status"
-msgstr "Status"
-
-#: ../../Manager/view/manager/manager/list.phtml:9
+#: ../../Manager/view/manager/manager/details.phtml:12
+#: ../../Manager/view/manager/manager/list.phtml:12
 msgid "manager.job.creationDate"
 msgstr "Creation Date"
 
-#: ../../Manager/view/manager/manager/list.phtml:10
+#: ../../Manager/view/manager/manager/details.phtml:13
+#: ../../Manager/view/manager/manager/list.phtml:11
+msgid "manager.job.status"
+msgstr "Status"
+
+#: ../../Manager/view/manager/manager/details.phtml:15
+msgid "manager.job.documents"
+msgstr "Documents"
+
+#: ../../Manager/view/manager/manager/details.phtml:18
+msgid "application.generic.download"
+msgstr "Download"
+
+#: ../../Manager/view/manager/manager/list.phtml:13
+msgid "manager.job.uploadFileName"
+msgstr "Upload File Name"
+
+#: ../../Manager/view/manager/manager/list.phtml:14
 #: ../../Admin/view/admin/user-management/list.phtml:12
 msgid "application.generic.actions"
 msgstr "Actions"
+
+#: ../../Manager/view/manager/manager/list.phtml:30
+msgid "application.generic.details"
+msgstr "Details"
 
 #: ../../Admin/view/admin/system-log/list.phtml:1
 msgid "application.layout.systemLog.list"
@@ -427,7 +451,7 @@ msgstr "Time"
 
 #: ../../Admin/view/admin/system-log/list.phtml:8
 msgid "admin.log.ipAddress"
-msgstr "IP"
+msgstr "Documents"
 
 #: ../../Admin/view/admin/system-log/list.phtml:9
 msgid "admin.log.priority"
@@ -529,9 +553,6 @@ msgstr "Settings"
 #: ../../User/view/user/user/settings.phtml:14
 msgid "user.settings.changePassword"
 msgstr "Change Password"
-
-#~ msgid "manager.job.fileName"
-#~ msgstr "File Name"
 
 #~ msgid "manager.upload.successLog"
 #~ msgstr "User uploaded document (%s)."

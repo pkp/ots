@@ -3,6 +3,7 @@ namespace Manager\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\I18n\Translator;
+use Zend\Http\Headers;
 use Xmlps\Logger\Logger;
 use Manager\Model\Queue\Manager;
 use Manager\Form\UploadForm;
@@ -138,5 +139,59 @@ class ManagerController extends AbstractActionController {
         }
 
         return array('jobs' => $paginator);
+    }
+
+    /**
+     * Lists details of a job
+     *
+     * @return mixed Array containing view variables
+     */
+    public function detailsAction()
+    {
+        $jobId = (int) $this->params()->fromRoute('id');
+
+        if (!($job = $this->jobDAO->find($jobId))) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        return array('job' => $job);
+    }
+
+    /**
+     * Download a processed document
+     */
+    public function downloadAction()
+    {
+        $documentId = (int) $this->params()->fromRoute('id');
+
+        if (!($document = $this->documentDAO->find($documentId))) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        // Check if the user owns the document
+        $user = $this->identity();
+        if ($document->job->user->id != $user->id) {
+            $flashMessenger = $this->flashMessenger();
+            $flashMessenger->setNamespace('error');
+            $flashMessenger->addMessage(
+                $this->translator->translate(
+                    'application.acl.notAuthorized'
+                )
+            );
+
+            return $this->redirect()->toRoute('home');
+        }
+
+        $response = $this->getEvent()->getResponse();
+        $response->setHeaders(Headers::fromString(
+            "Content-Type: {$document->mimeType}\r\n" .
+            "Content-Length: {$document->size}\r\n" .
+            "Content-Disposition: attachment; filename=\"{$document->getFileName()}\""
+        ));
+        $response->setContent(file_get_contents($document->path));
+
+        return $response;
     }
 }
