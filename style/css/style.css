@@ -775,7 +775,8 @@ a.details-action:before {
   .manager-manager-details ul.details label {
     font-family: Oswald, Sans-Serif; }
   .manager-manager-details ul.details #documents {
-    padding-left: 10px; }
+    list-style-type: circle;
+    padding-left: 20px; }
     .manager-manager-details ul.details #documents a:after {
       content: "\e0bf";
       speak: none;
