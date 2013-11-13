@@ -12,6 +12,7 @@ return array(
         'User',
         'DocxConversion',
         'NlmxmlConversion',
+        'ReferencesConversion',
         'ZipConversion',
     ),
 

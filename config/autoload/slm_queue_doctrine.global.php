@@ -17,6 +17,7 @@ return array(
             'factories' => array(
                 'docx' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'nlmxml' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'references' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'zip' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
             ),
         ),

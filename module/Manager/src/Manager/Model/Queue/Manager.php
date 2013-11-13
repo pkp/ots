@@ -24,6 +24,7 @@ class Manager {
     protected $queueMap = array(
         'docx' => 'DocxConversion\Model\Queue\Job\DocxJob',
         'nlmxml' => 'NlmxmlConversion\Model\Queue\Job\NlmxmlJob',
+        'references' => 'ReferencesConversion\Model\Queue\Job\ReferencesJob',
         'zip' => 'ZipConversion\Model\Queue\Job\ZipJob',
     );
 
@@ -110,8 +111,11 @@ class Manager {
         elseif ($job->conversionStage == JOB_CONVERSION_STAGE_DOCX) {
             $this->nlmxmlJob($job);
         }
+        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_NLMXML) {
+            $this->referencesJob($job);
+        }
         elseif (
-            $job->conversionStage == JOB_CONVERSION_STAGE_NLMXML or
+            $job->conversionStage == JOB_CONVERSION_STAGE_REFERENCES or
             $job->conversionStage == JOB_CONVERSION_STAGE_BIBTEX
         ) {
             $this->zipJob($job);
@@ -151,6 +155,17 @@ class Manager {
     protected function nlmxmlJob($job)
     {
         $this->queueJob($job, 'nlmxml');
+    }
+
+    /**
+     * Queue a reference parsing job
+     *
+     * @param mixed $job Job to queue
+     * @return void
+     */
+    protected function referencesJob($job)
+    {
+        $this->queueJob($job, 'references');
     }
 
     /**
