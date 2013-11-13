@@ -12,7 +12,7 @@ class MetypesetTest extends ModelTest
 {
     protected $metypeset;
 
-    protected $testInputFile = 'tests/assets/document.docx';
+    protected $testInputFile = 'module/NlmxmlConversion/test/assets/document.docx';
     protected $testOutputDirectory = '/tmp/UNITTEST_metypeset_outputdirectory';
 
     /**

@@ -9,7 +9,7 @@ class UnoconvTest extends ModelTest
 {
     protected $unoconv;
 
-    protected $testFile = 'tests/assets/document.odt';
+    protected $testFile = 'module/DocxConversion/test/assets/document.odt';
     protected $testFile2 = '/tmp/UNITTEST_unoconv_outputfile';
 
     /**

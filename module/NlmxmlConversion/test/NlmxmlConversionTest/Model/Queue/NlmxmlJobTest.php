@@ -17,7 +17,7 @@ class NlmxmlJobTest extends ModelTest
 
     protected $nlmxmlJob;
 
-    protected $testAsset = 'tests/assets/document.docx';
+    protected $testAsset = 'module/NlmxmlConversion/test/assets/document.docx';
     protected $testFile = '/tmp/UNITTEST_document.docx';
 
     protected $testUserEmail = 'unittestuser@example.com';

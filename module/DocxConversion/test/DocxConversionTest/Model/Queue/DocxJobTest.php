@@ -17,7 +17,8 @@ class DocxJobTest extends ModelTest
 
     protected $docxJob;
 
-    protected $testFile = 'var/uploads/unittest';
+    protected $testAsset = 'module/DocxConversion/test/assets/document.odt';
+    protected $testFile = '/tmp/UNITTEST_document.odt';
 
     protected $testUserEmail = 'unittestuser@example.com';
     protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
@@ -76,8 +77,7 @@ class DocxJobTest extends ModelTest
         $this->document = $this->documentDAO->getInstance();
         $this->document->job = $this->job;
 
-        touch($this->testFile);
-        file_put_contents($this->testFile, md5(time()));
+        @copy($this->testAsset, $this->testFile);
 
         $this->document->path = $this->testFile;
         $this->document->mimeType = 'text/plain';
