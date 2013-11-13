@@ -4,18 +4,21 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
   <head>
-    <meta charset="utf-8">
-    <?php echo $this->headTitle($this->translate('application.generic.siteTitle'))->setSeparator(' - ')->setAutoEscape(false) ?>
-    <meta name="description" content="">
-    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
-
     <?php
+      echo $this->headMeta()
+        ->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
+        ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+        ->appendName('keywords', $this->escapeHtml($this->translate('application.meta.keywords')))
+        ->appendName('description', $this->escapeHtml($this->translate('application.meta.description')));
+
+      echo $this->headTitle($this->translate('application.generic.siteTitle'))
+        ->setSeparator(' - ')
+        ->setAutoEscape(false);
+
       echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/favicon.ico'))
-        ->prependStylesheet($this->basePath() . '/css/style.min.css')
-    ?>
+        ->prependStylesheet($this->basePath() . '/css/style.min.css');
 
-    <?php
-      echo $this->headScript()->prependFile($this->basePath() . '/js/script.min.js', 'text/javascript')
+      echo $this->headScript()->prependFile($this->basePath() . '/js/script.min.js', 'text/javascript');
     ?>
   </head>
   <body>

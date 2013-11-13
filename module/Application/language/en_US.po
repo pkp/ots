@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-12 11:37-1000\n"
-"PO-Revision-Date: 2013-11-12 11:37-1000\n"
+"POT-Creation-Date: 2013-11-13 10:47-1000\n"
+"PO-Revision-Date: 2013-11-13 10:51-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -31,48 +31,48 @@ msgstr "meTypeset output: %s"
 msgid "manager.uploadForm.uploadDocument"
 msgstr "Upload Document"
 
-#: ../../Manager/src/Manager/Entity/Job.php:122
+#: ../../Manager/src/Manager/Entity/Job.php:128
 msgid "manager.job.status.pending"
 msgstr "Pending"
 
-#: ../../Manager/src/Manager/Entity/Job.php:123
+#: ../../Manager/src/Manager/Entity/Job.php:129
 msgid "manager.job.status.processing"
 msgstr "Processing"
 
-#: ../../Manager/src/Manager/Entity/Job.php:124
+#: ../../Manager/src/Manager/Entity/Job.php:130
 msgid "manager.job.status.completed"
 msgstr "Completed"
 
-#: ../../Manager/src/Manager/Entity/Job.php:125
+#: ../../Manager/src/Manager/Entity/Job.php:131
 msgid "manager.job.status.failed"
 msgstr "Failed"
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:77
+#: ../../Manager/src/Manager/Controller/ManagerController.php:78
 msgid "manager.upload.success"
 msgstr ""
 "Your document has been successfully uploaded. It is now being processed."
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:101
+#: ../../Manager/src/Manager/Controller/ManagerController.php:102
 msgid "manager.job.createLog"
 msgstr "A new job has been created (%d)"
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:134
+#: ../../Manager/src/Manager/Controller/ManagerController.php:135
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:71
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:72
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:97
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:98
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:116
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:123
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:165
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:184
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
@@ -267,7 +267,19 @@ msgstr "Unoconf output: %s"
 msgid "application.acl.notAuthorized"
 msgstr "You are not permitted to access the requested resource."
 
-#: ../view/layout/layout.phtml:8 ../../Application/view/layout/layout.phtml:8
+#: ../view/layout/layout.phtml:9 ../../Application/view/layout/layout.phtml:9
+msgid "application.meta.keywords"
+msgstr "NLM, XML, HTML, PDF Conversion, Public Knowledge Project, PKP"
+
+#: ../view/layout/layout.phtml:10
+#: ../../Application/view/layout/layout.phtml:10
+msgid "application.meta.description"
+msgstr ""
+"Conversion Service which converts Word-compatible inputs to production-ready "
+"NLM XML, HTML, and PDF."
+
+#: ../view/layout/layout.phtml:12
+#: ../../Application/view/layout/layout.phtml:12
 #: ../../User/view/_sideBar.phtml:2
 msgid "application.generic.siteTitle"
 msgstr "PKP XML Parsing Service"
@@ -405,26 +417,26 @@ msgstr "Document Management"
 msgid "manager.job.details"
 msgstr "Job Details"
 
-#: ../../Manager/view/manager/manager/details.phtml:11
+#: ../../Manager/view/manager/manager/details.phtml:10
 #: ../../Manager/view/manager/manager/list.phtml:10
 msgid "manager.job.id"
 msgstr "Job Id"
 
-#: ../../Manager/view/manager/manager/details.phtml:12
+#: ../../Manager/view/manager/manager/details.phtml:11
 #: ../../Manager/view/manager/manager/list.phtml:12
 msgid "manager.job.creationDate"
 msgstr "Creation Date"
 
-#: ../../Manager/view/manager/manager/details.phtml:13
+#: ../../Manager/view/manager/manager/details.phtml:12
 #: ../../Manager/view/manager/manager/list.phtml:11
 msgid "manager.job.status"
 msgstr "Status"
 
-#: ../../Manager/view/manager/manager/details.phtml:15
+#: ../../Manager/view/manager/manager/details.phtml:14
 msgid "manager.job.documents"
 msgstr "Documents"
 
-#: ../../Manager/view/manager/manager/details.phtml:18
+#: ../../Manager/view/manager/manager/details.phtml:17
 msgid "application.generic.download"
 msgstr "Download"
 
