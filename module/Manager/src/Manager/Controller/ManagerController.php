@@ -150,23 +150,11 @@ class ManagerController extends AbstractActionController {
     {
         $jobId = (int) $this->params()->fromRoute('id');
 
-        if (!($job = $this->jobDAO->find($jobId))) {
+        if (!($job = $this->jobDAO->findOneBy(
+            array('id' => $jobId, 'user' => $this->identity())
+        ))) {
             $this->getResponse()->setStatusCode(404);
             return;
-        }
-
-        // Check if the user owns the job
-        $user = $this->identity();
-        if ($job->user->id != $user->id) {
-            $flashMessenger = $this->flashMessenger();
-            $flashMessenger->setNamespace('error');
-            $flashMessenger->addMessage(
-                $this->translator->translate(
-                    'application.acl.notAuthorized'
-                )
-            );
-
-            return $this->redirect()->toRoute('home');
         }
 
         return array('job' => $job);
@@ -179,23 +167,13 @@ class ManagerController extends AbstractActionController {
     {
         $documentId = (int) $this->params()->fromRoute('id');
 
-        if (!($document = $this->documentDAO->find($documentId))) {
+        $user = $this->identity();
+        if (
+            !($document = $this->documentDAO->find($documentId)) or
+            $document->job->user->id != $user->id
+        ) {
             $this->getResponse()->setStatusCode(404);
             return;
-        }
-
-        // Check if the user owns the document
-        $user = $this->identity();
-        if ($document->job->user->id != $user->id) {
-            $flashMessenger = $this->flashMessenger();
-            $flashMessenger->setNamespace('error');
-            $flashMessenger->addMessage(
-                $this->translator->translate(
-                    'application.acl.notAuthorized'
-                )
-            );
-
-            return $this->redirect()->toRoute('home');
         }
 
         $response = $this->getEvent()->getResponse();
