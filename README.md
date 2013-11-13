@@ -20,9 +20,13 @@ Module Description
 * Manager
  * Receives conversion jobs [X]
  * Job list [X]
- * Handles job distribution to queues
+ * Handles job distribution to queues [X]
 * DocxConversion
- * Converts documents to DocX format
+ * Converts documents to DocX format [X]
+* NlmxmlConversion
+ * Converts documents to NLM3 XML format [X]
+* ZipConversion
+ * Zips all documents [X]
 
 Installation
 ------------
