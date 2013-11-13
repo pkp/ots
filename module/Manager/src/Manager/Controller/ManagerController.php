@@ -155,6 +155,20 @@ class ManagerController extends AbstractActionController {
             return;
         }
 
+        // Check if the user owns the job
+        $user = $this->identity();
+        if ($job->user->id != $user->id) {
+            $flashMessenger = $this->flashMessenger();
+            $flashMessenger->setNamespace('error');
+            $flashMessenger->addMessage(
+                $this->translator->translate(
+                    'application.acl.notAuthorized'
+                )
+            );
+
+            return $this->redirect()->toRoute('home');
+        }
+
         return array('job' => $job);
     }
 
