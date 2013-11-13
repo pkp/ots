@@ -7,14 +7,27 @@ return array(
             'manager' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/manager[/:action][/page/:page][/id/:id]',
+                    'route' => '/manager[/:action][/id/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
-                        'page' => '[0-9]+',
                         'id' => '[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Manager\Controller\Manager',
+                        'page' => 1,
+                    ),
+                ),
+            ),
+            'manager_list' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/manager/list[/page/:page]',
+                    'constraints' => array(
+                        'page' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Manager\Controller\Manager',
+                        'action' => 'list',
                         'page' => 1,
                     ),
                 ),
