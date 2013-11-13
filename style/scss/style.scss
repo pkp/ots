@@ -444,7 +444,8 @@ a.details-action { @include icon('before', false, 'eye'); }
     label { font-family: $highlightFont; }
 
     #documents {
-      padding-left: $gutter;
+      list-style-type: circle;
+      padding-left: $gutter * 2;
       a { @include icon('after', true, 'download-3'); }
       a:after { margin-left: $gutter; }
     }
