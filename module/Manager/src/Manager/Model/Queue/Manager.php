@@ -23,7 +23,8 @@ class Manager {
     // TODO: this should come from the config
     protected $queueMap = array(
         'docx' => 'DocxConversion\Model\Queue\Job\DocxJob',
-        'nlmxml' => 'NLMXMLConversion\Model\Queue\Job\NLMXMLJob',
+        'nlmxml' => 'NlmxmlConversion\Model\Queue\Job\NlmxmlJob',
+        'zip' => 'ZipConversion\Model\Queue\Job\ZipJob',
     );
 
     /**
@@ -109,6 +110,9 @@ class Manager {
         elseif ($job->conversionStage == JOB_CONVERSION_STAGE_DOCX) {
             $this->nlmxmlJob($job);
         }
+        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_NLMXML) {
+            $this->zipJob($job);
+        }
         else {
             $this->logger->info(
                 sprintf(
@@ -145,6 +149,18 @@ class Manager {
     {
         $this->queueJob($job, 'nlmxml');
     }
+
+    /**
+     * Queue a Zip conversion job
+     *
+     * @param mixed $job Job to queue
+     * @return void
+     */
+    protected function zipJob($job)
+    {
+        $this->queueJob($job, 'zip');
+    }
+
 
     /**
      * Queues a job in its corresponding queue

@@ -10,3 +10,5 @@ php public/index.php queue doctrine docx --start &
 echo "Started DocX queue [PID $!]"
 php public/index.php queue doctrine nlmxml --start &
 echo "Started NLMXML queue [PID $!]"
+php public/index.php queue doctrine zip --start &
+echo "Started Zip queue [PID $!]"

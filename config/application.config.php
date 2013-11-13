@@ -12,6 +12,7 @@ return array(
         'User',
         'DocxConversion',
         'NlmxmlConversion',
+        'ZipConversion',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
