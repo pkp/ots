@@ -95,6 +95,18 @@ class ManagerControllerTest extends ControllerTest
     }
 
     /**
+     * Test if the list action paging works
+     *
+     * @return void
+     */
+    public function testListActionPaging()
+    {
+        $this->mockLogin($this->user);
+        $this->dispatch('/manager/list/page/2');
+        $this->assertResponseStatusCode(200);
+    }
+
+    /**
      * Test if the details action cannot be accessed by guests
      *
      * @return void
