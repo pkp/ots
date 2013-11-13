@@ -6,20 +6,18 @@
 <div class="page manager-manager-details">
   <div class="box">
     <label><?php echo $this->escapeHtml($this->translate('manager.job.details')) ?></label>
-    <?php if ($this->job) : ?>
-      <ul class="details">
-        <li><label><?php echo $this->escapeHtml($this->translate('manager.job.id')) ?>:</label><?php echo $job->id ?></li>
-        <li><label><?php echo $this->escapeHtml($this->translate('manager.job.creationDate')) ?>:</label><?php echo date('Y/m/d H:i:s', $job->creationDate) ?></li>
-        <li><label><?php echo $this->escapeHtml($this->translate('manager.job.status')) ?>:</label><?php echo $this->escapeHtml($statusMap[$job->status]) ?></li>
-        <li>
-          <label><?php echo $this->escapeHtml($this->translate('manager.job.documents')) ?>:</label>
-          <ul id="documents" class="details">
-            <?php foreach($this->job->documents as $document) : ?>
-              <li><?php echo $document->getFileName(); ?><a href="<?php echo $this->url('manager', array('action' => 'download', 'id' => $document->id)) . '" title="' . $this->translate('application.generic.download') ?>"></a></li>
-            <?php endforeach ?>
-          </ul>
-        </li>
-      </ul>
-    <?php endif ?>
+    <ul class="details">
+      <li><label><?php echo $this->escapeHtml($this->translate('manager.job.id')) ?>:</label><?php echo $job->id ?></li>
+      <li><label><?php echo $this->escapeHtml($this->translate('manager.job.creationDate')) ?>:</label><?php echo date('Y/m/d H:i:s', $job->creationDate) ?></li>
+      <li><label><?php echo $this->escapeHtml($this->translate('manager.job.status')) ?>:</label><?php echo $this->escapeHtml($statusMap[$job->status]) ?></li>
+      <li>
+        <label><?php echo $this->escapeHtml($this->translate('manager.job.documents')) ?>:</label>
+        <ul id="documents" class="details">
+          <?php foreach($this->job->documents as $document) : ?>
+            <li><?php echo $document->getFileName(); ?><a href="<?php echo $this->url('manager', array('action' => 'download', 'id' => $document->id)) . '" title="' . $this->translate('application.generic.download') ?>"></a></li>
+          <?php endforeach ?>
+        </ul>
+      </li>
+    </ul>
   </div>
 </div>
