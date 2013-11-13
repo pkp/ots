@@ -18,7 +18,7 @@ class ZipJob extends AbstractQueueJob
      */
     public function process(Job $job)
     {
-        if (!class_exists(\ZipArchive)) {
+        if (!class_exists('\ZipArchive')) {
             throw new \Exception('Zip extension is missing');
         }
 
