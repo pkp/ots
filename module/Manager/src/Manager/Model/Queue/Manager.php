@@ -110,7 +110,10 @@ class Manager {
         elseif ($job->conversionStage == JOB_CONVERSION_STAGE_DOCX) {
             $this->nlmxmlJob($job);
         }
-        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_NLMXML) {
+        elseif (
+            $job->conversionStage == JOB_CONVERSION_STAGE_NLMXML or
+            $job->conversionStage == JOB_CONVERSION_STAGE_BIBTEX
+        ) {
             $this->zipJob($job);
         }
         else {
