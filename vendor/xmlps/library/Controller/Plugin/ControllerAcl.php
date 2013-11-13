@@ -53,8 +53,12 @@ class ControllerAcl extends AbstractPlugin
     public function authorize(MvcEvent $e)
     {
         $routeParams = $e->getRouteMatch()->getParams();
-        $controller = $routeParams['controller'];
-        $action = $routeParams['action'];
+        $controller = isset($routeParams['controller']) ? $routeParams['controller'] : null;
+        $action = isset($routeParams['action']) ? $routeParams['action'] : null;
+
+        if (empty($controller) or empty($action)) {
+            throw new \Exception('Couldn\'t resolve controller or action');
+        }
 
         $application = $e->getApplication();
         $sm = $application->getServiceManager();
