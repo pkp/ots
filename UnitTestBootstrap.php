@@ -10,12 +10,20 @@ use RuntimeException;
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
 
+/**
+ * Bootstrap the unit tests
+ */
 class UnitTestBootstrap
 {
     protected static $serviceManager;
     protected static $config;
     protected static $bootstrap;
 
+    /**
+     * Initialzize
+     *
+     * @return void
+     */
     public static function init()
     {
         $testConfig = include __DIR__ . '/config/application.config.php';
@@ -53,18 +61,31 @@ class UnitTestBootstrap
         static::$config = $config;
     }
 
+    /**
+     * Returns the service manager instance
+     *
+     * @return ServiceManager ServiceManager insance
+     */
     public static function getServiceManager()
     {
         return static::$serviceManager;
     }
 
+    /**
+     * Returns the config
+     *
+     * @return array Array containing the configuration
+     */
     public static function getConfig()
     {
         return static::$config;
     }
 
-
-
+    /**
+     * Initialize the autoloader
+     *
+     * @return void
+     */
     protected static function initAutoloader()
     {
         $vendorPath = static::findParentPath('vendor');
@@ -92,6 +113,13 @@ class UnitTestBootstrap
         ));
     }
 
+    /**
+     * Finds the parent path that contains a directory
+     *
+     * @param mixed $path Directory to find
+     *
+     * @return string Parent path that contains the directory
+     */
     protected static function findParentPath($path)
     {
         $dir = __DIR__;
