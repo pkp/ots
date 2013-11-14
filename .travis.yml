@@ -15,7 +15,7 @@ before_install:
 - cp config/autoload/travis.php.dist config/autoload/local.php
 - vendor/doctrine/doctrine-module/bin/doctrine-module  orm:schema-tool:update --force
 before_script:
-- APACHE_USER=`www-data` sudo mkdir /home/$APACHE_USER; sudo chown $APACHE_USER /home/$APACHE_USER
+- sudo mkdir /home/www-data; sudo chown www-data /home/www-data
 - sudo service postfix stop
 - smtp-sink -d "%d.%H.%M.%S" localhost:2500 1000 &
 - echo -e '#!/usr/bin/env bash\nexit 0' | sudo tee /usr/sbin/sendmail
