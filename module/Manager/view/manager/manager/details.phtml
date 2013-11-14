@@ -3,7 +3,7 @@
   $statusMap = $this->job->getStatusMap();
 ?>
 
-<div class="page manager-manager-details">
+<div class="sidebar-page manager-manager-details">
   <div class="box">
     <label><?php echo $this->escapeHtml($this->translate('manager.job.details')) ?></label>
     <ul class="details">
@@ -21,3 +21,13 @@
     </ul>
   </div>
 </div>
+
+<aside>
+  <h4><?php echo $this->escapeHtml($this->translate('manager.job.details.document.list')) ?></h4>
+  <ul>
+    <li><?php echo $this->escapeHtml($this->translate('manager.job.details.document.docx')) ?></li>
+    <li><?php echo $this->escapeHtml($this->translate('manager.job.details.document.nlmxml')) ?></li>
+    <li><?php echo $this->escapeHtml($this->translate('manager.job.details.document.references')) ?></li>
+    <li><?php echo $this->escapeHtml($this->translate('manager.job.details.document.documents.zip')) ?></li>
+  </ul>
+</aside>

@@ -438,6 +438,13 @@ a.details-action { @include icon('before', false, 'eye'); }
 
 // Manager - Manager - details
 .manager-manager-details {
+  .box {
+    @include span-columns(8 of 8);
+    @include media($mobile) {
+      @include span-columns(6 of 6);
+    }
+  }
+
   ul.details {
     @include vertical-list;
 
@@ -450,4 +457,9 @@ a.details-action { @include icon('before', false, 'eye'); }
       a:after { margin-left: $gutter; }
     }
   }
+}
+
+.manager-manager-details + aside {
+  @include custom-list;
+  ul { padding-left: $gutter; }
 }

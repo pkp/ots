@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-13 10:47-1000\n"
-"PO-Revision-Date: 2013-11-13 10:51-1000\n"
+"POT-Creation-Date: 2013-11-13 15:19-1000\n"
+"PO-Revision-Date: 2013-11-13 15:26-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -60,21 +60,25 @@ msgstr "A new job has been created (%d)"
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:72
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:73
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:98
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:99
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:123
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:127
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:184
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:199
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
+
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:70
+msgid "foo"
+msgstr ""
 
 #: ../../Admin/src/Admin/Form/UserRemovalForm.php:38
 #: ../../Admin/view/admin/user-management/list.phtml:26
@@ -267,62 +271,63 @@ msgstr "Unoconf output: %s"
 msgid "application.acl.notAuthorized"
 msgstr "You are not permitted to access the requested resource."
 
-#: ../view/layout/layout.phtml:9 ../../Application/view/layout/layout.phtml:9
+#: ../view/layout/layout.phtml:11
+#: ../../Application/view/layout/layout.phtml:11
 msgid "application.meta.keywords"
 msgstr "NLM, XML, HTML, PDF Conversion, Public Knowledge Project, PKP"
 
-#: ../view/layout/layout.phtml:10
-#: ../../Application/view/layout/layout.phtml:10
+#: ../view/layout/layout.phtml:12
+#: ../../Application/view/layout/layout.phtml:12
 msgid "application.meta.description"
 msgstr ""
 "Conversion Service which converts Word-compatible inputs to production-ready "
 "NLM XML, HTML, and PDF."
 
-#: ../view/layout/layout.phtml:12
-#: ../../Application/view/layout/layout.phtml:12
+#: ../view/layout/layout.phtml:14
+#: ../../Application/view/layout/layout.phtml:14
 #: ../../User/view/_sideBar.phtml:2
 msgid "application.generic.siteTitle"
 msgstr "PKP XML Parsing Service"
 
-#: ../view/layout/layout.phtml:27
-#: ../../Application/view/layout/layout.phtml:27
+#: ../view/layout/layout.phtml:30
+#: ../../Application/view/layout/layout.phtml:30
 msgid "application.layout.systemLog"
 msgstr "System Log"
 
-#: ../view/layout/layout.phtml:28
-#: ../../Application/view/layout/layout.phtml:28
+#: ../view/layout/layout.phtml:31
+#: ../../Application/view/layout/layout.phtml:31
 msgid "application.layout.userManagement"
 msgstr "User Management"
 
-#: ../view/layout/layout.phtml:30
+#: ../view/layout/layout.phtml:33
 #: ../../Manager/view/manager/manager/list.phtml:3
-#: ../../Application/view/layout/layout.phtml:30
+#: ../../Application/view/layout/layout.phtml:33
 msgid "manager.job.list"
 msgstr "Jobs"
 
-#: ../view/layout/layout.phtml:31
-#: ../../Application/view/layout/layout.phtml:31
+#: ../view/layout/layout.phtml:34
+#: ../../Application/view/layout/layout.phtml:34
 msgid "application.layout.settings"
 msgstr "Settings"
 
-#: ../view/layout/layout.phtml:32
-#: ../../Application/view/layout/layout.phtml:32
+#: ../view/layout/layout.phtml:35
+#: ../../Application/view/layout/layout.phtml:35
 msgid "application.layout.logout"
 msgstr "Logout"
 
-#: ../view/layout/layout.phtml:38
-#: ../../Application/view/layout/layout.phtml:38
+#: ../view/layout/layout.phtml:41
+#: ../../Application/view/layout/layout.phtml:41
 msgid "application.layout.subHeading"
 msgstr ""
 "PDF, DOC, DOCX or ODT to XML (%sNML-XML 3.0 compatible%s) document conversion"
 
-#: ../view/layout/layout.phtml:61
-#: ../../Application/view/layout/layout.phtml:61
+#: ../view/layout/layout.phtml:64
+#: ../../Application/view/layout/layout.phtml:64
 msgid "application.layout.contact"
 msgstr "Contact"
 
-#: ../view/layout/layout.phtml:62
-#: ../../Application/view/layout/layout.phtml:62
+#: ../view/layout/layout.phtml:65
+#: ../../Application/view/layout/layout.phtml:65
 msgid "application.layout.copyright"
 msgstr "Public Knowledge Project"
 
@@ -439,6 +444,30 @@ msgstr "Documents"
 #: ../../Manager/view/manager/manager/details.phtml:17
 msgid "application.generic.download"
 msgstr "Download"
+
+#: ../../Manager/view/manager/manager/details.phtml:26
+msgid "manager.job.details.document.list"
+msgstr "Document List"
+
+#: ../../Manager/view/manager/manager/details.phtml:28
+msgid "manager.job.details.document.docx"
+msgstr ""
+"Document.docx is the document converted to the Microsoft Office DocX "
+"standard."
+
+#: ../../Manager/view/manager/manager/details.phtml:29
+msgid "manager.job.details.document.nlmxml"
+msgstr "Document.xml is the document converted to the NLM3 XML standard."
+
+#: ../../Manager/view/manager/manager/details.phtml:30
+msgid "manager.job.details.document.references"
+msgstr ""
+"References.txt is a text file containing all the references found in the "
+"original document."
+
+#: ../../Manager/view/manager/manager/details.phtml:31
+msgid "manager.job.details.document.documents.zip"
+msgstr "Documents.zip is a ZIP archive containing all the documents."
 
 #: ../../Manager/view/manager/manager/list.phtml:13
 msgid "manager.job.uploadFileName"

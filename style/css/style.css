@@ -767,6 +767,21 @@ a.details-action:before {
 .manager-manager-list .table .action {
   margin-left: 3px; }
 
+.manager-manager-details .box {
+  display: block;
+  float: left;
+  margin-right: 1.5873%;
+  width: 100%; }
+  .manager-manager-details .box:last-child {
+    margin-right: 0; }
+  @media screen and (max-width: 480px) {
+    .manager-manager-details .box {
+      display: block;
+      float: left;
+      margin-right: 2.12766%;
+      width: 100%; }
+      .manager-manager-details .box:last-child {
+        margin-right: 0; } }
 .manager-manager-details ul.details {
   list-style: none;
   padding-left: 0; }
@@ -790,3 +805,24 @@ a.details-action:before {
       font-family: 'Icons'; }
     .manager-manager-details ul.details #documents a:after {
       margin-left: 10px; }
+
+.manager-manager-details + aside ul {
+  list-style: none; }
+  .manager-manager-details + aside ul li {
+    margin-bottom: 10px; }
+    .manager-manager-details + aside ul li:before {
+      content: "\e068";
+      speak: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-transform: none;
+      line-height: 1;
+      font-style: normal;
+      font-variant: normal;
+      font-weight: normal;
+      font-family: 'Icons'; }
+  .manager-manager-details + aside ul li:before {
+    margin-right: 0.5em;
+    color: #0068cc; }
+.manager-manager-details + aside ul {
+  padding-left: 10px; }
