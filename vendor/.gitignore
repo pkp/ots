@@ -4,6 +4,7 @@ composer
 autoload.php
 
 MartinPaulEve
+citation-style-language
 dagwieers
 doctrine
 phpunit

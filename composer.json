@@ -33,6 +33,18 @@
                     "reference": "70adf87b56d41d4c4416e37df8c660a7454d29f9"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "citation-style-language/styles",
+                "version": "dev-master",
+                "source": {
+                    "url": "https://github.com/citation-style-language/styles.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
         }
     ],
     "homepage": "http://framework.zend.com/",
@@ -45,6 +57,7 @@
         "slm/queue": "0.3.x-dev",
         "slm/queue-doctrine": "0.3.x-dev",
         "dagwieers/unoconv": "0.6",
-        "MartinPaulEve/meTypeset": "dev-master"
+        "MartinPaulEve/meTypeset": "dev-master",
+        "citation-style-language/styles": "dev-master"
     }
 }
