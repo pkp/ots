@@ -30,7 +30,7 @@
                 "source": {
                     "url": "https://github.com/MartinPaulEve/meTypeset.git",
                     "type": "git",
-                    "reference": "70adf87b56d41d4c4416e37df8c660a7454d29f9"
+                    "reference": "master"
                 }
             }
         },
@@ -41,6 +41,18 @@
                 "version": "dev-master",
                 "source": {
                     "url": "https://github.com/citation-style-language/styles.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "knmnyn/ParsCit",
+                "version": "dev-master",
+                "source": {
+                    "url": "https://github.com/knmnyn/ParsCit.git",
                     "type": "git",
                     "reference": "master"
                 }
@@ -58,6 +70,7 @@
         "slm/queue-doctrine": "0.3.x-dev",
         "dagwieers/unoconv": "0.6",
         "MartinPaulEve/meTypeset": "dev-master",
-        "citation-style-language/styles": "dev-master"
+        "citation-style-language/styles": "dev-master",
+        "knmnyn/ParsCit": "dev-master"
     }
 }

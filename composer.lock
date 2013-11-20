@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "964ee06bc47430e9e1f899fed21a957b",
+    "hash": "c5dc7edeca4c912c33427be490979ae1",
     "packages": [
         {
             "name": "MartinPaulEve/meTypeset",
@@ -11,10 +11,10 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/MartinPaulEve/meTypeset.git",
-                "reference": "70adf87b56d41d4c4416e37df8c660a7454d29f9"
+                "reference": "master"
             },
             "type": "library",
-            "time": "2013-11-06 14:49:40"
+            "time": "2013-11-19 14:05:26"
         },
         {
             "name": "citation-style-language/styles",
@@ -742,6 +742,17 @@
                 "orm"
             ],
             "time": "2013-11-12 12:40:13"
+        },
+        {
+            "name": "knmnyn/ParsCit",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/knmnyn/ParsCit.git",
+                "reference": "master"
+            },
+            "type": "library",
+            "time": "2013-10-23 09:25:07"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1528,7 +1539,8 @@
         "slm/queue": 20,
         "slm/queue-doctrine": 20,
         "martinpauleve/metypeset": 20,
-        "citation-style-language/styles": 20
+        "citation-style-language/styles": 20,
+        "knmnyn/parscit": 20
     },
     "platform": {
         "php": ">=5.3.3"
