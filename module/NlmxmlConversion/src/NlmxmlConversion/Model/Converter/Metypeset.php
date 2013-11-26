@@ -3,6 +3,7 @@
 namespace NlmxmlConversion\Model\Converter;
 
 use Xmlps\Logger\Logger;
+use Xmlps\Command\Command;
 use Zend\Mvc\I18n\Translator;
 
 use Manager\Model\Converter\AbstractConverter;
@@ -74,41 +75,42 @@ class Metypeset extends AbstractConverter
      */
     public function convert()
     {
+        $command = new Command;
+
         // Set the base command
-        $cmd = $this->config['command'];
+        $command->setCommand($this->config['command']);
 
         // Add the input file
         if (!$this->inputFile) {
             throw new \Exception('No input file given');
         }
-        $cmd .= ' "' . addslashes($this->inputFile) . '"';
+        $command->addArgument($this->inputFile);
 
         // Add the output directory
         if (!$this->outputDirectory) {
             throw new \Exception('No output directory given');
         }
-        $cmd .= ' "' . addslashes($this->outputDirectory) . '"';
-
-        // Escape the command
-        $cmd = escapeshellcmd($cmd);
+        $command->addArgument($this->outputDirectory);
 
         // Redirect STDERR to STDOUT to captue it in $this->output
-        $cmd .= ' 2>&1';
+        $command->addRedirect('2>&1');
 
         $this->logger->debug(
             sprintf(
                 $this->translator->translate('nlmxmlconversion.metypeset.executeCommandLog'),
-                $cmd
+                $command->getCommand()
             )
         );
 
         // Execute the conversion
-        exec($cmd, $this->output, $this->status);
+        $command->execute();
+        $this->status = $command->isSuccess();
+        $this->output = $command->getOutputString();
 
         $this->logger->debug(
             sprintf(
                 $this->translator->translate('nlmxmlconversion.metypeset.executeCommandOutputLog'),
-                implode("\n", $this->getOutput())
+                $this->output
             )
         );
     }

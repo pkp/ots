@@ -93,11 +93,16 @@ class Manager {
         // Don't requeue completed jobs
         if ($job->status == JOB_STATUS_COMPLETED) return;
 
-        // Stop if the job has failed and the job is not allowed to fail
+        // Reset the job status for jobs that can fail
         if (
             $job->status == JOB_STATUS_FAILED and
-            !in_array($job->status, array(JOB_CONVERSION_STAGE_REFERENCES))
+            in_array($job->conversionStage, array(JOB_CONVERSION_STAGE_REFERENCES))
         ) {
+            $job->status = JOB_STATUS_PROCESSING;
+        }
+
+        // Stop if the job has failed
+        if ($job->status == JOB_STATUS_FAILED) {
             $this->logger->info(
                 sprintf(
                     $this->translator->translate(

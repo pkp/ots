@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-22 15:56-1000\n"
-"PO-Revision-Date: 2013-11-25 17:32-1000\n"
+"POT-Creation-Date: 2013-11-26 12:04-1000\n"
+"PO-Revision-Date: 2013-11-26 12:04-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "nlmxmlconversion.metypeset.executeCommandLog"
 msgstr "meTypeset is executing: %s "
 
-#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:110
+#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:112
 msgid "nlmxmlconversion.metypeset.executeCommandOutputLog"
 msgstr "meTypeset output: %s"
 
@@ -64,55 +64,51 @@ msgstr "No jobs found."
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:99
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:104
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:127
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:131
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:199
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:203
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:85
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:99
 msgid "referencesconversion.converter.startLog"
 msgstr "Starting Bibliography parsing"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:125
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:153
 msgid "referencesconversion.converter.parseBibliography.noBibliographyLog"
 msgstr "No Bibliography found"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:144
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:172
 msgid "referencesconversion.converter.parseBibliography.nlmLog"
 msgstr "Parsing for NLM bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:164
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:191
 msgid "referencesconversion.converter.parseBibliography.teiLog"
 msgstr "Parsing for TEI bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:218
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:249
 msgid "referencesconversion.converter.parsCit.commandLog"
 msgstr "Executing ParsCit command: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:235
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:267
 msgid "referencesconversion.converter.parsCit.commandOutputLog"
 msgstr "Output from ParsCit command: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:246
-msgid "referencesconversion.converter.parsCit.commandStatusLog"
-msgstr "ParsCit exited with status code: %d"
-
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:259
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:281
 msgid "referencesconversion.converter.parsCit.noDOMLog"
 msgstr "ParsCit output is no valid XML"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:274
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:296
 msgid "referencesconversion.converter.parsCit.noListNodeLog"
 msgstr "Citation list doesn't contain any entries"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:282
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:304
 msgid "referencesconversion.converter.parsCit.successLog"
 msgstr "ParsCit successfully parsed bibliography"
 
@@ -295,11 +291,11 @@ msgstr "Your settings have been updated!"
 msgid "user.settings.saveSuccessConfirmLog"
 msgstr "User %s updated settings"
 
-#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:132
+#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:134
 msgid "docxconversion.unoconv.executeCommandLog"
 msgstr "Unoconv is executing: %s "
 
-#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:142
+#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:146
 msgid "docxconversion.unoconv.executeCommandOutputLog"
 msgstr "Unoconf output: %s"
 
@@ -630,6 +626,9 @@ msgstr "Settings"
 #: ../../User/view/user/user/settings.phtml:14
 msgid "user.settings.changePassword"
 msgstr "Change Password"
+
+#~ msgid "referencesconversion.converter.parsCit.commandStatusLog"
+#~ msgstr "ParsCit exited with status code: %d"
 
 #~ msgid "manager.upload.successLog"
 #~ msgstr "User uploaded document (%s)."

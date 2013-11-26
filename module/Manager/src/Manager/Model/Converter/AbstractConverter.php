@@ -22,7 +22,7 @@ abstract class AbstractConverter implements ConverterInterface {
     }
 
     /**
-     * Returns the status (0 == success)
+     * Returns the status
      *
      * @return void
      */

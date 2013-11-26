@@ -33,7 +33,7 @@ class DocxJob extends AbstractQueueJob
         $unoconv->setOutputFile($outputPath);
         $unoconv->convert();
 
-        if ($unoconv->getStatus() !== 0) {
+        if (!$unoconv->getStatus()) {
             $job->status = JOB_STATUS_FAILED;
             return $job;
         }

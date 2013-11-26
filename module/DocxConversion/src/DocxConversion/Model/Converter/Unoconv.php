@@ -3,6 +3,7 @@
 namespace DocxConversion\Model\Converter;
 
 use Xmlps\Logger\Logger;
+use Xmlps\Command\Command;
 use Zend\Mvc\I18n\Translator;
 
 use Manager\Model\Converter\AbstractConverter;
@@ -100,47 +101,50 @@ class Unoconv extends AbstractConverter
      */
     public function convert()
     {
+        $command = new Command;
+
         // Set the base command
-        $cmd = $this->config['command'];
+        $command->setCommand($this->config['command']);
 
         // Add verbosity switch
-        if ($this->verbose) $cmd .= ' -vvv';
+        if ($this->verbose) $command->addSwitch('-vvv');
 
         // Add the filter
-        if ($this->filter) $cmd .= ' -f ' . $this->filter;
+        if ($this->filter) $command->addSwitch('-f', $this->filter);
 
         // Add the output file
         if (!$this->outputFile) {
             throw new \Exception('No output file given');
         }
-        $cmd .= ' -o "' . addslashes($this->outputFile) . '"';
+
+        $command->addSwitch('-o', $this->outputFile);
 
         // Add the input file
         if (!$this->inputFile) {
             throw new \Exception('No input file given');
         }
-        $cmd .= ' "' . addslashes($this->inputFile) . '"';
 
-        // Escape the command
-        $cmd = escapeshellcmd($cmd);
+        $command->addArgument($this->inputFile);
 
         // Redirect STDERR to STDOUT to captue it in $this->output
-        $cmd .= ' 2>&1';
+        $command->addRedirect('2>&1');
 
         $this->logger->debug(
             sprintf(
                 $this->translator->translate('docxconversion.unoconv.executeCommandLog'),
-                $cmd
+                $command->getCommand()
             )
         );
 
         // Execute the conversion
-        exec($cmd, $this->output, $this->status);
+        $command->execute();
+        $this->status = $command->isSuccess();
+        $this->output = $command->getOutputString();
 
         $this->logger->debug(
             sprintf(
                 $this->translator->translate('docxconversion.unoconv.executeCommandOutputLog'),
-                implode("\n", $this->getOutput())
+                $this->getOutput()
             )
         );
     }

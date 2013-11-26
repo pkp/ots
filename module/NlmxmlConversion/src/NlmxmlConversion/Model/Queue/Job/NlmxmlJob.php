@@ -35,7 +35,7 @@ class NlmxmlJob extends AbstractQueueJob
         $xmlFile = $docxDocument->getFileName(true) . '.xml';
         $meTypesetOutputPath = $outputDirectory . '/' . $xmlFile;
 
-        if ($metypeset->getStatus() !== 0 or !file_exists($meTypesetOutputPath)) {
+        if (!$metypeset->getStatus() or !file_exists($meTypesetOutputPath)) {
             $job->status = JOB_STATUS_FAILED;
             return $job;
         }

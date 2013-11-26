@@ -3,6 +3,7 @@
 namespace ReferencesConversion\Model\Converter;
 
 use Xmlps\Logger\Logger;
+use Xmlps\Command\Command;
 use Zend\Mvc\I18n\Translator;
 use DOMNode;
 use DOMNodeList;
@@ -101,14 +102,12 @@ class References extends AbstractConverter
         // Parse the bibliography
         $bibliography = $this->parseBibliography();
         if (!($bibliography instanceof DOMNodeList)) {
-            $this->status = 1;
-            return false;
+            $this->status = false;
+            return;
         }
 
         // Create an XML file containing the bibliography
         $this->save($bibliography);
-
-        $this->status = 0;
     }
 
     /**
@@ -237,24 +236,24 @@ class References extends AbstractConverter
         }
 
         // Build the shell command
-        $cmd = 'vendor/MichaelThessel/ParsCit/bin/citeExtract.pl';
-        $cmd .= ' -m extract_citations ';
-        $cmd .= ' "' . addslashes($referencesFile) . '"';
-        $cmd .= ' 2> /dev/null';
+        $command = new Command;
+        $command->setCommand('vendor/MichaelThessel/ParsCit/bin/citeExtract.pl');
+        $command->addSwitch('-m', 'extract_citations');
+        $command->addArgument($referencesFile);
 
         $this->logger->debug(
             sprintf(
                 $this->translator->translate(
                     'referencesconversion.converter.parsCit.commandLog'
                 ),
-                $cmd
+                $command->getCommand()
             )
         );
 
         // Run the ParsCit conversion
-        $output = array();
-        exec($cmd, $output, $status);
-        $output = implode(PHP_EOL, $output);
+        $command->execute();
+        $this->status = $command->isSuccess();
+        $this->output = $command->getOutputString();
 
         @unlink($referencesBaseFile . '.body');
         @unlink($referencesBaseFile . '.cite');
@@ -265,25 +264,15 @@ class References extends AbstractConverter
                 $this->translator->translate(
                     'referencesconversion.converter.parsCit.commandOutputLog'
                 ),
-                $output
+                $this->output
             )
         );
 
-        // Check if ParsCit exited sucessfully
-        if ($status !== 0) {
-            $this->logger->debug(
-                sprintf(
-                    $this->translator->translate(
-                        'referencesconversion.converter.parsCit.commandStatusLog'
-                    ),
-                    $cmd
-                )
-            );
-            return false;
-        }
+        // Exit if parsing failed
+        if (!$this->status) { return false; }
 
         // Create DOM tree from output
-        $dom = \DOMDocument::loadXML($output, LIBXML_NOERROR);
+        $dom = \DOMDocument::loadXML($this->output, LIBXML_NOERROR);
         if (!($dom instanceof \DOMDocument)) {
             $this->logger->debug(
                 $this->translator->translate(

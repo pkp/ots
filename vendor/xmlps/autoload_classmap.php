@@ -5,6 +5,7 @@ return array(
   'Xmlps\Log\Writer\Doctrine'                       => __DIR__ . '/library/Log/Writer/Doctrine.php',
   'Xmlps\Logger\Logger'                             => __DIR__ . '/library/Log/Logger.php',
   'Xmlps\DOM\Iterator\RecursiveDOMIterator'         => __DIR__ . '/library/DOM/Iterator/RecursiveDOMIterator.php',
+  'Xmlps\Command\Command'                           => __DIR__ . '/library/Command/Command.php',
   'Xmlps\Doctrine\Listener\ServiceManagerListener'  => __DIR__ . '/library/Doctrine/Listener/ServiceManagerListener.php',
   'Xmlps\Controller\Plugin\ControllerAcl'           => __DIR__ . '/library/Controller/Plugin/ControllerAcl.php',
   'Xmlps\DAO\DAO'                                   => __DIR__ . '/library/DAO/DAO.php',
