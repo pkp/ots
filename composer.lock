@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "c5dc7edeca4c912c33427be490979ae1",
+    "hash": "75dd61db64cab5fb27b996a9ba1bc7a9",
     "packages": [
         {
             "name": "MartinPaulEve/meTypeset",
@@ -15,6 +15,16 @@
             },
             "type": "library",
             "time": "2013-11-19 14:05:26"
+        },
+        {
+            "name": "MichaelThessel/ParsCit",
+            "version": "110505b",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MichaelThessel/ParsCit.git",
+                "reference": "110505b"
+            },
+            "type": "library"
         },
         {
             "name": "citation-style-language/styles",
@@ -742,17 +752,6 @@
                 "orm"
             ],
             "time": "2013-11-12 12:40:13"
-        },
-        {
-            "name": "knmnyn/ParsCit",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/knmnyn/ParsCit.git",
-                "reference": "master"
-            },
-            "type": "library",
-            "time": "2013-10-23 09:25:07"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1540,7 +1539,7 @@
         "slm/queue-doctrine": 20,
         "martinpauleve/metypeset": 20,
         "citation-style-language/styles": 20,
-        "knmnyn/parscit": 20
+        "michaelthessel/parscit": 10
     },
     "platform": {
         "php": ">=5.3.3"

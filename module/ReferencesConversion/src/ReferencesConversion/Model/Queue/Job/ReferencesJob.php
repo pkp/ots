@@ -27,10 +27,12 @@ class ReferencesJob extends AbstractQueueJob
         }
 
         // Parse the references
-        $outputFile = $job->getDocumentPath() . '/references.txt';
         $references->setInputFile($nlmxmlDocument->path);
-        $references->setOutputFile($outputFile);
+        $references->setOutputPath($job->getDocumentPath());
+        $references->setOutputFile($job->getDocumentPath() . '/document.bib.xml');
         $references->convert();
+
+        $job->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
 
         if ($references->getStatus() !== 0) {
             $job->status = JOB_STATUS_FAILED;
@@ -38,13 +40,12 @@ class ReferencesJob extends AbstractQueueJob
         }
 
         $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
-        $docxDocument = $documentDAO->getInstance();
-        $docxDocument->path = $outputFile;
-        $docxDocument->job = $job;
-        $docxDocument->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
+        $referenceXmlDocument = $documentDAO->getInstance();
+        $referenceXmlDocument->path = $references->getOutputFile();
+        $referenceXmlDocument->job = $job;
+        $referenceXmlDocument->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
 
-        $job->documents[] = $docxDocument;
-        $job->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
+        $job->documents[] = $referenceXmlDocument;
 
         return $job;
     }

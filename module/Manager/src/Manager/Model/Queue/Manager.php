@@ -90,18 +90,22 @@ class Manager {
      */
     public function queue($job)
     {
-        // Stop if the job is completed or failed
-        if (in_array($job->status, array(JOB_STATUS_COMPLETED, JOB_STATUS_FAILED))) {
-            if ($job->status == JOB_STATUS_FALIED) {
-                $this->logger->info(
-                    sprintf(
-                        $this->translator->translate(
-                            'manager.queue.jobFailedLog'
-                        ),
-                        $job->id
-                    )
-                );
-            }
+        // Don't requeue completed jobs
+        if ($job->status == JOB_STATUS_COMPLETED) return;
+
+        // Stop if the job has failed and the job is not allowed to fail
+        if (
+            $job->status == JOB_STATUS_FAILED and
+            !in_array($job->status, array(JOB_CONVERSION_STAGE_REFERENCES))
+        ) {
+            $this->logger->info(
+                sprintf(
+                    $this->translator->translate(
+                        'manager.queue.jobFailedLog'
+                    ),
+                    $job->id
+                )
+            );
             return;
         }
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-13 15:19-1000\n"
-"PO-Revision-Date: 2013-11-13 15:26-1000\n"
+"POT-Creation-Date: 2013-11-22 15:56-1000\n"
+"PO-Revision-Date: 2013-11-25 17:32-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -76,9 +76,45 @@ msgstr "Job %d is completed"
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:70
-msgid "foo"
-msgstr ""
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:85
+msgid "referencesconversion.converter.startLog"
+msgstr "Starting Bibliography parsing"
+
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:125
+msgid "referencesconversion.converter.parseBibliography.noBibliographyLog"
+msgstr "No Bibliography found"
+
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:144
+msgid "referencesconversion.converter.parseBibliography.nlmLog"
+msgstr "Parsing for NLM bibliography"
+
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:164
+msgid "referencesconversion.converter.parseBibliography.teiLog"
+msgstr "Parsing for TEI bibliography"
+
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:218
+msgid "referencesconversion.converter.parsCit.commandLog"
+msgstr "Executing ParsCit command: %s"
+
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:235
+msgid "referencesconversion.converter.parsCit.commandOutputLog"
+msgstr "Output from ParsCit command: %s"
+
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:246
+msgid "referencesconversion.converter.parsCit.commandStatusLog"
+msgstr "ParsCit exited with status code: %d"
+
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:259
+msgid "referencesconversion.converter.parsCit.noDOMLog"
+msgstr "ParsCit output is no valid XML"
+
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:274
+msgid "referencesconversion.converter.parsCit.noListNodeLog"
+msgstr "Citation list doesn't contain any entries"
+
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:282
+msgid "referencesconversion.converter.parsCit.successLog"
+msgstr "ParsCit successfully parsed bibliography"
 
 #: ../../Admin/src/Admin/Form/UserRemovalForm.php:38
 #: ../../Admin/view/admin/user-management/list.phtml:26

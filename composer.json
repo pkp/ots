@@ -49,12 +49,12 @@
         {
             "type": "package",
             "package": {
-                "name": "knmnyn/ParsCit",
-                "version": "dev-master",
+                "name": "MichaelThessel/ParsCit",
+                "version": "110505b",
                 "source": {
-                    "url": "https://github.com/knmnyn/ParsCit.git",
+                    "url": "https://github.com/MichaelThessel/ParsCit.git",
                     "type": "git",
-                    "reference": "master"
+                    "reference": "110505b"
                 }
             }
         }
@@ -71,6 +71,6 @@
         "dagwieers/unoconv": "0.6",
         "MartinPaulEve/meTypeset": "dev-master",
         "citation-style-language/styles": "dev-master",
-        "knmnyn/ParsCit": "dev-master"
+        "MichaelThessel/ParsCit": "110505b"
     }
 }

@@ -35,7 +35,8 @@ Requirements
 * [Java VM](https://java.com/en/download/index.jsp) needs to be installed
 * [Pandoc](http://johnmacfarlane.net/pandoc/) needs to be installed
 * The docX conversion needs [LibreOffice](http://www.libreoffice.org/) with unoconv installed. The server is tested to work with LibreOffice 4.1.3.
-* Citation parsing requires [Perl](http://www.perl.org/) to be installed
+* Citation parsing has a variety of requirements please refer to: vendor/knmnyn/ParsCit/INSTALL
+* [xml2bib](http://sourceforge.net/p/bibutils/home/xml2bib/) needs to be installed
 
 ```
 wget http://download.documentfoundation.org/libreoffice/stable/4.1.3/deb/x86_64/LibreOffice_4.1.3_Linux_x86-64_deb.tar.gz
