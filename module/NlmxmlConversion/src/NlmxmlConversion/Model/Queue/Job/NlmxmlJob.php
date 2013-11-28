@@ -43,6 +43,11 @@ class NlmxmlJob extends AbstractQueueJob
         $outputPath = $job->getDocumentPath() . '/' . $xmlFile;
         @rename($meTypesetOutputPath, $outputPath);
 
+        // Temporary fix; Metypeset doesn't convert references according to NLM
+        // XML standard.
+        // TODO: remove this once metypeset supports the proper conversion
+        $metypeset->postConvert($outputPath);
+
         $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
         $docxDocument = $documentDAO->getInstance();
         $docxDocument->path = $outputPath;
