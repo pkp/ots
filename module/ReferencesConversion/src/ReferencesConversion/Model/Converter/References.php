@@ -214,11 +214,11 @@ class References extends AbstractConverter
     {
         $bibliography = $this->extractBibliography();
 
-        $referencesBaseFile = $this->outputPath . '/document.refs';
-        $referencesFile = $referencesBaseFile . '.txt';
 
         // If we got a bibliography DOM node prepare the content for ParsCit
         if ($bibliography !== false) {
+            $referencesFile = $this->outputPath . '/referencesTmp.txt';
+
             // Convert bibliography DOM node to string
             $references = array('REFERENCES');
             foreach ($bibliography->childNodes as $reference) {
@@ -255,6 +255,8 @@ class References extends AbstractConverter
         $this->status = $command->isSuccess();
         $this->output = $command->getOutputString();
 
+        // Remove the temporary files
+        $referencesBaseFile = preg_replace('/\.[^.]+$/', '', $referencesFile);
         @unlink($referencesBaseFile . '.body');
         @unlink($referencesBaseFile . '.cite');
         @unlink($referencesBaseFile . '.txt');
