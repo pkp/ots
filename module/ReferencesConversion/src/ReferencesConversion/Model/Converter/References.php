@@ -214,7 +214,6 @@ class References extends AbstractConverter
     {
         $bibliography = $this->extractBibliography();
 
-
         // If we got a bibliography DOM node prepare the content for ParsCit
         if ($bibliography !== false) {
             $referencesFile = $this->outputPath . '/referencesTmp.txt';
@@ -222,7 +221,7 @@ class References extends AbstractConverter
             // Convert bibliography DOM node to string
             $references = array('REFERENCES');
             foreach ($bibliography->childNodes as $reference) {
-                $references[] = $this->domNodeValuesToString($reference);
+                $references[] = $reference->textContent;
             }
             $references = implode(PHP_EOL . PHP_EOL, $references);
 
@@ -324,25 +323,5 @@ class References extends AbstractConverter
             $dom->documentElement->appendChild($reference);
         }
         $dom->save($this->outputFile);
-    }
-
-    /**
-     * Parses all the node values from a DOMNode and its children into a string
-     *
-     * @param DOMNode $node
-     * @param string $seperator
-     * @return string DOMNode values
-     */
-    protected function domNodeValuesToString(DOMNode $node, $seperator = ' ') {
-        $children = new RecursiveIteratorIterator(
-            new RecursiveDOMIterator($node, RecursiveIteratorIterator::SELF_FIRST)
-        );
-
-        $childValues = array();
-        foreach ($children as $child) {
-            $childValues[] = $child->nodeValue;
-        }
-
-        return implode($seperator, $childValues);
     }
 }
