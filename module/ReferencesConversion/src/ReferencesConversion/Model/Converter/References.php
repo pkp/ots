@@ -5,8 +5,10 @@ namespace ReferencesConversion\Model\Converter;
 use Xmlps\Logger\Logger;
 use Xmlps\Command\Command;
 use Zend\Mvc\I18n\Translator;
+use DOMDocument;
 use DOMNode;
 use DOMNodeList;
+use DOMXpath;
 use XSLTProcessor;
 use Xmlps\DOM\Iterator\RecursiveDOMIterator;
 
@@ -111,7 +113,21 @@ class References extends AbstractConverter
     protected function parseDom()
     {
         $this->dom = \DOMDocument::loadXML($this->xml);
-        $this->domXpath = new \DOMXPath($this->dom);
+
+        if (!$this->dom) {
+            $this->logger->debug(
+                sprintf(
+                    $this->translator->translate(
+                        'referencesconversion.converter.loadXML.domErrorLog'
+                    ),
+                    $this->libxmlErrors()
+                )
+            );
+
+            return false;
+        }
+
+        $this->domXpath = new DOMXPath($this->dom);
     }
 
     /**
@@ -125,11 +141,25 @@ class References extends AbstractConverter
             $this->translator->translate('referencesconversion.converter.startLog')
         );
 
+        if (
+            !($this->dom instanceof DOMDocument) or
+            !($this->domXpath instanceof DOMXpath)
+        ) {
+            $this->logger->debug(
+                $this->translator->translate(
+                    'referencesconversion.converter.convert.inputErrorLog'
+                )
+            );
+            $this->status = false;
+            return;
+        }
+
         // Parse the bibliography
         if (!($bibliography = $this->parseBibliography())) {
             $this->status = false;
             return;
         }
+
 
         // Create an XML file containing the bibliography
         file_put_contents($this->outputFile, $bibliography);
@@ -334,13 +364,16 @@ class References extends AbstractConverter
         $dom = \DOMDocument::loadXML($this->output);
         if (!($dom instanceof \DOMDocument)) {
             $this->logger->debug(
-                $this->translator->translate(
-                    'referencesconversion.converter.parsCit.noDOMLog'
+                sprintf(
+                    $this->translator->translate(
+                        'referencesconversion.converter.parsCit.noDOMLog'
+                    ),
+                    $this->libxmlErrors()
                 )
             );
             return false;
         }
-        $domXpath = new \DOMXPath($dom);
+        $domXpath = new DOMXPath($dom);
 
         // Fetch the citation list node
         $parsed = $domXpath->query(
@@ -374,7 +407,13 @@ class References extends AbstractConverter
      */
     protected function transform(DOMNodeList $bibliography)
     {
-        $dom = new \DOMDocument;
+        $this->logger->debug(
+            $this->translator->translate(
+                'referencesconversion.converter.transformBibliography.startLog'
+            )
+        );
+
+        $dom = new DOMDocument;
         $dom->appendChild($dom->createElement('citationList'));
         foreach ($bibliography as $reference) {
             $reference = $dom->importNode($reference, true);
@@ -382,17 +421,61 @@ class References extends AbstractConverter
         }
 
         $xslt = new XSLTProcessor();
-        if (!($xsl = simplexml_load_string(file_get_contents($this->parsCitXsl)))) return false;
+        if (!($xsl = simplexml_load_string(file_get_contents($this->parsCitXsl)))) {
+            $this->logger->debug(
+                $this->translator->translate(
+                    'referencesconversion.converter.transformBibliography.styleSheetErrorLog'
+                )
+            );
+            return false;
+        }
         $xslt->importStylesheet($xsl);
 
-        if (!($xml = $xslt->transformToXML($dom))) return false;
+        if (!($xml = $xslt->transformToXML($dom))) {
+            $this->logger->debug(
+                sprintf(
+                    $this->translator->translate(
+                        'referencesconversion.converter.transformBibliography.transformErrorLog'
+                    ),
+                    $this->libxmlErrors()
+                )
+            );
+
+            return false;
+        };
 
         // Clean , . or "in" from titles if necessary
-        return preg_replace(
+        $xml = preg_replace(
             '#<title>(.+?)\s*\.?,?\s*(in)?</title>#is',
             '<title>$1</title>',
             $xml
         );
 
+        $this->logger->debug(
+            sprintf(
+                $this->translator->translate(
+                    'referencesconversion.converter.transformBibliography.successLog'
+                ),
+                $xml
+            )
+        );
+
+        return $xml;
+    }
+
+    /**
+     * Returns a string containing LIBXML errors
+     *
+     * @return string LIBXML errors
+     */
+    protected function libxmlErrors()
+    {
+        $errors = implode(PHP_EOL, array_map(
+            function ($e) { return $e->message; },
+            libxml_get_errors()
+        ));
+        libxml_clear_errors();
+
+        return $errors;
     }
 }
