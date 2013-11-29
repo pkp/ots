@@ -7,7 +7,7 @@ use Xmlps\Command\Command;
 use Zend\Mvc\I18n\Translator;
 use DOMNode;
 use DOMNodeList;
-use RecursiveIteratorIterator;
+use XSLTProcessor;
 use Xmlps\DOM\Iterator\RecursiveDOMIterator;
 
 use Manager\Model\Converter\AbstractConverter;
@@ -28,6 +28,10 @@ class References extends AbstractConverter
     protected $dom;
     protected $domXpath;
 
+    // TODO: This should be a config setting
+    protected $parsCitCommand = 'vendor/MichaelThessel/ParsCit/bin/citeExtract.pl';
+    protected $parsCitXsl = 'module/ReferencesConversion/assets/parsCit.xsl';
+
     /**
      * Constructor
      *
@@ -43,6 +47,7 @@ class References extends AbstractConverter
 
         // Avoid displaying of warnings/errors by libxml
         libxml_use_internal_errors(true);
+        libxml_clear_errors();
     }
 
     /**
@@ -89,28 +94,6 @@ class References extends AbstractConverter
     }
 
     /**
-     * Parse the references
-     *
-     * @return void
-     */
-    public function convert()
-    {
-        $this->logger->debug(
-            $this->translator->translate('referencesconversion.converter.startLog')
-        );
-
-        // Parse the bibliography
-        $bibliography = $this->parseBibliography();
-        if (!($bibliography instanceof DOMNodeList)) {
-            $this->status = false;
-            return;
-        }
-
-        // Create an XML file containing the bibliography
-        $this->save($bibliography);
-    }
-
-    /**
      * Loads the xml from the input file
      *
      * @return void
@@ -129,6 +112,62 @@ class References extends AbstractConverter
     {
         $this->dom = \DOMDocument::loadXML($this->xml);
         $this->domXpath = new \DOMXPath($this->dom);
+    }
+
+    /**
+     * Parse the references
+     *
+     * @return void
+     */
+    public function convert()
+    {
+        $this->logger->debug(
+            $this->translator->translate('referencesconversion.converter.startLog')
+        );
+
+        // Parse the bibliography
+        if (!($bibliography = $this->parseBibliography())) {
+            $this->status = false;
+            return;
+        }
+
+        // Create an XML file containing the bibliography
+        file_put_contents($this->outputFile, $bibliography);
+    }
+
+    /**
+     * Parse the bibliography from a document.
+     *
+     * @return DomNode CitationList dom node
+     */
+    protected function parseBibliography()
+    {
+        // Extract the bibliography from the input file
+        $bibliography = $this->extractBibliography();
+
+        // Create a temporary file for the parsCit command to process
+        $referencesFile = $this->getReferenceFile($bibliography);
+
+        // Process the temporary file with parsCit
+        $this->parsCitExecute($referencesFile);
+
+        $this->logger->debug(
+            sprintf(
+                $this->translator->translate(
+                    'referencesconversion.converter.parsCit.commandOutputLog'
+                ),
+                $this->output
+            )
+        );
+
+        // Exit if parsing failed
+        if (!$this->status) { return false; }
+
+        // Load the citation list into a DOMNodeList
+        if (!($bibliography = $this->loadCitationList())) return false;
+
+        // XSLT transform the bibliography
+        return $this->transform($bibliography);
     }
 
     /**
@@ -206,38 +245,6 @@ class References extends AbstractConverter
     }
 
     /**
-     * Parse the bibliography from a document.
-     *
-     * @return DomNode CitationList dom node
-     */
-    protected function parseBibliography()
-    {
-        // Extract the bibliography from the input file
-        $bibliography = $this->extractBibliography();
-
-        // Create a temporary file for the parsCit command to process
-        $referencesFile = $this->getReferenceFile($bibliography);
-
-        // Process the temporary file with parsCit
-        $this->parsCitExecute($referencesFile);
-
-        $this->logger->debug(
-            sprintf(
-                $this->translator->translate(
-                    'referencesconversion.converter.parsCit.commandOutputLog'
-                ),
-                $this->output
-            )
-        );
-
-        // Exit if parsing failed
-        if (!$this->status) { return false; }
-
-        // Postprocess the parsCit output into a DOMNodeList
-        return $this->parsCitPostProcess();
-    }
-
-    /**
      * Creates a temporary reference file to be used with the parsCit command
      *
      * @param DOMNode $bibliography Bibliography file name to create a reference from
@@ -279,8 +286,7 @@ class References extends AbstractConverter
     {
         // Build the shell command
         $command = new Command;
-        // TODO: this should be a config setting
-        $command->setCommand('vendor/MichaelThessel/ParsCit/bin/citeExtract.pl');
+        $command->setCommand($this->parsCitCommand);
         $command->addSwitch('-m', 'extract_citations');
         $command->addArgument($referencesFile);
 
@@ -322,10 +328,10 @@ class References extends AbstractConverter
      *
      * @return DOMNodeList ParsCit output as DOMNodeList
      */
-    protected function parsCitPostProcess()
+    protected function loadCitationList()
     {
         // Create DOM tree from output
-        $dom = \DOMDocument::loadXML($this->output, LIBXML_NOERROR);
+        $dom = \DOMDocument::loadXML($this->output);
         if (!($dom instanceof \DOMDocument)) {
             $this->logger->debug(
                 $this->translator->translate(
@@ -360,13 +366,13 @@ class References extends AbstractConverter
     }
 
     /**
-     * Saves the parsed bibliography as XML to the output file
+     * XSLT transform the bibliography
      *
-     * @param DOMNode $bibliography
+     * @param DOMNodeList $bibliography
      *
-     * @return void
+     * @return string Converted XML
      */
-    protected function save(DOMNodeList &$bibliography)
+    protected function transform(DOMNodeList $bibliography)
     {
         $dom = new \DOMDocument;
         $dom->appendChild($dom->createElement('citationList'));
@@ -374,6 +380,11 @@ class References extends AbstractConverter
             $reference = $dom->importNode($reference, true);
             $dom->documentElement->appendChild($reference);
         }
-        $dom->save($this->outputFile);
+
+        $xslt = new XSLTProcessor();
+        if (!($xsl = simplexml_load_string(file_get_contents($this->parsCitXsl)))) return false;
+        $xslt->importStylesheet($xsl);
+
+        return $xslt->transformToXML($dom);
     }
 }
