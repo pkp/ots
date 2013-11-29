@@ -67,13 +67,9 @@ class Manager {
            throw new \Exception('Invalid job id');
         }
 
-        $this->logger->info(
-            sprintf(
-                $this->translator->translate(
-                    'manager.queue.receivedProcessingLog'
-                ),
-                $job->id
-            )
+        $this->logger->infoTranslate(
+            'manager.queue.receivedProcessingLog',
+            $job->id
         );
 
         // Queue the job
@@ -103,13 +99,9 @@ class Manager {
 
         // Stop if the job has failed
         if ($job->status == JOB_STATUS_FAILED) {
-            $this->logger->info(
-                sprintf(
-                    $this->translator->translate(
-                        'manager.queue.jobFailedLog'
-                    ),
-                    $job->id
-                )
+            $this->logger->infoTranslate(
+                'manager.queue.jobFailedLog',
+                $job->id
             );
             return;
         }
@@ -130,13 +122,9 @@ class Manager {
             $this->zipJob($job);
         }
         else {
-            $this->logger->info(
-                sprintf(
-                    $this->translator->translate(
-                        'manager.queue.jobCompletedLog'
-                    ),
-                    $job->id
-                )
+            $this->logger->infoTranslate(
+                'manager.queue.jobCompletedLog',
+                $job->id
             );
 
             $job->status = JOB_STATUS_COMPLETED;
@@ -202,14 +190,10 @@ class Manager {
            throw new \Exception('Invalid queue');
         }
 
-        $this->logger->info(
-            sprintf(
-                $this->translator->translate(
-                    'manager.queue.receivedQueueLog'
-                ),
-                $job->id,
-                $queue
-            )
+        $this->logger->infoTranslate(
+            'manager.queue.receivedQueueLog',
+            $job->id,
+            $queue
         );
 
         $queueJob = $this->jobManager->get($this->queueMap[$queue]);

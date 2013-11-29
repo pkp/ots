@@ -96,14 +96,7 @@ class ManagerController extends AbstractActionController {
                 $document->path = $upload['path'];
                 $this->documentDAO->save($document);
 
-                $this->logger->info(
-                    sprintf(
-                        $this->translator->translate(
-                            'manager.job.createLog'
-                        ),
-                        $job->id
-                    )
-                );
+                $this->logger->infoTranslate('manager.job.createLog', $job->id);
 
                 // Send the job to the queue manager
                 $this->queueManager->addJob($job->id);

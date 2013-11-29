@@ -48,13 +48,12 @@ class Module
                 {
                     $config = $sm->get('Config');
                     $logger = $sm->get('Logger');
-                    $translator = $sm->get('Translator');
                     if (!isset($config['conversion']['docx']['unoconv'])) {
                         throw new \Exception('Unoconv configuration is missing');
                     }
                     $config = $config['conversion']['docx']['unoconv'];
 
-                    return new Unoconv($config, $logger, $translator);
+                    return new Unoconv($config, $logger);
                 },
             ),
         );

@@ -15,6 +15,8 @@ use Zend\Mvc\MvcEvent;
 use Xmlps\Doctrine\Listener\ServiceManagerListener;
 use Xmlps\Event\Handler\AclDispatchHandler;
 use Xmlps\Event\Handler\FlashMessengerRenderHandler;
+use Xmlps\Log\Writer\Doctrine as DoctrineLogWriter;
+use Xmlps\Logger\Logger;
 
 use Zend\Mail\Message;
 use Zend\Mail\Transport\Sendmail;
@@ -83,9 +85,12 @@ class Module
                 },
                 'Logger' => function($sm)
                 {
+                    $translator = $sm->get('Translator');
+                    $logger = new Logger($translator);
+
                     $config = $sm->get('config');
-                    $logger = $sm->get('Xmlps\Logger\Logger');
-                    $writer = $sm->get('Xmlps\Log\Writer\Doctrine');
+                    $logDAO = $sm->get('LogDAO');
+                    $writer = new DoctrineLogWriter($logDAO);
                     if (!empty($config['log']['level'])) {
                         $writer->addFilter($config['log']['level']);
                     }
@@ -105,13 +110,6 @@ class Module
                 'UrlHelper' => function($sm) {
                     $viewHelperManager = $sm->get('viewhelpermanager');
                     return $viewHelperManager->get('url');
-                },
-                'Xmlps\Log\Writer\Doctrine' => function($sm) {
-                    $logDAO = $sm->get('LogDAO');
-                    return new \Xmlps\Log\Writer\Doctrine($logDAO);
-                },
-                'Xmlps\Logger\Logger' => function($sm) {
-                    return new \Xmlps\Logger\Logger;
                 },
             ),
             'shared' => array(

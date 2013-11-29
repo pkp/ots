@@ -2,15 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-28 18:46-1000\n"
-"PO-Revision-Date: 2013-11-28 18:47-1000\n"
+"POT-Creation-Date: 2013-11-29 11:23-1000\n"
+"PO-Revision-Date: 2013-11-29 11:25-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-KeywordsList: translate;debugTranslate;infoTranslate;"
+"noticeTranslate;warnTranslate;errTranslate;critTranslate;alertTranslate;"
+"emergTranslate\n"
 "X-Poedit-Basepath: .\n"
 "X-Generator: Poedit 1.5.7\n"
 "X-Poedit-SearchPath-0: ..\n"
@@ -76,63 +78,63 @@ msgstr "Job %d is completed"
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:119
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:121
 msgid "referencesconversion.converter.loadXML.domErrorLog"
 msgstr "Couldn't load input file. Invalid xml. LIBXML error: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:139
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:141
 msgid "referencesconversion.converter.startLog"
 msgstr "Starting Bibliography parsing"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:148
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:150
 msgid "referencesconversion.converter.convert.inputErrorLog"
 msgstr "The input file couldn't be parsed"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:185
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:187
 msgid "referencesconversion.converter.parsCit.commandOutputLog"
 msgstr "Output from ParsCit command: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:218
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:220
 msgid "referencesconversion.converter.parseBibliography.noBibliographyLog"
 msgstr "No Bibliography found"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:237
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:239
 msgid "referencesconversion.converter.parseBibliography.nlmLog"
 msgstr "Parsing for NLM bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:256
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:258
 msgid "referencesconversion.converter.parseBibliography.teiLog"
 msgstr "Parsing for TEI bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:324
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:326
 msgid "referencesconversion.converter.parsCit.commandLog"
 msgstr "Executing ParsCit command: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:367
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:369
 msgid "referencesconversion.converter.parsCit.noDOMLog"
 msgstr "ParsCit output is no valid XML. Error from LIBXML: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:384
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:386
 msgid "referencesconversion.converter.parsCit.noListNodeLog"
 msgstr "Citation list doesn't contain any entries"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:392
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:394
 msgid "referencesconversion.converter.parsCit.successLog"
 msgstr "ParsCit successfully parsed bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:410
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:412
 msgid "referencesconversion.converter.transformBibliography.startLog"
 msgstr "Transforming the parsed bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:425
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:427
 msgid "referencesconversion.converter.transformBibliography.styleSheetErrorLog"
 msgstr "Error loading the XSL style sheet"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:436
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:438
 msgid "referencesconversion.converter.transformBibliography.transformErrorLog"
 msgstr "Culdn't transform the parsed bibliography. Error from LIBXML: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:455
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:457
 msgid "referencesconversion.converter.transformBibliography.successLog"
 msgstr "Successfully transformed bibliography: %s"
 
@@ -273,45 +275,45 @@ msgstr ""
 msgid "user.authentication.sucessfulLogin"
 msgstr "Hi, welcome back!"
 
-#: ../../User/src/User/Controller/UserController.php:149
+#: ../../User/src/User/Controller/UserController.php:147
 msgid "user.authentication.sucessfulLoginLog"
 msgstr "Successful login by %s"
 
-#: ../../User/src/User/Controller/UserController.php:161
+#: ../../User/src/User/Controller/UserController.php:157
 msgid "user.authentication.invalidLoginCredentials"
 msgstr "The login credentials you provided are invalid. Please try again."
 
-#: ../../User/src/User/Controller/UserController.php:192
+#: ../../User/src/User/Controller/UserController.php:188
 msgid "user.authentication.sucessfulLogout"
 msgstr "Thanks for visiting."
 
-#: ../../User/src/User/Controller/UserController.php:199
+#: ../../User/src/User/Controller/UserController.php:195
 msgid "user.authentication.sucessfulLogoutLog"
 msgstr "Successful logout by %s"
 
-#: ../../User/src/User/Controller/UserController.php:245
+#: ../../User/src/User/Controller/UserController.php:241
 msgid "user.registration.sucessfulRegistration"
 msgstr ""
 "Thanks for registering. A confirmation email has been sent to you. Please "
 "follow the instructions in the email to activate your account."
 
-#: ../../User/src/User/Controller/UserController.php:252
+#: ../../User/src/User/Controller/UserController.php:248
 msgid "user.registration.sucessfulRegistrationLog"
 msgstr "User %s registered successfully"
 
-#: ../../User/src/User/Controller/UserController.php:306
+#: ../../User/src/User/Controller/UserController.php:302
 msgid "user.register.sucessfulActivation"
 msgstr "Your account has been successfully activated."
 
-#: ../../User/src/User/Controller/UserController.php:313
+#: ../../User/src/User/Controller/UserController.php:309
 msgid "user.register.sucessfulActivationLog"
 msgstr "Successful account activation by %s"
 
-#: ../../User/src/User/Controller/UserController.php:349
+#: ../../User/src/User/Controller/UserController.php:345
 msgid "user.settings.saveSuccessConfirm"
 msgstr "Your settings have been updated!"
 
-#: ../../User/src/User/Controller/UserController.php:356
+#: ../../User/src/User/Controller/UserController.php:352
 msgid "user.settings.saveSuccessConfirmLog"
 msgstr "User %s updated settings"
 

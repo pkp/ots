@@ -4,7 +4,6 @@ namespace ReferencesConversion\Model\Converter;
 
 use Xmlps\Logger\Logger;
 use Xmlps\Command\Command;
-use Zend\Mvc\I18n\Translator;
 use DOMDocument;
 use DOMNode;
 use DOMNodeList;
@@ -20,7 +19,6 @@ use Manager\Model\Converter\AbstractConverter;
 class References extends AbstractConverter
 {
     protected $logger;
-    protected $translator;
 
     protected $inputFile;
     protected $outputPath;
@@ -42,10 +40,9 @@ class References extends AbstractConverter
      *
      * @return void
      */
-    public function __construct(Logger $logger, Translator $translator)
+    public function __construct(Logger $logger)
     {
         $this->logger = $logger;
-        $this->translator = $translator;
 
         // Avoid displaying of warnings/errors by libxml
         libxml_use_internal_errors(true);
@@ -115,13 +112,9 @@ class References extends AbstractConverter
         $this->dom = \DOMDocument::loadXML($this->xml);
 
         if (!$this->dom) {
-            $this->logger->debug(
-                sprintf(
-                    $this->translator->translate(
-                        'referencesconversion.converter.loadXML.domErrorLog'
-                    ),
-                    $this->libxmlErrors()
-                )
+            $this->logger->debugTranslate(
+                'referencesconversion.converter.loadXML.domErrorLog',
+                $this->libxmlErrors()
             );
 
             return false;
@@ -137,18 +130,14 @@ class References extends AbstractConverter
      */
     public function convert()
     {
-        $this->logger->debug(
-            $this->translator->translate('referencesconversion.converter.startLog')
-        );
+        $this->logger->debugTranslate('referencesconversion.converter.startLog');
 
         if (
             !($this->dom instanceof DOMDocument) or
             !($this->domXpath instanceof DOMXpath)
         ) {
-            $this->logger->debug(
-                $this->translator->translate(
-                    'referencesconversion.converter.convert.inputErrorLog'
-                )
+            $this->logger->debugTranslate(
+                'referencesconversion.converter.convert.inputErrorLog'
             );
             $this->status = false;
             return;
@@ -181,13 +170,9 @@ class References extends AbstractConverter
         // Process the temporary file with parsCit
         $this->parsCitExecute($referencesFile);
 
-        $this->logger->debug(
-            sprintf(
-                $this->translator->translate(
-                    'referencesconversion.converter.parsCit.commandOutputLog'
-                ),
-                $this->output
-            )
+        $this->logger->debugTranslate(
+            'referencesconversion.converter.parsCit.commandOutputLog',
+            $this->output
         );
 
         // Exit if parsing failed
@@ -215,10 +200,8 @@ class References extends AbstractConverter
         }
 
         if (!$bibliography) {
-            $this->logger->debug(
-                $this->translator->translate(
-                    'referencesconversion.converter.parseBibliography.noBibliographyLog'
-                )
+            $this->logger->debugTranslate(
+                'referencesconversion.converter.parseBibliography.noBibliographyLog'
             );
 
             return false;
@@ -234,10 +217,8 @@ class References extends AbstractConverter
      */
     protected function extractNlmBibliography()
     {
-        $this->logger->debug(
-            $this->translator->translate(
-                'referencesconversion.converter.parseBibliography.nlmLog'
-            )
+        $this->logger->debugTranslate(
+            'referencesconversion.converter.parseBibliography.nlmLog'
         );
 
         $bibliography = $this->domXpath->query('//ref-list');
@@ -253,10 +234,8 @@ class References extends AbstractConverter
      */
     protected function extractTeiBibliography()
     {
-        $this->logger->debug(
-            $this->translator->translate(
-                'referencesconversion.converter.parseBibliography.teiLog'
-            )
+        $this->logger->debugTranslate(
+            'referencesconversion.converter.parseBibliography.teiLog'
         );
 
         $bibliography = $this->domXpath->query('//sec');
@@ -320,13 +299,9 @@ class References extends AbstractConverter
         $command->addSwitch('-m', 'extract_citations');
         $command->addArgument($referencesFile);
 
-        $this->logger->debug(
-            sprintf(
-                $this->translator->translate(
-                    'referencesconversion.converter.parsCit.commandLog'
-                ),
-                $command->getCommand()
-            )
+        $this->logger->debugTranslate(
+            'referencesconversion.converter.parsCit.commandLog',
+            $command->getCommand()
         );
 
         // Run the ParsCit conversion
@@ -363,13 +338,9 @@ class References extends AbstractConverter
         // Create DOM tree from output
         $dom = \DOMDocument::loadXML($this->output);
         if (!($dom instanceof \DOMDocument)) {
-            $this->logger->debug(
-                sprintf(
-                    $this->translator->translate(
-                        'referencesconversion.converter.parsCit.noDOMLog'
-                    ),
-                    $this->libxmlErrors()
-                )
+            $this->logger->debugTranslate(
+                'referencesconversion.converter.parsCit.noDOMLog',
+                $this->libxmlErrors()
             );
             return false;
         }
@@ -381,18 +352,14 @@ class References extends AbstractConverter
         );
 
         if (!$parsed->length) {
-            $this->logger->debug(
-                $this->translator->translate(
-                    'referencesconversion.converter.parsCit.noListNodeLog'
-                )
+            $this->logger->debugTranslate(
+                'referencesconversion.converter.parsCit.noListNodeLog'
             );
             return false;
         }
 
-        $this->logger->debug(
-            $this->translator->translate(
-                'referencesconversion.converter.parsCit.successLog'
-            )
+        $this->logger->debugTranslate(
+            'referencesconversion.converter.parsCit.successLog'
         );
 
         return $parsed;
@@ -407,10 +374,8 @@ class References extends AbstractConverter
      */
     protected function transform(DOMNodeList $bibliography)
     {
-        $this->logger->debug(
-            $this->translator->translate(
-                'referencesconversion.converter.transformBibliography.startLog'
-            )
+        $this->logger->debugTranslate(
+            'referencesconversion.converter.transformBibliography.startLog'
         );
 
         $dom = new DOMDocument;
@@ -422,23 +387,17 @@ class References extends AbstractConverter
 
         $xslt = new XSLTProcessor();
         if (!($xsl = simplexml_load_string(file_get_contents($this->parsCitXsl)))) {
-            $this->logger->debug(
-                $this->translator->translate(
-                    'referencesconversion.converter.transformBibliography.styleSheetErrorLog'
-                )
+            $this->logger->debugTranslate(
+                'referencesconversion.converter.transformBibliography.styleSheetErrorLog'
             );
             return false;
         }
         $xslt->importStylesheet($xsl);
 
         if (!($xml = $xslt->transformToXML($dom))) {
-            $this->logger->debug(
-                sprintf(
-                    $this->translator->translate(
-                        'referencesconversion.converter.transformBibliography.transformErrorLog'
-                    ),
-                    $this->libxmlErrors()
-                )
+            $this->logger->debugTranslate(
+                'referencesconversion.converter.transformBibliography.transformErrorLog',
+                $this->libxmlErrors()
             );
 
             return false;
@@ -451,13 +410,9 @@ class References extends AbstractConverter
             $xml
         );
 
-        $this->logger->debug(
-            sprintf(
-                $this->translator->translate(
-                    'referencesconversion.converter.transformBibliography.successLog'
-                ),
-                $xml
-            )
+        $this->logger->debugTranslate(
+            'referencesconversion.converter.transformBibliography.successLog',
+            $xml
         );
 
         return $xml;

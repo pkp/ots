@@ -114,11 +114,9 @@ class UserRegisterHandler implements ServiceLocatorAwareInterface
             $this->translator->translate('user.registration.confirmationEmailSubject')
         );
 
-        $this->logger->info(
-            sprintf(
-                $this->translator->translate('user.registration.confirmationEmailSentLog'),
-                $this->user->email
-            )
+        $this->logger->infoTranslate(
+            'user.registration.confirmationEmailSentLog',
+            $this->user->email
         );
 
         $this->transport->send($mail);

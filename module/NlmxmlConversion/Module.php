@@ -48,13 +48,12 @@ class Module
                 {
                     $config = $sm->get('Config');
                     $logger = $sm->get('Logger');
-                    $translator = $sm->get('Translator');
                     if (!isset($config['conversion']['nlmxml']['metypeset'])) {
                         throw new \Exception('meTypeset configuration is missing');
                     }
                     $config = $config['conversion']['nlmxml']['metypeset'];
 
-                    return new Metypeset($config, $logger, $translator);
+                    return new Metypeset($config, $logger);
                 },
             ),
         );

@@ -143,13 +143,9 @@ class UserController extends AbstractActionController {
                         )
                     );
 
-                    $this->logger->info(
-                        sprintf(
-                            $this->translator->translate(
-                                'user.authentication.sucessfulLoginLog'
-                            ),
-                            $user->email
-                        )
+                    $this->logger->infoTranslate(
+                        'user.authentication.sucessfulLoginLog',
+                        $user->email
                     );
 
                     return $this->redirect()->toRoute('home');
@@ -193,13 +189,9 @@ class UserController extends AbstractActionController {
             )
         );
 
-        $this->logger->info(
-            sprintf(
-                $this->translator->translate(
-                    'user.authentication.sucessfulLogoutLog'
-                ),
-                $user->email
-            )
+        $this->logger->infoTranslate(
+            'user.authentication.sucessfulLogoutLog',
+            $user->email
         );
 
         return $this->redirect()->toRoute('home');
@@ -246,13 +238,9 @@ class UserController extends AbstractActionController {
                     )
                 );
 
-                $this->logger->info(
-                    sprintf(
-                        $this->translator->translate(
-                            'user.registration.sucessfulRegistrationLog'
-                        ),
-                        $user->email
-                    )
+                $this->logger->infoTranslate(
+                    'user.registration.sucessfulRegistrationLog',
+                    $user->email
                 );
 
                 return $this->redirect()->toRoute('home');
@@ -307,13 +295,9 @@ class UserController extends AbstractActionController {
             )
         );
 
-        $this->logger->info(
-            sprintf(
-                $this->translator->translate(
-                    'user.register.sucessfulActivationLog'
-                ),
-                $user->email
-            )
+        $this->logger->infoTranslate(
+            'user.register.sucessfulActivationLog',
+            $user->email
         );
 
         return $this->redirect()->toRoute('home');
@@ -350,13 +334,9 @@ class UserController extends AbstractActionController {
                     )
                 );
 
-                $this->logger->info(
-                    sprintf(
-                        $this->translator->translate(
-                            'user.settings.saveSuccessConfirmLog'
-                        ),
-                        $user->email
-                    )
+                $this->logger->infoTranslate(
+                    'user.settings.saveSuccessConfirmLog',
+                    $user->email
                 );
 
                 return $this->redirect()->toRoute('home');

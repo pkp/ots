@@ -47,9 +47,8 @@ class Module
                 'ReferencesConversion\Model\Converter\References' => function($sm)
                 {
                     $logger = $sm->get('Logger');
-                    $translator = $sm->get('Translator');
 
-                    return new References($logger, $translator);
+                    return new References($logger);
                 },
             ),
         );

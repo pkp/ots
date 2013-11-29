@@ -105,13 +105,9 @@ class UserManagementController extends AbstractActionController {
                     )
                 );
 
-                $this->logger->info(
-                    sprintf(
-                        $this->translator->translate(
-                            'admin.userManagement.userEditSuccessLog'
-                        ),
-                        $user->email
-                    )
+                $this->logger->infoTranslate(
+                    'admin.userManagement.userEditSuccessLog',
+                    $user->email
                 );
 
                 return $this->redirect()->toRoute(
@@ -175,13 +171,9 @@ class UserManagementController extends AbstractActionController {
                 )
             );
 
-            $this->logger->info(
-                sprintf(
-                    $this->translator->translate(
-                        'admin.userManagement.userRemovalSuccessLog'
-                    ),
-                    $user->email
-                )
+            $this->logger->infoTranslate(
+                'admin.userManagement.userRemovalSuccessLog',
+                $user->email
             );
 
             return $this->redirect()->toRoute(

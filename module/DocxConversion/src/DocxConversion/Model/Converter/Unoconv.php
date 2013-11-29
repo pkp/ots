@@ -4,7 +4,6 @@ namespace DocxConversion\Model\Converter;
 
 use Xmlps\Logger\Logger;
 use Xmlps\Command\Command;
-use Zend\Mvc\I18n\Translator;
 
 use Manager\Model\Converter\AbstractConverter;
 
@@ -15,7 +14,6 @@ class Unoconv extends AbstractConverter
 {
     protected $config;
     protected $logger;
-    protected $translator;
 
     protected $filter;
     protected $inputFile;
@@ -27,20 +25,17 @@ class Unoconv extends AbstractConverter
      *
      * @param mixed $config Unoconv config
      * @param Logger $logger Logger
-     * @param Translator $translator Translator
      *
      * @return void
      */
-    public function __construct($config, Logger $logger, Translator $translator)
+    public function __construct($config, Logger $logger)
     {
         if (!isset($config['command'])) {
             throw new \Exception('Unoconv command is not configured');
         }
 
         $this->config = $config;
-
         $this->logger = $logger;
-        $this->translator = $translator;
     }
 
     /**
@@ -129,11 +124,9 @@ class Unoconv extends AbstractConverter
         // Redirect STDERR to STDOUT to captue it in $this->output
         $command->addRedirect('2>&1');
 
-        $this->logger->debug(
-            sprintf(
-                $this->translator->translate('docxconversion.unoconv.executeCommandLog'),
-                $command->getCommand()
-            )
+        $this->logger->debugTranslate(
+            'docxconversion.unoconv.executeCommandLog',
+            $command->getCommand()
         );
 
         // Execute the conversion
@@ -141,11 +134,9 @@ class Unoconv extends AbstractConverter
         $this->status = $command->isSuccess();
         $this->output = $command->getOutputString();
 
-        $this->logger->debug(
-            sprintf(
-                $this->translator->translate('docxconversion.unoconv.executeCommandOutputLog'),
-                $this->getOutput()
-            )
+        $this->logger->debugTranslate(
+            'docxconversion.unoconv.executeCommandOutputLog',
+            $this->getOutput()
         );
     }
 }

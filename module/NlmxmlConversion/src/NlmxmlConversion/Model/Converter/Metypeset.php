@@ -4,7 +4,6 @@ namespace NlmxmlConversion\Model\Converter;
 
 use Xmlps\Logger\Logger;
 use Xmlps\Command\Command;
-use Zend\Mvc\I18n\Translator;
 
 use Manager\Model\Converter\AbstractConverter;
 
@@ -15,7 +14,6 @@ class Metypeset extends AbstractConverter
 {
     protected $config;
     protected $logger;
-    protected $translator;
 
     protected $inputFile;
     protected $outputDirectory;
@@ -25,11 +23,10 @@ class Metypeset extends AbstractConverter
      *
      * @param mixed $config meTypeset config
      * @param Logger $logger Logger
-     * @param Translator $translator Translator
      *
      * @return void
      */
-    public function __construct($config, Logger $logger, Translator $translator)
+    public function __construct($config, Logger $logger)
     {
         if (!isset($config['command'])) {
             throw new \Exception('meTypeset command is not configured');
@@ -38,7 +35,6 @@ class Metypeset extends AbstractConverter
         $this->config = $config;
 
         $this->logger = $logger;
-        $this->translator = $translator;
     }
 
     /**
@@ -95,11 +91,9 @@ class Metypeset extends AbstractConverter
         // Redirect STDERR to STDOUT to captue it in $this->output
         $command->addRedirect('2>&1');
 
-        $this->logger->debug(
-            sprintf(
-                $this->translator->translate('nlmxmlconversion.metypeset.executeCommandLog'),
-                $command->getCommand()
-            )
+        $this->logger->debugTranslate(
+            'nlmxmlconversion.metypeset.executeCommandLog',
+            $command->getCommand()
         );
 
         // Execute the conversion
@@ -107,11 +101,9 @@ class Metypeset extends AbstractConverter
         $this->status = $command->isSuccess();
         $this->output = $command->getOutputString();
 
-        $this->logger->debug(
-            sprintf(
-                $this->translator->translate('nlmxmlconversion.metypeset.executeCommandOutputLog'),
-                $this->output
-            )
+        $this->logger->debugTranslate(
+            'nlmxmlconversion.metypeset.executeCommandOutputLog',
+            $this->output
         );
     }
 
