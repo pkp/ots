@@ -138,7 +138,6 @@ f = open(sys.argv[1], 'rb')
 
 filestring = f.read()
 
-# changes ref wrapper to <ref-list> (couple different approaches)
 filestring = re.sub(r'<p>\s+?(<bold>|<title>)([A-Za-z\s]+)(</bold>|</title>)\s+?</p>\s+<list.+?>((.|\s)+?)(</list>)',r'<title>\2</title>\n<ref-list>\4</ref-list>',filestring)
 filestring = re.sub(r'(<disp-quote>|<list-item>)\s+<p>\s*?.*?([0-9]+)\.\s+?(?=[A-Z])',r'<ref rid="R\2">',filestring)
 filestring = re.sub(r'</p>\s+(</disp-quote>|</list-item>)',r'</ref>',filestring)
@@ -163,5 +162,12 @@ EOF;
         $output = array();
         exec('python ' . $tmpScript . ' ' . $file . ' ' . $file . ' 2>&1', $output);
         @unlink($tmpScript);
+
+        // Wrap references in ref-list tags
+        $xml = file_get_contents($file);
+        if (!preg_match('/<ref-list/', $xml)) {
+            $xml = preg_replace('#(<ref[^>]*>.*</ref>)#s', '<ref-list>\1</ref-list>', $xml);
+        }
+        file_put_contents($file, $xml);
     }
 }
