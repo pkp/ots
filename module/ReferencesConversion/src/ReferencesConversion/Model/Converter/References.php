@@ -385,6 +385,14 @@ class References extends AbstractConverter
         if (!($xsl = simplexml_load_string(file_get_contents($this->parsCitXsl)))) return false;
         $xslt->importStylesheet($xsl);
 
-        return $xslt->transformToXML($dom);
+        if (!($xml = $xslt->transformToXML($dom))) return false;
+
+        // Clean , . or "in" from titles if necessary
+        return preg_replace(
+            '#<title>(.+?)\s*\.?,?\s*(in)?</title>#is',
+            '<title>$1</title>',
+            $xml
+        );
+
     }
 }
