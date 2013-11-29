@@ -212,8 +212,39 @@ class References extends AbstractConverter
      */
     protected function parseBibliography()
     {
+        // Extract the bibliography from the input file
         $bibliography = $this->extractBibliography();
 
+        // Create a temporary file for the parsCit command to process
+        $referencesFile = $this->getReferenceFile($bibliography);
+
+        // Process the temporary file with parsCit
+        $this->parsCitExecute($referencesFile);
+
+        $this->logger->debug(
+            sprintf(
+                $this->translator->translate(
+                    'referencesconversion.converter.parsCit.commandOutputLog'
+                ),
+                $this->output
+            )
+        );
+
+        // Exit if parsing failed
+        if (!$this->status) { return false; }
+
+        // Postprocess the parsCit output into a DOMNodeList
+        return $this->parsCitPostProcess();
+    }
+
+    /**
+     * Creates a temporary reference file to be used with the parsCit command
+     *
+     * @param DOMNode $bibliography Bibliography file name to create a reference from
+     * @return string Reference file name
+     */
+    protected function getReferenceFile($bibliography)
+    {
         // If we got a bibliography DOM node prepare the content for ParsCit
         if ($bibliography !== false) {
             $referencesFile = $this->outputPath . '/referencesTmp.txt';
@@ -234,8 +265,21 @@ class References extends AbstractConverter
             $referencesFile = $this->inputFile;
         }
 
+        return $referencesFile;
+    }
+
+    /**
+     * Runs the citation parser
+     *
+     * @param string $referencesFile Reference file to parse
+     *
+     * @return void
+     */
+    protected function parsCitExecute($referencesFile)
+    {
         // Build the shell command
         $command = new Command;
+        // TODO: this should be a config setting
         $command->setCommand('vendor/MichaelThessel/ParsCit/bin/citeExtract.pl');
         $command->addSwitch('-m', 'extract_citations');
         $command->addArgument($referencesFile);
@@ -255,23 +299,31 @@ class References extends AbstractConverter
         $this->output = $command->getOutputString();
 
         // Remove the temporary files
+        $this->parsCitCleanup($referencesFile);
+    }
+
+    /**
+     * Remove temporary files after ParsCit conversion
+     *
+     * @param string $referencesFile The reference file to clean up
+     *
+     * @return void
+     */
+    protected function parsCitCleanup($referencesFile)
+    {
         $referencesBaseFile = preg_replace('/\.[^.]+$/', '', $referencesFile);
         @unlink($referencesBaseFile . '.body');
         @unlink($referencesBaseFile . '.cite');
         @unlink($referencesBaseFile . '.txt');
+    }
 
-        $this->logger->debug(
-            sprintf(
-                $this->translator->translate(
-                    'referencesconversion.converter.parsCit.commandOutputLog'
-                ),
-                $this->output
-            )
-        );
-
-        // Exit if parsing failed
-        if (!$this->status) { return false; }
-
+    /**
+     * Load the citation list from the parsCit XML output into a DOMNodeList
+     *
+     * @return DOMNodeList ParsCit output as DOMNodeList
+     */
+    protected function parsCitPostProcess()
+    {
         // Create DOM tree from output
         $dom = \DOMDocument::loadXML($this->output, LIBXML_NOERROR);
         if (!($dom instanceof \DOMDocument)) {
