@@ -109,9 +109,9 @@ class References extends AbstractConverter
      */
     protected function parseDom()
     {
-        $this->dom = \DOMDocument::loadXML($this->xml);
+        $this->dom = new DOMDocument();
 
-        if (!$this->dom) {
+        if (!$this->dom->loadXML($this->xml)) {
             $this->logger->debugTranslate(
                 'referencesconversion.converter.loadXML.domErrorLog',
                 $this->libxmlErrors()
@@ -336,8 +336,8 @@ class References extends AbstractConverter
     protected function loadCitationList()
     {
         // Create DOM tree from output
-        $dom = \DOMDocument::loadXML($this->output);
-        if (!($dom instanceof \DOMDocument)) {
+        $dom = new DOMDocument;
+        if (!$dom->loadXML($this->output)) {
             $this->logger->debugTranslate(
                 'referencesconversion.converter.parsCit.noDOMLog',
                 $this->libxmlErrors()
