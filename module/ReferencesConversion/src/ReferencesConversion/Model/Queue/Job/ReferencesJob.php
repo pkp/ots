@@ -29,7 +29,7 @@ class ReferencesJob extends AbstractQueueJob
         // Parse the references
         $outputFile = $job->getDocumentPath() . '/document.bib.xml';
         $references->setInputFile($nlmxmlDocument->path);
-        $references->setOutputPath($job->getDocumentPath());
+        $references->setOutputDirectory($job->getDocumentPath());
         $references->setOutputFile($outputFile);
         $references->convert();
 

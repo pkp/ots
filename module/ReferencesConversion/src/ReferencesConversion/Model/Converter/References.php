@@ -72,15 +72,15 @@ class References extends AbstractConverter
     }
 
     /**
-     * Set the output path
+     * Set the output directory for temporary conversion files
      *
-     * @param mixed $outputPath
+     * @param mixed $outputDirectory
      *
      * @return void
      */
-    public function setOutputPath($outputPath)
+    public function setOutputDirectory($outputDirectory)
     {
-        $this->outputPath = $outputPath;
+        $this->outputDirectory = $outputDirectory;
     }
 
     /**
