@@ -9,7 +9,6 @@ use DOMNode;
 use DOMNodeList;
 use DOMXpath;
 use XSLTProcessor;
-use Xmlps\DOM\Iterator\RecursiveDOMIterator;
 
 use Manager\Model\Converter\AbstractConverter;
 
