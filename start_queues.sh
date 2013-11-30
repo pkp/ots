@@ -12,5 +12,7 @@ php public/index.php queue doctrine nlmxml --start &
 echo "Started NLMXML queue [PID $!]"
 php public/index.php queue doctrine references --start &
 echo "Started References queue [PID $!]"
+php public/index.php queue doctrine bibtex --start &
+echo "Started Bibtex queue [PID $!]"
 php public/index.php queue doctrine zip --start &
 echo "Started Zip queue [PID $!]"

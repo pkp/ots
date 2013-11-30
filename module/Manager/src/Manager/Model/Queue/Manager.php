@@ -25,6 +25,7 @@ class Manager {
         'docx' => 'DocxConversion\Model\Queue\Job\DocxJob',
         'nlmxml' => 'NlmxmlConversion\Model\Queue\Job\NlmxmlJob',
         'references' => 'ReferencesConversion\Model\Queue\Job\ReferencesJob',
+        'bibtex' => 'BibtexConversion\Model\Queue\Job\BibtexJob',
         'zip' => 'ZipConversion\Model\Queue\Job\ZipJob',
     );
 
@@ -95,6 +96,7 @@ class Manager {
             in_array($job->conversionStage, array(JOB_CONVERSION_STAGE_REFERENCES))
         ) {
             $job->status = JOB_STATUS_PROCESSING;
+            $job->conversionStage = JOB_CONVERSION_STAGE_HTML;
         }
 
         // Stop if the job has failed
@@ -115,9 +117,12 @@ class Manager {
         elseif ($job->conversionStage == JOB_CONVERSION_STAGE_NLMXML) {
             $this->referencesJob($job);
         }
+        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_REFERENCES) {
+            $this->bibtexJob($job);
+        }
         elseif (
-            $job->conversionStage == JOB_CONVERSION_STAGE_REFERENCES or
-            $job->conversionStage == JOB_CONVERSION_STAGE_BIBTEX
+            $job->conversionStage == JOB_CONVERSION_STAGE_BIBTEX or
+            $job->conversionStage == JOB_CONVERSION_STAGE_HTML
         ) {
             $this->zipJob($job);
         }
@@ -166,6 +171,17 @@ class Manager {
     }
 
     /**
+     * Queue a bibtex parsing job
+     *
+     * @param mixed $job Job to queue
+     * @return void
+     */
+    protected function bibtexJob($job)
+    {
+        $this->queueJob($job, 'bibtex');
+    }
+
+    /**
      * Queue a Zip conversion job
      *
      * @param mixed $job Job to queue
@@ -175,7 +191,6 @@ class Manager {
     {
         $this->queueJob($job, 'zip');
     }
-
 
     /**
      * Queues a job in its corresponding queue

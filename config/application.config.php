@@ -13,6 +13,7 @@ return array(
         'DocxConversion',
         'NlmxmlConversion',
         'ReferencesConversion',
+        'BibtexConversion',
         'ZipConversion',
     ),
 
