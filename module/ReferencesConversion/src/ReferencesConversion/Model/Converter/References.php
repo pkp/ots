@@ -21,7 +21,7 @@ class References extends AbstractConverter
     protected $logger;
 
     protected $inputFile;
-    protected $outputPath;
+    protected $outputDirectory;
     protected $outputFile;
 
     protected $xml;
@@ -263,7 +263,7 @@ class References extends AbstractConverter
     {
         // If we got a bibliography DOM node prepare the content for ParsCit
         if ($bibliography !== false) {
-            $referencesFile = $this->outputPath . '/referencesTmp.txt';
+            $referencesFile = $this->outputDirectory. '/referencesTmp.txt';
 
             // Convert bibliography DOM node to string
             $references = array('REFERENCES');
