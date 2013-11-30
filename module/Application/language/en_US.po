@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-29 11:23-1000\n"
-"PO-Revision-Date: 2013-11-29 11:25-1000\n"
+"POT-Creation-Date: 2013-11-29 12:07-1000\n"
+"PO-Revision-Date: 2013-11-29 14:46-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -19,11 +19,11 @@ msgstr ""
 "X-Poedit-SearchPath-1: ../..\n"
 "X-Poedit-SearchPath-2: ../../../vendor/xmlps\n"
 
-#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:100
+#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:95
 msgid "nlmxmlconversion.metypeset.executeCommandLog"
 msgstr "meTypeset is executing: %s "
 
-#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:112
+#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:105
 msgid "nlmxmlconversion.metypeset.executeCommandOutputLog"
 msgstr "meTypeset output: %s"
 
@@ -54,87 +54,87 @@ msgid "manager.upload.success"
 msgstr ""
 "Your document has been successfully uploaded. It is now being processed."
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:102
+#: ../../Manager/src/Manager/Controller/ManagerController.php:99
 msgid "manager.job.createLog"
 msgstr "A new job has been created (%d)"
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:135
+#: ../../Manager/src/Manager/Controller/ManagerController.php:128
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:73
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:71
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:109
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:103
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:136
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:126
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:208
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:194
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:121
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:116
 msgid "referencesconversion.converter.loadXML.domErrorLog"
 msgstr "Couldn't load input file. Invalid xml. LIBXML error: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:141
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:133
 msgid "referencesconversion.converter.startLog"
 msgstr "Starting Bibliography parsing"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:150
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:140
 msgid "referencesconversion.converter.convert.inputErrorLog"
 msgstr "The input file couldn't be parsed"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:187
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:174
 msgid "referencesconversion.converter.parsCit.commandOutputLog"
 msgstr "Output from ParsCit command: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:220
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:204
 msgid "referencesconversion.converter.parseBibliography.noBibliographyLog"
 msgstr "No Bibliography found"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:239
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:221
 msgid "referencesconversion.converter.parseBibliography.nlmLog"
 msgstr "Parsing for NLM bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:258
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:238
 msgid "referencesconversion.converter.parseBibliography.teiLog"
 msgstr "Parsing for TEI bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:326
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:303
 msgid "referencesconversion.converter.parsCit.commandLog"
 msgstr "Executing ParsCit command: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:369
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:342
 msgid "referencesconversion.converter.parsCit.noDOMLog"
 msgstr "ParsCit output is no valid XML. Error from LIBXML: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:386
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:356
 msgid "referencesconversion.converter.parsCit.noListNodeLog"
 msgstr "Citation list doesn't contain any entries"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:394
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:362
 msgid "referencesconversion.converter.parsCit.successLog"
 msgstr "ParsCit successfully parsed bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:412
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:378
 msgid "referencesconversion.converter.transformBibliography.startLog"
 msgstr "Transforming the parsed bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:427
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:391
 msgid "referencesconversion.converter.transformBibliography.styleSheetErrorLog"
 msgstr "Error loading the XSL style sheet"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:438
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:399
 msgid "referencesconversion.converter.transformBibliography.transformErrorLog"
 msgstr "Culdn't transform the parsed bibliography. Error from LIBXML: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:457
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:414
 msgid "referencesconversion.converter.transformBibliography.successLog"
 msgstr "Successfully transformed bibliography: %s"
 
@@ -171,15 +171,15 @@ msgstr "No user records found."
 msgid "admin.userManagement.userEditSuccess"
 msgstr "Sucessfully edited user \"%s\""
 
-#: ../../Admin/src/Admin/Controller/UserManagementController.php:111
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:109
 msgid "admin.userManagement.userEditSuccessLog"
 msgstr "Edited user \"%s\""
 
-#: ../../Admin/src/Admin/Controller/UserManagementController.php:171
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:167
 msgid "admin.userManagement.userRemovalSuccess"
 msgstr "Sucessfully removed user \"%s\""
 
-#: ../../Admin/src/Admin/Controller/UserManagementController.php:181
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:175
 msgid "admin.userManagement.userRemovalSuccessLog"
 msgstr "Removed user \"%s\""
 
@@ -203,7 +203,7 @@ msgstr "PKP XML Parsing Service"
 msgid "user.registration.confirmationEmailSubject"
 msgstr "PKP XML Parsing Service account creation confirmation"
 
-#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:119
+#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:118
 msgid "user.registration.confirmationEmailSentLog"
 msgstr "User registration confirmation email has been sent to \"%s\""
 
@@ -287,41 +287,41 @@ msgstr "The login credentials you provided are invalid. Please try again."
 msgid "user.authentication.sucessfulLogout"
 msgstr "Thanks for visiting."
 
-#: ../../User/src/User/Controller/UserController.php:195
+#: ../../User/src/User/Controller/UserController.php:193
 msgid "user.authentication.sucessfulLogoutLog"
 msgstr "Successful logout by %s"
 
-#: ../../User/src/User/Controller/UserController.php:241
+#: ../../User/src/User/Controller/UserController.php:237
 msgid "user.registration.sucessfulRegistration"
 msgstr ""
 "Thanks for registering. A confirmation email has been sent to you. Please "
 "follow the instructions in the email to activate your account."
 
-#: ../../User/src/User/Controller/UserController.php:248
+#: ../../User/src/User/Controller/UserController.php:242
 msgid "user.registration.sucessfulRegistrationLog"
 msgstr "User %s registered successfully"
 
-#: ../../User/src/User/Controller/UserController.php:302
+#: ../../User/src/User/Controller/UserController.php:294
 msgid "user.register.sucessfulActivation"
 msgstr "Your account has been successfully activated."
 
-#: ../../User/src/User/Controller/UserController.php:309
+#: ../../User/src/User/Controller/UserController.php:299
 msgid "user.register.sucessfulActivationLog"
 msgstr "Successful account activation by %s"
 
-#: ../../User/src/User/Controller/UserController.php:345
+#: ../../User/src/User/Controller/UserController.php:333
 msgid "user.settings.saveSuccessConfirm"
 msgstr "Your settings have been updated!"
 
-#: ../../User/src/User/Controller/UserController.php:352
+#: ../../User/src/User/Controller/UserController.php:338
 msgid "user.settings.saveSuccessConfirmLog"
 msgstr "User %s updated settings"
 
-#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:134
+#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:128
 msgid "docxconversion.unoconv.executeCommandLog"
 msgstr "Unoconv is executing: %s "
 
-#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:146
+#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:138
 msgid "docxconversion.unoconv.executeCommandOutputLog"
 msgstr "Unoconf output: %s"
 
@@ -377,7 +377,7 @@ msgstr "Logout"
 #: ../../Application/view/layout/layout.phtml:41
 msgid "application.layout.subHeading"
 msgstr ""
-"PDF, DOC, DOCX or ODT to XML (%sNML-XML 3.0 compatible%s) document conversion"
+"PDF, DOC, DOCX or ODT to XML (%sNLM-XML 3.0 compatible%s) document conversion"
 
 #: ../view/layout/layout.phtml:64
 #: ../../Application/view/layout/layout.phtml:64
