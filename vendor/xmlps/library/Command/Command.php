@@ -130,6 +130,8 @@ class Command
      */
     public function getOutputString()
     {
+        if (!is_array($this->output)) return '';
+
         return implode(PHP_EOL, $this->output);
     }
 
