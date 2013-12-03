@@ -7,14 +7,14 @@ namespace Xmlps\Command;
  */
 class Command
 {
-    protected $baseCommand;
-    protected $arguments;
-    protected $redirect;
+    protected $baseCommand = '';
+    protected $arguments = array();
+    protected $redirect = '';
 
-    protected $output;
+    protected $output = array();
     protected $returnStatus;
 
-    protected $command;
+    protected $command = '';
 
     protected $suppressErrors = true;
 
