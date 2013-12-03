@@ -8,6 +8,7 @@
         <directory>module/DocxConversion/test</directory>
         <directory>module/NlmxmlConversion/test</directory>
         <directory>module/ReferencesConversion/test</directory>
+        <directory>module/BibtexConversion/test</directory>
         <directory>module/ZipConversion/test</directory>
       </testsuite>
     </testsuites>

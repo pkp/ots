@@ -1,0 +1,1069 @@
+<?xml version="1.0"?>
+<modsCollection xmlns="http://www.loc.gov/mods/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-2.xsd">
+  <mods ID="RAbeyratna, Paramei, Tawfik, Huang, 2010">
+    <titleInfo>
+      <title>An affective interface for conveying user feedback</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">S</namePart>
+      <namePart type="family">Abeyratna</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">G</namePart>
+      <namePart type="family">Paramei</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">H</namePart>
+      <namePart type="family">Tawfik</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">R</namePart>
+      <namePart type="family">Huang</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Proc. Computer Modeling and Simulation, IEEE Computer Society</title>
+      </titleInfo>
+      <part>
+        <extent unit="page">
+          <start>369</start>
+          <end>374</end>
+        </extent>
+      </part>
+      <originInfo>
+        <issuance>monographic</issuance>
+        <dateIssued>2010</dateIssued>
+      </originInfo>
+      <genre>collection</genre>
+    </relatedItem>
+    <identifier type="citekey">idp19616304</identifier>
+  </mods>
+  <mods ID="RAlwin, Krosnick, 1985">
+    <titleInfo>
+      <title>The measurement of values in surveys: A comparison of ratings and rankings</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">D</namePart>
+      <namePart type="given">F</namePart>
+      <namePart type="family">Alwin</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">J</namePart>
+      <namePart type="given">A</namePart>
+      <namePart type="family">Krosnick</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Public Opinion Quarterly</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <part>
+        <extent unit="page">
+          <start>535</start>
+          <end>552</end>
+        </extent>
+      </part>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp19605056</identifier>
+  </mods>
+  <mods ID="RAmatriain, Pujol, Oliver, 2009">
+    <titleInfo>
+      <title>I like it... I like it not: Evaluating user ratings noise in recommender systems</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">X</namePart>
+      <namePart type="family">Amatriain</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">J</namePart>
+      <namePart type="family">Pujol</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">N</namePart>
+      <namePart type="family">Oliver</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Proc. UMAP</title>
+      </titleInfo>
+      <part>
+        <extent unit="page">
+          <start>247</start>
+          <end>258</end>
+        </extent>
+      </part>
+      <originInfo>
+        <issuance>monographic</issuance>
+        <dateIssued>2009</dateIssued>
+        <publisher>Springer</publisher>
+      </originInfo>
+      <genre>collection</genre>
+    </relatedItem>
+    <identifier type="citekey">idp19610320</identifier>
+  </mods>
+  <mods ID="RAmatriain, Pujol, Tintarev, Oliver, 2009">
+    <titleInfo>
+      <title>Rate it again: increasing recommendation accuracy by user re-rating</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">X</namePart>
+      <namePart type="family">Amatriain</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">J</namePart>
+      <namePart type="given">M</namePart>
+      <namePart type="family">Pujol</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">N</namePart>
+      <namePart type="family">Tintarev</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">N</namePart>
+      <namePart type="family">Oliver</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Proc. RecSys 2009, ACM</title>
+      </titleInfo>
+      <part>
+        <extent unit="page">
+          <start>173</start>
+          <end>180</end>
+        </extent>
+      </part>
+      <originInfo>
+        <issuance>monographic</issuance>
+        <dateIssued>2009</dateIssued>
+      </originInfo>
+      <genre>collection</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20508128</identifier>
+  </mods>
+  <mods ID="RCades, Trafton, Davis, A, Monk, 2007">
+    <titleInfo>
+      <title>Does the difficulty of an interruption affect our ability to resume?</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">D</namePart>
+      <namePart type="given">M</namePart>
+      <namePart type="family">Cades</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">J</namePart>
+      <namePart type="given">G</namePart>
+      <namePart type="family">Trafton</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="family">Boehm</namePart>
+      <namePart type="family">Davis</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">D</namePart>
+      <namePart type="given">A</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">C</namePart>
+      <namePart type="given">A</namePart>
+      <namePart type="family">Monk</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Proc. Human Factors and Ergonomics Society Annual Meeting 51</title>
+      </titleInfo>
+      <part>
+        <extent unit="page">
+          <start>234</start>
+          <end>238</end>
+        </extent>
+      </part>
+      <originInfo>
+        <issuance>monographic</issuance>
+        <dateIssued>2007</dateIssued>
+      </originInfo>
+      <genre>collection</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20514112</identifier>
+  </mods>
+  <mods ID="RCockburn, Karlson, Bederson, 2009">
+    <titleInfo>
+      <title>A review of overview+detail, zooming, and focus+context interfaces</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">A</namePart>
+      <namePart type="family">Cockburn</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">A</namePart>
+      <namePart type="family">Karlson</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">B</namePart>
+      <namePart type="family">Bederson</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>ACM Computing Surveys</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20520592</identifier>
+  </mods>
+  <mods ID="RCosley, Lam, Albert, Konstan, Riedl, 2003">
+    <titleInfo>
+      <title>Is seeing believing?: How recommender system interfaces affect users’ opinions</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">D</namePart>
+      <namePart type="family">Cosley</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">S</namePart>
+      <namePart type="family">Lam</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">I</namePart>
+      <namePart type="family">Albert</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">J</namePart>
+      <namePart type="family">Konstan</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">J</namePart>
+      <namePart type="family">Riedl</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Proc. CHI 2003, ACM</title>
+      </titleInfo>
+      <part>
+        <extent unit="page">
+          <start>585</start>
+          <end>592</end>
+        </extent>
+      </part>
+      <originInfo>
+        <issuance>monographic</issuance>
+        <dateIssued>2003</dateIssued>
+      </originInfo>
+      <genre>collection</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20526176</identifier>
+  </mods>
+  <mods ID="REagly, Chaiken, 1993">
+    <titleInfo>
+      <title>The Psychology of Attitudes</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">A</namePart>
+      <namePart type="given">H</namePart>
+      <namePart type="family">Eagly</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">creator</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">S</namePart>
+      <namePart type="family">Chaiken</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">creator</roleTerm>
+      </role>
+    </name>
+    <originInfo>
+      <dateIssued>1993</dateIssued>
+      <place>
+        <placeTerm type="text">Wadsworth, Belmont, CA, USA,</placeTerm>
+      </place>
+      <issuance>monographic</issuance>
+    </originInfo>
+    <identifier type="citekey">idp20532656</identifier>
+  </mods>
+  <mods ID="RGawronski, 2007">
+    <titleInfo>
+      <title>Attitudes can be measured! But what is an attitude?</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">B</namePart>
+      <namePart type="family">Gawronski</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Social Cognition</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <part>
+        <extent unit="page">
+          <start>573</start>
+          <end>581</end>
+        </extent>
+      </part>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20537136</identifier>
+  </mods>
+  <mods ID="RHarper, Li, Chen, Konstan, 2005">
+    <titleInfo>
+      <title>An economic model of user rating in an online recommender system</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">F</namePart>
+      <namePart type="family">Harper</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">X</namePart>
+      <namePart type="family">Li</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">Y</namePart>
+      <namePart type="family">Chen</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">J</namePart>
+      <namePart type="family">Konstan</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Proc. UM</title>
+      </titleInfo>
+      <part>
+        <extent unit="page">
+          <start>307</start>
+          <end>316</end>
+        </extent>
+      </part>
+      <originInfo>
+        <issuance>monographic</issuance>
+        <dateIssued>2005</dateIssued>
+        <publisher>Springer</publisher>
+      </originInfo>
+      <genre>collection</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20542144</identifier>
+  </mods>
+  <mods ID="RHerlocker, Konstan, Borchers, Riedl, 1999">
+    <titleInfo>
+      <title>An algorithmic framework for performing collaborative filtering</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">J</namePart>
+      <namePart type="family">Herlocker</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">J</namePart>
+      <namePart type="family">Konstan</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">A</namePart>
+      <namePart type="family">Borchers</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">J</namePart>
+      <namePart type="family">Riedl</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Proc. SIGIR 1999, ACM</title>
+      </titleInfo>
+      <part>
+        <extent unit="page">
+          <start>230</start>
+          <end>237</end>
+        </extent>
+      </part>
+      <originInfo>
+        <issuance>monographic</issuance>
+        <dateIssued>1999</dateIssued>
+      </originInfo>
+      <genre>collection</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20548688</identifier>
+  </mods>
+  <mods ID="RIvanov, Erickson, Cyr, 2006">
+    <titleInfo>
+      <title>Collaborative knowledge visualization for online discussions</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">A</namePart>
+      <namePart type="family">Ivanov</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">T</namePart>
+      <namePart type="family">Erickson</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">D</namePart>
+      <namePart type="family">Plot-polling</namePart>
+      <namePart type="family">Cyr</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>IEEE Computer Society</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <part>
+        <extent unit="page">
+          <start>205</start>
+          <end>210</end>
+        </extent>
+      </part>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20554816</identifier>
+  </mods>
+  <mods ID="RKlein, D&#xFC;lmer, Ohr, Quandt, Rosar, 2004">
+    <titleInfo>
+      <title>Response sets in the measurement of values: A comparison of rating and ranking procedures</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">M</namePart>
+      <namePart type="family">Klein</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">H</namePart>
+      <namePart type="family">Dülmer</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">D</namePart>
+      <namePart type="family">Ohr</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">M</namePart>
+      <namePart type="family">Quandt</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">U</namePart>
+      <namePart type="family">Rosar</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Intl. J. of Public Opinion Research</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <part>
+        <extent unit="page">
+          <start>474</start>
+          <end>483</end>
+        </extent>
+      </part>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20560960</identifier>
+  </mods>
+  <mods ID="RKrosnick, Judd, Wittenbrink, 2005">
+    <titleInfo>
+      <title>The Measurement of Attitudes</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">J</namePart>
+      <namePart type="given">A</namePart>
+      <namePart type="family">Krosnick</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">C</namePart>
+      <namePart type="given">M</namePart>
+      <namePart type="family">Judd</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">B</namePart>
+      <namePart type="family">Wittenbrink</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>In The Handbook of Attitudes</title>
+      </titleInfo>
+      <part>
+        <extent unit="page">
+          <start>21</start>
+          <end>76</end>
+        </extent>
+      </part>
+      <originInfo>
+        <issuance>monographic</issuance>
+        <dateIssued>2005</dateIssued>
+      </originInfo>
+      <genre>collection</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20568144</identifier>
+  </mods>
+  <mods ID="RLietz, 2010">
+    <titleInfo>
+      <title>Research into questionnaire design</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">P</namePart>
+      <namePart type="family">Lietz</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Intl. J. of Market Research</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <part>
+        <extent unit="page">
+          <start>249</start>
+          <end>272</end>
+        </extent>
+      </part>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20573728</identifier>
+  </mods>
+  <mods ID="ROwen, McMillan, Laird, Bullmore, 2005">
+    <titleInfo>
+      <title>N-back working memory paradigm: a meta-analysis of normative functional neuroimaging studies</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">A</namePart>
+      <namePart type="given">M</namePart>
+      <namePart type="family">Owen</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">K</namePart>
+      <namePart type="given">M</namePart>
+      <namePart type="family">McMillan</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">A</namePart>
+      <namePart type="given">R</namePart>
+      <namePart type="family">Laird</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">E</namePart>
+      <namePart type="family">Bullmore</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Human Brain Mapping</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <part>
+        <extent unit="page">
+          <start>46</start>
+          <end>59</end>
+        </extent>
+      </part>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20578784</identifier>
+  </mods>
+  <mods ID="ROzakca, Lim, 2006">
+    <titleInfo>
+      <title>A study of reviews and</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">M</namePart>
+      <namePart type="family">Ozakca</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="family">Y-K</namePart>
+      <namePart type="family">Lim</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>ratings on the Internet. Ext. abstracts CHI 2006, ACM</title>
+      </titleInfo>
+      <part>
+        <extent unit="page">
+          <start>1181</start>
+          <end>1186</end>
+        </extent>
+      </part>
+      <originInfo>
+        <issuance>monographic</issuance>
+        <dateIssued>2006</dateIssued>
+      </originInfo>
+      <genre>collection</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20585440</identifier>
+  </mods>
+  <mods ID="RPhilip, 1947">
+    <titleInfo>
+      <title>Generalization and central tendency in the discrimination of a series of stimuli</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">B</namePart>
+      <namePart type="given">R</namePart>
+      <namePart type="family">Philip</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Canadian Journal of Psychology</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <part>
+        <extent unit="page">
+          <start>196</start>
+          <end>204</end>
+        </extent>
+      </part>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20590528</identifier>
+  </mods>
+  <mods ID="RPreston, Colman, 2000">
+    <titleInfo>
+      <title>Optimal number of response categories in rating scales: reliability, validity, discriminating power, and respondent preferences</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">C</namePart>
+      <namePart type="given">C</namePart>
+      <namePart type="family">Preston</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">A</namePart>
+      <namePart type="given">M</namePart>
+      <namePart type="family">Colman</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Acta Psychologica</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <part>
+        <extent unit="page">
+          <start>1</start>
+          <end>15</end>
+        </extent>
+      </part>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20595584</identifier>
+  </mods>
+  <mods ID="RReips, Funke, 2008">
+    <titleInfo>
+      <title>Interval-level measurement with visual analogue scales in Internet-based research:</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">U</namePart>
+      <namePart type="given">D</namePart>
+      <namePart type="family">Reips</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">F</namePart>
+      <namePart type="family">Funke</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>VAS Generator. Behavior Research Methods</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <part>
+        <extent unit="page">
+          <start>699</start>
+          <end>704</end>
+        </extent>
+      </part>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20601296</identifier>
+  </mods>
+  <mods ID="RVan Schaik, Ling, 2007">
+    <titleInfo>
+      <title>Design parameters of rating scales for web sites</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">P</namePart>
+      <namePart type="family">Van</namePart>
+      <namePart type="family">Schaik</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">J</namePart>
+      <namePart type="family">Ling</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>ACM Transactions on Computer-Human Interaction</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20606880</identifier>
+  </mods>
+  <mods ID="RThurstone, 1928">
+    <titleInfo>
+      <title>Attitudes Can Be Measured</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">L</namePart>
+      <namePart type="given">L</namePart>
+      <namePart type="family">Thurstone</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>The American Journal of Sociology</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <part>
+        <extent unit="page">
+          <start>529</start>
+          <end>554</end>
+        </extent>
+      </part>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20611856</identifier>
+  </mods>
+  <mods ID="RTurnbull, 2007">
+    <titleInfo>
+      <title>voting &amp; ranking: designing for collaboration &amp; consensus</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">D</namePart>
+      <namePart type="family">Rating</namePart>
+      <namePart type="family">Turnbull</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Ext. abstracts CHI</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <part>
+        <extent unit="page">
+          <start>2705</start>
+          <end>2710</end>
+        </extent>
+      </part>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20616784</identifier>
+  </mods>
+  <mods ID="RWillett, Heer, Agrawala, 2007">
+    <titleInfo>
+      <title>Scented widgets: Improving navigation cues with embedded visualizations</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">W</namePart>
+      <namePart type="family">Willett</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">J</namePart>
+      <namePart type="family">Heer</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">M</namePart>
+      <namePart type="family">Agrawala</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>IEEE Transactions on Visualization and Computer Graphics</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <part>
+        <extent unit="page">
+          <start>1129</start>
+          <end>1136</end>
+        </extent>
+      </part>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20621888</identifier>
+  </mods>
+  <mods ID="RYe, Law, Gu, 2009">
+    <titleInfo>
+      <title>The impact of online user reviews on hotel room sales</title>
+    </titleInfo>
+    <typeOfResource>text</typeOfResource>
+    <name type="personal">
+      <namePart type="given">Q</namePart>
+      <namePart type="family">Ye</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">R</namePart>
+      <namePart type="family">Law</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <name type="personal">
+      <namePart type="given">B</namePart>
+      <namePart type="family">Gu</namePart>
+      <role>
+        <roleTerm authority="marcrelator" type="text">author</roleTerm>
+      </role>
+    </name>
+    <relatedItem type="host">
+      <titleInfo>
+        <title>Intl. J. of Hospitality Management</title>
+      </titleInfo>
+      <originInfo>
+        <issuance>continuing</issuance>
+      </originInfo>
+      <part>
+        <extent unit="page">
+          <start>180</start>
+          <end>182</end>
+        </extent>
+      </part>
+      <genre authority="marc">journal</genre>
+      <genre>academic journal</genre>
+    </relatedItem>
+    <identifier type="citekey">idp20628096</identifier>
+  </mods>
+</modsCollection>
