@@ -12,6 +12,7 @@ use Manager\Model\Converter\AbstractConverter;
  */
 class Bibtex extends AbstractConverter
 {
+    protected $config;
     protected $logger;
 
     protected $inputFile;
@@ -20,13 +21,18 @@ class Bibtex extends AbstractConverter
     /**
      * Constructor
      *
+     * @param mixed $config Bibtex config
      * @param Logger $logger Logger
-     * @param Translator $translator Translator
      *
      * @return void
      */
-    public function __construct(Logger $logger)
+    public function __construct($config, Logger $logger)
     {
+        if (!isset($config['command'])) {
+            throw new \Exception('xml2bib command is not configured');
+        }
+
+        $this->config = $config;
         $this->logger = $logger;
     }
 
@@ -65,8 +71,7 @@ class Bibtex extends AbstractConverter
         $this->logger->debugTranslate('bibtexconversion.converter.startLog');
 
         $command = new Command;
-        // TODO: Config
-        $command->setCommand('xml2bib');
+        $command->setCommand($this->config['command']);
         $command->addArgument($this->inputFile);
         $command->addRedirect('2> /dev/null');
 

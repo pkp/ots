@@ -46,9 +46,14 @@ class Module
             'factories' => array(
                 'BibtexConversion\Model\Converter\Bibtex' => function($sm)
                 {
+                    $config = $sm->get('Config');
                     $logger = $sm->get('Logger');
+                    if (!isset($config['conversion']['bibtex']['xml2bib'])) {
+                        throw new \Exception('xml2bib configuration is missing');
+                    }
+                    $config = $config['conversion']['bibtex']['xml2bib'];
 
-                    return new Bibtex($logger);
+                    return new Bibtex($config, $logger);
                 },
             ),
         );

@@ -60,5 +60,10 @@ return array(
                 'xsl' => 'module/ReferencesConversion/assets/parsCit.xsl',
             ),
         ),
+        'bibtex' => array(
+            'xml2bib' => array(
+                'command' => 'xml2bib',
+            ),
+        ),
     ),
 );
