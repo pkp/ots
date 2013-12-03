@@ -54,5 +54,11 @@ return array(
                 'command' => 'vendor/MartinPaulEve/meTypeset/tools/gennlm.sh',
             ),
         ),
+        'references' => array(
+            'parscit' => array(
+                'command' => 'vendor/MichaelThessel/ParsCit/bin/citeExtract.pl',
+                'xsl' => 'module/ReferencesConversion/assets/parsCit.xsl',
+            ),
+        ),
     ),
 );

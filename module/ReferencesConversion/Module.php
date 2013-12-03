@@ -46,9 +46,14 @@ class Module
             'factories' => array(
                 'ReferencesConversion\Model\Converter\References' => function($sm)
                 {
+                    $config = $sm->get('Config');
                     $logger = $sm->get('Logger');
+                    if (!isset($config['conversion']['references']['parscit'])) {
+                        throw new \Exception('Parscit configuration is missing');
+                    }
+                    $config = $config['conversion']['references']['parscit'];
 
-                    return new References($logger);
+                    return new References($config, $logger);
                 },
             ),
         );

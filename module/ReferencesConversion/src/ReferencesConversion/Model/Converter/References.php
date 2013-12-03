@@ -17,6 +17,7 @@ use Manager\Model\Converter\AbstractConverter;
  */
 class References extends AbstractConverter
 {
+    protected $config;
     protected $logger;
 
     protected $inputFile;
@@ -27,20 +28,25 @@ class References extends AbstractConverter
     protected $dom;
     protected $domXpath;
 
-    // TODO: This should be a config setting
-    protected $parsCitCommand = 'vendor/MichaelThessel/ParsCit/bin/citeExtract.pl';
-    protected $parsCitXsl = 'module/ReferencesConversion/assets/parsCit.xsl';
-
     /**
      * Constructor
      *
+     * @param mixed $config
      * @param Logger $logger Logger
-     * @param Translator $translator Translator
      *
      * @return void
      */
-    public function __construct(Logger $logger)
+    public function __construct($config, Logger $logger)
     {
+        if (!isset($config['command'])) {
+            throw new \Exception('Parscit command is not configured');
+        }
+
+        if (!isset($config['xsl'])) {
+            throw new \Exception('XSL file is not configured');
+        }
+
+        $this->config = $config;
         $this->logger = $logger;
 
         // Avoid displaying of warnings/errors by libxml
@@ -294,7 +300,7 @@ class References extends AbstractConverter
     {
         // Build the shell command
         $command = new Command;
-        $command->setCommand($this->parsCitCommand);
+        $command->setCommand($this->config['command']);
         $command->addSwitch('-m', 'extract_citations');
         $command->addArgument($referencesFile);
 
@@ -385,7 +391,7 @@ class References extends AbstractConverter
         }
 
         $xslt = new XSLTProcessor();
-        if (!($xsl = simplexml_load_string(file_get_contents($this->parsCitXsl)))) {
+        if (!($xsl = simplexml_load_string(file_get_contents($this->config['xsl'])))) {
             $this->logger->debugTranslate(
                 'referencesconversion.converter.transformBibliography.styleSheetErrorLog'
             );
