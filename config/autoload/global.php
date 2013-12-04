@@ -65,5 +65,10 @@ return array(
                 'command' => 'xml2bib',
             ),
         ),
+        'citationstyle' => array(
+            'pandoc' => array(
+                'command' => 'pandoc',
+            ),
+        ),
     ),
 );

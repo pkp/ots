@@ -14,6 +14,7 @@ return array(
         'NlmxmlConversion',
         'ReferencesConversion',
         'BibtexConversion',
+        'CitationstyleConversion',
         'ZipConversion',
     ),
 
