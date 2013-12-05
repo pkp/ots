@@ -377,7 +377,7 @@ class References extends AbstractConverter
      *
      * @param DOMNodeList $bibliography
      *
-     * @return string Converted XML
+     * @return DOMDocument Transformed document
      */
     protected function transform(DOMNodeList $bibliography)
     {
