@@ -149,14 +149,16 @@ class References extends AbstractConverter
         }
 
         // Parse the bibliography
-        if (!($bibliography = $this->parseBibliography())) {
+        if (
+            !($bibliography = $this->parseBibliography()) or
+            !($bibliography instanceof DOMDocument)
+        ) {
             $this->status = false;
             return;
         }
 
-
         // Create an XML file containing the bibliography
-        file_put_contents($this->outputFile, $bibliography);
+        file_put_contents($this->outputFile, $bibliography->saveXML());
     }
 
     /**
@@ -399,7 +401,7 @@ class References extends AbstractConverter
         }
         $xslt->importStylesheet($xsl);
 
-        if (!($xml = $xslt->transformToXML($dom))) {
+        if (!($dom = $xslt->transformToDoc($dom))) {
             $this->logger->debugTranslate(
                 'referencesconversion.converter.transformBibliography.transformErrorLog',
                 $this->libxmlErrors()
@@ -408,19 +410,37 @@ class References extends AbstractConverter
             return false;
         };
 
-        // Clean , . or "in" from titles if necessary
-        $xml = preg_replace(
-            '#<title>(.+?)\s*\.?,?\s*(in)?</title>#is',
-            '<title>$1</title>',
-            $xml
-        );
+        $dom = $this->cleanTransformedTitles($dom);
 
         $this->logger->debugTranslate(
             'referencesconversion.converter.transformBibliography.successLog',
-            $xml
+            $dom->saveXML()
         );
 
-        return $xml;
+        return $dom;
+    }
+
+    /**
+     * Clean , . or "in" from titles if necessary
+     *
+     * @param DOMDocument $dom
+     * @return DOMDocument Document with cleaned titles
+     */
+    protected function cleanTransformedTitles(DOMDocument $dom)
+    {
+        $titles = $dom->getElementsByTagName('title');
+
+        if ($titles->length) {
+            foreach ($titles as $title) {
+                $title->nodeValue = preg_replace(
+                    '/(.+?)\s*\.?,?\s*(in)?$/is',
+                    '\1',
+                    $title->nodeValue
+                );
+            }
+        }
+
+        return $dom;
     }
 
     /**
