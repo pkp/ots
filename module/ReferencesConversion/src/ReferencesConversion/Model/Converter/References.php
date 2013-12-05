@@ -385,6 +385,7 @@ class References extends AbstractConverter
             'referencesconversion.converter.transformBibliography.startLog'
         );
 
+        // Create a new document with citationList as root element
         $dom = new DOMDocument;
         $dom->appendChild($dom->createElement('citationList'));
         foreach ($bibliography as $reference) {
@@ -392,6 +393,7 @@ class References extends AbstractConverter
             $dom->documentElement->appendChild($reference);
         }
 
+        // Load the XSL stylesheet
         $xslt = new XSLTProcessor();
         if (!($xsl = simplexml_load_string(file_get_contents($this->config['xsl'])))) {
             $this->logger->debugTranslate(
@@ -401,6 +403,7 @@ class References extends AbstractConverter
         }
         $xslt->importStylesheet($xsl);
 
+        // Transform the citation list
         if (!($dom = $xslt->transformToDoc($dom))) {
             $this->logger->debugTranslate(
                 'referencesconversion.converter.transformBibliography.transformErrorLog',
@@ -410,6 +413,7 @@ class References extends AbstractConverter
             return false;
         };
 
+        // Clean the title elements
         $dom = $this->cleanTransformedTitles($dom);
 
         $this->logger->debugTranslate(
