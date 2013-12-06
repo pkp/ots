@@ -40,7 +40,7 @@ class SystemLogController extends AbstractActionController {
         $paginator = $this->logDAO->getLogPaginator();
         $page = $this->params()->fromRoute('page');
         $paginator ->setCurrentPageNumber($page);
-        $paginator->setItemCountPerPage(15);
+        $paginator->setItemCountPerPage(50);
 
         // Display error if we got no messages
         if ($paginator->count() == 0) {
