@@ -26,6 +26,7 @@ class Manager {
         'nlmxml' => 'NlmxmlConversion\Model\Queue\Job\NlmxmlJob',
         'references' => 'ReferencesConversion\Model\Queue\Job\ReferencesJob',
         'bibtex' => 'BibtexConversion\Model\Queue\Job\BibtexJob',
+        'bibtexreferences' => 'BibtexreferencesConversion\Model\Queue\Job\BibtexreferencesJob',
         'zip' => 'ZipConversion\Model\Queue\Job\ZipJob',
     );
 
@@ -120,8 +121,11 @@ class Manager {
         elseif ($job->conversionStage == JOB_CONVERSION_STAGE_REFERENCES) {
             $this->bibtexJob($job);
         }
+        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_BIBTEX) {
+            $this->bibtexreferencesJob($job);
+        }
         elseif (
-            $job->conversionStage == JOB_CONVERSION_STAGE_BIBTEX or
+            $job->conversionStage == JOB_CONVERSION_STAGE_BIBTEXREFERENCES or
             $job->conversionStage == JOB_CONVERSION_STAGE_HTML
         ) {
             $this->zipJob($job);
@@ -179,6 +183,17 @@ class Manager {
     protected function bibtexJob($job)
     {
         $this->queueJob($job, 'bibtex');
+    }
+
+    /**
+     * Queue a bibtex references conversion job
+     *
+     * @param mixed $job Job to queue
+     * @return void
+     */
+    protected function bibtexreferencesJob($job)
+    {
+        $this->queueJob($job, 'bibtexreferences');
     }
 
     /**

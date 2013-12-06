@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-29 17:54-1000\n"
-"PO-Revision-Date: 2013-11-29 17:56-1000\n"
+"POT-Creation-Date: 2013-12-05 16:13-1000\n"
+"PO-Revision-Date: 2013-12-05 16:14-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -27,25 +27,93 @@ msgstr "meTypeset is executing: %s "
 msgid "nlmxmlconversion.metypeset.executeCommandOutputLog"
 msgstr "meTypeset output: %s"
 
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:85
+msgid "bibtexreferencesconversion.converter.startLog"
+msgstr "Starting Biblatex to NLMXML reference parsing"
+
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:109
+msgid "bibtexreferencesconversion.convert.nlmxmlOutputLog"
+msgstr ""
+"New NLM XML documen after reference replacement:\n"
+"%s"
+
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:125
+msgid "bibtexreferencesconversion.converter.biblatex2xml.commandLog"
+msgstr ""
+"Executing biblatex2xml command:\n"
+"%s"
+
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:132
+msgid "bibtexreferencesconversion.converter.OutputLog"
+msgstr ""
+"Biblatex2xml conversion output:\n"
+"%s"
+
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:141
+msgid "bibtexreferencesconversion.converter.biblatex2xml.noDOMLog"
+msgstr ""
+"Biblatex2xml output is no valid XML. Error from LIBXML:\n"
+"%s"
+
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:160
+msgid "bibtexreferencesconversion.converter.transform.startLog"
+msgstr "Starting XSLT transformation of biblatex2xml output"
+
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:167
+msgid "bibtexreferencesconversion.converter.transform.styleSheetErrorLog"
+msgstr "Error loading the XSL style sheet"
+
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:182
+msgid "bibtexreferencesconversion.converter.transform.transformErrorLog"
+msgstr ""
+"Couldn't transform biblatex2xml output. Error from LIBXML:\n"
+"%s"
+
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:190
+msgid "bibtexreferencesconversion.converter.transform.successLog"
+msgstr ""
+"Successfully transformed biblatex2xml output:\n"
+"%s"
+
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:209
+msgid "bibtexreferencesconversion.replace.noRefListOldLog"
+msgstr "Couldn't load the reference list from the biblatex2xml conversion"
+
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:220
+msgid "bibtexreferencesconversion.replace.loadNlmxmlErrorLog"
+msgstr ""
+"Couldn't load NLM XML document. Invalid xml. LIBXML error:\n"
+"%s"
+
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:230
+msgid "bibtexreferencesconversion.replace.noRefListNewLog"
+msgstr "Couldn't load the reference list from the NLM XML document"
+
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:240
+msgid "bibtexreferencesconversion.replace.replacementErrorLog"
+msgstr ""
+"Couldn't replace the reference list. LIBXML error:\n"
+"%s"
+
 #: ../../Manager/src/Manager/Form/UploadForm.php:41
 #: ../../Manager/view/manager/manager/upload.phtml:15
 #: ../../User/view/user/user/index.phtml:41
 msgid "manager.uploadForm.uploadDocument"
 msgstr "Upload Document"
 
-#: ../../Manager/src/Manager/Entity/Job.php:128
+#: ../../Manager/src/Manager/Entity/Job.php:130
 msgid "manager.job.status.pending"
 msgstr "Pending"
 
-#: ../../Manager/src/Manager/Entity/Job.php:129
+#: ../../Manager/src/Manager/Entity/Job.php:131
 msgid "manager.job.status.processing"
 msgstr "Processing"
 
-#: ../../Manager/src/Manager/Entity/Job.php:130
+#: ../../Manager/src/Manager/Entity/Job.php:132
 msgid "manager.job.status.completed"
 msgstr "Completed"
 
-#: ../../Manager/src/Manager/Entity/Job.php:131
+#: ../../Manager/src/Manager/Entity/Job.php:133
 msgid "manager.job.status.failed"
 msgstr "Failed"
 
@@ -62,93 +130,93 @@ msgstr "A new job has been created (%d)"
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:72
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:73
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:105
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:106
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:131
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:135
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:209
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:224
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
-#: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:65
+#: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:71
 msgid "bibtexconversion.converter.startLog"
 msgstr "Starting bibtex conversion"
 
-#: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:74
+#: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:79
 msgid "bibtexconversion.converter.xml2bib.commandLog"
 msgstr "Executing bibtex conversion command: %s"
 
-#: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:79
+#: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:87
 msgid "bibtexconversion.converter.OutputLog"
 msgstr ""
 "Bibtex conversion output:\n"
 "%s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:115
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:121
 msgid "referencesconversion.converter.loadXML.domErrorLog"
 msgstr "Couldn't load input file. Invalid xml. LIBXML error: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:132
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:138
 msgid "referencesconversion.converter.startLog"
 msgstr "Starting Bibliography parsing"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:139
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:145
 msgid "referencesconversion.converter.convert.inputErrorLog"
 msgstr "The input file couldn't be parsed"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:173
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:181
 msgid "referencesconversion.converter.parsCit.commandOutputLog"
 msgstr "Output from ParsCit command: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:203
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:211
 msgid "referencesconversion.converter.parseBibliography.noBibliographyLog"
 msgstr "No Bibliography found"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:220
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:228
 msgid "referencesconversion.converter.parseBibliography.nlmLog"
 msgstr "Parsing for NLM bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:237
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:245
 msgid "referencesconversion.converter.parseBibliography.teiLog"
 msgstr "Parsing for TEI bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:302
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:310
 msgid "referencesconversion.converter.parsCit.commandLog"
 msgstr "Executing ParsCit command: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:341
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:349
 msgid "referencesconversion.converter.parsCit.noDOMLog"
 msgstr "ParsCit output is no valid XML. Error from LIBXML: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:355
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:363
 msgid "referencesconversion.converter.parsCit.noListNodeLog"
 msgstr "Citation list doesn't contain any entries"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:361
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:369
 msgid "referencesconversion.converter.parsCit.successLog"
 msgstr "ParsCit successfully parsed bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:377
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:385
 msgid "referencesconversion.converter.transformBibliography.startLog"
 msgstr "Transforming the parsed bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:390
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:400
 msgid "referencesconversion.converter.transformBibliography.styleSheetErrorLog"
 msgstr "Error loading the XSL style sheet"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:398
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:409
 msgid "referencesconversion.converter.transformBibliography.transformErrorLog"
-msgstr "Culdn't transform the parsed bibliography. Error from LIBXML: %s"
+msgstr "Couldn't transform the parsed bibliography. Error from LIBXML: %s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:413
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:420
 msgid "referencesconversion.converter.transformBibliography.successLog"
 msgstr "Successfully transformed bibliography: %s"
 
@@ -338,6 +406,26 @@ msgstr "Unoconv is executing: %s "
 #: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:138
 msgid "docxconversion.unoconv.executeCommandOutputLog"
 msgstr "Unoconf output: %s"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:89
+msgid "citationstyleconversion.converter.loadXML.domErrorLog"
+msgstr ""
+"Couldn't load input file. Invalid xml. LIBXML error:\n"
+"%s"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:106
+msgid "citationstyleconversion.converter.startLog"
+msgstr "Starting pandoc conversion"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:112
+msgid "citationstyleconversion.converter.pandoc.commandLog"
+msgstr "Executing pandoc conversion command: %s"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:120
+msgid "citationstyleconversion.converter.OutputLog"
+msgstr ""
+"Pandoc conversion output:\n"
+"%s"
 
 #: ../../../vendor/xmlps/library/Event/Handler/AclDispatchHandler.php:32
 msgid "application.acl.notAuthorized"

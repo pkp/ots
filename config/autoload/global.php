@@ -65,6 +65,12 @@ return array(
                 'command' => 'xml2bib',
             ),
         ),
+        'bibtexreferences' => array(
+            'biblatex2xml' => array(
+                'command' => 'biblatex2xml',
+                'xsl' => 'module/BibtexreferencesConversion/assets/biblatex2xml.xsl',
+            ),
+        ),
         'citationstyle' => array(
             'pandoc' => array(
                 'command' => 'pandoc',
