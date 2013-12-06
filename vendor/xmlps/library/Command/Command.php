@@ -50,7 +50,7 @@ class Command
         $command = escapeshellcmd($command);
 
         // Add the output redirect
-        if (is_null($this->redirect) and $this->suppressErrors) {
+        if (empty($this->redirect) and $this->suppressErrors) {
             $command .= ' 2> /dev/null';
         }
         elseif (!is_null($this->redirect)) {
