@@ -20,7 +20,6 @@ class Bibtexreferences extends AbstractConverter
 
     protected $inputFileNlmxml;
     protected $inputFileBibtex;
-    protected $outputFile;
 
     /**
      * Constructor
