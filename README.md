@@ -26,6 +26,10 @@ Module Description
  * Parses references into a seperate XML file [X]
 * BibtexConversion
  * Converts parsed references into Bibtex [X]
+* BibtexreferenceConversion
+ * Converts Bibtex references into NLMXML and merges the converted references into the NLMXML document [X]
+* HtmlConversion
+ * Converts the NLMXML document into HTML
 * ZipConversion
  * Zips all documents [X]
 
