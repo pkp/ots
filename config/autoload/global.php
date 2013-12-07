@@ -71,6 +71,9 @@ return array(
                 'xsl' => 'module/BibtexreferencesConversion/assets/biblatex2xml.xsl',
             ),
         ),
+        'html' => array(
+            'xsl' => 'module/HtmlConversion/assets/html.xsl',
+        ),
         'citationstyle' => array(
             'pandoc' => array(
                 'command' => 'pandoc',

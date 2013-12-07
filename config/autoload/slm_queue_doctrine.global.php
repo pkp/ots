@@ -20,6 +20,7 @@ return array(
                 'references' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'bibtex' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'bibtexreferences' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'html' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'zip' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
             ),
         ),

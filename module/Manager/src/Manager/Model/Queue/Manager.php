@@ -27,6 +27,7 @@ class Manager {
         'references' => 'ReferencesConversion\Model\Queue\Job\ReferencesJob',
         'bibtex' => 'BibtexConversion\Model\Queue\Job\BibtexJob',
         'bibtexreferences' => 'BibtexreferencesConversion\Model\Queue\Job\BibtexreferencesJob',
+        'html' => 'HtmlConversion\Model\Queue\Job\HtmlJob',
         'zip' => 'ZipConversion\Model\Queue\Job\ZipJob',
     );
 
@@ -124,10 +125,10 @@ class Manager {
         elseif ($job->conversionStage == JOB_CONVERSION_STAGE_BIBTEX) {
             $this->bibtexreferencesJob($job);
         }
-        elseif (
-            $job->conversionStage == JOB_CONVERSION_STAGE_BIBTEXREFERENCES or
-            $job->conversionStage == JOB_CONVERSION_STAGE_HTML
-        ) {
+        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_BIBTEXREFERENCES ) {
+            $this->htmlJob($job);
+        }
+        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_HTML) {
             $this->zipJob($job);
         }
         else {
@@ -194,6 +195,17 @@ class Manager {
     protected function bibtexreferencesJob($job)
     {
         $this->queueJob($job, 'bibtexreferences');
+    }
+
+    /**
+     * Queue a HTML conversion job
+     *
+     * @param mixed $job Job to queue
+     * @return void
+     */
+    protected function htmlJob($job)
+    {
+        $this->queueJob($job, 'html');
     }
 
     /**
