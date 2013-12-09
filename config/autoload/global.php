@@ -73,6 +73,7 @@ return array(
         ),
         'html' => array(
             'xsl' => 'module/HtmlConversion/assets/html.xsl',
+            'html_includes' => 'module/HtmlConversion/assets/html',
         ),
         'citationstyle' => array(
             'pandoc' => array(

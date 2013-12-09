@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-05 16:13-1000\n"
-"PO-Revision-Date: 2013-12-05 16:14-1000\n"
+"POT-Creation-Date: 2013-12-06 15:27-1000\n"
+"PO-Revision-Date: 2013-12-06 15:28-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -27,69 +27,69 @@ msgstr "meTypeset is executing: %s "
 msgid "nlmxmlconversion.metypeset.executeCommandOutputLog"
 msgstr "meTypeset output: %s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:85
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:86
 msgid "bibtexreferencesconversion.converter.startLog"
 msgstr "Starting Biblatex to NLMXML reference parsing"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:109
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:110
 msgid "bibtexreferencesconversion.convert.nlmxmlOutputLog"
 msgstr ""
 "New NLM XML documen after reference replacement:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:125
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:132
 msgid "bibtexreferencesconversion.converter.biblatex2xml.commandLog"
 msgstr ""
 "Executing biblatex2xml command:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:132
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:139
 msgid "bibtexreferencesconversion.converter.OutputLog"
 msgstr ""
 "Biblatex2xml conversion output:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:141
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:148
 msgid "bibtexreferencesconversion.converter.biblatex2xml.noDOMLog"
 msgstr ""
 "Biblatex2xml output is no valid XML. Error from LIBXML:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:160
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:167
 msgid "bibtexreferencesconversion.converter.transform.startLog"
 msgstr "Starting XSLT transformation of biblatex2xml output"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:167
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:174
 msgid "bibtexreferencesconversion.converter.transform.styleSheetErrorLog"
 msgstr "Error loading the XSL style sheet"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:182
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:190
 msgid "bibtexreferencesconversion.converter.transform.transformErrorLog"
 msgstr ""
 "Couldn't transform biblatex2xml output. Error from LIBXML:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:190
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:198
 msgid "bibtexreferencesconversion.converter.transform.successLog"
 msgstr ""
 "Successfully transformed biblatex2xml output:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:209
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:217
 msgid "bibtexreferencesconversion.replace.noRefListOldLog"
 msgstr "Couldn't load the reference list from the biblatex2xml conversion"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:220
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:228
 msgid "bibtexreferencesconversion.replace.loadNlmxmlErrorLog"
 msgstr ""
 "Couldn't load NLM XML document. Invalid xml. LIBXML error:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:230
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:238
 msgid "bibtexreferencesconversion.replace.noRefListNewLog"
 msgstr "Couldn't load the reference list from the NLM XML document"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:240
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:248
 msgid "bibtexreferencesconversion.replace.replacementErrorLog"
 msgstr ""
 "Couldn't replace the reference list. LIBXML error:\n"
@@ -130,19 +130,19 @@ msgstr "A new job has been created (%d)"
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:73
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:74
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:106
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:107
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:135
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:136
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:224
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:236
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
@@ -264,6 +264,32 @@ msgstr "Sucessfully removed user \"%s\""
 #: ../../Admin/src/Admin/Controller/UserManagementController.php:175
 msgid "admin.userManagement.userRemovalSuccessLog"
 msgstr "Removed user \"%s\""
+
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:90
+msgid "htmlconversion.converter.startLog"
+msgstr "Starting HTML conversion"
+
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:95
+msgid "htmlconversion.converter.nlmxmlDomErrorLog"
+msgstr ""
+"Couldn't load XSL style sheet. LIBXML error:\n"
+"%s"
+
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:115
+msgid "htmlconversion.converter.xslFileNotFoundLog"
+msgstr "Couldn't find the specified XSL file."
+
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:123
+msgid "htmlconversion.converter.xslLoadErrorLog"
+msgstr ""
+"Couldn't load XSL style sheet. LIBXML error:\n"
+"%s"
+
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:135
+msgid "htmlconversion.converter.transformErrorLog"
+msgstr ""
+"Error tansforming NLMXML document to HTML. LIBXML error:\n"
+"%s"
 
 #: ../../User/src/User/Event/Handler/UserRegisterHandler.php:103
 msgid "user.registration.confirmationEmailBody"
