@@ -6,12 +6,11 @@
 
   <xsl:output method="xml" encoding="utf-8" omit-xml-declaration="yes" indent="yes"/>
 
-  <!-- new elements added for randomshapes layout -->
   <xsl:template match="/">
   <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>  
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
       <xsl:for-each select="article/front/article-meta/title-group/article-title">
         <title>
           <xsl:value-of select="string(.)"/>
@@ -56,7 +55,7 @@
     <xsl:for-each select="article/front/article-meta/abstract/sec/p">
       <p>
         <xsl:value-of select="string(.)"/>
-      </p>  
+      </p>
     </xsl:for-each>
   </section>
   <a href="#" class="toggle-link version1" data-toggle="body"><h2><span class="glyphicon span-body glyphicon-chevron-down"></span>Manuscript</h2></a>
@@ -78,11 +77,11 @@
   <xsl:for-each select="article/back/ack/sec">
     <xsl:for-each select="title">
       <a href="#" class="toggle-link version1" data-toggle="acknowledgments"><h2><span class="glyphicon glyphicon-chevron-right"></span>
-        <xsl:value-of select="string(.)"/>  
+        <xsl:value-of select="string(.)"/>
       </h2></a>
     </xsl:for-each>
     <section id="Acknowledgments">
-      <xsl:for-each select="p">  
+      <xsl:for-each select="p">
         <p class="p">
           <xsl:value-of select="string(.)"/>
         </p>
@@ -211,7 +210,6 @@
     </section>
   </xsl:template>
 
-  <!-- ignore namespaced attributes -->
   <xsl:template match="@*[namespace-uri()]"></xsl:template>
 
 </xsl:stylesheet>
