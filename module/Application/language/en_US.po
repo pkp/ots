@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-09 14:49-1000\n"
-"PO-Revision-Date: 2013-12-09 14:56-1000\n"
+"POT-Creation-Date: 2013-12-09 16:29-1000\n"
+"PO-Revision-Date: 2013-12-09 16:30-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -134,19 +134,19 @@ msgstr "A new job has been created (%d)"
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:74
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:75
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:107
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:108
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:136
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:139
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:236
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:163
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
@@ -164,6 +164,26 @@ msgstr ""
 msgid "bibtexconversion.converter.OutputLog"
 msgstr ""
 "Bibtex conversion output:\n"
+"%s"
+
+#: ../../PdfConversion/src/PdfConversion/Model/Converter/Pdf.php:82
+msgid "pdfconversion.converter.startLog"
+msgstr "Starting PDF conversion"
+
+#: ../../PdfConversion/src/PdfConversion/Model/Converter/Pdf.php:86
+msgid "pdfconversion.converter.unzipErrorLog"
+msgstr "Error unzipping the HTML zip file"
+
+#: ../../PdfConversion/src/PdfConversion/Model/Converter/Pdf.php:126
+msgid "pdfconversion.wkhtmltopdf.executeCommandLog"
+msgstr ""
+"Wkhtmltopdf is executing:\n"
+"%s "
+
+#: ../../PdfConversion/src/PdfConversion/Model/Converter/Pdf.php:136
+msgid "pdfconversion.wkhtmltopdf.executeCommandOutputLog"
+msgstr ""
+"Wkhtmltopdf output:\n"
 "%s"
 
 #: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:121

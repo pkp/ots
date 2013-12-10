@@ -77,7 +77,7 @@ return array(
         ),
         'pdf' => array(
             'wkhtmltopdf' => array(
-                'command' => 'module/HtmlConversion/assets/wkhtmltoto/wkhtmltopdf-0.11.0_rc1-amd64',
+                'command' => 'module/PdfConversion/assets/wkhtmltopdf-0.11.0_rc1-amd64',
             ),
         ),
         'citationstyle' => array(
