@@ -108,6 +108,7 @@ class Html extends AbstractConverter
 
         // Create the zip file with the HTML and the HTML assets
         $this->package();
+        $this->status = true;
     }
 
     /**
@@ -122,7 +123,7 @@ class Html extends AbstractConverter
             $this->logger->debugTranslate(
                 'htmlconversion.converter.xslFileNotFoundLog'
             );
-            return;
+            return false;
         }
 
         $xsl = new DOMDocument;
@@ -146,6 +147,11 @@ class Html extends AbstractConverter
 
             return false;
         };
+
+        $this->logger->debugTranslate(
+            'htmlconversion.converter.transformsSuccessLog',
+            $this->htmlDom->saveHTML()
+        );
 
         return true;
     }

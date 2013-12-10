@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-06 15:27-1000\n"
-"PO-Revision-Date: 2013-12-06 15:28-1000\n"
+"POT-Creation-Date: 2013-12-09 14:37-1000\n"
+"PO-Revision-Date: 2013-12-09 14:37-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -265,30 +265,36 @@ msgstr "Sucessfully removed user \"%s\""
 msgid "admin.userManagement.userRemovalSuccessLog"
 msgstr "Removed user \"%s\""
 
-#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:90
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:92
 msgid "htmlconversion.converter.startLog"
 msgstr "Starting HTML conversion"
 
-#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:95
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:97
 msgid "htmlconversion.converter.nlmxmlDomErrorLog"
 msgstr ""
 "Couldn't load XSL style sheet. LIBXML error:\n"
 "%s"
 
-#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:115
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:124
 msgid "htmlconversion.converter.xslFileNotFoundLog"
 msgstr "Couldn't find the specified XSL file."
 
-#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:123
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:132
 msgid "htmlconversion.converter.xslLoadErrorLog"
 msgstr ""
 "Couldn't load XSL style sheet. LIBXML error:\n"
 "%s"
 
-#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:135
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:144
 msgid "htmlconversion.converter.transformErrorLog"
 msgstr ""
 "Error tansforming NLMXML document to HTML. LIBXML error:\n"
+"%s"
+
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:152
+msgid "htmlconversion.converter.transformsSuccessLog"
+msgstr ""
+"Sucessfully converted NLMXML to HTML. HTML document:\n"
 "%s"
 
 #: ../../User/src/User/Event/Handler/UserRegisterHandler.php:103
