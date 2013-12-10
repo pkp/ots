@@ -3,7 +3,6 @@
 namespace HtmlConversion\Model\Converter;
 
 use Xmlps\Logger\Logger;
-use Xmlps\Command\Command;
 use DOMDocument;
 use XSLTProcessor;
 use RecursiveDirectoryIterator;
