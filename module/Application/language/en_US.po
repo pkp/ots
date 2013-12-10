@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-09 16:29-1000\n"
-"PO-Revision-Date: 2013-12-09 16:30-1000\n"
+"POT-Creation-Date: 2013-12-09 16:39-1000\n"
+"PO-Revision-Date: 2013-12-09 16:42-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -142,11 +142,11 @@ msgstr "Processing queue received job (%d)"
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:139
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:142
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:163
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:166
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
@@ -707,12 +707,16 @@ msgstr ""
 #: ../../Manager/view/manager/manager/details.phtml:32
 msgid "manager.job.details.document.html"
 msgstr ""
-"Document html.zip contains the document in HTML format as well as assets to "
-"render the HTML."
+"Html.zip contains the document in HTML format as well as the required assets "
+"to render the HTML."
 
 #: ../../Manager/view/manager/manager/details.phtml:33
-msgid "manager.job.details.document.documents.zip"
-msgstr "Documents.zip is a ZIP archive containing all the documents."
+msgid "manager.job.details.document.pdf"
+msgstr "Document.pdf is the document in PDF format"
+
+#: ../../Manager/view/manager/manager/details.phtml:34
+msgid "manager.job.details.document.zip"
+msgstr "Documents.zip is a zip archive containing all the documents"
 
 #: ../../Manager/view/manager/manager/list.phtml:13
 msgid "manager.job.uploadFileName"
@@ -839,6 +843,9 @@ msgstr "Settings"
 #: ../../User/view/user/user/settings.phtml:14
 msgid "user.settings.changePassword"
 msgstr "Change Password"
+
+#~ msgid "manager.job.details.document.documents.zip"
+#~ msgstr "Documents.zip is a ZIP archive containing all the documents."
 
 #~ msgid "manager.job.details.document.references"
 #~ msgstr ""
