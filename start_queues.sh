@@ -18,5 +18,7 @@ php public/index.php queue doctrine bibtexreferences --start &
 echo "Started BibtexReferences queue [PID $!]"
 php public/index.php queue doctrine html --start &
 echo "Started HTML queue [PID $!]"
+php public/index.php queue doctrine pdf --start &
+echo "Started PDF pdf queue [PID $!]"
 php public/index.php queue doctrine zip --start &
 echo "Started Zip queue [PID $!]"

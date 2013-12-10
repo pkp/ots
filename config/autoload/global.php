@@ -75,6 +75,11 @@ return array(
             'xsl' => 'module/HtmlConversion/assets/html.xsl',
             'html_includes' => 'module/HtmlConversion/assets/html',
         ),
+        'pdf' => array(
+            'wkhtmltopdf' => array(
+                'command' => 'module/HtmlConversion/assets/wkhtmltoto/wkhtmltopdf-0.11.0_rc1-amd64',
+            ),
+        ),
         'citationstyle' => array(
             'pandoc' => array(
                 'command' => 'pandoc',

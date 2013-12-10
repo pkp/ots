@@ -17,6 +17,7 @@ return array(
         'BibtexreferencesConversion',
         'HtmlConversion',
         'CitationstyleConversion',
+        'PdfConversion',
         'ZipConversion',
     ),
 

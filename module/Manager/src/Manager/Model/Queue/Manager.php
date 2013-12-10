@@ -28,6 +28,7 @@ class Manager {
         'bibtex' => 'BibtexConversion\Model\Queue\Job\BibtexJob',
         'bibtexreferences' => 'BibtexreferencesConversion\Model\Queue\Job\BibtexreferencesJob',
         'html' => 'HtmlConversion\Model\Queue\Job\HtmlJob',
+        'pdf' => 'PdfConversion\Model\Queue\Job\PdfJob',
         'zip' => 'ZipConversion\Model\Queue\Job\ZipJob',
     );
 
@@ -129,6 +130,9 @@ class Manager {
             $this->htmlJob($job);
         }
         elseif ($job->conversionStage == JOB_CONVERSION_STAGE_HTML) {
+            $this->pdfJob($job);
+        }
+        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_PDF) {
             $this->zipJob($job);
         }
         else {
@@ -206,6 +210,17 @@ class Manager {
     protected function htmlJob($job)
     {
         $this->queueJob($job, 'html');
+    }
+
+    /**
+     * Queue a PDF conversion job
+     *
+     * @param mixed $job Job to queue
+     * @return void
+     */
+    protected function pdfJob($job)
+    {
+        $this->queueJob($job, 'pdf');
     }
 
     /**

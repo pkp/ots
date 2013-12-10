@@ -21,6 +21,7 @@ return array(
                 'bibtex' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'bibtexreferences' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'html' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'pdf' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'zip' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
             ),
         ),
