@@ -82,7 +82,7 @@ class BibtexJobTest extends ModelTest
         $this->document->job = $this->job;
 
         $this->document->path = $this->testFile;
-        $this->document->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
+        $this->document->conversionStage = $this->job->conversionStage;
 
         $this->job->documents[] = $this->document;
         $this->jobDAO->save($this->job);

@@ -82,7 +82,7 @@ class ZipJobTest extends ModelTest
         $this->document = $this->documentDAO->getInstance();
         $this->document->job = $this->job;
         $this->document->path = $this->testFile;
-        $this->document->conversionStage = JOB_CONVERSION_STAGE_BIBTEX;
+        $this->document->conversionStage = $this->job->conversionStage;
 
         $this->job->documents[] = $this->document;
         $this->jobDAO->save($this->job);

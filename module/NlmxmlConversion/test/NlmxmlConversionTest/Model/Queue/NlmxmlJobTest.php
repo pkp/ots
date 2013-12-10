@@ -82,7 +82,7 @@ class NlmxmlJobTest extends ModelTest
         $this->document->job = $this->job;
 
         $this->document->path = $this->testFile;
-        $this->document->conversionStage = JOB_CONVERSION_STAGE_DOCX;
+        $this->document->conversionStage = $this->job->conversionStage;
 
         $this->job->documents[] = $this->document;
         $this->jobDAO->save($this->job);
