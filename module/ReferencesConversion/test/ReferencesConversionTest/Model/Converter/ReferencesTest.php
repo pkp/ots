@@ -56,6 +56,7 @@ class ReferencesTest extends ModelTest
         $this->references->convert();
 
         $this->assertTrue(is_file($this->testOutputFile));
+        $this->assertTrue($this->references->getStatus());
 
         $this->assertNotSame(
             file_get_contents($this->testInputFile),

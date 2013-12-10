@@ -50,6 +50,7 @@ class BibtexTest extends ModelTest
         $this->bibtex->convert();
 
         $this->assertTrue(is_file($this->testOutputFile));
+        $this->assertTrue($this->bibtex->getStatus());
 
         $this->assertNotSame(
             file_get_contents($this->testInputFile),

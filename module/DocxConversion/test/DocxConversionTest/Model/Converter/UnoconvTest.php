@@ -52,6 +52,7 @@ class UnoconvTest extends ModelTest
 
         $this->assertSame($this->unoconv->getStatus(), true);
         $this->assertNotNull($this->unoconv->getOutput());
+        $this->assertTrue($this->unoconv->getStatus());
         $this->assertNotSame(
             file_get_contents($this->testFile),
             file_get_contents($this->testFile2)

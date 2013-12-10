@@ -57,6 +57,7 @@ class MetypesetTest extends ModelTest
         $this->metypeset->convert();
 
         $this->assertTrue(is_file($this->testOutputDirectory . '/document.xml'));
+        $this->assertTrue($this->metypeset->getStatus());
 
         $this->assertNotSame(
             file_get_contents($this->testInputFile),
