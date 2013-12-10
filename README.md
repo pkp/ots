@@ -29,7 +29,9 @@ Module Description
 * BibtexreferenceConversion
  * Converts Bibtex references into NLMXML and merges the converted references into the NLMXML document [X]
 * HtmlConversion
- * Converts the NLMXML document into HTML
+ * Converts the NLMXML document into HTML [X]
+* PdfConversion
+ * Converts the HTML document into PDF [X]
 * ZipConversion
  * Zips all documents [X]
 
