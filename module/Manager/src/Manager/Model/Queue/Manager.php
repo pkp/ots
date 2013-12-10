@@ -111,127 +111,39 @@ class Manager {
             return;
         }
 
-        if ($job->conversionStage == JOB_CONVERSION_STAGE_UNCONVERTED) {
-            $this->docxJob($job);
-        }
-        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_DOCX) {
-            $this->nlmxmlJob($job);
-        }
-        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_NLMXML) {
-            $this->referencesJob($job);
-        }
-        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_REFERENCES) {
-            $this->bibtexJob($job);
-        }
-        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_BIBTEX) {
-            $this->bibtexreferencesJob($job);
-        }
-        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_BIBTEXREFERENCES ) {
-            $this->htmlJob($job);
-        }
-        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_HTML) {
-            $this->pdfJob($job);
-        }
-        elseif ($job->conversionStage == JOB_CONVERSION_STAGE_PDF) {
-            $this->zipJob($job);
-        }
-        else {
-            $this->logger->infoTranslate(
-                'manager.queue.jobCompletedLog',
-                $job->id
-            );
+        // Queue the job in the queue for the next processing step
+        switch ($job->conversionStage) {
+            case JOB_CONVERSION_STAGE_UNCONVERTED:
+                $this->queueJob($job, 'docx');
+                break;
+            case JOB_CONVERSION_STAGE_DOCX:
+                $this->queueJob($job, 'nlmxml');
+                break;
+            case JOB_CONVERSION_STAGE_REFERENCES:
+                $this->queueJob($job, 'bibtex');
+                break;
+            case JOB_CONVERSION_STAGE_BIBTEX:
+                $this->queueJob($job, 'bibtexreferences');
+                break;
+            case JOB_CONVERSION_STAGE_BIBTEXREFERENCES:
+                $this->queueJob($job, 'html');
+                break;
+            case JOB_CONVERSION_STAGE_HTML:
+                $this->queueJob($job, 'pdf');
+                break;
+            case JOB_CONVERSION_STAGE_PDF:
+                $this->queueJob($job, 'zip');
+                break;
+            default:
+                $this->logger->infoTranslate(
+                    'manager.queue.jobCompletedLog',
+                    $job->id
+                );
 
-            $job->status = JOB_STATUS_COMPLETED;
-            $this->jobDAO->save($job);
+                $job->status = JOB_STATUS_COMPLETED;
+                $this->jobDAO->save($job);
+                break;
         }
-    }
-
-    /**
-     * Queue a docX conversion job
-     *
-     * @param mixed $job Job to queue
-     * @return void
-     */
-    protected function docxJob($job)
-    {
-        $this->queueJob($job, 'docx');
-    }
-
-    /**
-     * Queue a NLMXML conversion job
-     *
-     * @param mixed $job Job to queue
-     * @return void
-     */
-    protected function nlmxmlJob($job)
-    {
-        $this->queueJob($job, 'nlmxml');
-    }
-
-    /**
-     * Queue a reference parsing job
-     *
-     * @param mixed $job Job to queue
-     * @return void
-     */
-    protected function referencesJob($job)
-    {
-        $this->queueJob($job, 'references');
-    }
-
-    /**
-     * Queue a bibtex parsing job
-     *
-     * @param mixed $job Job to queue
-     * @return void
-     */
-    protected function bibtexJob($job)
-    {
-        $this->queueJob($job, 'bibtex');
-    }
-
-    /**
-     * Queue a bibtex references conversion job
-     *
-     * @param mixed $job Job to queue
-     * @return void
-     */
-    protected function bibtexreferencesJob($job)
-    {
-        $this->queueJob($job, 'bibtexreferences');
-    }
-
-    /**
-     * Queue a HTML conversion job
-     *
-     * @param mixed $job Job to queue
-     * @return void
-     */
-    protected function htmlJob($job)
-    {
-        $this->queueJob($job, 'html');
-    }
-
-    /**
-     * Queue a PDF conversion job
-     *
-     * @param mixed $job Job to queue
-     * @return void
-     */
-    protected function pdfJob($job)
-    {
-        $this->queueJob($job, 'pdf');
-    }
-
-    /**
-     * Queue a Zip conversion job
-     *
-     * @param mixed $job Job to queue
-     * @return void
-     */
-    protected function zipJob($job)
-    {
-        $this->queueJob($job, 'zip');
     }
 
     /**
