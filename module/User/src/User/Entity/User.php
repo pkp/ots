@@ -5,6 +5,9 @@ namespace User\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Xmlps\DataObject\DataObject;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use FilesystemIterator;
 
 define('USER_LEVEL_BASIC', 0);
 define('USER_LEVEL_INFINITE', 1);
@@ -157,15 +160,9 @@ class User extends DataObject
         foreach ($jobs as $job) { $jobDAO->remove($job); }
 
         // Remove the documents directory for this user
-        $it = new \RecursiveDirectoryIterator($this->getDocumentPath());
-        $files = new \RecursiveIteratorIterator(
-            $it,
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
+        $it = new RecursiveDirectoryIterator($this->getDocumentPath(), FilesystemIterator::SKIP_DOTS);
+        $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
         foreach($files as $file) {
-            if ($file->getFilename() === '.' or $file->getFilename() === '..') {
-                continue;
-            }
             if ($file->isDir()){
                 rmdir($file->getRealPath());
             } else {
