@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-09 14:49-1000\n"
-"PO-Revision-Date: 2013-12-09 14:51-1000\n"
+"PO-Revision-Date: 2013-12-09 14:56-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -21,11 +21,15 @@ msgstr ""
 
 #: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:95
 msgid "nlmxmlconversion.metypeset.executeCommandLog"
-msgstr "meTypeset is executing: %s "
+msgstr ""
+"meTypeset is executing:\n"
+"%s "
 
 #: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:105
 msgid "nlmxmlconversion.metypeset.executeCommandOutputLog"
-msgstr "meTypeset output: %s"
+msgstr ""
+"meTypeset output:\n"
+"%s"
 
 #: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:86
 msgid "bibtexreferencesconversion.converter.startLog"
@@ -152,7 +156,9 @@ msgstr "Starting bibtex conversion"
 
 #: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:79
 msgid "bibtexconversion.converter.xml2bib.commandLog"
-msgstr "Executing bibtex conversion command: %s"
+msgstr ""
+"Executing bibtex conversion command:\n"
+"%s"
 
 #: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:87
 msgid "bibtexconversion.converter.OutputLog"
@@ -162,7 +168,9 @@ msgstr ""
 
 #: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:121
 msgid "referencesconversion.converter.loadXML.domErrorLog"
-msgstr "Couldn't load input file. Invalid xml. LIBXML error: %s"
+msgstr ""
+"Couldn't load input file. Invalid xml. LIBXML error:\n"
+"%s"
 
 #: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:138
 msgid "referencesconversion.converter.startLog"
@@ -174,7 +182,9 @@ msgstr "The input file couldn't be parsed"
 
 #: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:181
 msgid "referencesconversion.converter.parsCit.commandOutputLog"
-msgstr "Output from ParsCit command: %s"
+msgstr ""
+"Output from ParsCit command:\n"
+"%s"
 
 #: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:211
 msgid "referencesconversion.converter.parseBibliography.noBibliographyLog"
@@ -190,11 +200,15 @@ msgstr "Parsing for TEI bibliography"
 
 #: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:310
 msgid "referencesconversion.converter.parsCit.commandLog"
-msgstr "Executing ParsCit command: %s"
+msgstr ""
+"Executing ParsCit command:\n"
+"%s"
 
 #: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:349
 msgid "referencesconversion.converter.parsCit.noDOMLog"
-msgstr "ParsCit output is no valid XML. Error from LIBXML: %s"
+msgstr ""
+"ParsCit output is no valid XML. Error from LIBXML:\n"
+"%s"
 
 #: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:363
 msgid "referencesconversion.converter.parsCit.noListNodeLog"
@@ -214,11 +228,15 @@ msgstr "Error loading the XSL style sheet"
 
 #: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:409
 msgid "referencesconversion.converter.transformBibliography.transformErrorLog"
-msgstr "Couldn't transform the parsed bibliography. Error from LIBXML: %s"
+msgstr ""
+"Couldn't transform the parsed bibliography. Error from LIBXML:\n"
+"%s"
 
 #: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:420
 msgid "referencesconversion.converter.transformBibliography.successLog"
-msgstr "Successfully transformed bibliography: %s"
+msgstr ""
+"Successfully transformed bibliography:\n"
+"%s"
 
 #: ../../Admin/src/Admin/Form/UserRemovalForm.php:38
 #: ../../Admin/view/admin/user-management/list.phtml:26
@@ -433,11 +451,15 @@ msgstr "User %s updated settings"
 
 #: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:128
 msgid "docxconversion.unoconv.executeCommandLog"
-msgstr "Unoconv is executing: %s "
+msgstr ""
+"Unoconv is executing:\n"
+"%s "
 
 #: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:138
 msgid "docxconversion.unoconv.executeCommandOutputLog"
-msgstr "Unoconf output: %s"
+msgstr ""
+"Unoconf output:\n"
+"%s"
 
 #: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:89
 msgid "citationstyleconversion.converter.loadXML.domErrorLog"
@@ -451,7 +473,9 @@ msgstr "Starting pandoc conversion"
 
 #: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:112
 msgid "citationstyleconversion.converter.pandoc.commandLog"
-msgstr "Executing pandoc conversion command: %s"
+msgstr ""
+"Executing pandoc conversion command:\n"
+"%s"
 
 #: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:120
 msgid "citationstyleconversion.converter.OutputLog"
