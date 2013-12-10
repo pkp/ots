@@ -119,6 +119,9 @@ class Manager {
             case JOB_CONVERSION_STAGE_DOCX:
                 $this->queueJob($job, 'nlmxml');
                 break;
+            case JOB_CONVERSION_STAGE_NLMXML:
+                $this->queueJob($job, 'references');
+                break;
             case JOB_CONVERSION_STAGE_REFERENCES:
                 $this->queueJob($job, 'bibtex');
                 break;
