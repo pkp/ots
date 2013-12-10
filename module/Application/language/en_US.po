@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-09 14:37-1000\n"
-"PO-Revision-Date: 2013-12-09 14:37-1000\n"
+"POT-Creation-Date: 2013-12-09 14:49-1000\n"
+"PO-Revision-Date: 2013-12-09 14:51-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -652,12 +652,21 @@ msgid "manager.job.details.document.nlmxml"
 msgstr "Document.xml is the document converted to the NLM3 XML standard."
 
 #: ../../Manager/view/manager/manager/details.phtml:30
-msgid "manager.job.details.document.references"
-msgstr ""
-"References.txt is a text file containing all the references found in the "
-"original document."
+msgid "manager.job.details.document.bib.xml"
+msgstr "Document document.bib.xml contains the Bibliography in XML"
 
 #: ../../Manager/view/manager/manager/details.phtml:31
+msgid "manager.job.details.document.bib.tex"
+msgstr ""
+"Document document.bib.tex contains the Bibliography in the Bibtex format"
+
+#: ../../Manager/view/manager/manager/details.phtml:32
+msgid "manager.job.details.document.html"
+msgstr ""
+"Document html.zip contains the document in HTML format as well as assets to "
+"render the HTML."
+
+#: ../../Manager/view/manager/manager/details.phtml:33
 msgid "manager.job.details.document.documents.zip"
 msgstr "Documents.zip is a ZIP archive containing all the documents."
 
@@ -786,6 +795,11 @@ msgstr "Settings"
 #: ../../User/view/user/user/settings.phtml:14
 msgid "user.settings.changePassword"
 msgstr "Change Password"
+
+#~ msgid "manager.job.details.document.references"
+#~ msgstr ""
+#~ "References.txt is a text file containing all the references found in the "
+#~ "original document."
 
 #~ msgid "referencesconversion.converter.parsCit.commandStatusLog"
 #~ msgstr "ParsCit exited with status code: %d"
