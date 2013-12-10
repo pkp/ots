@@ -4,6 +4,9 @@ namespace NlmxmlConversionTest\Model\Converter;
 
 use PHPUnit_Framework_TestCase;
 use Xmlps\UnitTest\ModelTest;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use FilesystemIterator;
 
 /**
  * Tests the MeTypeset converter
@@ -75,15 +78,9 @@ class MetypesetTest extends ModelTest
     {
         if (!is_dir($this->testOutputDirectory)) return;
 
-        $it = new \RecursiveDirectoryIterator($this->testOutputDirectory);
-        $files = new \RecursiveIteratorIterator(
-            $it,
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
+        $it = new RecursiveDirectoryIterator($this->testOutputDirectory, FilesystemIterator::SKIP_DOTS);
+        $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
         foreach($files as $file) {
-            if ($file->getFilename() === '.' or $file->getFilename() === '..') {
-                continue;
-            }
             if ($file->isDir()){
                 rmdir($file->getRealPath());
             } else {
