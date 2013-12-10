@@ -97,7 +97,6 @@ class ZipJobTest extends ModelTest
     {
         $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
         if (!$user) return;
-
         $this->userDAO->remove($user);
 
         @unlink($this->testFile);
