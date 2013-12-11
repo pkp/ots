@@ -81,5 +81,6 @@ class HtmlTest extends ModelTest
     protected function cleanTestData()
     {
         @unlink($this->testInputFile);
+        @unlink($this->testOutputFile);
     }
 }
