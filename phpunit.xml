@@ -11,6 +11,7 @@
         <directory>module/BibtexConversion/test</directory>
         <directory>module/BibtexreferencesConversion/test</directory>
         <directory>module/HtmlConversion/test</directory>
+        <directory>module/PdfConversion/test</directory>
         <directory>module/ZipConversion/test</directory>
       </testsuite>
     </testsuites>
