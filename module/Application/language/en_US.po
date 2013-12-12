@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-09 16:39-1000\n"
-"PO-Revision-Date: 2013-12-09 16:42-1000\n"
+"POT-Creation-Date: 2013-12-12 11:28-1000\n"
+"PO-Revision-Date: 2013-12-12 11:28-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -31,69 +31,69 @@ msgstr ""
 "meTypeset output:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:86
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:87
 msgid "bibtexreferencesconversion.converter.startLog"
 msgstr "Starting Biblatex to NLMXML reference parsing"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:110
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:111
 msgid "bibtexreferencesconversion.convert.nlmxmlOutputLog"
 msgstr ""
 "New NLM XML documen after reference replacement:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:132
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:133
 msgid "bibtexreferencesconversion.converter.biblatex2xml.commandLog"
 msgstr ""
 "Executing biblatex2xml command:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:139
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:140
 msgid "bibtexreferencesconversion.converter.OutputLog"
 msgstr ""
 "Biblatex2xml conversion output:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:148
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:149
 msgid "bibtexreferencesconversion.converter.biblatex2xml.noDOMLog"
 msgstr ""
 "Biblatex2xml output is no valid XML. Error from LIBXML:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:167
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:168
 msgid "bibtexreferencesconversion.converter.transform.startLog"
 msgstr "Starting XSLT transformation of biblatex2xml output"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:174
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:175
 msgid "bibtexreferencesconversion.converter.transform.styleSheetErrorLog"
 msgstr "Error loading the XSL style sheet"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:190
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:191
 msgid "bibtexreferencesconversion.converter.transform.transformErrorLog"
 msgstr ""
 "Couldn't transform biblatex2xml output. Error from LIBXML:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:198
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:199
 msgid "bibtexreferencesconversion.converter.transform.successLog"
 msgstr ""
 "Successfully transformed biblatex2xml output:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:217
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:218
 msgid "bibtexreferencesconversion.replace.noRefListOldLog"
 msgstr "Couldn't load the reference list from the biblatex2xml conversion"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:228
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:229
 msgid "bibtexreferencesconversion.replace.loadNlmxmlErrorLog"
 msgstr ""
 "Couldn't load NLM XML document. Invalid xml. LIBXML error:\n"
 "%s"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:238
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:239
 msgid "bibtexreferencesconversion.replace.noRefListNewLog"
 msgstr "Couldn't load the reference list from the NLM XML document"
 
-#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:248
+#: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:249
 msgid "bibtexreferencesconversion.replace.replacementErrorLog"
 msgstr ""
 "Couldn't replace the reference list. LIBXML error:\n"
@@ -134,19 +134,19 @@ msgstr "A new job has been created (%d)"
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:75
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:76
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:108
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:109
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:142
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:146
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:166
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:170
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
@@ -186,73 +186,73 @@ msgstr ""
 "Wkhtmltopdf output:\n"
 "%s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:121
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:122
 msgid "referencesconversion.converter.loadXML.domErrorLog"
 msgstr ""
 "Couldn't load input file. Invalid xml. LIBXML error:\n"
 "%s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:138
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:139
 msgid "referencesconversion.converter.startLog"
 msgstr "Starting Bibliography parsing"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:145
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:146
 msgid "referencesconversion.converter.convert.inputErrorLog"
 msgstr "The input file couldn't be parsed"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:181
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:182
 msgid "referencesconversion.converter.parsCit.commandOutputLog"
 msgstr ""
 "Output from ParsCit command:\n"
 "%s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:211
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:212
 msgid "referencesconversion.converter.parseBibliography.noBibliographyLog"
 msgstr "No Bibliography found"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:228
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:229
 msgid "referencesconversion.converter.parseBibliography.nlmLog"
 msgstr "Parsing for NLM bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:245
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:246
 msgid "referencesconversion.converter.parseBibliography.teiLog"
 msgstr "Parsing for TEI bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:310
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:311
 msgid "referencesconversion.converter.parsCit.commandLog"
 msgstr ""
 "Executing ParsCit command:\n"
 "%s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:349
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:350
 msgid "referencesconversion.converter.parsCit.noDOMLog"
 msgstr ""
 "ParsCit output is no valid XML. Error from LIBXML:\n"
 "%s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:363
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:364
 msgid "referencesconversion.converter.parsCit.noListNodeLog"
 msgstr "Citation list doesn't contain any entries"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:369
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:370
 msgid "referencesconversion.converter.parsCit.successLog"
 msgstr "ParsCit successfully parsed bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:385
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:386
 msgid "referencesconversion.converter.transformBibliography.startLog"
 msgstr "Transforming the parsed bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:400
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:401
 msgid "referencesconversion.converter.transformBibliography.styleSheetErrorLog"
 msgstr "Error loading the XSL style sheet"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:409
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:410
 msgid "referencesconversion.converter.transformBibliography.transformErrorLog"
 msgstr ""
 "Couldn't transform the parsed bibliography. Error from LIBXML:\n"
 "%s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:420
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:421
 msgid "referencesconversion.converter.transformBibliography.successLog"
 msgstr ""
 "Successfully transformed bibliography:\n"
@@ -335,6 +335,52 @@ msgstr ""
 "Sucessfully converted NLMXML to HTML. HTML document:\n"
 "%s"
 
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:88
+msgid "xmpconversion.converter.loadXML.domErrorLog"
+msgstr ""
+"Couldn't load NLMXML input file. Invalid xml. LIBXML error:\n"
+"%s"
+
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:123
+msgid "xmpconversion.converter.startLog"
+msgstr "Starting XMP conversion"
+
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:129
+msgid "xmpconversion.converter.metadataErrorLog"
+msgstr "Error reading metadata from NLMXML file"
+
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:137
+msgid "xmpconversion.converter.sidecarCreateErrorLog"
+msgstr "Error creating the XMP sidecar file"
+
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:144
+msgid "xmpconversion.converter.sidecarAddErrorLog"
+msgstr "Error adding the XMP sidecar file to the PDF"
+
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:218
+msgid "xmpconversion.exiftool.executeXmpCommandLog"
+msgstr ""
+"Exiftool is executing (creating XMP sidecar):\n"
+"%s "
+
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:228
+msgid "xmpconversion.exiftool.executeXmpCommandOutputLog"
+msgstr ""
+"Exiftool output (creating XMP sidecar):\n"
+"%s"
+
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:259
+msgid "xmpconversion.exiftool.executePdfCommandLog"
+msgstr ""
+"Exiftool is executing (adding XMP sidecar):\n"
+"%s "
+
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:269
+msgid "xmpconversion.exiftool.executePdfCommandOutputLog"
+msgstr ""
+"Exiftool output (adding XMP sidecar):\n"
+"%s"
+
 #: ../../User/src/User/Event/Handler/UserRegisterHandler.php:103
 msgid "user.registration.confirmationEmailBody"
 msgstr ""
@@ -401,19 +447,19 @@ msgstr "This email address is already registered!"
 msgid "user.registrationForm.register"
 msgstr "Register"
 
-#: ../../User/src/User/Entity/User.php:261
+#: ../../User/src/User/Entity/User.php:258
 msgid "user.user.level.basic"
 msgstr "Basic"
 
-#: ../../User/src/User/Entity/User.php:262
+#: ../../User/src/User/Entity/User.php:259
 msgid "user.user.level.infinite"
 msgstr "Infinite"
 
-#: ../../User/src/User/Entity/User.php:275
+#: ../../User/src/User/Entity/User.php:272
 msgid "user.user.role.member"
 msgstr "Member"
 
-#: ../../User/src/User/Entity/User.php:276
+#: ../../User/src/User/Entity/User.php:273
 msgid "user.user.role.administrator"
 msgstr "Administrator"
 
