@@ -1,10 +1,10 @@
 <?php
 return array(
+  'Xmlps\Libxml\Libxml'                             => __DIR__ . '/library/Libxml/Libxml.php',
   'Xmlps\Event\Handler\AclDispatchHandler'          => __DIR__ . '/library/Event/Handler/AclDispatchHandler.php',
   'Xmlps\Event\Handler\FlashMessengerRenderHandler' => __DIR__ . '/library/Event/Handler/FlashMessengerRenderHandler.php',
   'Xmlps\Log\Writer\Doctrine'                       => __DIR__ . '/library/Log/Writer/Doctrine.php',
   'Xmlps\Logger\Logger'                             => __DIR__ . '/library/Log/Logger.php',
-  'Xmlps\DOM\Iterator\RecursiveDOMIterator'         => __DIR__ . '/library/DOM/Iterator/RecursiveDOMIterator.php',
   'Xmlps\Command\Command'                           => __DIR__ . '/library/Command/Command.php',
   'Xmlps\Doctrine\Listener\ServiceManagerListener'  => __DIR__ . '/library/Doctrine/Listener/ServiceManagerListener.php',
   'Xmlps\Controller\Plugin\ControllerAcl'           => __DIR__ . '/library/Controller/Plugin/ControllerAcl.php',

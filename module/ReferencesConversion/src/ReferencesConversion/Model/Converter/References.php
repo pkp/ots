@@ -4,6 +4,7 @@ namespace ReferencesConversion\Model\Converter;
 
 use Xmlps\Logger\Logger;
 use Xmlps\Command\Command;
+use Xmlps\Libxml\Libxml;
 use DOMDocument;
 use DOMNode;
 use DOMNodeList;
@@ -17,6 +18,8 @@ use Manager\Model\Converter\AbstractConverter;
  */
 class References extends AbstractConverter
 {
+    use Libxml;
+
     protected $config;
     protected $logger;
 
@@ -49,9 +52,7 @@ class References extends AbstractConverter
         $this->config = $config;
         $this->logger = $logger;
 
-        // Avoid displaying of warnings/errors by libxml
-        libxml_use_internal_errors(true);
-        libxml_clear_errors();
+        $this->disableLibxmlErrorDisplay();
     }
 
     /**
@@ -445,21 +446,5 @@ class References extends AbstractConverter
         }
 
         return $dom;
-    }
-
-    /**
-     * Returns a string containing LIBXML errors
-     *
-     * @return string LIBXML errors
-     */
-    protected function libxmlErrors()
-    {
-        $errors = implode(PHP_EOL, array_map(
-            function ($e) { return $e->message; },
-            libxml_get_errors()
-        ));
-        libxml_clear_errors();
-
-        return $errors;
     }
 }
