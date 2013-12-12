@@ -88,16 +88,17 @@ class Command
      *
      * @param string $switch Command switch
      * @param string $argument Optional argument
+     * @param string $glue Glue to connect the swithc and the argument
      *
      * @return void
      */
-    public function addSwitch($switch, $argument = null)
+    public function addSwitch($switch, $argument = null, $glue = ' ')
     {
         if (is_null($argument)) {
             $this->arguments[] = $switch;
         }
         else {
-            $this->arguments[] = $switch . ' ' . escapeshellarg($argument);
+            $this->arguments[] = $switch . $glue . escapeshellarg($argument);
         }
     }
 
