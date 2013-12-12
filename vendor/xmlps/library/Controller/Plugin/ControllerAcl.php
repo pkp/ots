@@ -152,7 +152,7 @@ class ControllerAcl extends AbstractPlugin
             // Check if the controller/action exists. If they don't we return
             // true to make sure the 404 page is rendered
             $controllerLoader = $sm->get('ControllerLoader');
-            if (!$controllerLoader->canCreate($controller)) { return true; }
+            if (!$controllerLoader->has($controller)) { return true; }
             $controller = $controllerLoader->get($controller);
             $method = $controller::getMethodFromAction($action);
             if (!method_exists($controller, $method)) { return true; }
