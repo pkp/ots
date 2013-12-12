@@ -232,6 +232,11 @@ class Xmp extends AbstractConverter
         );
     }
 
+    /**
+     * Add the XMP sidecar to the PDF document
+     *
+     * @return void
+     */
     protected function addXmpSidecar()
     {
         $command = new Command;
