@@ -18,6 +18,7 @@ return array(
         'HtmlConversion',
         'CitationstyleConversion',
         'PdfConversion',
+        'XmpConversion',
         'ZipConversion',
     ),
 

@@ -22,6 +22,7 @@ return array(
                 'bibtexreferences' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'html' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'pdf' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'xmp' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'zip' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
             ),
         ),

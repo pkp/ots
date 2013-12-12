@@ -85,5 +85,10 @@ return array(
                 'command' => 'pandoc',
             ),
         ),
+        'xmp' => array(
+            'exiftool' => array(
+                'command' => 'exiftool',
+            ),
+        ),
     ),
 );

@@ -4,44 +4,46 @@ PKP XML Parsing Service
 Module Description
 ------------------
 * User
- * Authentication [X]
- * Registration [X]
- * New password [X]
- * Lost password retrieval
+ * Authentication
+ * Registration
+ * New password
 * Admin
- * Confirm registrations [X]
- * Set a user's document conversion rate [X]
- * Delete user [X]
- * Edit User [X]
- * System log viewer [X]
+ * Confirm registrations
+ * Set a user's document conversion rate
+ * Delete user
+ * Edit User
+ * System log viewer
 * Manager
- * Receives conversion jobs [X]
- * Job list [X]
- * Handles job distribution to queues [X]
+ * Receives conversion jobs
+ * Job list
+ * Handles job distribution to queues
 * DocxConversion
- * Converts documents to DocX format [X]
+ * Converts documents to DocX format
 * NlmxmlConversion
- * Converts documents to NLM3 XML format [X]
+ * Converts documents to NLMXML format
 * ReferenceConversion
- * Parses references into a seperate XML file [X]
+ * Parses references from DocX document into a seperate XML file
 * BibtexConversion
- * Converts parsed references into Bibtex [X]
+ * Converts references from the previous step into Bibtex
 * BibtexreferenceConversion
- * Converts Bibtex references into NLMXML and merges the converted references into the NLMXML document [X]
+ * Converts Bibtex references into NLMXML and merges the converted references into the NLMXML document
 * HtmlConversion
- * Converts the NLMXML document into HTML [X]
+ * Converts the NLMXML document into HTML
 * PdfConversion
- * Converts the HTML document into PDF [X]
+ * Converts the HTML document into PDF
+* XmpConversion
+ * Adds an XMP sidecar with metadata from the NLMXML to the PDF document
 * ZipConversion
- * Zips all documents [X]
+ * Zips all documents
 
 Requirements
 ------------
 * [Java VM](https://java.com/en/download/index.jsp) needs to be installed
-* The docX conversion needs [LibreOffice](http://www.libreoffice.org/) with unoconv installed. The server is tested to work with LibreOffice 4.1.3.
 * Citation parsing has a variety of requirements please refer to the [ParsCit documentation](https://github.com/knmnyn/ParsCit/blob/master/INSTALL)
 * [xml2bib](http://sourceforge.net/p/bibutils/home/xml2bib/) needs to be installed
 * [Pandoc](http://johnmacfarlane.net/pandoc/) needs to be installed
+* The XMP conversion needs [Exiftool](http://www.sno.phy.queensu.ca/~phil/exiftool/) to be installed
+* The docX conversion needs [LibreOffice](http://www.libreoffice.org/) with unoconv installed. The server is tested to work with LibreOffice 4.1.3.
 
 ```
 wget http://download.documentfoundation.org/libreoffice/stable/4.1.3/deb/x86_64/LibreOffice_4.1.3_Linux_x86-64_deb.tar.gz
