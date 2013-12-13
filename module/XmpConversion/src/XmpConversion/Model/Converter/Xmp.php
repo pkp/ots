@@ -106,7 +106,7 @@ class Xmp extends AbstractConverter
     public function setInputFilePdf($inputFile)
     {
         if (!file_exists($inputFile)) {
-            throw new \Exception('NLMXML input file doesn\'t exist');
+            throw new \Exception('PDF input file doesn\'t exist');
         }
 
         $this->inputFilePdf = $inputFile;
@@ -156,7 +156,7 @@ class Xmp extends AbstractConverter
     {
         foreach($this->metadataMap as $key => $path) {
             $nodeList = $this->domXpath->query($path);
-            if (!$nodeList) continue;
+            if (!$nodeList->length) continue;
             if ($key == 'creator') {
                 $this->metadata[$key] = $this->parseAuthorMeta($nodeList, $path);
             }
