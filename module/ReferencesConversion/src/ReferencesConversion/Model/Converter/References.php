@@ -285,7 +285,9 @@ class References extends AbstractConverter
             // Convert bibliography DOM node to string
             $references = array('REFERENCES');
             foreach ($bibliography->childNodes as $reference) {
-                $references[] = $reference->textContent;
+                $reference = preg_replace('/\s+/s', ' ', $reference->textContent);
+                $reference = trim($reference);
+                if (!empty($reference)) $references[] = $reference;
             }
             $references = implode(PHP_EOL . PHP_EOL, $references);
 
