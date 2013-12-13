@@ -54,7 +54,8 @@ class Document extends DataObject
      *
      * @return void
      */
-    public function setPath($path) {
+    public function setPath($path)
+    {
         if (!file_exists($path)) {
             throw new \Exception('File doesn\'t exist');
         }
@@ -63,7 +64,7 @@ class Document extends DataObject
 
         // Set the file size
         if (!$this->size) {
-            $this->size = filesize($this->path);
+            $this->setSize();
         }
 
         // Set the mime type if the Fileinfo extension is available
@@ -72,6 +73,31 @@ class Document extends DataObject
             $this->mimeType = finfo_file($finfo, $this->path);
             finfo_close($finfo);
         }
+    }
+
+    /**
+     * Sets the documents conversion stage. It also updates the file size as
+     * some conversions simply change the document and don't create a new one
+     *
+     * @param int $conversionStage
+     *
+     * @return void
+     */
+    public function setConversionStage($conversionStage)
+    {
+        $this->conversionStage = $conversionStage;
+
+        $this->setSize();
+    }
+
+    /**
+     * Set the file size of the document
+     *
+     * @return void
+     */
+    protected function setSize()
+    {
+        $this->size = filesize($this->path);
     }
 
     /**

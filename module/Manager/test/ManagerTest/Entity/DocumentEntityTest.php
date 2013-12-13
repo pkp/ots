@@ -72,8 +72,6 @@ class DocumentEntityTest extends ModelTest
      */
     public function testSizeInitialization()
     {
-        $this->document->size = null;
-        $this->assertNull($this->document->size);
         $this->document->setPath($this->testFile);
         $this->assertSame($this->document->size, filesize($this->testFile));
         $this->resetTestData();
