@@ -63,12 +63,10 @@ class Document extends DataObject
         $this->path = $path;
 
         // Set the file size
-        if (!$this->size) {
-            $this->setSize();
-        }
+        $this->setSize();
 
         // Set the mime type if the Fileinfo extension is available
-        if (!$this->mimeType and function_exists('finfo_open')) {
+        if (function_exists('finfo_open')) {
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $this->mimeType = finfo_file($finfo, $this->path);
             finfo_close($finfo);
