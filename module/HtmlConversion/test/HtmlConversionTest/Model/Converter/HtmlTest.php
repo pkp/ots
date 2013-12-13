@@ -64,7 +64,7 @@ class HtmlTest extends ModelTest
     }
 
     /**
-     * Crete test data
+     * Create test data
      *
      * @return void
      */

@@ -64,7 +64,7 @@ class PdfTest extends ModelTest
     }
 
     /**
-     * Crete test data
+     * Create test data
      *
      * @return void
      */
