@@ -36,13 +36,12 @@ class Xmp extends AbstractConverter
         'title' => '/article/front/article-meta/title-group/article-title',
         'publicationName' => '/article/front/journal-meta/journal-title',
         'publisher' => '/article/front/journal-meta/publisher/publisher-name',
-        'publicationDate' => '/article/front/article-meta/pub-date/year', // TODO shouldn't this be day and month too?
+        'publicationDate' => '/article/front/article-meta/pub-date/year',
         'number' => '/article/front/article-meta/issue',
         'volume' => '/article/front/article-meta/volume',
-        'copyright' => '/article/front/article-meta/permissions/copyright-statement',
-        'rights' => '', // TODO ???
+        'copyright' => '/article/front/article-meta/permissions/copyright-holder',
+        'rights' => '/article/front/article-meta/permissions/copyright-statement',
         'DOI' => '/article/front/article-meta/article-id[@pub-id-type="doi"]',
-        'eISSN' => '', // TODO ???
         'ISSN' => '/article/front/journal-meta/issn',
         'creator' => '/article/front/article-meta/contrib-group/contrib[@contrib-type="author"]',
     );
