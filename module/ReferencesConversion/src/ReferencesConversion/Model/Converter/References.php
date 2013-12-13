@@ -215,6 +215,9 @@ class References extends AbstractConverter
             return false;
         }
 
+        $bibliography = $bibliography->item(0);
+        $this->stripBibliographyTitle($bibliography);
+
         return $bibliography;
     }
 
@@ -232,7 +235,7 @@ class References extends AbstractConverter
         $bibliography = $this->domXpath->query('//ref-list');
         if (!$bibliography->length) return false;
 
-        return $bibliography->item(0);
+        return $bibliography;
     }
 
     /**
@@ -247,18 +250,24 @@ class References extends AbstractConverter
         );
 
         $bibliography = $this->domXpath->query('//sec');
-
         if (!$bibliography->length) { return false; }
 
-        $bibliography = $bibliography->item(0);
+        return $bibliography;
+    }
 
-        // Strip the title element
+    /**
+     * Strip the title from the bibliography
+     *
+     * @param DOMNode $bibliography Bibliography
+     *
+     * @return void
+     */
+    protected function stripBibliographyTitle(DOMNode $bibliography)
+    {
         $titles = $this->domXpath->query('/title', $bibliography);
         if (!$titles->length) { return false; }
         $title = $titles->item(0);
         $bibliography->removeChild($title);
-
-        return $bibliography;
     }
 
     /**
