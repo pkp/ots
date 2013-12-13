@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article article-type="other">
+   <front>
+      <journal-meta xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <journal-id journal-id-type="publisher-id">The Journal Name</journal-id>
+        <journal-title>The Journal Title</journal-title>
+        <issn pub-type="epub">0000-000X</issn>
+        <publisher>
+            <publisher-name>The Publisher Name</publisher-name>
+         </publisher>
+      </journal-meta>
+      <article-meta xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <article-id pub-id-type="doi">10.1000/123456</article-id>
+        <article-categories>
+            <subj-group>
+                <subject>Sample Articles</subject>
+            </subj-group>
+        </article-categories>
+        <title-group>
+            <article-title>A Sample Article Title</article-title>
+        </title-group>
+        
+        <contrib-group>
+            
+            <contrib contrib-type="author">
+                <name>
+                  <surname>Eve</surname>
+                    <given-names>Martin Paul</given-names>
+                </name>     
+                <xref ref-type="aff" rid="Samp1">
+                    
+                </xref>
+            </contrib>
+        </contrib-group>
+        
+        <aff>University of Lincoln</aff>
+        <!-- Note: epub added as default, as required by NLM stylecheck -->
+        <pub-date pub-type="epub">
+            <year>2013</year>
+        </pub-date>
+        <volume>1</volume>
+        <issue>1</issue>
+        <fpage>1</fpage>
+        <lpage>2</lpage>
+        <permissions>
+            <copyright-statement>Copyright © 2013, Martin Paul Eve</copyright-statement>
+            <license license-type="open-access" xlink:href="http://creativecommons.org/licenses/by/2.0/">
+                <license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited. The citation of this article must include: the name(s) of the authors, the name of the journal, the full URL of the article (in a hyperlinked format if distributed online) and the DOI number of the article.</license-p>
+            </license>
+        </permissions>
+        
+        <self-uri>https://www.martineve.com/</self-uri>
+        
+        <abstract>
+            <p>This is a sample abstract that forms part of the metadataSample.xml file in meTypeset.</p>
+         </abstract>
+      </article-meta>
+   </front>
+   <body xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <sec>
+         <title/>
+         <p>
+            <bold>
+               <bold>
+                  <italic>Vestibulum et pellentesque eros, nec aliquet lorem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin aliquet justo mi. Aenean posuere velit leo, et adipiscing metus euismod non.</italic>
+               </bold>  
+            </bold>
+         </p>
+         <table-wrap specific-use="rules" position="float" orientation="portrait">
+            <table>
+               <tr>
+                  <td rowspan="1" colspan="1">
+                     <bold>Foo Bar</bold> 
+                     <!--There should be a line-break here.-->Department of Computer Science <!--There should be a line-break here.-->University of British Columbia, Vancouver, Canada</td>
+               </tr>
+            </table>
+         </table-wrap>
+         <p>ABSTRACT</p>
+         <p>
+            <bold>
+               <italic>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ultricies dapibus orci at aliquam. Nam ac urna viverra sem adipiscing convallis. Maecenas vel magna at quam congue dictum. Sed posuere eget purus placerat ultrices. Vestibulum eu est pulvinar, rhoncus augue ut, dapibus eros. Mauris id turpis quis neque volutpat ullamcorper. Etiam mi massa, blandit quis ullamcorper vitae, feugiat non est. Sed posuere elementum justo id sollicitudin. Praesent metus ligula, dictum non mauris id, sagittis ornare ligula. Praesent dolor odio, blandit ac est a, pulvinar feugiat \[<xref id="1" ref-type="bibr">1</xref>\] mi.</italic>
+            </bold>
+         </p>
+         <p>
+            <bold>
+               <italic>Suspendisse congue eu nunc ut pharetra. Curabitur volutpat porttitor consequat. Ut massa diam, congue eu dolor blandit, ullamcorper commodo sem. Suspendisse commodo sem cursus libero vestibulum elementum. Proin id sagittis ante. Integer condimentum erat a enim eleifend gravida. Curabitur id nisi sed orci dapibus vulputate ut et est. Vivamus sagittis ipsum nec diam placerat mollis. Proin orci ligula, adipiscing et venenatis vel \[<xref id="2" ref-type="bibr">2</xref>\], auctor pharetra massa. Donec faucibus metus ut ultrices facilisis.</italic>
+            </bold>
+         </p>
+         <p>
+            <bold>
+               <italic>Mauris ipsum diam, iaculis blandit turpis eget, volutpat adipiscing diam. Sed eu diam nec felis sodales semper. Mauris blandit ipsum id mi iaculis elementum. Nullam quis ultrices eros, ut cursus purus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean \[<xref id="3" ref-type="bibr">3</xref>\] nec placerat magna, quis rutrum nibh. Praesent pulvinar egestas lectus, eget mattis urna lacinia et. Vestibulum ultricies tristique metus, ac blandit sapien sollicitudin ut. Mauris rutrum metus a nisi tempor viverra. Morbi ultrices tortor risus, molestie rhoncus odio vestibulum ut. Curabitur tristique enim interdum posuere tempor. Quisque a consectetur nulla. Maecenas elementum sem in nulla semper, non iaculis tellus rutrum. Nunc lobortis vitae mi ut porttitor. Mauris feugiat aliquet quam. Integer volutpat mi quis volutpat fermentum.</italic>
+            </bold>
+         </p>
+         <p>
+            <bold>
+               <italic>Praesent vel orci neque. Fusce velit ipsum, viverra ut volutpat in, blandit ut tellus. Donec ac turpis eget erat dictum bibendum. Mauris semper nibh id risus vulputate semper. Nulla elit ligula, egestas in sapien ac, dictum lobortis lacus. Pellentesque tempus, diam non blandit ultrices, eros augue consectetur odio, sit amet laoreet orci metus vitae purus. Ut at orci scelerisque ligula adipiscing congue id vel odio. Quisque augue nibh, iaculis non commodo sed, facilisis vitae nisi.</italic>
+            </bold>
+         </p>
+         <p>
+            <bold>
+               <italic>Vestibulum et pellentesque eros, nec aliquet lorem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin aliquet justo mi. Aenean posuere velit leo, et adipiscing metus euismod non. Aliquam sollicitudin accumsan libero bibendum tincidunt. Curabitur bibendum nibh eros, et porta neque vestibulum euismod. Donec ullamcorper augue sapien, in laoreet sem sodales nec. Vivamus quis elit condimentum, imperdiet nunc non, porta metus. Integer blandit massa dui, quis commodo arcu pharetra eget.</italic>
+            </bold>
+         </p>
+         <p>REFERENCES</p>
+         <ref-list><ref rid="Ra"><citation><person-group person-group-type="author"/><article-title>Abeyratna, S., Paramei, G., Tawfik, H., and Huang, R. An affective interface for conveying user feedback. Proc. Computer Modeling and Simulation, IEEE Computer Society (2010), 369-374</article-title></citation></ref><ref rid="Rb"><citation><person-group person-group-type="author"/><article-title>Alwin, D.F. and Krosnick, J.A. The measurement of values in surveys: A comparison of ratings and rankings. Public Opinion Quarterly 49, 4 (1985), 535 -552</article-title></citation></ref><ref rid="Rc"><citation><person-group person-group-type="author"/><article-title>Amatriain, X., Pujol, J., and Oliver, N. I like it... I like it not: Evaluating user ratings noise in recommender systems. Proc. UMAP 2009. Springer (2009), 247-258</article-title></citation></ref></ref-list>
+      </sec>
+   </body>
+   <back xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <fn-group/>
+   </back>
+</article>
