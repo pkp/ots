@@ -37,6 +37,15 @@ return array(
             ),
         ),
     ),
+    'cache' => array(
+        'adapter' => array(
+            'name' => 'filesystem'
+        ),
+        'options' => array(
+            'cache_dir' => 'var/cache/',
+            'ttl' => '86400',
+        ),
+    ),
     'log' => array(
         'level' => 6,
     ),
@@ -81,6 +90,9 @@ return array(
             ),
         ),
         'citationstyle' => array(
+            'citationstyles' => array(
+                'repository' => 'vendor/citation-style-language/styles',
+            ),
             'pandoc' => array(
                 'command' => 'pandoc',
             ),

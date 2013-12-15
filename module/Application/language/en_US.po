@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-16 13:39-1000\n"
-"PO-Revision-Date: 2013-12-16 13:40-1000\n"
+"POT-Creation-Date: 2013-12-16 15:58-1000\n"
+"PO-Revision-Date: 2013-12-16 15:58-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -121,16 +121,16 @@ msgstr "Completed"
 msgid "manager.job.status.failed"
 msgstr "Failed"
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:78
+#: ../../Manager/src/Manager/Controller/ManagerController.php:79
 msgid "manager.upload.success"
 msgstr ""
 "Your document has been successfully uploaded. It is now being processed."
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:99
+#: ../../Manager/src/Manager/Controller/ManagerController.php:100
 msgid "manager.job.createLog"
 msgstr "A new job has been created (%d)"
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:128
+#: ../../Manager/src/Manager/Controller/ManagerController.php:135
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
@@ -527,6 +527,12 @@ msgstr ""
 "Unoconf output:\n"
 "%s"
 
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Citationstyles.php:41
+msgid "citationstyleconversion.citationstyles.errorLoadingCslLog"
+msgstr ""
+"Error loading CSL style file. Libxml error:\n"
+"%s"
+
 #: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:89
 msgid "citationstyleconversion.converter.loadXML.domErrorLog"
 msgstr ""
@@ -710,12 +716,12 @@ msgid "manager.job.id"
 msgstr "Job Id"
 
 #: ../../Manager/view/manager/manager/details.phtml:11
-#: ../../Manager/view/manager/manager/list.phtml:14
+#: ../../Manager/view/manager/manager/list.phtml:16
 msgid "manager.job.creationDate"
 msgstr "Creation Date"
 
 #: ../../Manager/view/manager/manager/details.phtml:12
-#: ../../Manager/view/manager/manager/list.phtml:13
+#: ../../Manager/view/manager/manager/list.phtml:15
 msgid "manager.job.status"
 msgstr "Status"
 
@@ -764,20 +770,20 @@ msgstr "Document.pdf is the document in PDF format"
 msgid "manager.job.details.document.zip"
 msgstr "Documents.zip is a zip archive containing all the documents"
 
-#: ../../Manager/view/manager/manager/list.phtml:12
+#: ../../Manager/view/manager/manager/list.phtml:13
 msgid "manager.job.user"
 msgstr "User"
 
-#: ../../Manager/view/manager/manager/list.phtml:15
+#: ../../Manager/view/manager/manager/list.phtml:17
 msgid "manager.job.uploadFileName"
 msgstr "Upload File Name"
 
-#: ../../Manager/view/manager/manager/list.phtml:16
+#: ../../Manager/view/manager/manager/list.phtml:18
 #: ../../Admin/view/admin/user-management/list.phtml:12
 msgid "application.generic.actions"
 msgstr "Actions"
 
-#: ../../Manager/view/manager/manager/list.phtml:33
+#: ../../Manager/view/manager/manager/list.phtml:37
 msgid "application.generic.details"
 msgstr "Details"
 

@@ -3,6 +3,7 @@
 namespace CitationstyleConversion;
 
 use CitationstyleConversion\Model\Converter\Pandoc;
+use CitationstyleConversion\Model\Citationstyles;
 
 class Module
 {
@@ -55,8 +56,19 @@ class Module
 
                     return new Pandoc($config, $logger);
                 },
+                'CitationstyleConversion\Model\Citationstyles' => function($sm)
+                {
+                    $config = $sm->get('Config');
+                    $logger = $sm->get('Logger');
+                    $cache = $sm->get('Cache');
+                    if (!isset($config['conversion']['citationstyle']['citationstyles'])) {
+                        throw new \Exception('Citationstyle repository configuration is missing');
+                    }
+                    $config = $config['conversion']['citationstyle']['citationstyles'];
+
+                    return new Citationstyles($config, $logger, $cache);
+                },
             ),
         );
     }
-
 }

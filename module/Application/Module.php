@@ -78,6 +78,7 @@ class Module
                 {
                     return new Entity\Log();
                 },
+                'Cache' => 'Zend\Cache\Service\StorageCacheFactory',
                 'LogDAO' => function($sm)
                 {
                     $em = $sm->get('doctrine.entitymanager.orm_default');
