@@ -130,6 +130,25 @@ class ManagerControllerTest extends ControllerTest
     }
 
     /**
+     * Test if users cannot access the details action for failed jobs
+     *
+     * @return void
+     */
+    public function testDetailsActionCannotAccessFailed()
+    {
+        $this->mockLogin($this->user);
+
+        $this->job->status = JOB_STATUS_FAILED;
+        $this->jobDAO->save($this->job);
+
+        $this->dispatch('/manager/details/id/' . $this->job->id);
+        $this->assertResponseStatusCode(404);
+
+        $this->resetTestData();
+    }
+
+
+    /**
      * Test if the download action cannot be accessed by guests
      *
      * @return void
@@ -187,13 +206,14 @@ class ManagerControllerTest extends ControllerTest
 
         $this->job = $this->jobDAO->getInstance();
         $this->job->user = $this->user;
+        $this->job->status = JOB_STATUS_COMPLETED;
 
         touch($this->testFile);
         file_put_contents($this->testFile, rand());
 
         $this->document = $this->documentDAO->getInstance();
         $this->document->path = $this->testFile;
-        $this->document->conversionStage = JOB_CONVERSION_STAGE_UNCONVERTED;
+        $this->document->conversionStage = JOB_CONVERSION_STAGE_ZIP;
         $this->document->job = $this->job;
         $this->job->documents[] = $this->document;
 
