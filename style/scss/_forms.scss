@@ -2,6 +2,9 @@ input[type="submit"] {
   @include button;
   margin-top: $gutter;
 }
+input[type="file"] {
+  background: $backgroundColorLight;
+}
 
 input, select {
   padding: 0.8 * $gutter $gutter;

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-16 15:58-1000\n"
-"PO-Revision-Date: 2013-12-16 15:58-1000\n"
+"POT-Creation-Date: 2013-12-16 17:22-1000\n"
+"PO-Revision-Date: 2013-12-16 17:23-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -99,7 +99,15 @@ msgstr ""
 "Couldn't replace the reference list. LIBXML error:\n"
 "%s"
 
-#: ../../Manager/src/Manager/Form/UploadForm.php:41
+#: ../../Manager/src/Manager/Form/UploadForm.php:33
+msgid "manager.uploadForm.file"
+msgstr "Select Document To Convert"
+
+#: ../../Manager/src/Manager/Form/UploadForm.php:48
+msgid "manager.uploadForm.citationStyles"
+msgstr "Select Citation Style"
+
+#: ../../Manager/src/Manager/Form/UploadForm.php:60
 #: ../../Manager/view/manager/manager/upload.phtml:15
 #: ../../User/view/user/user/index.phtml:41
 msgid "manager.uploadForm.uploadDocument"
@@ -527,7 +535,7 @@ msgstr ""
 "Unoconf output:\n"
 "%s"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Citationstyles.php:41
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Citationstyles.php:82
 msgid "citationstyleconversion.citationstyles.errorLoadingCslLog"
 msgstr ""
 "Error loading CSL style file. Libxml error:\n"

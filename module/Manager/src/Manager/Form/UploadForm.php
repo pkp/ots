@@ -16,7 +16,7 @@ class UploadForm extends Form
      *
      * @return void
      */
-    public function __construct(Translator $translator)
+    public function __construct(Translator $translator, $citationStyles)
     {
         $this->translator = $translator;
 
@@ -29,6 +29,26 @@ class UploadForm extends Form
             array(
                 'name' => 'upload',
                 'type' => '\Zend\Form\Element\File',
+                'options' => array(
+                    'label' => $this->translator->translate('manager.uploadForm.file'),
+                ),
+            )
+        );
+
+        // Load the citation style options
+        $citationStyleOptions = array();
+        foreach($citationStyles->getStyleMap() as $hash => $meta) {
+            $citationStyleOptions[$hash] = $meta['title'];
+        }
+
+        $this->add(
+            array(
+                'name' => 'citationStyle',
+                'type' => '\Zend\Form\Element\Select',
+                'options' => array(
+                    'label' => $this->translator->translate('manager.uploadForm.citationStyles'),
+                    'value_options' => $citationStyleOptions,
+                )
             )
         );
 

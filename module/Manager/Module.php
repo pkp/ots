@@ -61,8 +61,9 @@ class Module
                 },
                 'Manager\Form\UploadForm' => function($sm)
                 {
+                    $citationStyles = $sm->get('CitationstyleConversion\Model\Citationstyles');
                     $translator = $sm->get('translator');
-                    return new UploadForm($translator);
+                    return new UploadForm($translator, $citationStyles);
                 },
                 'Manager\Form\UploadFormInputFilter' => function($sm)
                 {
