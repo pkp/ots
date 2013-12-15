@@ -163,7 +163,7 @@ class User extends DataObject
         $it = new RecursiveDirectoryIterator($this->getDocumentPath(), FilesystemIterator::SKIP_DOTS);
         $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
         foreach($files as $file) {
-            if ($file->isDir()){
+            if ($file->isDir()) {
                 rmdir($file->getRealPath());
             } else {
                 unlink($file->getRealPath());
