@@ -10,6 +10,7 @@ use Manager\Form\UploadForm;
 use Manager\Form\UploadFormInputFilter;
 use Manager\Model\DAO\DocumentDAO;
 use Manager\Model\DAO\JobDAO;
+use Manager\Entity\Job;
 
 class ManagerController extends AbstractActionController {
     protected $logger;
@@ -151,7 +152,13 @@ class ManagerController extends AbstractActionController {
         $user = $this->identity();
 
         $jobParams = array('id' => $jobId);
-        if (!$user->isAdministrator()) $jobParams['user'] = $user;
+        if (!$user->isAdministrator()) {
+            // NOTE: We use class_exists() here to trigger the autoloader to
+            // import the JOB_STATUS_* constants
+            class_exists('Manager\Entity\Job');
+            $jobParams['status'] = JOB_STATUS_COMPLETED;
+            $jobParams['user'] = $user;
+        }
 
         if (!($job = $this->jobDAO->findOneBy($jobParams))) {
             $this->getResponse()->setStatusCode(404);
