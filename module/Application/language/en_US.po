@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-12 11:28-1000\n"
-"PO-Revision-Date: 2013-12-12 11:28-1000\n"
+"POT-Creation-Date: 2013-12-16 13:39-1000\n"
+"PO-Revision-Date: 2013-12-16 13:40-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -210,49 +210,49 @@ msgstr ""
 msgid "referencesconversion.converter.parseBibliography.noBibliographyLog"
 msgstr "No Bibliography found"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:229
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:232
 msgid "referencesconversion.converter.parseBibliography.nlmLog"
 msgstr "Parsing for NLM bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:246
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:249
 msgid "referencesconversion.converter.parseBibliography.teiLog"
 msgstr "Parsing for TEI bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:311
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:322
 msgid "referencesconversion.converter.parsCit.commandLog"
 msgstr ""
 "Executing ParsCit command:\n"
 "%s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:350
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:361
 msgid "referencesconversion.converter.parsCit.noDOMLog"
 msgstr ""
 "ParsCit output is no valid XML. Error from LIBXML:\n"
 "%s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:364
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:375
 msgid "referencesconversion.converter.parsCit.noListNodeLog"
 msgstr "Citation list doesn't contain any entries"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:370
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:381
 msgid "referencesconversion.converter.parsCit.successLog"
 msgstr "ParsCit successfully parsed bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:386
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:397
 msgid "referencesconversion.converter.transformBibliography.startLog"
 msgstr "Transforming the parsed bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:401
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:412
 msgid "referencesconversion.converter.transformBibliography.styleSheetErrorLog"
 msgstr "Error loading the XSL style sheet"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:410
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:421
 msgid "referencesconversion.converter.transformBibliography.transformErrorLog"
 msgstr ""
 "Couldn't transform the parsed bibliography. Error from LIBXML:\n"
 "%s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:421
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:432
 msgid "referencesconversion.converter.transformBibliography.successLog"
 msgstr ""
 "Successfully transformed bibliography:\n"
@@ -335,47 +335,47 @@ msgstr ""
 "Sucessfully converted NLMXML to HTML. HTML document:\n"
 "%s"
 
-#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:88
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:87
 msgid "xmpconversion.converter.loadXML.domErrorLog"
 msgstr ""
 "Couldn't load NLMXML input file. Invalid xml. LIBXML error:\n"
 "%s"
 
-#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:123
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:122
 msgid "xmpconversion.converter.startLog"
 msgstr "Starting XMP conversion"
 
-#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:129
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:128
 msgid "xmpconversion.converter.metadataErrorLog"
 msgstr "Error reading metadata from NLMXML file"
 
-#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:137
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:136
 msgid "xmpconversion.converter.sidecarCreateErrorLog"
 msgstr "Error creating the XMP sidecar file"
 
-#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:144
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:143
 msgid "xmpconversion.converter.sidecarAddErrorLog"
 msgstr "Error adding the XMP sidecar file to the PDF"
 
-#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:218
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:219
 msgid "xmpconversion.exiftool.executeXmpCommandLog"
 msgstr ""
 "Exiftool is executing (creating XMP sidecar):\n"
 "%s "
 
-#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:228
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:229
 msgid "xmpconversion.exiftool.executeXmpCommandOutputLog"
 msgstr ""
 "Exiftool output (creating XMP sidecar):\n"
 "%s"
 
-#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:259
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:265
 msgid "xmpconversion.exiftool.executePdfCommandLog"
 msgstr ""
 "Exiftool is executing (adding XMP sidecar):\n"
 "%s "
 
-#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:269
+#: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:275
 msgid "xmpconversion.exiftool.executePdfCommandOutputLog"
 msgstr ""
 "Exiftool output (adding XMP sidecar):\n"
@@ -705,17 +705,17 @@ msgid "manager.job.details"
 msgstr "Job Details"
 
 #: ../../Manager/view/manager/manager/details.phtml:10
-#: ../../Manager/view/manager/manager/list.phtml:10
+#: ../../Manager/view/manager/manager/list.phtml:11
 msgid "manager.job.id"
 msgstr "Job Id"
 
 #: ../../Manager/view/manager/manager/details.phtml:11
-#: ../../Manager/view/manager/manager/list.phtml:12
+#: ../../Manager/view/manager/manager/list.phtml:14
 msgid "manager.job.creationDate"
 msgstr "Creation Date"
 
 #: ../../Manager/view/manager/manager/details.phtml:12
-#: ../../Manager/view/manager/manager/list.phtml:11
+#: ../../Manager/view/manager/manager/list.phtml:13
 msgid "manager.job.status"
 msgstr "Status"
 
@@ -764,16 +764,20 @@ msgstr "Document.pdf is the document in PDF format"
 msgid "manager.job.details.document.zip"
 msgstr "Documents.zip is a zip archive containing all the documents"
 
-#: ../../Manager/view/manager/manager/list.phtml:13
+#: ../../Manager/view/manager/manager/list.phtml:12
+msgid "manager.job.user"
+msgstr "User"
+
+#: ../../Manager/view/manager/manager/list.phtml:15
 msgid "manager.job.uploadFileName"
 msgstr "Upload File Name"
 
-#: ../../Manager/view/manager/manager/list.phtml:14
+#: ../../Manager/view/manager/manager/list.phtml:16
 #: ../../Admin/view/admin/user-management/list.phtml:12
 msgid "application.generic.actions"
 msgstr "Actions"
 
-#: ../../Manager/view/manager/manager/list.phtml:30
+#: ../../Manager/view/manager/manager/list.phtml:33
 msgid "application.generic.details"
 msgstr "Details"
 

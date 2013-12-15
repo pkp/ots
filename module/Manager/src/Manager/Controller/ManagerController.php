@@ -116,7 +116,13 @@ class ManagerController extends AbstractActionController {
     public function listAction()
     {
         // Get the paginator
-        $paginator = $this->jobDAO->getJobPaginator($this->identity());
+        $user = $this->identity();
+        if ($user->isAdministrator()) {
+            $paginator = $this->jobDAO->getAdminJobPaginator();
+        }
+        else {
+            $paginator = $this->jobDAO->getJobPaginator($user);
+        }
         $page = $this->params()->fromRoute('page');
         $paginator ->setCurrentPageNumber($page);
         $paginator->setItemCountPerPage(20);
@@ -142,10 +148,12 @@ class ManagerController extends AbstractActionController {
     public function detailsAction()
     {
         $jobId = (int) $this->params()->fromRoute('id');
+        $user = $this->identity();
 
-        if (!($job = $this->jobDAO->findOneBy(
-            array('id' => $jobId, 'user' => $this->identity())
-        ))) {
+        $jobParams = array('id' => $jobId);
+        if (!$user->isAdministrator()) $jobParams['user'] = $user;
+
+        if (!($job = $this->jobDAO->findOneBy($jobParams))) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
