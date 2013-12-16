@@ -242,6 +242,8 @@ class References extends AbstractConverter
      * Extract TEI bibliography
      *
      * @return DOMNode Bibliography node
+     * TODO: Check if this works correctly. Not sure about the structure of a
+     * TEI bibliography
      */
     protected function extractTeiBibliography()
     {
@@ -280,14 +282,21 @@ class References extends AbstractConverter
     {
         // If we got a bibliography DOM node prepare the content for ParsCit
         if ($bibliography !== false) {
-            $referencesFile = $this->outputDirectory. '/referencesTmp.txt';
+            $referencesFile = $this->outputDirectory . '/referencesTmp.txt';
 
             // Convert bibliography DOM node to string
             $references = array('REFERENCES');
-            foreach ($bibliography->childNodes as $reference) {
-                $reference = preg_replace('/\s+/s', ' ', $reference->textContent);
-                $reference = trim($reference);
-                if (!empty($reference)) $references[] = $reference;
+            foreach ($bibliography->getElementsByTagName('ref') as $reference) {
+                // Extract the reference id
+                $rid = '';
+                if ($reference->hasAttribute('rid')) {
+                    $rid = $reference->getAttribute('rid') . '. ';
+                }
+
+                // Extract the reference content
+                $referenceText = preg_replace('/\s+/s', ' ', $reference->textContent);
+                $referenceText = trim($referenceText);
+                if (!empty($referenceText)) $references[] =  $rid .  $referenceText;
             }
             $references = implode(PHP_EOL . PHP_EOL, $references);
 
