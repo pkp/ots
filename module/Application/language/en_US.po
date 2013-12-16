@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-16 17:22-1000\n"
-"PO-Revision-Date: 2013-12-16 17:23-1000\n"
+"POT-Creation-Date: 2013-12-17 10:42-1000\n"
+"PO-Revision-Date: 2013-12-17 10:42-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -103,42 +103,46 @@ msgstr ""
 msgid "manager.uploadForm.file"
 msgstr "Select Document To Convert"
 
-#: ../../Manager/src/Manager/Form/UploadForm.php:48
+#: ../../Manager/src/Manager/Form/UploadForm.php:49
 msgid "manager.uploadForm.citationStyles"
 msgstr "Select Citation Style"
 
-#: ../../Manager/src/Manager/Form/UploadForm.php:60
+#: ../../Manager/src/Manager/Form/UploadForm.php:51
+msgid "application.generic.form.pleaseSelect"
+msgstr "Please select"
+
+#: ../../Manager/src/Manager/Form/UploadForm.php:62
 #: ../../Manager/view/manager/manager/upload.phtml:15
 #: ../../User/view/user/user/index.phtml:41
 msgid "manager.uploadForm.uploadDocument"
 msgstr "Upload Document"
 
-#: ../../Manager/src/Manager/Entity/Job.php:130
+#: ../../Manager/src/Manager/Entity/Job.php:136
 msgid "manager.job.status.pending"
 msgstr "Pending"
 
-#: ../../Manager/src/Manager/Entity/Job.php:131
+#: ../../Manager/src/Manager/Entity/Job.php:137
 msgid "manager.job.status.processing"
 msgstr "Processing"
 
-#: ../../Manager/src/Manager/Entity/Job.php:132
+#: ../../Manager/src/Manager/Entity/Job.php:138
 msgid "manager.job.status.completed"
 msgstr "Completed"
 
-#: ../../Manager/src/Manager/Entity/Job.php:133
+#: ../../Manager/src/Manager/Entity/Job.php:139
 msgid "manager.job.status.failed"
 msgstr "Failed"
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:79
+#: ../../Manager/src/Manager/Controller/ManagerController.php:83
 msgid "manager.upload.success"
 msgstr ""
 "Your document has been successfully uploaded. It is now being processed."
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:100
+#: ../../Manager/src/Manager/Controller/ManagerController.php:111
 msgid "manager.job.createLog"
 msgstr "A new job has been created (%d)"
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:135
+#: ../../Manager/src/Manager/Controller/ManagerController.php:146
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
@@ -535,7 +539,7 @@ msgstr ""
 "Unoconf output:\n"
 "%s"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Citationstyles.php:82
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Citationstyles.php:92
 msgid "citationstyleconversion.citationstyles.errorLoadingCslLog"
 msgstr ""
 "Error loading CSL style file. Libxml error:\n"

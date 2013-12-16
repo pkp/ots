@@ -48,6 +48,7 @@ class UploadForm extends Form
                 'options' => array(
                     'label' => $this->translator->translate('manager.uploadForm.citationStyles'),
                     'value_options' => $citationStyleOptions,
+                    'empty_option' => $this->translator->translate('application.generic.form.pleaseSelect'),
                 )
             )
         );

@@ -46,6 +46,7 @@ class UploadFormInputFilter implements InputFilterAwareInterface
             $inputFilter = new InputFilter();
             $factory = new InputFactory();
 
+            // File upload
             $inputFilter->add($factory->createInput(array(
                 'name' => 'upload',
                 'type' => 'Zend\InputFilter\FileInput',
@@ -58,6 +59,12 @@ class UploadFormInputFilter implements InputFilterAwareInterface
                         ),
                     ),
                 ),
+            )));
+
+            // Style selector
+            $inputFilter->add($factory->createInput(array(
+                'name' => 'citationStyle',
+                'required' => true,
             )));
 
             $this->inputFilter = $inputFilter;
