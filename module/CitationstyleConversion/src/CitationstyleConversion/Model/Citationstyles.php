@@ -59,7 +59,7 @@ class Citationstyles
      *      ...
      * );
      *
-     * NOTE: we use hashes so that we don't need to expose the our file system
+     * NOTE: we use hashes so that we don't need to expose our file system
      * structure in the frontend when offering style selection to the users
      *
      * @return array Map of file name to title
@@ -69,7 +69,7 @@ class Citationstyles
         if (!empty($this->map)) return $this->map;
 
         // Load the list from cache
-        $cacheKey = 'citationstyleconversionCytationstylesCitationstylelist';
+        $cacheKey = 'citationstyleconversionCitationstylesCitationstylelist';
         $list = $this->cache->getItem($cacheKey);
         if (!empty($list)) {
             $this->map = unserialize($list);
