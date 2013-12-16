@@ -82,7 +82,7 @@ class Pandoc extends AbstractConverter
 
         // Set the output path and temporary references file
         $this->outputPath = dirname($this->inputFileNlmxml);
-        $this->references = $this->outputPath . '/pandocReferences.txt';
+        $this->referencesFile = $this->outputPath . '/pandocReferences.txt';
     }
 
     /**
@@ -265,6 +265,6 @@ class Pandoc extends AbstractConverter
      */
     protected function cleanup()
     {
-        @unlink($this->referenceFile);
+        @unlink($this->referencesFile);
     }
 }
