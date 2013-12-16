@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-17 10:42-1000\n"
-"PO-Revision-Date: 2013-12-17 10:42-1000\n"
+"POT-Creation-Date: 2013-12-17 16:31-1000\n"
+"PO-Revision-Date: 2013-12-17 16:31-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -146,19 +146,19 @@ msgstr "A new job has been created (%d)"
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:76
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:77
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:109
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:110
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:146
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:150
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:170
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:174
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
@@ -545,26 +545,26 @@ msgstr ""
 "Error loading CSL style file. Libxml error:\n"
 "%s"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:89
-msgid "citationstyleconversion.converter.loadXML.domErrorLog"
-msgstr ""
-"Couldn't load input file. Invalid xml. LIBXML error:\n"
-"%s"
-
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:106
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:118
 msgid "citationstyleconversion.converter.startLog"
 msgstr "Starting pandoc conversion"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:112
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:147
 msgid "citationstyleconversion.converter.pandoc.commandLog"
 msgstr ""
 "Executing pandoc conversion command:\n"
 "%s"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:120
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:155
 msgid "citationstyleconversion.converter.OutputLog"
 msgstr ""
 "Pandoc conversion output:\n"
+"%s"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:169
+msgid "citationstyleconversion.converter.NlmxmlDomErrorLog"
+msgstr ""
+"Couldn't load NLMXML input file. Invalid xml. LIBXML error:\n"
 "%s"
 
 #: ../../../vendor/xmlps/library/Event/Handler/AclDispatchHandler.php:32

@@ -20,14 +20,30 @@ class CitationstyleJob extends AbstractQueueJob
     {
         $citationstyle = $this->sm->get('CitationstyleConversion\Model\Converter\Pandoc');
 
-        // Fetch the document to convert
-        $nlmxmlDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
-        if (!$nlmxmlDocument) {
-            throw new \Exception('Couldn\'t find the stage document');
+        // Fetch the NLMXML document; if the references step failed fall back to
+        // the NLMXML document before the references conversion took place
+        if (!$documentNlmxml = $job->getStageDocument(JOB_CONVERSION_STAGE_BIBTEXREFERENCES)) {
+            !$documentNlmxml = $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
+        }
+        if (!$documentNlmxml) {
+            throw new \Exception('Couldn\'t find the NLMXML stage document');
+        }
+
+        // Fetch the Bibtex document
+        if (!$documentBibtex = $job->getStageDocument(JOB_CONVERSION_STAGE_BIBTEX)) {
+            throw new \Exception('Couldn\'t find the Bibtex stage document');
+        }
+
+        // Fetch the Html document
+        if (!$documentHtml = $job->getStageDocument(JOB_CONVERSION_STAGE_HTML)) {
+            throw new \Exception('Couldn\'t find the HTML stage document');
         }
 
         // Parse the citationstyle
-        $citationstyle->setInputFile($xlmxmlDocument->path);
+        $citationstyle->setInputFileNlmxml($documentNlmxml->path);
+        $citationstyle->setInputFileBibtex($documentBibtex->path);
+        $citationstyle->setInputFileHtml($documentHtml->path);
+        $citationstyle->setCitationStyleFile($job->metadata->citationStyleFile);
         $citationstyle->convert();
 
         $job->conversionStage = JOB_CONVERSION_STAGE_CITATIONSTYLE;
@@ -37,13 +53,8 @@ class CitationstyleJob extends AbstractQueueJob
             return $job;
         }
 
-        $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
-        $citationstyleDocument = $documentDAO->getInstance();
-        $citationstyleDocument->path = $outputFile;
-        $citationstyleDocument->job = $job;
-        $citationstyleDocument->conversionStage = JOB_CONVERSION_STAGE_CITATIONSTYLE;
-
-        $job->documents[] = $citationstyleDocument;
+        // Update the conversion stage of the HTML document
+        $documentHtml->conversionStage = $job->conversionStage;
 
         return $job;
     }

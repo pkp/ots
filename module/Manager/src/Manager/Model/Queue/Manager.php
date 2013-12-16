@@ -28,6 +28,7 @@ class Manager {
         'bibtex' => 'BibtexConversion\Model\Queue\Job\BibtexJob',
         'bibtexreferences' => 'BibtexreferencesConversion\Model\Queue\Job\BibtexreferencesJob',
         'html' => 'HtmlConversion\Model\Queue\Job\HtmlJob',
+        'citationstyle' => 'CitationstyleConversion\Model\Queue\Job\CitationstyleJob',
         'pdf' => 'PdfConversion\Model\Queue\Job\PdfJob',
         'xmp' => 'XmpConversion\Model\Queue\Job\XmpJob',
         'zip' => 'ZipConversion\Model\Queue\Job\ZipJob',
@@ -133,6 +134,9 @@ class Manager {
                 $this->queueJob($job, 'html');
                 break;
             case JOB_CONVERSION_STAGE_HTML:
+                $this->queueJob($job, 'citationstyle');
+                break;
+            case JOB_CONVERSION_STAGE_CITATIONSTYLE:
                 $this->queueJob($job, 'pdf');
                 break;
             case JOB_CONVERSION_STAGE_PDF:

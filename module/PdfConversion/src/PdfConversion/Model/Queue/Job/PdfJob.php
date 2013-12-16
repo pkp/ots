@@ -21,7 +21,7 @@ class PdfJob extends AbstractQueueJob
         $pdf = $this->sm->get('PdfConversion\Model\Converter\Pdf');
 
         // Fetch the zip file containing the html
-        if (!$document = $job->getStageDocument(JOB_CONVERSION_STAGE_HTML)) {
+        if (!$document = $job->getStageDocument(JOB_CONVERSION_STAGE_CITATIONSTYLE)) {
             throw new \Exception('Couldn\'t find the stage document');
         }
 

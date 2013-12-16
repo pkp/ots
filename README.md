@@ -29,6 +29,8 @@ Module Description
  * Converts Bibtex references into NLMXML and merges the converted references into the NLMXML document
 * HtmlConversion
  * Converts the NLMXML document into HTML
+* CitationStyleConversion
+ * Formats the citations in the HTML document according to the citationstyle requested by the user
 * PdfConversion
  * Converts the HTML document into PDF
 * XmpConversion
@@ -41,7 +43,7 @@ Requirements
 * [Java VM](https://java.com/en/download/index.jsp) needs to be installed
 * Citation parsing has a variety of requirements please refer to the [ParsCit documentation](https://github.com/knmnyn/ParsCit/blob/master/INSTALL)
 * [xml2bib](http://sourceforge.net/p/bibutils/home/xml2bib/) needs to be installed
-* [Pandoc](http://johnmacfarlane.net/pandoc/) needs to be installed
+* [Pandoc](http://johnmacfarlane.net/pandoc/) & libghc-citeproc-hs-data needs to be installed
 * The XMP conversion needs [Exiftool](http://www.sno.phy.queensu.ca/~phil/exiftool/) to be installed
 * The docX conversion needs [LibreOffice](http://www.libreoffice.org/) with unoconv installed. The server is tested to work with LibreOffice 4.1.3.
 

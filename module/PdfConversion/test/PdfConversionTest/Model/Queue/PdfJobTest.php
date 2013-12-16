@@ -50,8 +50,8 @@ class PdfJobTest extends ModelTest
      */
     public function testConversion()
     {
-        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_HTML);
-        $this->assertSame($this->document->conversionStage, JOB_CONVERSION_STAGE_HTML);
+        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_CITATIONSTYLE);
+        $this->assertSame($this->document->conversionStage, JOB_CONVERSION_STAGE_CITATIONSTYLE);
         $documentCount = count($this->job->documents);
         $this->pdfJob->process($this->job);
         $this->assertNotSame($this->job->status, JOB_STATUS_FAILED);
@@ -76,7 +76,7 @@ class PdfJobTest extends ModelTest
 
         $this->job = $this->jobDAO->getInstance();
         $this->job->user = $this->user;
-        $this->job->conversionStage = JOB_CONVERSION_STAGE_HTML;
+        $this->job->conversionStage = JOB_CONVERSION_STAGE_CITATIONSTYLE;
 
         $this->document = $this->documentDAO->getInstance();
         $this->document->job = $this->job;
