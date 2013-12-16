@@ -12,7 +12,7 @@ class BibtexTest extends ModelTest
     protected $bibtex;
 
     protected $testInputFile = 'module/BibtexConversion/test/assets/document.bib.xml';
-    protected $testOutputFile = '/tmp/UNITTEST_bibtex_outputfile.bib.tex';
+    protected $testOutputFile = '/tmp/UNITTEST_bibtex_outputfile.bib';
 
     /**
      * Initialize the test

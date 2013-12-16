@@ -27,7 +27,7 @@ class BibtexJob extends AbstractQueueJob
         }
 
         // Parse the bibtex
-        $outputFile = $job->getDocumentPath() . '/document.bib.tex';
+        $outputFile = $job->getDocumentPath() . '/document.bib';
         $bibtex->setInputFile($referencesDocument->path);
         $bibtex->setOutputFile($outputFile);
         $bibtex->convert();
