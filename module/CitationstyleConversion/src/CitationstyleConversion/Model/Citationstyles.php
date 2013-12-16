@@ -23,6 +23,8 @@ class Citationstyles
     protected $config;
     protected $logger;
 
+    protected $map;
+
     /**
      * Constructor
      *
@@ -57,16 +59,24 @@ class Citationstyles
      *      ...
      * );
      *
+     * NOTE: we use hashes so that we don't need to expose the our file system
+     * structure in the frontend when offering style selection to the users
+     *
      * @return array Map of file name to title
      */
     public function getStyleMap()
     {
+        if (!empty($this->map)) return $this->map;
+
         // Load the list from cache
         $cacheKey = 'citationstyleconversionCytationstylesCitationstylelist';
         $list = $this->cache->getItem($cacheKey);
-        if (!empty($list)) return unserialize($list);
+        if (!empty($list)) {
+            $this->map = unserialize($list);
+            return $this->map;
+        }
 
-        $styleMap = array();
+        $this->map = array();
 
         // Load the title from each of the citation style files
         $files = new DirectoryIterator($this->config['repository']);
@@ -90,18 +100,34 @@ class Citationstyles
             if (!$title->length) continue;
             $title = $title->item(0)->nodeValue;
 
-            $styleMap[md5($file)] = array('title' => $title, 'file' => $file);
+            $this->map[md5($file)] = array('title' => $title, 'file' => $file);
         }
 
         // Sort the style map by title
-        uasort($styleMap, function($a, $b) {
+        uasort($this->map, function($a, $b) {
             if ($a['title'] == $b['title']) return 0;
             return ($a['title'] < $b['title']) ? -1 : 1;
         });
 
         // Store the list in cache
-        $this->cache->setItem($cacheKey, serialize($styleMap));
+        $this->cache->setItem($cacheKey, serialize($this->map));
 
-        return $styleMap;
+        return $this->map;
+    }
+
+    /**
+     * Returns the citation style file for a given hash
+     *
+     * @param string $hash Hash of the file name
+     *
+     * @return string File name
+     */
+    public function getCitationStyleFileByHash($hash)
+    {
+        if (empty($this->map)) { $this->getStyleMap(); }
+
+        if (empty($this->map[$hash])) return false;
+
+        return $this->map[$hash]['file'];
     }
 }

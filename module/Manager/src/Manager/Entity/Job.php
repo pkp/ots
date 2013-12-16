@@ -51,6 +51,12 @@ class Job extends DataObject
     protected $documents;
 
     /**
+     * @ORM\OneToOne(targetEntity="Manager\Entity\Metadata", mappedBy="metadata", cascade={"all"})
+     * @ORM\JoinColumn(name="metadata_id", referencedColumnName="id")
+     */
+    protected $metadata;
+
+    /**
      * @ORM\Column(type="integer", nullable=false)
      */
     protected $creationDate;
