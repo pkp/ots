@@ -69,7 +69,7 @@ class Citationstyles
         if (!empty($this->map)) return $this->map;
 
         // Load the list from cache
-        $cacheKey = 'citationstyleconversionCytationstylesCitationstylelist';
+        $cacheKey = 'citationstyleconversionCitationstylesCitationstylelist';
         $list = $this->cache->getItem($cacheKey);
         if (!empty($list)) {
             $this->map = unserialize($list);
