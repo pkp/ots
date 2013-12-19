@@ -47,7 +47,7 @@ class Command
         $command .= ' ' . implode(' ', $this->arguments);
 
         // Escape the command
-        $command = escapeshellcmd($command);
+        $command = $command;
 
         // Add the output redirect
         if (empty($this->redirect) and $this->suppressErrors) {
