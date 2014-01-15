@@ -132,7 +132,8 @@ filestring = f.read()
 
 filestring = re.sub(r'<p>\s+?(<bold>|<title>)([A-Za-z\s]+)(</bold>|</title>)\s+?</p>\s+<list.+?>((.|\s)+?)(</list>)',r'<title>\2</title>\n<ref-list>\4</ref-list>',filestring)
 filestring = re.sub(r'(<disp-quote>|<list-item>)\s+<p>\s*?.*?([0-9]+)\.\s+?(?=[A-Z])',r'<ref rid="\2">',filestring)
-filestring = re.sub(r'</p>\s+(</disp-quote>|</list-item>)',r'</ref>',filestring)
+filestring = re.sub(r'</p>\s+?(</disp-quote>|</list-item>)',r'</ref>',filestring)
+filestring = re.sub(r'(<disp-quote>|<list-item>)\s+?<p>',r'<ref>',filestring)
 filestring = re.sub(r'(,|\[)([0-9]{1,3})(,|\])',r'\[<xref id="\2" ref-type="bibr">\2</xref>\]',filestring)
 
 refs = re.findall(r'<ref.*?>[\s]*.*[\s]*</ref>',filestring)
@@ -158,7 +159,7 @@ EOF;
         // Wrap references in ref-list tags
         $xml = file_get_contents($file);
         if (!preg_match('/<ref-list/', $xml)) {
-            $xml = preg_replace('#(<ref[^>]*>.*</ref>)#s', '<ref-list>\1</ref-list>', $xml);
+            $xml = preg_replace('#(<list[^>]*>\s+?)(<ref[^>]*>.*</ref>)(\s+?</list>)#s', '\1<ref-list>\2</ref-list>\3', $xml);
         }
         file_put_contents($file, $xml);
     }
