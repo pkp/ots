@@ -48,10 +48,12 @@ class Module
                     $sm = $cm->getServiceLocator();
                     $logger = $sm->get('Logger');
                     $translator = $sm->get('Translator');
+                    $authService = $sm->get('Zend\Authentication\AuthenticationService');
 
                     return new Controller\JobController(
                         $logger,
-                        $translator
+                        $translator,
+                        $authService
                     );
                 },
                 'Api\Controller\Site' => function($cm)
@@ -59,10 +61,13 @@ class Module
                     $sm = $cm->getServiceLocator();
                     $logger = $sm->get('Logger');
                     $translator = $sm->get('Translator');
+                    $authService = $sm->get('Zend\Authentication\AuthenticationService');
+                    $userDAO = $sm->get('User\Model\DAO\UserDAO');
 
                     return new Controller\SiteController(
                         $logger,
-                        $translator
+                        $translator,
+                        $authService
                     );
                 },
             )

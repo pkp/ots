@@ -6,7 +6,7 @@ use Zend\View\Model\JsonModel;
 use Zend\Mvc\I18n\Translator;
 use Xmlps\Logger\Logger;
 
-class SiteController extends AbstractActionController {
+class SiteController extends AbstractApiController {
     protected $logger;
     protected $translator;
 

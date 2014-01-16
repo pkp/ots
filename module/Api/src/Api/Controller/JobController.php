@@ -2,31 +2,10 @@
 namespace Api\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\JsonModel;
 use Zend\Mvc\I18n\Translator;
 use Xmlps\Logger\Logger;
 
-class JobController extends AbstractActionController {
-    protected $logger;
-    protected $translator;
-
-    /**
-     * Constructor
-     *
-     * @param Logger $logger
-     * @param Translator $translator
-     *
-     * @return void
-     */
-    public function __construct(
-        Logger $logger,
-        Translator $translator
-    )
-    {
-        $this->logger = $logger;
-        $this->translator = $translator;
-    }
-
+class JobController extends AbstractApiController {
     /**
      * Submit a new job
      *
@@ -34,9 +13,7 @@ class JobController extends AbstractActionController {
      */
     public function submitAction()
     {
-        return new JsonModel(array(
-            'success' => true,
-        ));
+        return array('a' => 'b');
     }
 
     /**
@@ -46,9 +23,7 @@ class JobController extends AbstractActionController {
      */
     public function statusAction()
     {
-        return new JsonModel(array(
-            'success' => true,
-        ));
+        return array('a' => 'b');
     }
 
     /**
@@ -58,8 +33,6 @@ class JobController extends AbstractActionController {
      */
     public function retrieveAction()
     {
-        return new JsonModel(array(
-            'success' => true,
-        ));
+        return array('a' => 'b');
     }
 }
