@@ -43,17 +43,28 @@ class Module
     {
         return array(
             'factories' => array(
-                'Api\Controller\Api' => function($cm)
+                'Api\Controller\Job' => function($cm)
                 {
                     $sm = $cm->getServiceLocator();
                     $logger = $sm->get('Logger');
                     $translator = $sm->get('Translator');
 
-                    return new Controller\ApiController(
+                    return new Controller\JobController(
                         $logger,
                         $translator
                     );
-                }
+                },
+                'Api\Controller\Site' => function($cm)
+                {
+                    $sm = $cm->getServiceLocator();
+                    $logger = $sm->get('Logger');
+                    $translator = $sm->get('Translator');
+
+                    return new Controller\SiteController(
+                        $logger,
+                        $translator
+                    );
+                },
             )
         );
     }

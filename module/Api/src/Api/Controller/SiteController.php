@@ -2,10 +2,11 @@
 namespace Api\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\JsonModel;
 use Zend\Mvc\I18n\Translator;
 use Xmlps\Logger\Logger;
 
-class ApiController extends AbstractActionController {
+class SiteController extends AbstractActionController {
     protected $logger;
     protected $translator;
 

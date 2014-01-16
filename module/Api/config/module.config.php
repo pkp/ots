@@ -5,24 +5,56 @@ return array(
     'router' => array(
         'routes' => array(
             'api' => array(
-                'type' => 'segment',
+                'type' => 'literal',
                 'options' => array(
-                    'route' => '/api[/:action][/id/:id]',
-                    'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
-                        'id' => '[0-9]+',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'Api\Controller\Api',
-                        'page' => 1,
-                    ),
+                    'route' => '/api',
                 ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'job' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/job/:action[/id/:id]',
+                            'constraints' => array(
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id' => '[0-9]+',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Api\Controller\Job',
+                            ),
+                        ),
+                    ),
+                    'site' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/site/:action',
+                            'constraints' => array(
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Api\Controller\Site',
+                            ),
+                        ),
+                    ),
+                )
             ),
         ),
     ),
     'view_manager' => array(
-        'template_path_stack' => array(
-            'api' => __DIR__ . '/../view'
+        'strategies' => array(
+            'ViewJsonStrategy',
+        ),
+    ),
+    'acl' => array(
+        'resources' => array(
+            'controller:Api\Controller\Job:submit',
+            'controller:Api\Controller\Job:status',
+            'controller:Api\Controller\Job:retrieve',
+        ),
+        'rules' => array(
+            array('allow', 'guest', 'controller:Api\Controller\Job:submit'),
+            array('allow', 'guest', 'controller:Api\Controller\Job:status'),
+            array('allow', 'guest', 'controller:Api\Controller\Job:retrieve'),
         ),
     ),
 );
