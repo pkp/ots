@@ -13,6 +13,12 @@ class AbstractApiController extends AbstractActionController {
     protected $translator;
     protected $authService;
 
+    // If instances want to restrict access to authorized users $reqireIdentity
+    // needs to be populated with the names of the methods that reqire
+    // authentication. I.e.
+    //      protected $requireIdentity = array('fooAction');
+    protected $requireIdentity = array();
+
     /**
      * Constructor
      *
@@ -109,7 +115,7 @@ class AbstractApiController extends AbstractActionController {
      */
     protected function authorize($method)
     {
-        if (!isset($this->requireIdentity[$method])) return true;
+        if (!in_array($method, $this->requireIdentity)) return true;
 
         return ($this->identity());
     }
