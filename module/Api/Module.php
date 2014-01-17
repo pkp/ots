@@ -49,11 +49,13 @@ class Module
                     $logger = $sm->get('Logger');
                     $translator = $sm->get('Translator');
                     $authService = $sm->get('Zend\Authentication\AuthenticationService');
+                    $jobDAO = $sm->get('Manager\Model\DAO\JobDAO');
 
                     return new Controller\JobController(
                         $logger,
                         $translator,
-                        $authService
+                        $authService,
+                        $jobDAO
                     );
                 },
                 'Api\Controller\Site' => function($cm)
@@ -62,7 +64,6 @@ class Module
                     $logger = $sm->get('Logger');
                     $translator = $sm->get('Translator');
                     $authService = $sm->get('Zend\Authentication\AuthenticationService');
-                    $userDAO = $sm->get('User\Model\DAO\UserDAO');
 
                     return new Controller\SiteController(
                         $logger,

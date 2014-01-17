@@ -2,10 +2,40 @@
 namespace Api\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\I18n\Translator;
 use Xmlps\Logger\Logger;
+use Zend\Mvc\I18n\Translator;
+use Zend\Authentication\AuthenticationService;
+use Manager\Model\DAO\JobDAO;
 
 class JobController extends AbstractApiController {
+    protected $requireIdentity = array(
+        'submitAction' => true,
+        'statusAction' => true,
+        'retrieveAction' => true,
+    );
+
+    /**
+     * Constructor
+     *
+     * @param Logger $logger
+     * @param Translator $translator
+     * @param AuthenticationService $authService
+     *
+     * @return void
+     */
+    public function __construct(
+        Logger $logger,
+        Translator $translator,
+        AuthenticationService $authService,
+        JobDAO $jobDAO
+    )
+    {
+        parent::__construct($logger, $translator, $authService);
+
+        $this->jobDAO = $jobDAO;
+    }
+
+
     /**
      * Submit a new job
      *
@@ -23,7 +53,6 @@ class JobController extends AbstractApiController {
      */
     public function statusAction()
     {
-        return array('a' => 'b');
     }
 
     /**

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-17 16:31-1000\n"
-"PO-Revision-Date: 2013-12-17 16:31-1000\n"
+"POT-Creation-Date: 2014-01-17 16:08-1000\n"
+"PO-Revision-Date: 2014-01-17 16:10-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -14,7 +14,7 @@ msgstr ""
 "noticeTranslate;warnTranslate;errTranslate;critTranslate;alertTranslate;"
 "emergTranslate\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.6.3\n"
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../..\n"
 "X-Poedit-SearchPath-2: ../../../vendor/xmlps\n"
@@ -150,15 +150,15 @@ msgstr "No jobs found."
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:110
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:101
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:150
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:141
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:174
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:165
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
@@ -226,45 +226,45 @@ msgstr "No Bibliography found"
 msgid "referencesconversion.converter.parseBibliography.nlmLog"
 msgstr "Parsing for NLM bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:249
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:251
 msgid "referencesconversion.converter.parseBibliography.teiLog"
 msgstr "Parsing for TEI bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:322
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:331
 msgid "referencesconversion.converter.parsCit.commandLog"
 msgstr ""
 "Executing ParsCit command:\n"
 "%s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:361
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:370
 msgid "referencesconversion.converter.parsCit.noDOMLog"
 msgstr ""
 "ParsCit output is no valid XML. Error from LIBXML:\n"
 "%s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:375
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:384
 msgid "referencesconversion.converter.parsCit.noListNodeLog"
 msgstr "Citation list doesn't contain any entries"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:381
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:390
 msgid "referencesconversion.converter.parsCit.successLog"
 msgstr "ParsCit successfully parsed bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:397
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:406
 msgid "referencesconversion.converter.transformBibliography.startLog"
 msgstr "Transforming the parsed bibliography"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:412
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:421
 msgid "referencesconversion.converter.transformBibliography.styleSheetErrorLog"
 msgstr "Error loading the XSL style sheet"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:421
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:430
 msgid "referencesconversion.converter.transformBibliography.transformErrorLog"
 msgstr ""
 "Couldn't transform the parsed bibliography. Error from LIBXML:\n"
 "%s"
 
-#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:432
+#: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:441
 msgid "referencesconversion.converter.transformBibliography.successLog"
 msgstr ""
 "Successfully transformed bibliography:\n"
@@ -392,6 +392,12 @@ msgid "xmpconversion.exiftool.executePdfCommandOutputLog"
 msgstr ""
 "Exiftool output (adding XMP sidecar):\n"
 "%s"
+
+#: ../../Api/src/Api/Controller/AbstractApiController.php:63
+msgid "api.error.invalidCredentials"
+msgstr ""
+"This API calls reqires to be authenticated. Please provide email and "
+"password."
 
 #: ../../User/src/User/Event/Handler/UserRegisterHandler.php:103
 msgid "user.registration.confirmationEmailBody"
@@ -545,23 +551,23 @@ msgstr ""
 "Error loading CSL style file. Libxml error:\n"
 "%s"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:118
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:127
 msgid "citationstyleconversion.converter.startLog"
 msgstr "Starting pandoc conversion"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:147
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:177
 msgid "citationstyleconversion.converter.pandoc.commandLog"
 msgstr ""
 "Executing pandoc conversion command:\n"
 "%s"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:155
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:187
 msgid "citationstyleconversion.converter.OutputLog"
 msgstr ""
 "Pandoc conversion output:\n"
 "%s"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:169
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:211
 msgid "citationstyleconversion.converter.NlmxmlDomErrorLog"
 msgstr ""
 "Couldn't load NLMXML input file. Invalid xml. LIBXML error:\n"

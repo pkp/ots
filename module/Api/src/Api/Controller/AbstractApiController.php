@@ -54,8 +54,19 @@ class AbstractApiController extends AbstractActionController {
             $method = 'notFoundAction';
         }
 
-        $this->preDispatch();
-        $actionResponse = $this->$method();
+        // Authenticate the request
+        $this->authenticate();
+
+        // Check if the user is authorized to access the method
+        if (!$this->authorize($method)) {
+            $actionResponse = array(
+                'error' => $this->translator->translate('api.error.invalidCredentials')
+            );
+        }
+        else {
+            $actionResponse = $this->$method();
+        }
+
         $actionResponse = $this->postDispatch($actionResponse);
 
         $e->setResult($actionResponse);
@@ -68,7 +79,7 @@ class AbstractApiController extends AbstractActionController {
      *
      * @return void
      */
-    protected function preDispatch()
+    protected function authenticate()
     {
         $email = '';
         $password = '';
@@ -87,6 +98,20 @@ class AbstractApiController extends AbstractActionController {
             $adapter->setCredentialValue($password);
             $authResult = $this->authService->authenticate();
         }
+    }
+
+    /**
+     * Authorize a user for to access a given method
+     *
+     * @param mixed $method Method to access
+     *
+     * @return void
+     */
+    protected function authorize($method)
+    {
+        if (!isset($this->requireIdentity[$method])) return true;
+
+        return ($this->identity());
     }
 
     /**
