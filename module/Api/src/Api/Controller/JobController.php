@@ -35,7 +35,6 @@ class JobController extends AbstractApiController {
         $this->jobDAO = $jobDAO;
     }
 
-
     /**
      * Submit a new job
      *
@@ -53,6 +52,23 @@ class JobController extends AbstractApiController {
      */
     public function statusAction()
     {
+        // Make sure the job id parameter is provided
+        if (!($jobId = (int) $this->params()->fromQuery('id'))) {
+            return array(
+                'error' => $this->translator->translate('job.api.error.jobIdParameterMissing')
+            );
+        }
+
+        $job = $this->jobDAO->find($jobId);
+
+        // Check if the job exists and the user is the owner of the job
+        if (!$job or !($this->identity()->id == $job->user->id)) {
+            return array(
+                'error' => $this->translator->translate('job.api.error.invalidJobId')
+            );
+        }
+
+        return array('jobStatus' => $job->status);
     }
 
     /**

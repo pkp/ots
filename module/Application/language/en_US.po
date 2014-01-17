@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-17 16:08-1000\n"
-"PO-Revision-Date: 2014-01-17 16:10-1000\n"
+"POT-Creation-Date: 2014-01-17 16:33-1000\n"
+"PO-Revision-Date: 2014-01-17 16:35-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -392,6 +392,14 @@ msgid "xmpconversion.exiftool.executePdfCommandOutputLog"
 msgstr ""
 "Exiftool output (adding XMP sidecar):\n"
 "%s"
+
+#: ../../Api/src/Api/Controller/JobController.php:57
+msgid "job.api.error.jobIdParameterMissing"
+msgstr "Job id (id) parameter is missing."
+
+#: ../../Api/src/Api/Controller/JobController.php:65
+msgid "job.api.error.invalidJobId"
+msgstr "Invalid job id (id) provided."
 
 #: ../../Api/src/Api/Controller/AbstractApiController.php:63
 msgid "api.error.invalidCredentials"
