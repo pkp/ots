@@ -68,7 +68,8 @@ class JobController extends AbstractApiController {
             );
         }
 
-        return array('jobStatus' => $job->status);
+        $jobStatusMap = $job->getStatusMap();
+        return array('jobStatus' => $job->status, 'jobStatusDescription' => $jobStatusMap[$job->status]);
     }
 
     /**
