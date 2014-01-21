@@ -3,6 +3,7 @@ javascript_compressor: uglifier
 
 stylesheets:
   public/css/style.min:
+    - style/css/jquery.autocomplete.css
     - style/css/style.css
 
 
@@ -10,4 +11,5 @@ javascripts:
   public/js/script.min:
     - javascript/jquery-2.0.3.js
     - javascript/footable.js
+    - javascript/jquery.autocomplete.js
     - javascript/script.js
