@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "75dd61db64cab5fb27b996a9ba1bc7a9",
+    "hash": "8c336e4ebf51c9468447cf0a28e076a9",
     "packages": [
         {
             "name": "MartinPaulEve/meTypeset",
@@ -14,7 +14,7 @@
                 "reference": "master"
             },
             "type": "library",
-            "time": "2013-12-05 16:30:29"
+            "time": "2014-01-07 19:11:56"
         },
         {
             "name": "MichaelThessel/ParsCit",
@@ -337,16 +337,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.4.1",
+            "version": "v2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "328357bd9eea9d671fe5fff0737f01953bfe66a0"
+                "reference": "fec965d330c958e175c39e61c3f6751955af32d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/328357bd9eea9d671fe5fff0737f01953bfe66a0",
-                "reference": "328357bd9eea9d671fe5fff0737f01953bfe66a0",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/fec965d330c958e175c39e61c3f6751955af32d0",
+                "reference": "fec965d330c958e175c39e61c3f6751955af32d0",
                 "shasum": ""
             },
             "require": {
@@ -399,7 +399,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2013-11-12 12:38:28"
+            "time": "2014-01-01 16:43:57"
         },
         {
             "name": "doctrine/doctrine-module",
@@ -758,6 +758,17 @@
             "time": "2013-11-12 12:40:13"
         },
         {
+            "name": "dyve/jquery-autocomplete",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dyve/jquery-autocomplete.git",
+                "reference": "master"
+            },
+            "type": "library",
+            "time": "2013-09-10 13:49:03"
+        },
+        {
             "name": "phpunit/php-code-coverage",
             "version": "1.2.13",
             "source": {
@@ -1003,16 +1014,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "3.7.28",
+            "version": "3.7.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3b97c8492bcafbabe6b6fbd2ab35f2f04d932a8d"
+                "reference": "faeb2d9f15dc83830d2db5e4c67acf1d68c9b5ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3b97c8492bcafbabe6b6fbd2ab35f2f04d932a8d",
-                "reference": "3b97c8492bcafbabe6b6fbd2ab35f2f04d932a8d",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/faeb2d9f15dc83830d2db5e4c67acf1d68c9b5ac",
+                "reference": "faeb2d9f15dc83830d2db5e4c67acf1d68c9b5ac",
                 "shasum": ""
             },
             "require": {
@@ -1073,7 +1084,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2013-10-17 07:27:40"
+            "time": "2014-01-15 06:46:38"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1126,25 +1137,26 @@
         },
         {
             "name": "slm/queue",
-            "version": "dev-master",
+            "version": "0.3.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/juriansluiman/SlmQueue.git",
-                "reference": "e1c6d98e81aa2943eb4d8ab340efeebc1f55b208"
+                "reference": "a1d8c9dc052bdc6f95e4a32d804ebe5fd9102af3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/juriansluiman/SlmQueue/zipball/e1c6d98e81aa2943eb4d8ab340efeebc1f55b208",
-                "reference": "e1c6d98e81aa2943eb4d8ab340efeebc1f55b208",
+                "url": "https://api.github.com/repos/juriansluiman/SlmQueue/zipball/a1d8c9dc052bdc6f95e4a32d804ebe5fd9102af3",
+                "reference": "a1d8c9dc052bdc6f95e4a32d804ebe5fd9102af3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
-                "zendframework/zend-servicemanager": "2.*",
-                "zendframework/zend-stdlib": "2.*"
+                "zendframework/zend-servicemanager": "~2.2",
+                "zendframework/zend-stdlib": "~2.2"
             },
             "require-dev": {
-                "zendframework/zendframework": "2.*"
+                "phpunit/phpunit": "~3.7",
+                "zendframework/zendframework": "~2.2"
             },
             "suggest": {
                 "slm/queue-beanstalkd": "If you are using Beanstalk",
@@ -1185,7 +1197,7 @@
                 "queue",
                 "zf2"
             ],
-            "time": "2013-11-02 12:01:55"
+            "time": "2014-01-09 13:46:28"
         },
         {
             "name": "slm/queue-doctrine",
@@ -1193,22 +1205,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/juriansluiman/SlmQueueDoctrine.git",
-                "reference": "31e95ab8c4cece79009259e95efe83e2fe041e46"
+                "reference": "6b0fe133836799f62d124c7afe0547ae965cdfae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/juriansluiman/SlmQueueDoctrine/zipball/31e95ab8c4cece79009259e95efe83e2fe041e46",
-                "reference": "31e95ab8c4cece79009259e95efe83e2fe041e46",
+                "url": "https://api.github.com/repos/juriansluiman/SlmQueueDoctrine/zipball/6b0fe133836799f62d124c7afe0547ae965cdfae",
+                "reference": "6b0fe133836799f62d124c7afe0547ae965cdfae",
                 "shasum": ""
             },
             "require": {
-                "doctrine/doctrine-orm-module": ">=0.6",
+                "doctrine/doctrine-orm-module": "~0.7",
                 "php": ">=5.3.3",
-                "slm/queue": ">=0.3.0-dev",
-                "zendframework/zend-config": "2.*",
-                "zendframework/zend-mvc": "2.*",
-                "zendframework/zend-servicemanager": "2.*",
-                "zendframework/zend-stdlib": "2.*"
+                "slm/queue": "0.3.0-beta1",
+                "zendframework/zend-config": "~2.2",
+                "zendframework/zend-mvc": "~2.2",
+                "zendframework/zend-servicemanager": "~2.2",
+                "zendframework/zend-stdlib": "~2.2"
             },
             "require-dev": {
                 "zendframework/zendframework": "2.*"
@@ -1228,6 +1240,9 @@
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
             "authors": [
                 {
                     "name": "Stefan Kleff",
@@ -1245,21 +1260,21 @@
                 "queue",
                 "zf2"
             ],
-            "time": "2013-11-08 08:06:08"
+            "time": "2014-01-13 11:25:33"
         },
         {
             "name": "symfony/console",
-            "version": "v2.4.0",
+            "version": "v2.4.1",
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "3c1496ae96d24ccc6c340fcc25f71d7a1ab4c12c"
+                "reference": "4c1ed2ff514bd85ee186eebb010ccbdeeab05af7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/3c1496ae96d24ccc6c340fcc25f71d7a1ab4c12c",
-                "reference": "3c1496ae96d24ccc6c340fcc25f71d7a1ab4c12c",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/4c1ed2ff514bd85ee186eebb010ccbdeeab05af7",
+                "reference": "4c1ed2ff514bd85ee186eebb010ccbdeeab05af7",
                 "shasum": ""
             },
             "require": {
@@ -1298,21 +1313,21 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2013-11-27 09:10:40"
+            "time": "2014-01-01 08:14:50"
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.4.0",
+            "version": "v2.4.1",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "1ae235a1b9d3ad3d9f3860ff20acc072df95b7f5"
+                "reference": "4e1a237fc48145fae114b96458d799746ad89aa0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/1ae235a1b9d3ad3d9f3860ff20acc072df95b7f5",
-                "reference": "1ae235a1b9d3ad3d9f3860ff20acc072df95b7f5",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/4e1a237fc48145fae114b96458d799746ad89aa0",
+                "reference": "4e1a237fc48145fae114b96458d799746ad89aa0",
                 "shasum": ""
             },
             "require": {
@@ -1345,7 +1360,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2013-11-26 16:40:27"
+            "time": "2013-12-28 08:12:03"
         },
         {
             "name": "zendframework/zend-developer-tools",
@@ -1353,13 +1368,13 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/ZendDeveloperTools.git",
-                "reference": "8c38e67884268c94426cc4c8647d064ef13d100a"
+                "reference": "9a8848612c0c6d9890dd6533b3dd5045745e1299"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packages.zendframework.com/composer/zendframework-zend-developer-tools-8c38e67884268c94426cc4c8647d064ef13d100a-zip-ed5f66.zip",
+                "url": "https://packages.zendframework.com/composer/zendframework-zend-developer-tools-9a8848612c0c6d9890dd6533b3dd5045745e1299-zip-a30b96.zip",
                 "reference": "dev-master",
-                "shasum": "8531055d71d4f865fd13ec07495d6c341b1dadff"
+                "shasum": "51546e97631c202e409136ab795ca23bd1289db5"
             },
             "require": {
                 "php": ">=5.3.3",
@@ -1409,7 +1424,7 @@
                 "source": "https://github.com/zendframework/ZendDeveloperTools/tree/master",
                 "issues": "https://github.com/zendframework/ZendDeveloperTools/issues"
             },
-            "time": "2013-11-13 19:43:45"
+            "time": "2014-01-02 17:27:54"
         },
         {
             "name": "zendframework/zendframework",
@@ -1539,11 +1554,12 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "zendframework/zend-developer-tools": 20,
-        "slm/queue": 20,
         "slm/queue-doctrine": 20,
+        "slm/queue": 10,
         "martinpauleve/metypeset": 20,
         "citation-style-language/styles": 20,
-        "michaelthessel/parscit": 10
+        "michaelthessel/parscit": 10,
+        "dyve/jquery-autocomplete": 20
     },
     "platform": {
         "php": ">=5.3.3"

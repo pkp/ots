@@ -57,6 +57,18 @@
                     "reference": "110505b"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "dyve/jquery-autocomplete",
+                "version": "dev-master",
+                "source": {
+                    "url": "https://github.com/dyve/jquery-autocomplete.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
         }
     ],
     "homepage": "http://framework.zend.com/",
@@ -66,11 +78,12 @@
         "doctrine/doctrine-orm-module": "0.*",
         "zendframework/zend-developer-tools": "dev-master",
         "phpunit/phpunit": "3.7.*",
-        "slm/queue": "0.3.x-dev",
         "slm/queue-doctrine": "0.3.x-dev",
+        "slm/queue": "0.3.0-beta1",
         "dagwieers/unoconv": "0.6",
         "MartinPaulEve/meTypeset": "dev-master",
         "citation-style-language/styles": "dev-master",
-        "MichaelThessel/ParsCit": "110505b"
+        "MichaelThessel/ParsCit": "110505b",
+        "dyve/jquery-autocomplete": "dev-master"
     }
 }
