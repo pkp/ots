@@ -129,6 +129,9 @@ class AbstractApiController extends AbstractActionController {
     protected function postDispatch($actionResponse)
     {
         if (!is_array($actionResponse)) $actionResponse = array();
+
+        if (!isset($actionResponse['status'])) $actionResponse['status'] = 'error';
+
         return new JsonModel($actionResponse);
     }
 }
