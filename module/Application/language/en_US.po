@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-17 16:33-1000\n"
-"PO-Revision-Date: 2014-01-17 16:35-1000\n"
+"POT-Creation-Date: 2014-01-20 16:03-1000\n"
+"PO-Revision-Date: 2014-01-20 16:03-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -139,6 +139,7 @@ msgstr ""
 "Your document has been successfully uploaded. It is now being processed."
 
 #: ../../Manager/src/Manager/Controller/ManagerController.php:111
+#: ../../Api/src/Api/Controller/JobController.php:119
 msgid "manager.job.createLog"
 msgstr "A new job has been created (%d)"
 
@@ -393,15 +394,43 @@ msgstr ""
 "Exiftool output (adding XMP sidecar):\n"
 "%s"
 
-#: ../../Api/src/Api/Controller/JobController.php:57
+#: ../../Api/src/Api/Controller/JobController.php:70
+msgid "job.api.error.fileNameParameterMissing"
+msgstr "File name (fileName) parameter is missing."
+
+#: ../../Api/src/Api/Controller/JobController.php:77
+msgid "job.api.error.fileContentParameterMissing"
+msgstr "File content (fileContent) parameter is missing."
+
+#: ../../Api/src/Api/Controller/JobController.php:84
+msgid "job.api.error.citationStyleHashParameterMissing"
+msgstr "Citation style hash (citationStyleHash) parameter is missing."
+
+#: ../../Api/src/Api/Controller/JobController.php:91
+msgid "job.api.error.invalidCitationStyleHash"
+msgstr "Invalid citation style hash"
+
+#: ../../Api/src/Api/Controller/JobController.php:175
+msgid "job.api.error.jobNotCompleted"
+msgstr "The job is not completed yet"
+
+#: ../../Api/src/Api/Controller/JobController.php:182
+msgid "job.api.error.conversionStageParameterMissing"
+msgstr "Conversion stage (conversionStage) parameter is missing."
+
+#: ../../Api/src/Api/Controller/JobController.php:188
+msgid "job.api.error.documentNotFound"
+msgstr "Couldn't find document"
+
+#: ../../Api/src/Api/Controller/JobController.php:212
 msgid "job.api.error.jobIdParameterMissing"
 msgstr "Job id (id) parameter is missing."
 
-#: ../../Api/src/Api/Controller/JobController.php:65
+#: ../../Api/src/Api/Controller/JobController.php:221
 msgid "job.api.error.invalidJobId"
 msgstr "Invalid job id (id) provided."
 
-#: ../../Api/src/Api/Controller/AbstractApiController.php:63
+#: ../../Api/src/Api/Controller/AbstractApiController.php:69
 msgid "api.error.invalidCredentials"
 msgstr ""
 "This API calls reqires to be authenticated. Please provide email and "

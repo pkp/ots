@@ -5,6 +5,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Xmlps\Logger\Logger;
 use Zend\Mvc\I18n\Translator;
 use Zend\Authentication\AuthenticationService;
+use Manager\Entity\Job;
 use Manager\Model\DAO\JobDAO;
 use Manager\Model\DAO\MetadataDAO;
 use Manager\Model\DAO\DocumentDAO;
@@ -56,6 +57,9 @@ class JobController extends AbstractApiController {
     /**
      * Submit a new job
      *
+     * NOTE: the submitted file content needs to be base64_encoded.
+     * json_en/decode fails in certain cases otherwise
+     *
      * @return array Array with submission status information
      */
     public function submitAction()
@@ -81,6 +85,13 @@ class JobController extends AbstractApiController {
             );
         }
 
+        $citationStyles = $this->citationStyles->getStyleMap();
+        if (!array_key_exists($citationStyleHash, $citationStyles)) {
+            return array(
+                'error' => $this->translator->translate('job.api.error.invalidCitationStyleHash')
+            );
+        }
+
         // Create a new job instance
         $job = $this->jobDAO->getInstance();
         $job->user = $this->identity();
@@ -96,7 +107,7 @@ class JobController extends AbstractApiController {
         // Create the inputFile
         $fileName = str_replace('/', '', $fileName);
         $fileName = $job->getDocumentPath() . '/' . $fileName;
-        file_put_contents($fileName, $fileContent);
+        file_put_contents($fileName, base64_decode($fileContent));
 
         // Create new document
         $document = $this->documentDAO->getInstance();
@@ -136,6 +147,65 @@ class JobController extends AbstractApiController {
      */
     public function statusAction()
     {
+        $job = $this->getJob();
+        if (!($job instanceof Job)) return $job;
+
+        $jobStatusMap = $job->getStatusMap();
+        return array(
+            'status' => 'success',
+            'jobStatus' => $job->status,
+            'jobStatusDescription' => $jobStatusMap[$job->status]
+        );
+    }
+
+    /**
+     * Retrieve a completed job
+     *
+     * NOTE: the returned file content is base64_encoded
+     *
+     * @return array Array containing converted document
+     */
+    public function retrieveAction()
+    {
+        $job = $this->getJob();
+        if (!($job instanceof Job)) return $job;
+
+        if ($job->status != JOB_STATUS_COMPLETED) {
+            return array(
+                'error' => $this->translator->translate('job.api.error.jobNotCompleted')
+            );
+        }
+
+        // Get the requested conversion stage
+        if (!($conversionStage = (int) $this->params()->fromQuery('conversionStage'))) {
+            return array(
+                'error' => $this->translator->translate('job.api.error.conversionStageParameterMissing')
+            );
+        }
+
+        // Get the document for the conversion stage
+        if (!($document = $job->getStageDocument($conversionStage))) {
+            return array(
+                'error' => $this->translator->translate('job.api.error.documentNotFound')
+            );
+        }
+
+        if (file_exists($document->path)) {
+            return array(
+                'fileName' => preg_replace('#^.*/#', '', $document->path),
+                'fileContents' => base64_encode(file_get_contents($document->path)),
+                'status' => 'success',
+            );
+        }
+    }
+
+    /**
+     * Get a job instance for a given job id
+     *
+     * @return mixed Job instance or array with error messages
+     */
+    protected function getJob()
+    {
         // Make sure the job id parameter is provided
         if (!($jobId = (int) $this->params()->fromQuery('id'))) {
             return array(
@@ -152,21 +222,6 @@ class JobController extends AbstractApiController {
             );
         }
 
-        $jobStatusMap = $job->getStatusMap();
-        return array(
-            'status' => 'success',
-            'jobStatus' => $job->status,
-            'jobStatusDescription' => $jobStatusMap[$job->status]
-        );
-    }
-
-    /**
-     * Retrieve a completed job
-     *
-     * @return void
-     */
-    public function retrieveAction()
-    {
-        return array('a' => 'b');
+        return $job;
     }
 }
