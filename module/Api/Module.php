@@ -50,12 +50,18 @@ class Module
                     $translator = $sm->get('Translator');
                     $authService = $sm->get('Zend\Authentication\AuthenticationService');
                     $jobDAO = $sm->get('Manager\Model\DAO\JobDAO');
+                    $metadataDAO = $sm->get('Manager\Model\DAO\MetadataDAO');
+                    $documentDAO = $sm->get('Manager\Model\DAO\DocumentDAO');
+                    $queueManager = $sm->get('Manager\Model\Queue\Manager');
 
                     return new Controller\JobController(
                         $logger,
                         $translator,
                         $authService,
-                        $jobDAO
+                        $jobDAO,
+                        $metadataDAO,
+                        $documentDAO,
+                        $queueManager
                     );
                 },
                 'Api\Controller\Site' => function($cm)

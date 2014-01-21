@@ -6,13 +6,16 @@ use Xmlps\Logger\Logger;
 use Zend\Mvc\I18n\Translator;
 use Zend\Authentication\AuthenticationService;
 use Manager\Model\DAO\JobDAO;
+use Manager\Model\DAO\MetadataDAO;
+use Manager\Model\DAO\DocumentDAO;
+use Manager\Model\Queue\Manager as QueueManager;
 
 class JobController extends AbstractApiController {
-    protected $requireIdentity = array(
-        'submitAction' => true,
-        'statusAction' => true,
-        'retrieveAction' => true,
-    );
+
+    protected $jobDAO;
+    protected $metadataDAO;
+    protected $documentDAO;
+    protected $queueManager;
 
     /**
      * Constructor
@@ -20,6 +23,10 @@ class JobController extends AbstractApiController {
      * @param Logger $logger
      * @param Translator $translator
      * @param AuthenticationService $authService
+     * @param JobDAO $jobDAO
+     * @param MetadataDAO $metadataDAO
+     * @param DocumentDAO $documentDAO
+     * @param QueueManager $queueManager
      *
      * @return void
      */
@@ -27,12 +34,18 @@ class JobController extends AbstractApiController {
         Logger $logger,
         Translator $translator,
         AuthenticationService $authService,
-        JobDAO $jobDAO
+        JobDAO $jobDAO,
+        MetadataDAO $metadataDAO,
+        DocumentDAO $documentDAO,
+        QueueManager $queueManager
     )
     {
         parent::__construct($logger, $translator, $authService);
 
         $this->jobDAO = $jobDAO;
+        $this->metadataDAO = $metadataDAO;
+        $this->documentDAO = $documentDAO;
+        $this->queueManager = $queueManager;
     }
 
     /**
@@ -42,7 +55,57 @@ class JobController extends AbstractApiController {
      */
     public function submitAction()
     {
-        return array('a' => 'b');
+        // Make sure the file name parameter is provided
+        if (!($fileName = $this->params()->fromQuery('fileName'))) {
+            return array(
+                'error' => $this->translator->translate('job.api.error.fileNameParameterMissing')
+            );
+        }
+
+        // Make sure the file content parameter is provided
+        if (!($fileContent = $this->params()->fromQuery('fileContent'))) {
+            return array(
+                'error' => $this->translator->translate('job.api.error.fileContentParameterMissing')
+            );
+        }
+
+        // Make sure the citation style parameter is provided
+        if (!($citationStyleHash = $this->params()->fromQuery('citationStyleHash'))) {
+            return array(
+                'error' => $this->translator->translate('job.api.error.citationStyleHashParameterMissing')
+            );
+        }
+
+        // Create a new job instance
+        $job = $this->jobDAO->getInstance();
+        $job->user = $this->identity();
+
+        // Add the job's metadata
+        $metadata = $this->metadataDAO->getInstance();
+        if ($metadata->setCitationStyleFileByHash($citationStyleHash)) {
+            $job->metadata = $metadata;
+        }
+
+        $this->jobDAO->save($job);
+
+        // Create the inputFile
+        $fileName = str_replace('/', '', $fileName);
+        $fileName = $job->getDocumentPath() . '/' . $fileName;
+        file_put_contents($fileName, $fileContent);
+
+        // Create new document
+        $document = $this->documentDAO->getInstance();
+        $document->job = $job;
+        $document->conversionStage = $job->conversionStage;
+        $document->path = $fileName;
+        $this->documentDAO->save($document);
+
+        $this->logger->infoTranslate('manager.job.createLog', $job->id);
+
+        // Send the job to the queue manager
+        $this->queueManager->addJob($job->id);
+
+        return array('status' => 'success', 'jobId' => $job->id);
     }
 
     /**
@@ -69,7 +132,11 @@ class JobController extends AbstractApiController {
         }
 
         $jobStatusMap = $job->getStatusMap();
-        return array('jobStatus' => $job->status, 'jobStatusDescription' => $jobStatusMap[$job->status]);
+        return array(
+            'status' => 'success',
+            'jobStatus' => $job->status,
+            'jobStatusDescription' => $jobStatusMap[$job->status]
+        );
     }
 
     /**
