@@ -49,11 +49,13 @@ return array(
             'controller:Api\Controller\Job:submit',
             'controller:Api\Controller\Job:status',
             'controller:Api\Controller\Job:retrieve',
+            'controller:Api\Controller\Job:citationStyleList',
         ),
         'rules' => array(
             array('allow', 'guest', 'controller:Api\Controller\Job:submit'),
             array('allow', 'guest', 'controller:Api\Controller\Job:status'),
             array('allow', 'guest', 'controller:Api\Controller\Job:retrieve'),
+            array('allow', 'guest', 'controller:Api\Controller\Job:citationStyleList'),
         ),
     ),
 );

@@ -53,6 +53,7 @@ class Module
                     $metadataDAO = $sm->get('Manager\Model\DAO\MetadataDAO');
                     $documentDAO = $sm->get('Manager\Model\DAO\DocumentDAO');
                     $queueManager = $sm->get('Manager\Model\Queue\Manager');
+                    $citationStyles = $sm->get('CitationstyleConversion\Model\Citationstyles');
 
                     return new Controller\JobController(
                         $logger,
@@ -61,7 +62,8 @@ class Module
                         $jobDAO,
                         $metadataDAO,
                         $documentDAO,
-                        $queueManager
+                        $queueManager,
+                        $citationStyles
                     );
                 },
                 'Api\Controller\Site' => function($cm)

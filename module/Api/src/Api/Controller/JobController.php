@@ -9,6 +9,7 @@ use Manager\Model\DAO\JobDAO;
 use Manager\Model\DAO\MetadataDAO;
 use Manager\Model\DAO\DocumentDAO;
 use Manager\Model\Queue\Manager as QueueManager;
+use CitationstyleConversion\Model\Citationstyles;
 
 class JobController extends AbstractApiController {
 
@@ -16,6 +17,7 @@ class JobController extends AbstractApiController {
     protected $metadataDAO;
     protected $documentDAO;
     protected $queueManager;
+    protected $citationStyles;
 
     /**
      * Constructor
@@ -27,6 +29,7 @@ class JobController extends AbstractApiController {
      * @param MetadataDAO $metadataDAO
      * @param DocumentDAO $documentDAO
      * @param QueueManager $queueManager
+     * @param CitationStyles $citationStyles
      *
      * @return void
      */
@@ -37,7 +40,8 @@ class JobController extends AbstractApiController {
         JobDAO $jobDAO,
         MetadataDAO $metadataDAO,
         DocumentDAO $documentDAO,
-        QueueManager $queueManager
+        QueueManager $queueManager,
+        CitationStyles $citationStyles
     )
     {
         parent::__construct($logger, $translator, $authService);
@@ -46,12 +50,13 @@ class JobController extends AbstractApiController {
         $this->metadataDAO = $metadataDAO;
         $this->documentDAO = $documentDAO;
         $this->queueManager = $queueManager;
+        $this->citationStyles = $citationStyles;
     }
 
     /**
      * Submit a new job
      *
-     * @return void
+     * @return array Array with submission status information
      */
     public function submitAction()
     {
@@ -109,9 +114,25 @@ class JobController extends AbstractApiController {
     }
 
     /**
+     * Retrieve list of accepted citation styles and their hashes
+     *
+     * @return array Array containing citaion style list
+     */
+    public function citationStyleListAction()
+    {
+        $citationStyles = $this->citationStyles->getStyleMap();
+        array_walk($citationStyles, function(&$v) { $v = $v['title']; });
+
+        return array(
+            'status' => 'success',
+            'citationStyles' => $citationStyles,
+        );
+    }
+
+    /**
      * Get the job status
      *
-     * @return void
+     * @return array Array containing job status information
      */
     public function statusAction()
     {
