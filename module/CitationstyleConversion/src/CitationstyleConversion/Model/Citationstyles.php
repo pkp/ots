@@ -154,6 +154,24 @@ class Citationstyles
     }
 
     /**
+     * Returns the citation style file for a given title
+     *
+     * @param string $title Title of the file name
+     *
+     * @return string File name
+     */
+    public function getCitationStyleFileByTitle($title)
+    {
+        if (empty($this->map)) { $this->getStyleMap(); }
+
+        foreach ($this->map as $citationStyle) {
+            if ($citationStyle['title'] == $title) $citationStyle['file'];
+        }
+
+        return false;
+    }
+
+    /**
      * Checks if a given title is valid
      *
      * @param mixed $title Title to check

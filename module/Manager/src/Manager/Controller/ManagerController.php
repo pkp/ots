@@ -90,7 +90,7 @@ class ManagerController extends AbstractActionController {
 
                 // Add the job's metadata
                 $metadata = $this->metadataDAO->getInstance();
-                if ($metadata->setCitationStyleFileByHash($data['citationStyle'])) {
+                if ($metadata->setCitationStyleFileByTitle($data['citationStyle'])) {
                     $job->metadata = $metadata;
                 }
 

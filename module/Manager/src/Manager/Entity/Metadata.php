@@ -39,15 +39,15 @@ class Metadata extends DataObject
     protected $citationStyleFile;
 
     /**
-     * Populates $citationStyleFile based on the file hash given
+     * Populates $citationStyleFile based on the given citation style title
      *
-     * @param string $hash
+     * @param string $title
      *
-     * @return bool Whether or not a file for the given hash could be found
+     * @return bool Whether or not a file for the given title could be found
      */
-    public function setCitationStyleFileByHash($hash)
+    public function setCitationStyleFileByTitle($title)
     {
-        $file = $this->citationStyles->getCitationStyleFileByHash($hash);
+        $file = $this->citationStyles->getCitationStyleFileByTitle($title);
         if (!$file) return false;
 
         $this->citationStyleFile = $file;
