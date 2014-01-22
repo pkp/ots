@@ -37,3 +37,8 @@ input, select {
 form label {
   font-family: $highlightFont;
 }
+
+// Autocomplete highlight selected field
+.acSelect {
+  background-color: $complementaryColor4;
+}

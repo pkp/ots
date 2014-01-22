@@ -126,6 +126,9 @@ input, select {
 form label {
   font-family: Oswald, Sans-Serif; }
 
+.acSelect {
+  background-color: #ffb140; }
+
 .footable {
   width: 100%; }
 
