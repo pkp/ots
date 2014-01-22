@@ -80,7 +80,9 @@ cp config/autoload/local.php.dist config/autoload/local.php
 
 ```
 # vendor/doctrine/doctrine-module/bin/doctrine-module  orm:schema-tool:update --force
+# mysql [database] < vendor/slm/queue-doctrine/data/queue_default.sql
 ```
+
 * Run the shell script that starts the conversion queues
 
 ```
