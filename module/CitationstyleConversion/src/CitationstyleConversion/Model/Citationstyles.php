@@ -116,6 +116,30 @@ class Citationstyles
     }
 
     /**
+     * Returns a list of titles that match a given title fragment
+     *
+     * @param mixed $fragment Fragment to match
+     *
+     * @return arrat Array containing title matches
+     */
+    public function getTitleList($fragment)
+    {
+        if (empty($this->map)) $this->getStyleMap();
+
+        $map = $this->map;
+
+        // Create an array that only contains the titles
+        array_walk($map, function(&$v) { $v = $v['title']; });
+
+        // Return the titles that match the fragment
+        $map = array_filter($map, function($v) use ($fragment) {
+            return (strpos(strtolower($v), strtolower($fragment)) !== false);
+        });
+
+        return array_values($map);
+    }
+
+    /**
      * Returns the citation style file for a given hash
      *
      * @param string $hash Hash of the file name

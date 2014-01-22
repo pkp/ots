@@ -44,12 +44,13 @@ class UploadForm extends Form
         $this->add(
             array(
                 'name' => 'citationStyle',
-                'type' => '\Zend\Form\Element\Select',
+                'type' => '\Zend\Form\Element\Text',
                 'options' => array(
                     'label' => $this->translator->translate('manager.uploadForm.citationStyles'),
-                    'value_options' => $citationStyleOptions,
-                    'empty_option' => $this->translator->translate('application.generic.form.pleaseSelect'),
-                )
+                ),
+                'attributes' => array(
+                    'placeholder' => $this->translator->translate('manager.uploadForm.citationStyleAutocomplete')
+                ),
             )
         );
 

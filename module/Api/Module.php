@@ -72,11 +72,13 @@ class Module
                     $logger = $sm->get('Logger');
                     $translator = $sm->get('Translator');
                     $authService = $sm->get('Zend\Authentication\AuthenticationService');
+                    $citationStyles = $sm->get('CitationstyleConversion\Model\Citationstyles');
 
                     return new Controller\SiteController(
                         $logger,
                         $translator,
-                        $authService
+                        $authService,
+                        $citationStyles
                     );
                 },
             )
