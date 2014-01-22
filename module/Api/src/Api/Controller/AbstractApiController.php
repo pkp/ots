@@ -81,12 +81,15 @@ class AbstractApiController extends AbstractActionController {
     }
 
     /**
-     * Authorize the request
+     * Authenticate the request
      *
      * @return void
      */
     protected function authenticate()
     {
+        // Return if the user is already authenticated
+        if ($this->identity()) return;
+
         $email = '';
         $password = '';
         if ($this->request->isPost()) {
