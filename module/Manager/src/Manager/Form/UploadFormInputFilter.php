@@ -6,12 +6,20 @@ use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
+use CitationstyleConversion\Model\Citationstyles;
 
 class UploadFormInputFilter implements InputFilterAwareInterface
 {
+    protected $citationStyles;
+
     public $upload;
 
     protected $inputFilter;
+
+    public function __construct(Citationstyles $citationStyles)
+    {
+        $this->citationStyles = $citationStyles;
+    }
 
     /**
      * Initialized properties
@@ -65,6 +73,14 @@ class UploadFormInputFilter implements InputFilterAwareInterface
             $inputFilter->add($factory->createInput(array(
                 'name' => 'citationStyle',
                 'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => '\CitationstyleConversion\Model\Validator\Title',
+                        'options' => array(
+                            'citationStyles' => $this->citationStyles,
+                        ),
+                    ),
+                )
             )));
 
             $this->inputFilter = $inputFilter;

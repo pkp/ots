@@ -126,10 +126,8 @@ class Citationstyles
     {
         if (empty($this->map)) $this->getStyleMap();
 
-        $map = $this->map;
-
         // Create an array that only contains the titles
-        array_walk($map, function(&$v) { $v = $v['title']; });
+        $map = array_map(function($v) { return $v['title']; }, $this->map);
 
         // Return the titles that match the fragment
         $map = array_filter($map, function($v) use ($fragment) {
@@ -153,5 +151,20 @@ class Citationstyles
         if (empty($this->map[$hash])) return false;
 
         return $this->map[$hash]['file'];
+    }
+
+    /**
+     * Checks if a given title is valid
+     *
+     * @param mixed $title Title to check
+     * @return bool Whether or not the title exists
+     */
+    public function validTitle($title)
+    {
+        if (empty($this->map)) { $this->getStyleMap(); }
+
+        $map = array_map(function($v) { return $v['title']; }, $this->map);
+
+        return (array_search($title, $map) !== false);
     }
 }

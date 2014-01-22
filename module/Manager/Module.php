@@ -68,13 +68,13 @@ class Module
                 },
                 'Manager\Form\UploadForm' => function($sm)
                 {
-                    $citationStyles = $sm->get('CitationstyleConversion\Model\Citationstyles');
                     $translator = $sm->get('translator');
-                    return new UploadForm($translator, $citationStyles);
+                    return new UploadForm($translator);
                 },
                 'Manager\Form\UploadFormInputFilter' => function($sm)
                 {
-                    return new UploadFormInputFilter();
+                    $citationStyles = $sm->get('CitationstyleConversion\Model\Citationstyles');
+                    return new UploadFormInputFilter($citationStyles);
                 },
                 'Manager\Model\DAO\DocumentDAO' => function($sm)
                 {

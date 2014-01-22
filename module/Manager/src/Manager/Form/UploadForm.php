@@ -16,7 +16,7 @@ class UploadForm extends Form
      *
      * @return void
      */
-    public function __construct(Translator $translator, $citationStyles)
+    public function __construct(Translator $translator)
     {
         $this->translator = $translator;
 
@@ -34,12 +34,6 @@ class UploadForm extends Form
                 ),
             )
         );
-
-        // Load the citation style options
-        $citationStyleOptions = array();
-        foreach($citationStyles->getStyleMap() as $hash => $meta) {
-            $citationStyleOptions[$hash] = $meta['title'];
-        }
 
         $this->add(
             array(
