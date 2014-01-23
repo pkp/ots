@@ -165,7 +165,7 @@ class Citationstyles
         if (empty($this->map)) { $this->getStyleMap(); }
 
         foreach ($this->map as $citationStyle) {
-            if ($citationStyle['title'] == $title) $citationStyle['file'];
+            if ($citationStyle['title'] == $title) return $citationStyle['file'];
         }
 
         return false;
