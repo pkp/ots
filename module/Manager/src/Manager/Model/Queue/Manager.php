@@ -95,6 +95,21 @@ class Manager {
         // Don't requeue completed jobs
         if ($job->status == JOB_STATUS_COMPLETED) return;
 
+        // If the reference parsing has failed continue with the conversion but
+        // skip:
+        //
+        //  JOB_CONVERSION_STAGE_BIBTEX
+        //  JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+        //  JOB_CONVERSION_STAGE_CITATIONSTYLE
+        //  JOB_CONVERSION_STAGE_XMP
+        if (
+            $job->conversionStage == JOB_CONVERSION_STAGE_REFERENCES and
+            $job->status == JOB_STATUS_FAILED
+        )
+        {
+            $job->status == JOB_STATUS_PROCESSING;
+        }
+
         // Stop if the job has failed
         if ($job->status == JOB_STATUS_FAILED) {
             $this->logger->infoTranslate(
@@ -109,33 +124,58 @@ class Manager {
             case JOB_CONVERSION_STAGE_UNCONVERTED:
                 $this->queueJob($job, 'docx');
                 break;
+
             case JOB_CONVERSION_STAGE_DOCX:
                 $this->queueJob($job, 'nlmxml');
                 break;
+
             case JOB_CONVERSION_STAGE_NLMXML:
                 $this->queueJob($job, 'references');
                 break;
+
             case JOB_CONVERSION_STAGE_REFERENCES:
-                $this->queueJob($job, 'bibtex');
+                if ($job->referenceParsingSuccess) {
+                    $this->queueJob($job, 'bibtex');
+                }
+                else {
+                    $this->queueJob($job, 'html');
+                }
                 break;
+
             case JOB_CONVERSION_STAGE_BIBTEX:
                 $this->queueJob($job, 'bibtexreferences');
                 break;
+
             case JOB_CONVERSION_STAGE_BIBTEXREFERENCES:
                 $this->queueJob($job, 'html');
                 break;
+
             case JOB_CONVERSION_STAGE_HTML:
-                $this->queueJob($job, 'citationstyle');
+                if ($job->referenceParsingSuccess) {
+                    $this->queueJob($job, 'citationstyle');
+                }
+                else {
+                    $this->queueJob($job, 'pdf');
+                }
                 break;
+
             case JOB_CONVERSION_STAGE_CITATIONSTYLE:
                 $this->queueJob($job, 'pdf');
                 break;
+
             case JOB_CONVERSION_STAGE_PDF:
-                $this->queueJob($job, 'xmp');
+                if ($job->referenceParsingSuccess) {
+                    $this->queueJob($job, 'xmp');
+                }
+                else {
+                    $this->queueJob($job, 'zip');
+                }
                 break;
+
             case JOB_CONVERSION_STAGE_XMP:
                 $this->queueJob($job, 'zip');
                 break;
+
             default:
                 $this->logger->infoTranslate(
                     'manager.queue.jobCompletedLog',

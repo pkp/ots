@@ -48,6 +48,10 @@ class ReferencesJob extends AbstractQueueJob
 
         $job->documents[] = $referenceXmlDocument;
 
+        // Flag the reference parsing as successful. This will influence which
+        // conversion steps will be executed.
+        $job->referenceParsingSuccess = true;
+
         return $job;
     }
 }

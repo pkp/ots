@@ -72,6 +72,11 @@ class Job extends DataObject
     protected $conversionStage;
 
     /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    protected $referenceParsingSuccess = false;
+
+    /**
      * Constructor
      *
      * @return void
