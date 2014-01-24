@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-21 15:39-1000\n"
-"PO-Revision-Date: 2014-01-21 15:39-1000\n"
+"POT-Creation-Date: 2014-01-23 17:45-1000\n"
+"PO-Revision-Date: 2014-01-23 17:46-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -19,13 +19,13 @@ msgstr ""
 "X-Poedit-SearchPath-1: ../..\n"
 "X-Poedit-SearchPath-2: ../../../vendor/xmlps\n"
 
-#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:95
+#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:98
 msgid "nlmxmlconversion.metypeset.executeCommandLog"
 msgstr ""
 "meTypeset is executing:\n"
 "%s "
 
-#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:105
+#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:108
 msgid "nlmxmlconversion.metypeset.executeCommandOutputLog"
 msgstr ""
 "meTypeset output:\n"
@@ -103,33 +103,33 @@ msgstr ""
 msgid "manager.uploadForm.file"
 msgstr "Select Document To Convert"
 
-#: ../../Manager/src/Manager/Form/UploadForm.php:49
+#: ../../Manager/src/Manager/Form/UploadForm.php:43
 msgid "manager.uploadForm.citationStyles"
 msgstr "Select Citation Style"
 
-#: ../../Manager/src/Manager/Form/UploadForm.php:52
+#: ../../Manager/src/Manager/Form/UploadForm.php:46
 msgid "manager.uploadForm.citationStyleAutocomplete"
 msgstr "Enter citation style name here"
 
-#: ../../Manager/src/Manager/Form/UploadForm.php:63
+#: ../../Manager/src/Manager/Form/UploadForm.php:57
 #: ../../Manager/view/manager/manager/upload.phtml:15
 #: ../../User/view/user/user/index.phtml:41
 msgid "manager.uploadForm.uploadDocument"
 msgstr "Upload Document"
 
-#: ../../Manager/src/Manager/Entity/Job.php:136
+#: ../../Manager/src/Manager/Entity/Job.php:141
 msgid "manager.job.status.pending"
 msgstr "Pending"
 
-#: ../../Manager/src/Manager/Entity/Job.php:137
+#: ../../Manager/src/Manager/Entity/Job.php:142
 msgid "manager.job.status.processing"
 msgstr "Processing"
 
-#: ../../Manager/src/Manager/Entity/Job.php:138
+#: ../../Manager/src/Manager/Entity/Job.php:143
 msgid "manager.job.status.completed"
 msgstr "Completed"
 
-#: ../../Manager/src/Manager/Entity/Job.php:139
+#: ../../Manager/src/Manager/Entity/Job.php:144
 msgid "manager.job.status.failed"
 msgstr "Failed"
 
@@ -151,15 +151,15 @@ msgstr "No jobs found."
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:101
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:116
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:141
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:181
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:165
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:205
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
@@ -592,27 +592,39 @@ msgstr ""
 "Error loading CSL style file. Libxml error:\n"
 "%s"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:127
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:129
 msgid "citationstyleconversion.converter.startLog"
 msgstr "Starting pandoc conversion"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:177
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:179
 msgid "citationstyleconversion.converter.pandoc.commandLog"
 msgstr ""
 "Executing pandoc conversion command:\n"
 "%s"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:187
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:189
 msgid "citationstyleconversion.converter.OutputLog"
 msgstr ""
 "Pandoc conversion output:\n"
 "%s"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:211
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:213
 msgid "citationstyleconversion.converter.NlmxmlDomErrorLog"
 msgstr ""
 "Couldn't load NLMXML input file. Invalid xml. LIBXML error:\n"
 "%s"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:247
+msgid "citationstyleconversion.converter.pandoc.createReferencesDomErrorLog"
+msgstr "Error creating DOM Document from pandoc output. LIBXML error:%s"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:262
+msgid "citationstyleconversion.converter.pandoc.loadHtmlErrorLog"
+msgstr "Error creating DOM Document from html document. LIBXML error:%s"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:273
+msgid "citationstyleconversion.converter.pandoc.noReferencesSectionFoundLog"
+msgstr "Couldn't find references section in HTML document."
 
 #: ../../../vendor/xmlps/library/Event/Handler/AclDispatchHandler.php:32
 msgid "application.acl.notAuthorized"

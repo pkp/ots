@@ -6,6 +6,8 @@ use Xmlps\Logger\Logger;
 use Xmlps\Command\Command;
 use Xmlps\Libxml\Libxml;
 use DOMDocument;
+use DOMXpath;
+use DOMElement;
 use ZipArchive;
 
 use Manager\Model\Converter\AbstractConverter;
@@ -238,23 +240,60 @@ class Pandoc extends AbstractConverter
      */
     protected function updateHtml()
     {
-        // Parse the reference section from the output
-        $matches = array();
-        if (!preg_match('#\<h1 id\="references"\>References\</h1\>(.*)#s', $this->output, $matches)) {
+        // Create a references DOM from the parsing output
+        $referencesDom = new DomDocument();
+        if (!$referencesDom->loadHTML($this->output)) {
+            $this->logger->debugTranslate(
+                'citationstyleconversion.converter.pandoc.createReferencesDomErrorLog',
+                $this->libxmlErrors()
+            );
             return false;
         }
-        $references = $matches[1];
 
         // Extract the HTML document from the ZIP Archive
         $zip = new ZipArchive;
         $zip->open($this->inputFileHtml);
         $html = $zip->getFromName('document.html');
 
-        // Replace the references in the HTML
-        // TODO: Check if we can do this with DOM, Maybe change the XML to tag the references section
-        $html = preg_replace('#(\<p class\="p"\>\s*?REFERENCES)#s', '\1' . $references, $html);
+        // Create a DOM document from HTML
+        $htmlDom = new DomDocument();
+        if (!$htmlDom->loadHTML($html)) {
+            $this->logger->debugTranslate(
+                'citationstyleconversion.converter.pandoc.loadHtmlErrorLog',
+                $this->libxmlErrors()
+            );
+            return false;
+        }
 
-        $zip->addFromString('document.html', $html);
+        // Replace the references in the HTML
+        $domXpath = new DomXpath($htmlDom);
+        $referencesNodeOld = $domXpath->query('//section[@id="References"]');
+        if (!$referencesNodeOld->length) {
+            $this->logger->debugTranslate(
+                'citationstyleconversion.converter.pandoc.noReferencesSectionFoundLog'
+            );
+            return false;
+        }
+
+        // Remove the old references
+        $referencesNodeOld = $referencesNodeOld->item(0);
+        foreach($referencesNodeOld->childNodes as $child) {
+            $referencesNodeOld->removeChild($child);
+        }
+
+        // Import the new references
+        $add = false;
+        foreach ($referencesDom->getElementsByTagName('body')->item(0)->childNodes as $child) {
+            if ($add) {
+                $child = $htmlDom->importNode($child, true);
+                $referencesNodeOld->appendChild($child);
+            }
+            // Only add elements after the 'References' heading
+            if ($child instanceof DomElement and $child->tagName == 'h1' and $child->nodeValue == 'References') $add = true;
+        }
+
+        // Update the html document
+        $zip->addFromString('document.html', $htmlDom->saveHTML());
         $zip->close();
     }
 
