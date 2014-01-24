@@ -11,7 +11,7 @@ use Xmlps\DataObject\DataObject;
  * Queue table that holds the jobs for SlmQueue
  *
  * @ORM\Entity
- * @ORM\Table(name="queue")
+ * @ORM\Table(name="queue_default")
  */
 class Queue extends DataObject
 {
@@ -23,7 +23,7 @@ class Queue extends DataObject
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=40, nullable=false)
+     * @ORM\Column(type="string", length=64, nullable=false)
      */
     protected $queue;
 
@@ -58,7 +58,7 @@ class Queue extends DataObject
     protected $finished;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $message;
 
