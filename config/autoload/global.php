@@ -60,7 +60,7 @@ return array(
         ),
         'nlmxml' => array(
             'metypeset' => array(
-                'command' => 'vendor/MartinPaulEve/meTypeset/tools/gennlm.sh',
+                'command' => 'vendor/MartinPaulEve/meTypeset/bin/meTypeset.py',
             ),
         ),
         'references' => array(
