@@ -41,7 +41,7 @@ class NlmxmlJob extends AbstractQueueJob
         }
 
         $outputPath = $job->getDocumentPath() . '/' . $xmlFile;
-        @rename($meTypesetOutputPath, $outputPath);
+        @copy($meTypesetOutputPath, $outputPath);
 
         $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
         $docxDocument = $documentDAO->getInstance();
