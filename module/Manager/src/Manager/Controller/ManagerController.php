@@ -189,7 +189,7 @@ class ManagerController extends AbstractActionController {
         $user = $this->identity();
         if (
             !($document = $this->documentDAO->find($documentId)) or
-            $document->job->user->id != $user->id
+            ($document->job->user->id != $user->id and !$user->isAdministrator())
         ) {
             $this->getResponse()->setStatusCode(404);
             return;
