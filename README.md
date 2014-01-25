@@ -37,6 +37,8 @@ Module Description
  * Adds an XMP sidecar with metadata from the NLMXML to the PDF document
 * ZipConversion
  * Zips all documents
+* API
+ * Simple REST API to submit and retrieve jobs and to provide functionality for the frontends AJAX callbacks.
 
 Requirements
 ------------
