@@ -43,7 +43,7 @@ class CitationstyleJob extends AbstractQueueJob
         $citationstyle->setInputFileNlmxml($documentNlmxml->path);
         $citationstyle->setInputFileBibtex($documentBibtex->path);
         $citationstyle->setInputFileHtml($documentHtml->path);
-        $citationstyle->setCitationStyleFile($job->metadata->citationStyleFile);
+        $citationstyle->setCitationStyleFile($job->citationStyleFile);
         $citationstyle->convert();
 
         $job->conversionStage = JOB_CONVERSION_STAGE_CITATIONSTYLE;

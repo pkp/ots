@@ -10,7 +10,6 @@ use Manager\Form\UploadForm;
 use Manager\Form\UploadFormInputFilter;
 use Manager\Model\DAO\DocumentDAO;
 use Manager\Model\DAO\JobDAO;
-use Manager\Model\DAO\MetadataDAO;
 use Manager\Entity\Job;
 
 class ManagerController extends AbstractActionController {
@@ -21,7 +20,6 @@ class ManagerController extends AbstractActionController {
     protected $uploadFormInputFilter;
     protected $documentDAO;
     protected $jobDAO;
-    protected $metadataDAO;
 
     /**
      * Constructor
@@ -38,8 +36,7 @@ class ManagerController extends AbstractActionController {
         UploadForm $uploadForm,
         UploadFormInputFilter $uploadFormInputFilter,
         DocumentDAO $documentDAO,
-        JobDAO $jobDAO,
-        MetadataDAO $metadataDAO
+        JobDAO $jobDAO
     )
     {
         $this->logger = $logger;
@@ -49,7 +46,6 @@ class ManagerController extends AbstractActionController {
         $this->uploadFormInputFilter = $uploadFormInputFilter;
         $this->documentDAO = $documentDAO;
         $this->jobDAO = $jobDAO;
-        $this->metadataDAO = $metadataDAO;
     }
 
     /**
@@ -84,16 +80,11 @@ class ManagerController extends AbstractActionController {
                     )
                 );
 
-                // Create a new job
+                // Create a new job and set the citation style file based on
+                // the submitted citation style
                 $job = $this->jobDAO->getInstance();
                 $job->user = $this->identity();
-
-                // Add the job's metadata
-                $metadata = $this->metadataDAO->getInstance();
-                if ($metadata->setCitationStyleFileByTitle($data['citationStyle'])) {
-                    $job->metadata = $metadata;
-                }
-
+                $job->setCitationStyleFileByTitle($data['citationStyle']);
                 $this->jobDAO->save($job);
 
                 // Move the uploaded file to its job directory

@@ -7,7 +7,6 @@ use Zend\Mvc\I18n\Translator;
 use Zend\Authentication\AuthenticationService;
 use Manager\Entity\Job;
 use Manager\Model\DAO\JobDAO;
-use Manager\Model\DAO\MetadataDAO;
 use Manager\Model\DAO\DocumentDAO;
 use Manager\Model\Queue\Manager as QueueManager;
 use CitationstyleConversion\Model\Citationstyles;
@@ -15,7 +14,6 @@ use CitationstyleConversion\Model\Citationstyles;
 class JobController extends AbstractApiController {
 
     protected $jobDAO;
-    protected $metadataDAO;
     protected $documentDAO;
     protected $queueManager;
     protected $citationStyles;
@@ -27,7 +25,6 @@ class JobController extends AbstractApiController {
      * @param Translator $translator
      * @param AuthenticationService $authService
      * @param JobDAO $jobDAO
-     * @param MetadataDAO $metadataDAO
      * @param DocumentDAO $documentDAO
      * @param QueueManager $queueManager
      * @param CitationStyles $citationStyles
@@ -39,7 +36,6 @@ class JobController extends AbstractApiController {
         Translator $translator,
         AuthenticationService $authService,
         JobDAO $jobDAO,
-        MetadataDAO $metadataDAO,
         DocumentDAO $documentDAO,
         QueueManager $queueManager,
         CitationStyles $citationStyles
@@ -48,7 +44,6 @@ class JobController extends AbstractApiController {
         parent::__construct($logger, $translator, $authService);
 
         $this->jobDAO = $jobDAO;
-        $this->metadataDAO = $metadataDAO;
         $this->documentDAO = $documentDAO;
         $this->queueManager = $queueManager;
         $this->citationStyles = $citationStyles;
@@ -95,13 +90,7 @@ class JobController extends AbstractApiController {
         // Create a new job instance
         $job = $this->jobDAO->getInstance();
         $job->user = $this->identity();
-
-        // Add the job's metadata
-        $metadata = $this->metadataDAO->getInstance();
-        if ($metadata->setCitationStyleFileByHash($citationStyleHash)) {
-            $job->metadata = $metadata;
-        }
-
+        $job->setCitationStyleFileByHash($citationStyleHash);
         $this->jobDAO->save($job);
 
         // Create the inputFile

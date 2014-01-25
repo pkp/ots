@@ -51,12 +51,6 @@ class Job extends DataObject
     protected $documents;
 
     /**
-     * @ORM\OneToOne(targetEntity="Manager\Entity\Metadata", mappedBy="metadata", cascade={"all"})
-     * @ORM\JoinColumn(name="metadata_id", referencedColumnName="id")
-     */
-    protected $metadata;
-
-    /**
      * @ORM\Column(type="integer", nullable=false)
      */
     protected $creationDate;
@@ -75,6 +69,11 @@ class Job extends DataObject
      * @ORM\Column(type="boolean", nullable=false)
      */
     protected $referenceParsingSuccess = false;
+
+    /**
+     * @ORM\Column(type="string", nullable=false)
+     */
+    protected $citationStyleFile;
 
     /**
      * Constructor
@@ -179,5 +178,41 @@ class Job extends DataObject
                 return $document;
             }
         }
+    }
+
+    /**
+     * Populates $citationStyleFile based on the given citation style title
+     *
+     * @param string $title
+     *
+     * @return bool Whether or not a file for the given title could be found
+     */
+    public function setCitationStyleFileByTitle($title)
+    {
+        $citationStyles = $this->sm->get('CitationstyleConversion\Model\Citationstyles');
+        $file = $citationStyles->getCitationStyleFileByTitle($title);
+        if (!$file) return false;
+
+        $this->citationStyleFile = $file;
+
+        return true;
+    }
+
+    /**
+     * Populates $citationStyleFile based on the given citation style hash
+     *
+     * @param string $hash
+     *
+     * @return bool Whether or not a file for the given hash could be found
+     */
+    public function setCitationStyleFileByHash($hash)
+    {
+        $citationStyles = $this->sm->get('CitationstyleConversion\Model\Citationstyles');
+        $file = $citationStyles->getCitationStyleFileByHash($hash);
+        if (!$file) return false;
+
+        $this->citationStyleFile = $file;
+
+        return true;
     }
 }

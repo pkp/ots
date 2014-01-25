@@ -50,7 +50,6 @@ class Module
                     $translator = $sm->get('Translator');
                     $authService = $sm->get('Zend\Authentication\AuthenticationService');
                     $jobDAO = $sm->get('Manager\Model\DAO\JobDAO');
-                    $metadataDAO = $sm->get('Manager\Model\DAO\MetadataDAO');
                     $documentDAO = $sm->get('Manager\Model\DAO\DocumentDAO');
                     $queueManager = $sm->get('Manager\Model\Queue\Manager');
                     $citationStyles = $sm->get('CitationstyleConversion\Model\Citationstyles');
@@ -60,7 +59,6 @@ class Module
                         $translator,
                         $authService,
                         $jobDAO,
-                        $metadataDAO,
                         $documentDAO,
                         $queueManager,
                         $citationStyles

@@ -5,12 +5,10 @@ use Zend\Mvc\MvcEvent;
 
 use Manager\Entity\Document;
 use Manager\Entity\Job;
-use Manager\Entity\Metadata;
 use Manager\Form\UploadForm;
 use Manager\Form\UploadFormInputFilter;
 use Manager\Model\DAO\DocumentDAO;
 use Manager\Model\DAO\JobDAO;
-use Manager\Model\DAO\MetadataDAO;
 use Manager\Model\Queue\Manager;
 
 class Module
@@ -61,11 +59,6 @@ class Module
                 {
                     return new Job;
                 },
-                'Manager\Entity\Metadata' => function($sm)
-                {
-                    $citationStyles = $sm->get('CitationstyleConversion\Model\Citationstyles');
-                    return new Metadata($citationStyles);
-                },
                 'Manager\Form\UploadForm' => function($sm)
                 {
                     $translator = $sm->get('translator');
@@ -85,11 +78,6 @@ class Module
                 {
                     $em = $sm->get('doctrine.entitymanager.orm_default');
                     return new JobDAO($em);
-                },
-                'Manager\Model\DAO\MetadataDAO' => function($sm)
-                {
-                    $em = $sm->get('doctrine.entitymanager.orm_default');
-                    return new MetadataDAO($em);
                 },
                 'Manager\Model\Queue\Manager' => function($sm)
                 {
@@ -133,7 +121,6 @@ class Module
                     $uploadFormInputFilter = $sm->get('Manager\Form\UploadFormInputFilter');
                     $documentDAO = $sm->get('Manager\Model\DAO\DocumentDAO');
                     $jobDAO = $sm->get('Manager\Model\DAO\JobDAO');
-                    $metadataDAO = $sm->get('Manager\Model\DAO\MetadataDAO');
 
                     return new Controller\ManagerController(
                         $logger,
@@ -142,8 +129,7 @@ class Module
                         $uploadForm,
                         $uploadFormInputFilter,
                         $documentDAO,
-                        $jobDAO,
-                        $metadataDAO
+                        $jobDAO
                     );
                 }
             )
