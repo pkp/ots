@@ -104,3 +104,101 @@ Developer notes
 ```
 # guard
 ```
+
+API
+---
+
+There is a simple REST API available to submit, view and retrieve jobs from/to the server.
+
+__Submit__
+
+Submit a job to the server. The fileContent needs to be the base64 encoded
+content of the submission file. The citationStyleHash is an internal identifier
+for the requested citaton style. A list of hashes can be retrieved through the
+citationStyleList API. The API will return the job id which can be used to
+retrieve the completed job later or to query the server for the job status.
+
+URL: api/job/submit
+Parameters:
+
+ * email
+ * password
+ * fileName
+ * fieleContent
+ * citationStyleHash
+
+I.e.
+```
+http://example.com/api/job/submit?email=user@example.com&password=password&fileName=document.docx&citationStyleHash=citationStyleHashfileContent=Y29udGVudAo...
+```
+Example response:
+```
+{"status":"success","id":123}
+```
+
+__Status__
+
+Returns the current status for a job. Only completed jobs can be retrieved from
+the server.  A full list of statuses can be found
+[here](https://github.com/pkp/xmlps/blob/master/module/Manager/src/Manager/Entity/Job.php#L9).
+
+URL: api/job/status
+Parameters:
+
+ * email
+ * password
+ * id
+
+I.e.
+```
+http://example.com/api/job/status?email=user@example.com&password=password&id=123
+```
+Example response:
+```
+{"status":"success","jobStatus":0,"jobStatusDescription":"Pending"}
+```
+
+__Citation Style List__
+
+Returns a list of available citation styles and their internal ids. We support
+all citation styles from [citationstyles.org](http://citationstyles.org/)
+
+URL: api/job/citationStyleList
+Parameters:
+
+ * email
+ * password
+
+I.e.
+```
+http://example.com/api/job/citationStyleList?email=user@example.com&password=password
+```
+Example response:
+```
+{"status":"success","citationStyles":{"c6de5efe3294b26391ea343053c19a84":"ACM SIG Proceedings (\u0022et al.\u0022 for 15+ authors)"...
+```
+
+__Retrieve__
+
+Retrieve a completed job. The jobConversionStage parameter specifys which type
+of conversion you want to get retrned. A full list of conversion stages can be
+found
+[here](https://github.com/pkp/xmlps/blob/master/module/Manager/src/Manager/Entity/Job.php#L14).
+The returned file contents will be base64 encoded.
+
+URL: api/job/retrieve
+Parameters:
+
+ * email
+ * password
+ * id
+ * conversionStage
+
+I.e.
+```
+http://example.com/api/job/retrieve?email=user@example.com&password=password&id=123&conversionStage=10
+```
+Example response:
+```
+{"fileName":"documents.zip","fileContents":"UEsDBBQAAAAI...","status":"success"}
+```
