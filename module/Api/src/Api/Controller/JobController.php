@@ -121,7 +121,7 @@ class JobController extends AbstractApiController {
         // Send the job to the queue manager
         $this->queueManager->addJob($job->id);
 
-        return array('status' => 'success', 'jobId' => $job->id);
+        return array('status' => 'success', 'id' => $job->id);
     }
 
     /**
