@@ -9,9 +9,11 @@
 ### END INIT INFO
 name='XMLPSQueues'
 su='su www-data -c'
+base_path='/var/www'
 
 case "$1" in
 'start')
+    cd $base_path
     $su 'php public/index.php queue doctrine docx --start' &
     echo "Started DocX queue [PID $!]"
     $su 'php public/index.php queue doctrine nlmxml --start' &
