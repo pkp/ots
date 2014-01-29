@@ -56,16 +56,16 @@ class MetypesetTest extends ModelTest
         $this->metypeset->setInputFile($this->testInputFile);
         $this->metypeset->convert();
 
-        $this->assertTrue(is_file($this->testOutputDirectory . '/document.xml'));
+        $this->assertTrue(is_file($this->testOutputDirectory . '/nlm/document.xml'));
         $this->assertTrue($this->metypeset->getStatus());
 
         $this->assertNotSame(
             file_get_contents($this->testInputFile),
-            file_get_contents($this->testOutputDirectory . '/document.xml')
+            file_get_contents($this->testOutputDirectory . '/nlm/document.xml')
         );
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_file($finfo, $this->testOutputDirectory . '/document.xml');
+        $mimeType = finfo_file($finfo, $this->testOutputDirectory . '/nlm/document.xml');
 
         $this->assertSame($mimeType, 'application/xml');
     }
