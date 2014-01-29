@@ -60,6 +60,8 @@ class AbstractApiController extends AbstractActionController {
             $method = 'notFoundAction';
         }
 
+        $this->logger->debugTranslate('api.callMethodLog', $method);
+
         // Authenticate the request
         $this->authenticate();
 
@@ -88,7 +90,7 @@ class AbstractApiController extends AbstractActionController {
     protected function authenticate()
     {
         // Return if the user is already authenticated
-        if ($this->identity()) return;
+        if ($this->identity()) return true;
 
         $email = '';
         $password = '';
@@ -106,7 +108,15 @@ class AbstractApiController extends AbstractActionController {
             $adapter->setIdentityValue($email);
             $adapter->setCredentialValue($password);
             $authResult = $this->authService->authenticate();
+
+            if (!$authResult->isValid()) {
+                $this->logger->debugTranslate('api.authentication.successLog', $email);
+                return true;
+            }
         }
+
+        $this->logger->debugTranslate('api.authentication.errorLog');
+        return false;
     }
 
     /**
@@ -134,6 +144,8 @@ class AbstractApiController extends AbstractActionController {
         if (!is_array($actionResponse)) $actionResponse = array();
 
         if (!isset($actionResponse['status'])) $actionResponse['status'] = 'error';
+
+        $this->logger->debugTranslate('api.responseLog', serialize($actionResponse));
 
         return new JsonModel($actionResponse);
     }

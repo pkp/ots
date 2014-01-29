@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-23 17:45-1000\n"
-"PO-Revision-Date: 2014-01-23 17:46-1000\n"
+"POT-Creation-Date: 2014-01-28 14:26-1000\n"
+"PO-Revision-Date: 2014-01-28 14:27-1000\n"
 "Last-Translator: \n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -117,33 +117,33 @@ msgstr "Enter citation style name here"
 msgid "manager.uploadForm.uploadDocument"
 msgstr "Upload Document"
 
-#: ../../Manager/src/Manager/Entity/Job.php:141
+#: ../../Manager/src/Manager/Entity/Job.php:140
 msgid "manager.job.status.pending"
 msgstr "Pending"
 
-#: ../../Manager/src/Manager/Entity/Job.php:142
+#: ../../Manager/src/Manager/Entity/Job.php:141
 msgid "manager.job.status.processing"
 msgstr "Processing"
 
-#: ../../Manager/src/Manager/Entity/Job.php:143
+#: ../../Manager/src/Manager/Entity/Job.php:142
 msgid "manager.job.status.completed"
 msgstr "Completed"
 
-#: ../../Manager/src/Manager/Entity/Job.php:144
+#: ../../Manager/src/Manager/Entity/Job.php:143
 msgid "manager.job.status.failed"
 msgstr "Failed"
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:83
+#: ../../Manager/src/Manager/Controller/ManagerController.php:79
 msgid "manager.upload.success"
 msgstr ""
 "Your document has been successfully uploaded. It is now being processed."
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:111
-#: ../../Api/src/Api/Controller/JobController.php:119
+#: ../../Manager/src/Manager/Controller/ManagerController.php:102
+#: ../../Api/src/Api/Controller/JobController.php:108
 msgid "manager.job.createLog"
 msgstr "A new job has been created (%d)"
 
-#: ../../Manager/src/Manager/Controller/ManagerController.php:146
+#: ../../Manager/src/Manager/Controller/ManagerController.php:137
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
@@ -394,47 +394,65 @@ msgstr ""
 "Exiftool output (adding XMP sidecar):\n"
 "%s"
 
-#: ../../Api/src/Api/Controller/JobController.php:70
+#: ../../Api/src/Api/Controller/JobController.php:65
 msgid "job.api.error.fileNameParameterMissing"
 msgstr "File name (fileName) parameter is missing."
 
-#: ../../Api/src/Api/Controller/JobController.php:77
+#: ../../Api/src/Api/Controller/JobController.php:72
 msgid "job.api.error.fileContentParameterMissing"
 msgstr "File content (fileContent) parameter is missing."
 
-#: ../../Api/src/Api/Controller/JobController.php:84
+#: ../../Api/src/Api/Controller/JobController.php:79
 msgid "job.api.error.citationStyleHashParameterMissing"
 msgstr "Citation style hash (citationStyleHash) parameter is missing."
 
-#: ../../Api/src/Api/Controller/JobController.php:91
+#: ../../Api/src/Api/Controller/JobController.php:86
 msgid "job.api.error.invalidCitationStyleHash"
 msgstr "Invalid citation style hash"
 
-#: ../../Api/src/Api/Controller/JobController.php:175
+#: ../../Api/src/Api/Controller/JobController.php:164
 msgid "job.api.error.jobNotCompleted"
 msgstr "The job is not completed yet"
 
-#: ../../Api/src/Api/Controller/JobController.php:182
+#: ../../Api/src/Api/Controller/JobController.php:171
 msgid "job.api.error.conversionStageParameterMissing"
 msgstr "Conversion stage (conversionStage) parameter is missing."
 
-#: ../../Api/src/Api/Controller/JobController.php:189
+#: ../../Api/src/Api/Controller/JobController.php:178
 msgid "job.api.error.documentNotFound"
 msgstr "Couldn't find document"
 
-#: ../../Api/src/Api/Controller/JobController.php:212
+#: ../../Api/src/Api/Controller/JobController.php:201
 msgid "job.api.error.jobIdParameterMissing"
 msgstr "Job id (id) parameter is missing."
 
-#: ../../Api/src/Api/Controller/JobController.php:221
+#: ../../Api/src/Api/Controller/JobController.php:210
 msgid "job.api.error.invalidJobId"
 msgstr "Invalid job id (id) provided."
 
-#: ../../Api/src/Api/Controller/AbstractApiController.php:69
+#: ../../Api/src/Api/Controller/AbstractApiController.php:63
+msgid "api.callMethodLog"
+msgstr "Api call to method: %s"
+
+#: ../../Api/src/Api/Controller/AbstractApiController.php:71
 msgid "api.error.invalidCredentials"
 msgstr ""
 "This API calls reqires to be authenticated. Please provide email and "
 "password."
+
+#: ../../Api/src/Api/Controller/AbstractApiController.php:113
+msgid "api.authentication.successLog"
+msgstr "API successfully authenticated user: %s"
+
+#: ../../Api/src/Api/Controller/AbstractApiController.php:118
+msgid "api.authentication.errorLog"
+msgstr "API couldn't authenticate user"
+
+#: ../../Api/src/Api/Controller/AbstractApiController.php:148
+msgid "api.responseLog"
+msgstr ""
+"API response:\n"
+"%s"
 
 #: ../../Api/src/Api/Controller/SiteController.php:48
 msgid "job.api.error.fragmentParameterMissing"
