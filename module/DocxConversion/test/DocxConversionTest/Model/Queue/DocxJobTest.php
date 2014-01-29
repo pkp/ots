@@ -72,6 +72,7 @@ class DocxJobTest extends ModelTest
         $this->userDAO->save($this->user);
 
         $this->job = $this->jobDAO->getInstance();
+        $this->job->setCitationStyleFileByTitle('Acta Ophthalmologica');
         $this->job->user = $this->user;
 
         $this->document = $this->documentDAO->getInstance();

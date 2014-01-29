@@ -206,6 +206,7 @@ class ManagerControllerTest extends ControllerTest
 
         $this->job = $this->jobDAO->getInstance();
         $this->job->user = $this->user;
+        $this->job->setCitationStyleFileByTitle('Acta Ophthalmologica');
         $this->job->status = JOB_STATUS_COMPLETED;
 
         touch($this->testFile);

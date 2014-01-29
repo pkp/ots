@@ -81,6 +81,7 @@ class BibtexreferencesJobTest extends ModelTest
         $this->job = $this->jobDAO->getInstance();
         $this->job->user = $this->user;
         $this->job->conversionStage = JOB_CONVERSION_STAGE_BIBTEX;
+        $this->job->setCitationStyleFileByTitle('Acta Ophthalmologica');
 
         $this->documentNlmxml = $this->documentDAO->getInstance();
         $this->documentNlmxml->job = $this->job;

@@ -77,6 +77,7 @@ class ReferencesJobTest extends ModelTest
         $this->job = $this->jobDAO->getInstance();
         $this->job->user = $this->user;
         $this->job->conversionStage = JOB_CONVERSION_STAGE_NLMXML;
+        $this->job->setCitationStyleFileByTitle('Acta Ophthalmologica');
 
         $this->document = $this->documentDAO->getInstance();
         $this->document->job = $this->job;
