@@ -155,7 +155,7 @@ class User extends DataObject
      */
     public function removeJobData()
     {
-        $jobDAO = $this->sm->get('Manager\Model\DAO\JobDAO');
+        $jobDAO = $this->getServiceLocator()->get('Manager\Model\DAO\JobDAO');
         $jobs = $jobDAO->findBy(array('user' => $this->id));
         foreach ($jobs as $job) { $jobDAO->remove($job); }
 
