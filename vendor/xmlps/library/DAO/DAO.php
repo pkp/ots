@@ -121,7 +121,8 @@ abstract class DAO implements DAOInterface, ServiceLocatorAwareInterface {
      */
     public function find($key)
     {
-       return $this->getRepository()->find($key);
+        $entity = $this->getRepository()->find($key);
+        return $this->setEntityServiceLocator($entity);
     }
 
     /**
@@ -133,7 +134,8 @@ abstract class DAO implements DAOInterface, ServiceLocatorAwareInterface {
      */
     public function findOneBy($args)
     {
-       return $this->getRepository()->findOneBy($args);
+        $entity = $this->getRepository()->findOneBy($args);
+        return $this->setEntityServiceLocator($entity);
     }
 
     /**
@@ -145,7 +147,8 @@ abstract class DAO implements DAOInterface, ServiceLocatorAwareInterface {
      */
     public function findBy($args)
     {
-       return $this->getRepository()->findBy($args);
+        $entity = $this->getRepository()->findBy($args);
+        return $this->setEntityServiceLocator($entity);
     }
 
     /**
@@ -155,7 +158,8 @@ abstract class DAO implements DAOInterface, ServiceLocatorAwareInterface {
      */
     public function findAll()
     {
-       return $this->getRepository()->findAll();
+        $entity = $this->getRepository()->findAll();
+        return $this->setEntityServiceLocator($entity);
     }
 
     /**
@@ -182,5 +186,26 @@ abstract class DAO implements DAOInterface, ServiceLocatorAwareInterface {
     {
         $this->em->remove($object);
         $this->em->flush();
+    }
+
+    /**
+     * Populates the service locator property for entities
+     *
+     * NOTE: this could be done via a Doctrine postLoad event listener, but
+     * this doesn't work for unit tests
+     *
+     * @param mixed $entity Entity to populate the service locator property for
+     * @return Populated entity
+     */
+    public function setEntityServiceLocator($entity)
+    {
+        if (
+            $entity instanceof ServiceLocatorAwareInterface and
+            empty($entity->getServiceLocator())
+        ) {
+            $entity->setServiceLocator($this->getServiceLocator());
+        }
+
+        return $entity;
     }
 }
