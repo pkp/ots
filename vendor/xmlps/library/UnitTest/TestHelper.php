@@ -8,7 +8,7 @@ namespace Xmlps\UnitTest;
  */
 trait TestHelper {
     protected $userEmail = 'unittestuser@example.com';
-    protected $userPassword = '5cebb03d702827bb9e25b38b06910fa5';
+    protected $userPassword;
     protected $userRole = 'member';
     protected $userActive = true;
 
@@ -33,6 +33,11 @@ trait TestHelper {
      */
     protected function createTestUser($data = array())
     {
+        // Randomize the user password
+        if (!isset($data['password']) and !empty($this->userPassword)) {
+            $this->userPassword = sha1(uniqid() . rand(99999));
+        }
+
         $this->overwriteProperties($data, 'user');
 
         $user = $this->getUserDAO()->getInstance();
