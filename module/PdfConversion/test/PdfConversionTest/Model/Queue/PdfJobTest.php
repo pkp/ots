@@ -24,10 +24,6 @@ class PdfJobTest extends ModelTest
     public function setUp() {
         parent::setUp();
 
-        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
-        $this->jobDAO = $this->sm->get('Manager\Model\DAO\JobDAO');
-        $this->documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
-
         $this->pdfJob = new PdfJob;
         $this->pdfJob->setServiceLocator($this->sm);
 
