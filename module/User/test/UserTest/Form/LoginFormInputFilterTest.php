@@ -7,8 +7,6 @@ use User\Form\LoginFormInputFilter;
 
 class LoginFormInputFilterTest extends ModelTest
 {
-    protected $userDAO;
-
     protected $testUserEmail = 'unittestuser@example.com';
     protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
 
@@ -23,8 +21,6 @@ class LoginFormInputFilterTest extends ModelTest
 
         $this->inputFilter = new LoginFormInputFilter;
         $this->inputFilter = $this->inputFilter->getInputFilter();
-
-        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
     }
 
     /**
