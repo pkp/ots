@@ -10,11 +10,8 @@ class XmpJobTest extends ModelTest
     protected $documentNlmxml;
     protected $documentPdf;
 
-    protected $documentDAO;
     protected $job;
-    protected $jobDAO;
     protected $user;
-    protected $userDAO;
 
     protected $xmpJob;
 
@@ -25,11 +22,6 @@ class XmpJobTest extends ModelTest
     protected $testAssetPdf = 'module/XmpConversion/test/assets/document.pdf';
     protected $testFileNlmxml = '/tmp/UNITTEST_xmp_document.xml';
     protected $testFilePdf = '/tmp/UNITTEST_xmp_document.pdf';
-
-    protected $testUserEmail = 'unittestuser@example.com';
-    protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
-    protected $testUserRole = 'member';
-    protected $testUserActive = true;
 
     /**
      * Initialize the test
@@ -75,31 +67,38 @@ class XmpJobTest extends ModelTest
         @copy($this->testAssetNlmxml, $this->testFileNlmxml);
         @copy($this->testAssetPdf, $this->testFilePdf);
 
-        $this->user = $this->userDAO->getInstance();
-        $this->user->email = $this->testUserEmail;
-        $this->user->password = $this->testUserPassword;
-        $this->user->role = $this->testUserRole;
-        $this->user->active = $this->testUserActive;
-        $this->userDAO->save($this->user);
+        // Create test user
+        $this->user = $this->createTestUser();
 
-        $this->job = $this->jobDAO->getInstance();
-        $this->job->user = $this->user;
-        $this->job->conversionStage = JOB_CONVERSION_STAGE_PDF;
-        $this->job->setCitationStyleFileByTitle('Acta Ophthalmologica');
+        // Create test job
+        $this->job = $this->createTestJob(
+            array(
+                'user' => $this->user,
+                'conversionStage' => 8, // JOB_CONVERSION_STAGE_PDF
+            )
+        );
 
-        $this->documentNlmxml = $this->documentDAO->getInstance();
-        $this->documentNlmxml->job = $this->job;
-        $this->documentNlmxml->path = $this->testFileNlmxml;
-        $this->documentNlmxml->conversionStage = JOB_CONVERSION_STAGE_BIBTEXREFERENCES;
+        // Create NLMXML test document
+        $this->documentNlmxml = $this->createTestDocument(
+            array(
+                'job' => $this->job,
+                'path' => $this->testFileNlmxml,
+                'conversionStage' => 5, // JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+            )
+        );
         $this->job->documents[] = $this->documentNlmxml;
 
-        $this->documentPdf = $this->documentDAO->getInstance();
-        $this->documentPdf->job = $this->job;
-        $this->documentPdf->path = $this->testFilePdf;
-        $this->documentPdf->conversionStage = JOB_CONVERSION_STAGE_PDF;
+        // Create bibtex test document
+        $this->documentPdf = $this->createTestDocument(
+            array(
+                'job' => $this->job,
+                'path' => $this->testFilePdf,
+                'conversionStage' => 8, // JOB_CONVERSION_STAGE_PDF
+            )
+        );
         $this->job->documents[] = $this->documentPdf;
 
-        $this->jobDAO->save($this->job);
+        $this->getJobDAO()->save($this->job);
     }
 
     /**
@@ -109,9 +108,7 @@ class XmpJobTest extends ModelTest
      */
     protected function cleanTestData()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        if (!$user) return;
-        $this->userDAO->remove($user);
+        $this->deleteTestUser();
 
         @unlink($this->testFileNlmxml);
         @unlink($this->testFilePdf);

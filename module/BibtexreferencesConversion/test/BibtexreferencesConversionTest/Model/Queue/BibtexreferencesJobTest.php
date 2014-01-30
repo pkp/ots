@@ -89,6 +89,7 @@ class BibtexreferencesJobTest extends ModelTest
             )
         );
         $this->job->documents[] = $this->documentBibtex;
+
         $this->getJobDAO()->save($this->job);
     }
 
