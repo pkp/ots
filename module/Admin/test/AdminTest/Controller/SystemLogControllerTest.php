@@ -8,13 +8,12 @@ class SystemLogControllerTest extends ControllerTest
     protected $traceError = true;
 
     protected $testUserEmail = 'unittestuser@example.com';
-    protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
     protected $testUserRole = 'member';
     protected $testUser2Email = 'unittestadmin@example.com';
-    protected $testUser2Password = 'a4a6cb8b60695d718a902afaba4c2765';
     protected $testUser2Role = 'administrator';
 
-    protected $userDAO;
+    protected $testUser;
+    protected $testUser2;
 
     /**
      * Set up the controller test
@@ -25,10 +24,7 @@ class SystemLogControllerTest extends ControllerTest
     {
         parent::setUp();
 
-        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
-
         $this->resetTestData();
-
     }
 
     /**
@@ -38,8 +34,7 @@ class SystemLogControllerTest extends ControllerTest
      */
     public function testViewActionCanBeAccessedAdmin()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser2);
 
         $this->dispatch('/admin/system-log/list');
         $this->assertResponseStatusCode(200);
@@ -69,8 +64,7 @@ class SystemLogControllerTest extends ControllerTest
      */
     public function testViewActionCanBeAccessedLoggedIn()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser);
 
         $this->dispatch('/admin/system-log/list');
         $this->assertResponseStatusCode(403);
@@ -83,8 +77,7 @@ class SystemLogControllerTest extends ControllerTest
      */
     public function testSystemLogActionPaging()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser2);
 
         $this->dispatch('/admin/system-log/list/page/1');
         $this->assertResponseStatusCode(200);
@@ -97,17 +90,18 @@ class SystemLogControllerTest extends ControllerTest
      */
     protected function createTestData()
     {
-        $user = $this->sm->get('User\Entity\User');
-        $user->email = $this->testUserEmail;
-        $user->password = $this->testUserPassword;
-        $user->role = $this->testUserRole;
-        $this->userDAO->save($user);
-
-        $user = $this->sm->get('User\Entity\User');
-        $user->email = $this->testUser2Email;
-        $user->password = $this->testUser2Password;
-        $user->role = $this->testUser2Role;
-        $this->userDAO->save($user);
+        $this->testUser = $this->createTestUser(
+            array(
+                'email' => $this->testUserEmail,
+                'role' => $this->testUserRole,
+            )
+        );
+        $this->testUser2 = $this->createTestUser(
+            array(
+                'email' => $this->testUser2Email,
+                'role' => $this->testUser2Role,
+            )
+        );
     }
 
     /**
@@ -119,9 +113,7 @@ class SystemLogControllerTest extends ControllerTest
     {
         $testUserEmails = array($this->testUserEmail, $this->testUser2Email);
         foreach ($testUserEmails as $email) {
-            if ($user = $this->userDAO->findOneBy(array('email' => $email))) {
-                $this->userDAO->remove($user);
-            }
+            $this->deleteTestUser(array('email' => $email));
         }
     }
 }
