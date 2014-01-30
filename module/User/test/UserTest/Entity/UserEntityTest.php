@@ -3,7 +3,6 @@
 namespace UserTest\Entity;
 
 use PHPUnit_Framework_TestCase;
-use User\Entity\User;
 use Xmlps\UnitTest\ModelTest;
 
 class UserEntityTest extends ModelTest
@@ -19,7 +18,8 @@ class UserEntityTest extends ModelTest
      */
     public function setUp() {
         parent::setUp();
-        $this->user = $this->sm->get('User\Entity\User');
+
+        $this->user = $this->getUserDAO()->getInstance();
     }
 
     /**
@@ -84,12 +84,11 @@ class UserEntityTest extends ModelTest
      */
     public function testUserActive()
     {
-        $user = $this->user;
-        $this->assertTrue($user->active === null);
+        $this->assertTrue($this->user->active === null);
 
         // Validate that the active flag is initialized properly
-        $user->initActive();
-        $this->assertTrue($user->active === false);
+        $this->user->initActive();
+        $this->assertTrue($this->user->active === false);
     }
 
     /**
@@ -99,12 +98,11 @@ class UserEntityTest extends ModelTest
      */
     public function testUserActivationKey()
     {
-        $user = $this->user;
-        $this->assertTrue($user->activationKey === null);
+        $this->assertTrue($this->user->activationKey === null);
 
         // Validate that the activation key is initialized properly
-        $user->initActivationKey();
-        $this->assertTrue(strlen($user->activationKey) == 13);
+        $this->user->initActivationKey();
+        $this->assertTrue(strlen($this->user->activationKey) == 13);
     }
 
     /**
@@ -114,12 +112,11 @@ class UserEntityTest extends ModelTest
      */
     public function testUserActivation()
     {
-        $user = $this->user;
-        $user->activationKey = uniqid();
-        $user->active = true;
+        $this->user->activationKey = uniqid();
+        $this->user->active = true;
 
-        $user->activate();
-        $this->assertTrue($user->active === true);
-        $this->assertTrue($user->activationKey === null);
+        $this->user->activate();
+        $this->assertTrue($this->user->active === true);
+        $this->assertTrue($this->user->activationKey === null);
     }
 }
