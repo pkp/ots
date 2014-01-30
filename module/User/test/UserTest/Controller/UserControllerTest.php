@@ -8,14 +8,11 @@ class UserControllerTest extends ControllerTest
 {
     protected $testUserEmail = 'unittestuser@example.com';
     protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
-    protected $testUserRole = 'member';
-    protected $testUserActive = true;
     protected $testUser2Email = 'unittestuser2@example.com';
     protected $testUser2Password = 'a4a6cb8b60695d718a902afaba4c2765';
-    protected $testUser2Role = 'member';
-    protected $testUser2Active = true;
 
-    protected $userDAO;
+    protected $testUser;
+    protected $testUser2;
 
     /**
      * Set up the controller test
@@ -25,8 +22,6 @@ class UserControllerTest extends ControllerTest
     public function setUp()
     {
         parent::setUp();
-
-        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
 
         $this->resetTestData();
     }
@@ -72,8 +67,7 @@ class UserControllerTest extends ControllerTest
      */
     public function testLoginActionCanBeAccessedLoggedIn()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser);
         $this->dispatch('/user/login');
         $this->assertResponseStatusCode(403);
     }
@@ -126,8 +120,7 @@ class UserControllerTest extends ControllerTest
      */
     public function testLogoutActionLoggedIn()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser);
 
         $this->dispatch('/user/logout');
         $this->assertResponseStatusCode(302);
@@ -157,8 +150,7 @@ class UserControllerTest extends ControllerTest
      */
     public function testRegisterActionCanBeAccessedLoggedIn()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser);
         $this->dispatch('/user/register');
         $this->assertResponseStatusCode(403);
     }
@@ -222,8 +214,7 @@ class UserControllerTest extends ControllerTest
      */
     public function testSettingsActionCanBeAccessedLoggedIn()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser);
 
         $this->dispatch('/user/settings');
         $this->assertResponseStatusCode(200);
@@ -256,8 +247,7 @@ class UserControllerTest extends ControllerTest
      */
     public function testSettingsActionChangePassword()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser);
 
         // Change the password
         $postData = array(
@@ -293,8 +283,7 @@ class UserControllerTest extends ControllerTest
      */
     public function testActivateActionCanBeAccessedLoggedIn()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser);
 
         $this->dispatch('/user/activate/id/' . uniqid());
         $this->assertResponseStatusCode(403);
@@ -307,12 +296,10 @@ class UserControllerTest extends ControllerTest
      */
     public function testActivateActionCanBeAccessedAdmin()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->testUser->role = USER_ROLE_ADMINISTRATOR;
+        $this->userDAO->save($this->testUser);
 
-        $user->role = USER_ROLE_ADMINISTRATOR;
-        $this->userDAO->save($user);
-
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser);
 
         $this->dispatch('/user/activate/id/' . uniqid());
         $this->assertResponseStatusCode(403);
@@ -327,17 +314,16 @@ class UserControllerTest extends ControllerTest
     public function testActivateAction()
     {
         $activationKey = uniqid();
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $user->active = false;
-        $user->activationKey = $activationKey;
-        $this->userDAO->save($user);
+        $this->testUser->active = false;
+        $this->testUser->activationKey = $activationKey;
+        $this->userDAO->save($this->testUser);
 
         $this->dispatch('/user/activate/id/' . $activationKey);
         $this->assertResponseStatusCode(302);
 
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->assertTrue($user->isActive());
-        $this->assertNull($user->activationKey);
+        $this->testUser = $this->getUserDAO()->findOneBy(array('email' => $this->testUserEmail));
+        $this->assertTrue($this->testUser->isActive());
+        $this->assertNull($this->testUser->activationKey);
 
         $this->resetTestData();
     }
@@ -360,12 +346,12 @@ class UserControllerTest extends ControllerTest
      */
     protected function createTestData()
     {
-        $user = $this->sm->get('User\Entity\User');
-        $user->email = $this->testUserEmail;
-        $user->password = $this->testUserPassword;
-        $user->role = $this->testUserRole;
-        $user->active = $this->testUserActive;
-        $this->userDAO->save($user);
+        $this->testUser = $this->createTestUser(
+            array(
+                'email' => $this->testUserEmail,
+                'password' => $this->testUserPassword,
+            )
+        );
     }
 
     /**
@@ -377,9 +363,7 @@ class UserControllerTest extends ControllerTest
     {
         $testUserEmails = array($this->testUserEmail, $this->testUser2Email);
         foreach ($testUserEmails as $email) {
-            if ($user = $this->userDAO->findOneBy(array('email' => $email))) {
-                $this->userDAO->remove($user);
-            }
+            $this->deleteTestUser(array('email' => $email));
         }
     }
 }
