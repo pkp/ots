@@ -15,9 +15,6 @@ class XmpJobTest extends ModelTest
 
     protected $xmpJob;
 
-    protected $testAsset = 'module/XmpConversion/test/assets/html.zip';
-    protected $testFile = '/tmp/UNITTEST_xmp_document.xmp';
-
     protected $testAssetNlmxml = 'module/XmpConversion/test/assets/document.xml';
     protected $testAssetPdf = 'module/XmpConversion/test/assets/document.pdf';
     protected $testFileNlmxml = '/tmp/UNITTEST_xmp_document.xml';
@@ -30,10 +27,6 @@ class XmpJobTest extends ModelTest
      */
     public function setUp() {
         parent::setUp();
-
-        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
-        $this->jobDAO = $this->sm->get('Manager\Model\DAO\JobDAO');
-        $this->documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
 
         $this->xmpJob = new XmpJob;
         $this->xmpJob->setServiceLocator($this->sm);
