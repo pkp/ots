@@ -8,13 +8,12 @@ class UserManagementControllerTest extends ControllerTest
     protected $traceError = true;
 
     protected $testUserEmail = 'unittestuser@example.com';
-    protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
     protected $testUserRole = 'member';
     protected $testUser2Email = 'unittestadmin@example.com';
-    protected $testUser2Password = 'a4a6cb8b60695d718a902afaba4c2765';
     protected $testUser2Role = 'administrator';
 
-    protected $userDAO;
+    protected $testUser;
+    protected $testUser2;
 
     /**
      * Set up the controller test
@@ -24,8 +23,6 @@ class UserManagementControllerTest extends ControllerTest
     public function setUp()
     {
         parent::setUp();
-
-        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
 
         $this->resetTestData();
     }
@@ -37,8 +34,7 @@ class UserManagementControllerTest extends ControllerTest
      */
     public function testListActionCanBeAccessedAdmin()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser2);
 
         $this->dispatch('/admin/user-management/list');
         $this->assertResponseStatusCode(200);
@@ -68,8 +64,7 @@ class UserManagementControllerTest extends ControllerTest
      */
     public function testListActionCanBeAccessedLoggedIn()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser);
 
         $this->dispatch('/admin/user-management/list');
         $this->assertResponseStatusCode(403);
@@ -82,8 +77,7 @@ class UserManagementControllerTest extends ControllerTest
      */
     public function testListActionPaging()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser2);
 
         $this->dispatch('/admin/user-management/list/page/1');
         $this->assertResponseStatusCode(200);
@@ -96,12 +90,9 @@ class UserManagementControllerTest extends ControllerTest
      */
     public function testEditActionCanBeAccessedAdmin()
     {
-        $adminUser = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->mockLogin($this->testUser2);
 
-        $this->mockLogin($adminUser);
-
-        $this->dispatch('/admin/user-management/edit/user/' . $user->id);
+        $this->dispatch('/admin/user-management/edit/user/' . $this->testUser->id);
         $this->assertResponseStatusCode(200);
 
         $this->assertModuleName('Admin');
@@ -118,8 +109,7 @@ class UserManagementControllerTest extends ControllerTest
      */
     public function testEditActionCanBeAccessedLoggedOut()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->dispatch('/admin/user-management/edit/user/' . $user->id);
+        $this->dispatch('/admin/user-management/edit/user/' . $this->testUser->id);
         $this->assertResponseStatusCode(403);
     }
 
@@ -130,10 +120,9 @@ class UserManagementControllerTest extends ControllerTest
      */
     public function testEditActionCanBeAccessedLoggedIn()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser);
 
-        $this->dispatch('/admin/user-management/edit/user/' . $user->id);
+        $this->dispatch('/admin/user-management/edit/user/' . $this->testUser->id);
         $this->assertResponseStatusCode(403);
     }
 
@@ -144,13 +133,10 @@ class UserManagementControllerTest extends ControllerTest
      */
     public function testEditActionEditUser()
     {
-        $adminUser = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-
-        $this->mockLogin($adminUser);
+        $this->mockLogin($this->testUser2);
 
         $testData = array(
-            'id' => $user->id,
+            'id' => $this->testUser->id,
             'role' => 'administrator',
             'level' => '1',
             'active' => '1',
@@ -159,10 +145,9 @@ class UserManagementControllerTest extends ControllerTest
 
         $this->assertResponseStatusCode(302);
 
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->assertSame($user->role, $testData['role']);
-        $this->assertSame($user->level, $testData['level']);
-        $this->assertSame($user->active, $testData['active']);
+        $this->assertSame($this->testUser->role, $testData['role']);
+        $this->assertSame($this->testUser->level, $testData['level']);
+        $this->assertSame($this->testUser->active, $testData['active']);
 
         $this->resetTestData();
     }
@@ -174,12 +159,9 @@ class UserManagementControllerTest extends ControllerTest
      */
     public function testRemoveActionCanBeAccessedAdmin()
     {
-        $adminUser = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $this->mockLogin($this->testUser2);
 
-        $this->mockLogin($adminUser);
-
-        $this->dispatch('/admin/user-management/remove/user/' . $user->id);
+        $this->dispatch('/admin/user-management/remove/user/' . $this->testUser->id);
         $this->assertResponseStatusCode(200);
 
         $this->assertModuleName('Admin');
@@ -196,8 +178,7 @@ class UserManagementControllerTest extends ControllerTest
      */
     public function testRemoveActionCanBeAccessedLoggedOut()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->dispatch('/admin/user-management/remove/user/' . $user->id);
+        $this->dispatch('/admin/user-management/remove/user/' . $this->testUser->id);
         $this->assertResponseStatusCode(403);
     }
 
@@ -208,10 +189,9 @@ class UserManagementControllerTest extends ControllerTest
      */
     public function testRemoveActionCanBeAccessedLoggedIn()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        $this->mockLogin($user);
+        $this->mockLogin($this->testUser);
 
-        $this->dispatch('/admin/user-management/remove/user/' . $user->id);
+        $this->dispatch('/admin/user-management/remove/user/' . $this->testUser->id);
         $this->assertResponseStatusCode(403);
     }
 
@@ -222,20 +202,17 @@ class UserManagementControllerTest extends ControllerTest
      */
     public function testRemoveActionRemoveUser()
     {
-        $adminUser = $this->userDAO->findOneBy(array('email' => $this->testUser2Email));
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-
-        $this->mockLogin($adminUser);
+        $this->mockLogin($this->testUser2);
 
         $this->dispatch(
             '/admin/user-management/remove',
             'POST',
-            array('id' => $user->id)
+            array('id' => $this->testUser->id)
         );
 
         $this->assertResponseStatusCode(302);
 
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
+        $user = $this->getUserDAO()->findOneBy(array('email' => $this->testUserEmail));
         $this->assertNull($user);
 
         $this->resetTestData();
@@ -248,17 +225,18 @@ class UserManagementControllerTest extends ControllerTest
      */
     protected function createTestData()
     {
-        $user = $this->sm->get('User\Entity\User');
-        $user->email = $this->testUserEmail;
-        $user->password = $this->testUserPassword;
-        $user->role = $this->testUserRole;
-        $this->userDAO->save($user);
-
-        $user = $this->sm->get('User\Entity\User');
-        $user->email = $this->testUser2Email;
-        $user->password = $this->testUser2Password;
-        $user->role = $this->testUser2Role;
-        $this->userDAO->save($user);
+        $this->testUser = $this->createTestUser(
+            array(
+                'email' => $this->testUserEmail,
+                'role' => $this->testUserRole,
+            )
+        );
+        $this->testUser2 = $this->createTestUser(
+            array(
+                'email' => $this->testUser2Email,
+                'role' => $this->testUser2Role,
+            )
+        );
     }
 
     /**
@@ -270,9 +248,7 @@ class UserManagementControllerTest extends ControllerTest
     {
         $testUserEmails = array($this->testUserEmail, $this->testUser2Email);
         foreach ($testUserEmails as $email) {
-            if ($user = $this->userDAO->findOneBy(array('email' => $email))) {
-                $this->userDAO->remove($user);
-            }
+            $this->deleteTestUser(array('email' => $email));
         }
     }
 }
