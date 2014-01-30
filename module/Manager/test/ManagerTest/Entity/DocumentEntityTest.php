@@ -9,18 +9,10 @@ use Manager\Entity\Job;
 class DocumentEntityTest extends ModelTest
 {
     protected $document;
-    protected $documentDAO;
     protected $job;
-    protected $jobDAO;
     protected $user;
-    protected $userDAO;
 
     protected $testFile = 'var/uploads/unittest';
-
-    protected $testUserEmail = 'unittestuser@example.com';
-    protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
-    protected $testUserRole = 'member';
-    protected $testUserActive = true;
 
     /**
      * Initialize the test
@@ -29,10 +21,6 @@ class DocumentEntityTest extends ModelTest
      */
     public function setUp() {
         parent::setUp();
-
-        $this->documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
-        $this->jobDAO = $this->sm->get('Manager\Model\DAO\JobDAO');
-        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
 
         $this->resetTestData();
     }
@@ -97,30 +85,30 @@ class DocumentEntityTest extends ModelTest
      * @return void
      */
     protected function createTestData() {
-        $this->user = $this->userDAO->getInstance();
-        $this->user->email = $this->testUserEmail;
-        $this->user->password = $this->testUserPassword;
-        $this->user->role = $this->testUserRole;
-        $this->user->active = $this->testUserActive;
-        $this->userDAO->save($this->user);
-
-        $this->job = $this->jobDAO->getInstance();
-        $this->job->setCitationStyleFileByTitle('Acta Ophthalmologica');
-        $this->job->user = $this->user;
-
-        $this->document = $this->documentDAO->getInstance();
-        $this->document->job = $this->job;
-
         touch($this->testFile);
         file_put_contents($this->testFile, md5(time()));
 
-        $this->document->path = $this->testFile;
-        $this->document->mimeType = 'text/plain';
-        $this->document->conversionStage = JOB_CONVERSION_STAGE_UNCONVERTED;
-        $this->document->size = filesize($this->testFile);
+        // Create test user
+        $this->user = $this->createTestUser();
 
+        // Create test job
+        $this->job = $this->createTestJob(
+            array(
+                'user' => $this->user,
+            )
+        );
+
+        // Create test document
+        $this->document = $this->createTestDocument(
+            array(
+                'job' => $this->job,
+                'path' => $this->testFile,
+                'conversionStage' => 0, // JOB_CONVERSION_STAGE_UNCONVERTED
+            )
+        );
         $this->job->documents[] = $this->document;
-        $this->jobDAO->save($this->job);
+
+        $this->getJobDAO()->save($this->job);
     }
 
     /**
@@ -130,18 +118,7 @@ class DocumentEntityTest extends ModelTest
      */
     protected function cleanTestData()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        if (!$user) return;
-
-        $jobs = $this->jobDAO->findBy(array('user' => $user->id));
-        foreach ($jobs as $job) {
-            $documents = $this->documentDAO->findBy(array('job' => $job->id));
-            foreach ($documents as $document) {
-                $this->documentDAO->remove($document);
-            }
-            $this->jobDAO->remove($job);
-        }
-        $this->userDAO->remove($user);
+        $this->deleteTestUser();
 
         @unlink($this->testFile);
     }
