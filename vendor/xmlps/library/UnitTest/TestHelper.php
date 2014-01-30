@@ -14,6 +14,7 @@ trait TestHelper {
 
     protected $jobUser = null;
     protected $jobConversionStage = 0;
+    protected $jobStatus = 0;
     protected $jobCitationStyleFile = 'vendor/citation-style-language/styles/aquatic-conservation.csl';
 
     protected $documentJob = null;
@@ -81,6 +82,7 @@ trait TestHelper {
         $job = $this->getJobDAO()->getInstance();
         $job->user = $this->jobUser;
         $job->conversionStage = $this->jobConversionStage;
+        $job->status = $this->jobStatus;
         $job->citationStyleFile = $this->jobCitationStyleFile;
 
         return $job;
