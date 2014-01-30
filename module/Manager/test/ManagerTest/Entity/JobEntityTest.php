@@ -8,19 +8,6 @@ use Manager\Entity\Job;
 
 class JobEntityTest extends ModelTest
 {
-    protected $jobDAO;
-
-    /**
-     * Initialize the test
-     *
-     * @return void
-     */
-    public function setUp() {
-        parent::setUp();
-
-        $this->jobDAO = $this->sm->get('Manager\Model\DAO\JobDAO');
-    }
-
     /**
      * Test if the creation date is initialized correctly
      *
@@ -28,7 +15,7 @@ class JobEntityTest extends ModelTest
      */
     public function testCreationDateInitialization()
     {
-        $job = $this->jobDAO->getInstance();
+        $job = $this->getJobDAO()->getInstance();
 
         $this->assertNull($job->creationDate);
         $job->initCreationDate();
@@ -43,7 +30,7 @@ class JobEntityTest extends ModelTest
      */
     public function testStatusInitialization()
     {
-        $job = $this->jobDAO->getInstance();
+        $job = $this->getJobDAO()->getInstance();
         $this->assertNull($job->status);
         $job->initStatus();
         $this->assertSame($job->status, JOB_STATUS_PENDING);
@@ -56,7 +43,7 @@ class JobEntityTest extends ModelTest
      */
     public function testConversionStageInitialization()
     {
-        $job = $this->jobDAO->getInstance();
+        $job = $this->getJobDAO()->getInstance();
         $this->assertNull($job->conversionStage);
         $job->initConversionStage();
         $this->assertSame($job->conversionStage, JOB_CONVERSION_STAGE_UNCONVERTED);
