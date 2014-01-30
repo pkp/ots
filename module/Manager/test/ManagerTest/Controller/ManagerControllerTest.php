@@ -7,15 +7,6 @@ use Xmlps\UnitTest\ControllerTest;
 
 class ManagerControllerTest extends ControllerTest
 {
-    protected $userDAO;
-    protected $jobDAO;
-    protected $documentDAO;
-
-    protected $testUserEmail = 'unittestuser@example.com';
-    protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
-    protected $testUserRole = 'member';
-    protected $testUserActive = true;
-
     protected $testFile = '/tmp/UNITTEST_manager.txt';
 
     protected $user;
@@ -30,10 +21,6 @@ class ManagerControllerTest extends ControllerTest
     public function setUp()
     {
         parent::setUp();
-
-        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
-        $this->jobDAO = $this->sm->get('Manager\Model\DAO\JobDAO');
-        $this->documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
 
         $this->resetTestData();
     }
@@ -147,7 +134,6 @@ class ManagerControllerTest extends ControllerTest
         $this->resetTestData();
     }
 
-
     /**
      * Test if the download action cannot be accessed by guests
      *
@@ -196,29 +182,31 @@ class ManagerControllerTest extends ControllerTest
      */
     protected function createTestData()
     {
-        // Create a test user
-        $this->user = $this->userDAO->getInstance();
-        $this->user->email = $this->testUserEmail;
-        $this->user->password = $this->testUserPassword;
-        $this->user->role = $this->testUserRole;
-        $this->user->active = $this->testUserActive;
-        $this->userDAO->save($this->user);
-
-        $this->job = $this->jobDAO->getInstance();
-        $this->job->user = $this->user;
-        $this->job->setCitationStyleFileByTitle('Acta Ophthalmologica');
-        $this->job->status = JOB_STATUS_COMPLETED;
-
         touch($this->testFile);
         file_put_contents($this->testFile, rand());
 
-        $this->document = $this->documentDAO->getInstance();
-        $this->document->path = $this->testFile;
-        $this->document->conversionStage = JOB_CONVERSION_STAGE_ZIP;
-        $this->document->job = $this->job;
+        // Create test user
+        $this->user = $this->createTestUser();
+
+        // Create test job
+        $this->job = $this->createTestJob(
+            array(
+                'user' => $this->user,
+                'status' => 2, // JOB_STATUS_COMPLETED
+            )
+        );
+
+        // Create test document
+        $this->document = $this->createTestDocument(
+            array(
+                'job' => $this->job,
+                'path' => $this->testFile,
+                'conversionStage' => 10, // JOB_CONVERSION_STAGE_ZIP
+            )
+        );
         $this->job->documents[] = $this->document;
 
-        $this->jobDAO->save($this->job);
+        $this->getJobDAO()->save($this->job);
     }
 
     /**
@@ -228,10 +216,7 @@ class ManagerControllerTest extends ControllerTest
      */
     protected function cleanTestData()
     {
-        // Removes the test user
-        if ($user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail))) {
-            $this->userDAO->remove($user);
-        }
+        $this->deleteTestUser();
 
         @unlink($this->testFile);
     }
