@@ -7,8 +7,6 @@ use User\Form\RegistrationFormInputFilter;
 
 class RegistrationFormInputFilterTest extends ModelTest
 {
-    protected $userDAO;
-
     protected $testUserEmail = 'unittestuser@example.com';
     protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
     protected $testUser2Email = 'unittestuser2@example.com';
@@ -26,10 +24,7 @@ class RegistrationFormInputFilterTest extends ModelTest
         $this->inputFilter = $this->sm->get('User\Form\RegistrationFormInputFilter');
         $this->inputFilter = $this->inputFilter->getInputFilter();
 
-        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
-
-        $this->cleanTestData();
-        $this->createTestData();
+        $this->resetTestData();
     }
 
     /**
@@ -109,27 +104,23 @@ class RegistrationFormInputFilterTest extends ModelTest
     }
 
     /**
-     * Clean test data
-     *
-     * @return void
-     */
-    protected function cleanTestData()
-    {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        if ($user) { $this->userDAO->remove($user); }
-    }
-
-    /**
      * Create test data
      *
      * @return void
      */
     protected function createTestData()
     {
-        $user = $this->sm->get('User\Entity\User');
-        $user->email = $this->testUserEmail;
-        $user->password = $this->testUserPassword;
-
-        $this->userDAO->save($user);
+        $this->createTestUser();
     }
+
+    /**
+     * Clean test data
+     *
+     * @return void
+     */
+    protected function cleanTestData()
+    {
+        $this->deleteTestUser();
+    }
+
 }
