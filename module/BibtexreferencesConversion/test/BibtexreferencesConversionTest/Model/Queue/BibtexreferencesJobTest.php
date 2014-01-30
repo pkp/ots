@@ -8,12 +8,9 @@ use BibtexreferencesConversion\Model\Queue\Job\BibtexreferencesJob;
 class BibtexreferencesJobTest extends ModelTest
 {
     protected $documentNlmxml;
-    protected $documentReferences;
-    protected $documentDAO;
+    protected $documentBibtex;
     protected $job;
-    protected $jobDAO;
     protected $user;
-    protected $userDAO;
 
     protected $bibtexreferencesJob;
 
@@ -22,11 +19,6 @@ class BibtexreferencesJobTest extends ModelTest
     protected $testAssetBibtex = 'module/BibtexreferencesConversion/test/assets/document.bib.xml';
     protected $testFileBibtex = '/tmp/UNITTEST_bibtexreferences_document.bib.xml';
 
-    protected $testUserEmail = 'unittestuser@example.com';
-    protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
-    protected $testUserRole = 'member';
-    protected $testUserActive = true;
-
     /**
      * Initialize the test
      *
@@ -34,10 +26,6 @@ class BibtexreferencesJobTest extends ModelTest
      */
     public function setUp() {
         parent::setUp();
-
-        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
-        $this->jobDAO = $this->sm->get('Manager\Model\DAO\JobDAO');
-        $this->documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
 
         $this->bibtexreferencesJob = new BibtexreferencesJob;
         $this->bibtexreferencesJob->setServiceLocator($this->sm);
@@ -54,7 +42,7 @@ class BibtexreferencesJobTest extends ModelTest
     {
         $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_BIBTEX);
         $this->assertSame($this->documentNlmxml->conversionStage, JOB_CONVERSION_STAGE_NLMXML);
-        $this->assertSame($this->documentReferences->conversionStage, JOB_CONVERSION_STAGE_BIBTEX);
+        $this->assertSame($this->documentBibtex->conversionStage, JOB_CONVERSION_STAGE_BIBTEX);
         $documentCount = count($this->job->documents);
         $this->bibtexreferencesJob->process($this->job);
         $this->assertNotSame($this->job->status, JOB_STATUS_FAILED);
@@ -71,31 +59,37 @@ class BibtexreferencesJobTest extends ModelTest
         @copy($this->testAssetNlmxml, $this->testFileNlmxml);
         @copy($this->testAssetBibtex, $this->testFileBibtex);
 
-        $this->user = $this->userDAO->getInstance();
-        $this->user->email = $this->testUserEmail;
-        $this->user->password = $this->testUserPassword;
-        $this->user->role = $this->testUserRole;
-        $this->user->active = $this->testUserActive;
-        $this->userDAO->save($this->user);
+        // Create test user
+        $this->user = $this->createTestUser();
 
-        $this->job = $this->jobDAO->getInstance();
-        $this->job->user = $this->user;
-        $this->job->conversionStage = JOB_CONVERSION_STAGE_BIBTEX;
-        $this->job->setCitationStyleFileByTitle('Acta Ophthalmologica');
+        // Create test job
+        $this->job = $this->createTestJob(
+            array(
+                'user' => $this->user,
+                'conversionStage' => 4, // JOB_CONVERSION_STAGE_BIBTEX
+            )
+        );
 
-        $this->documentNlmxml = $this->documentDAO->getInstance();
-        $this->documentNlmxml->job = $this->job;
-        $this->documentNlmxml->path = $this->testFileNlmxml;
-        $this->documentNlmxml->conversionStage = JOB_CONVERSION_STAGE_NLMXML;
+        // Create NLMXML test document
+        $this->documentNlmxml = $this->createTestDocument(
+            array(
+                'job' => $this->job,
+                'path' => $this->testFileNlmxml,
+                'conversionStage' => 2, // JOB_CONVERSION_STAGE_NLMXML
+            )
+        );
         $this->job->documents[] = $this->documentNlmxml;
 
-        $this->documentReferences = $this->documentDAO->getInstance();
-        $this->documentReferences->job = $this->job;
-        $this->documentReferences->path = $this->testFileBibtex;
-        $this->documentReferences->conversionStage = JOB_CONVERSION_STAGE_BIBTEX;
-        $this->job->documents[] = $this->documentReferences;
-
-        $this->jobDAO->save($this->job);
+        // Create bibtex test document
+        $this->documentBibtex = $this->createTestDocument(
+            array(
+                'job' => $this->job,
+                'path' => $this->testFileBibtex,
+                'conversionStage' => 4, // JOB_CONVERSION_STAGE_BIBTEX
+            )
+        );
+        $this->job->documents[] = $this->documentBibtex;
+        $this->getJobDAO()->save($this->job);
     }
 
     /**
@@ -105,9 +99,7 @@ class BibtexreferencesJobTest extends ModelTest
      */
     protected function cleanTestData()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        if (!$user) return;
-        $this->userDAO->remove($user);
+        $this->deleteTestUser();
 
         @unlink($this->testFileNlmxml);
     }
