@@ -9,21 +9,13 @@ use DocxConversion\Model\Queue\Job\DocxJob;
 class DocxJobTest extends ModelTest
 {
     protected $document;
-    protected $documentDAO;
     protected $job;
-    protected $jobDAO;
     protected $user;
-    protected $userDAO;
 
     protected $docxJob;
 
     protected $testAsset = 'module/DocxConversion/test/assets/document.odt';
     protected $testFile = '/tmp/UNITTEST_document.odt';
-
-    protected $testUserEmail = 'unittestuser@example.com';
-    protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
-    protected $testUserRole = 'member';
-    protected $testUserActive = true;
 
     /**
      * Initialize the test
@@ -32,10 +24,6 @@ class DocxJobTest extends ModelTest
      */
     public function setUp() {
         parent::setUp();
-
-        $this->userDAO = $this->sm->get('User\Model\DAO\UserDAO');
-        $this->jobDAO = $this->sm->get('Manager\Model\DAO\JobDAO');
-        $this->documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
 
         $this->docxJob = new DocxJob;
         $this->docxJob->setServiceLocator($this->sm);
@@ -64,29 +52,30 @@ class DocxJobTest extends ModelTest
      * @return void
      */
     protected function createTestData() {
-        $this->user = $this->userDAO->getInstance();
-        $this->user->email = $this->testUserEmail;
-        $this->user->password = $this->testUserPassword;
-        $this->user->role = $this->testUserRole;
-        $this->user->active = $this->testUserActive;
-        $this->userDAO->save($this->user);
-
-        $this->job = $this->jobDAO->getInstance();
-        $this->job->setCitationStyleFileByTitle('Acta Ophthalmologica');
-        $this->job->user = $this->user;
-
-        $this->document = $this->documentDAO->getInstance();
-        $this->document->job = $this->job;
-
         @copy($this->testAsset, $this->testFile);
 
-        $this->document->path = $this->testFile;
-        $this->document->mimeType = 'text/plain';
-        $this->document->conversionStage = JOB_CONVERSION_STAGE_UNCONVERTED;
-        $this->document->size = filesize($this->testFile);
+        // Create test user
+        $this->user = $this->createTestUser();
 
+        // Create test job
+        $this->job = $this->createTestJob(
+            array(
+                'user' => $this->user,
+                'conversionStage' => 0, // JOB_CONVERSION_STAGE_UNCONVERTED
+            )
+        );
+
+        // Create test document
+        $this->document = $this->createTestDocument(
+            array(
+                'job' => $this->job,
+                'path' => $this->testFile,
+                'conversionStage' => $this->job->conversionStage,
+            )
+        );
         $this->job->documents[] = $this->document;
-        $this->jobDAO->save($this->job);
+
+        $this->getJobDAO()->save($this->job);
     }
 
     /**
@@ -96,9 +85,7 @@ class DocxJobTest extends ModelTest
      */
     protected function cleanTestData()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        if (!$user) return;
-        $this->userDAO->remove($user);
+        $this->deleteTestUser();
 
         @unlink($this->testFile);
     }
