@@ -2,9 +2,12 @@
 namespace Xmlps\UnitTest;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
+use Xmlps\UnitTest\TestHelper;
 
 class ControllerTest extends AbstractHttpControllerTestCase
 {
+    use TestHelper;
+
     protected $traceError = true;
 
     protected $sm;

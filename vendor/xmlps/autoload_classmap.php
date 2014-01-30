@@ -11,6 +11,7 @@ return array(
   'Xmlps\DAO\DAO'                                   => __DIR__ . '/library/DAO/DAO.php',
   'Xmlps\DAO\DAOInterface'                          => __DIR__ . '/library/DAO/DAOInterface.php',
   'Xmlps\UnitTest\ModelTest'                        => __DIR__ . '/library/UnitTest/ModelTest.php',
+  'Xmlps\UnitTest\TestHelper'                       => __DIR__ . '/library/UnitTest/TestHelper.php',
   'Xmlps\UnitTest\ControllerTest'                   => __DIR__ . '/library/UnitTest/ControllerTest.php',
   'Xmlps\DataObject\DataObject'                     => __DIR__ . '/library/DataObject/DataObject.php',
 );

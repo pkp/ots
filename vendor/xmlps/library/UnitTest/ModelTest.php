@@ -6,10 +6,12 @@ use PHPUnit_Framework_TestCase;
 
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
-
+use Xmlps\UnitTest\TestHelper;
 
 class ModelTest extends PHPUnit_Framework_TestCase
 {
+    use TestHelper;
+
     protected $traceError = true;
     protected $sm;
 
