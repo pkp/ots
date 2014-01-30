@@ -8,21 +8,13 @@ use HtmlConversion\Model\Queue\Job\HtmlJob;
 class HtmlJobTest extends ModelTest
 {
     protected $document;
-    protected $documentDAO;
     protected $job;
-    protected $jobDAO;
     protected $user;
-    protected $userDAO;
 
     protected $htmlJob;
 
     protected $testAsset = 'module/HtmlConversion/test/assets/document.xml';
     protected $testFile = '/tmp/UNITTEST_html_document.xml';
-
-    protected $testUserEmail = 'unittestuser@example.com';
-    protected $testUserPassword = '5cebb03d702827bb9e25b38b06910fa5';
-    protected $testUserRole = 'member';
-    protected $testUserActive = true;
 
     /**
      * Initialize the test
@@ -66,25 +58,28 @@ class HtmlJobTest extends ModelTest
     protected function createTestData() {
         @copy($this->testAsset, $this->testFile);
 
-        $this->user = $this->userDAO->getInstance();
-        $this->user->email = $this->testUserEmail;
-        $this->user->password = $this->testUserPassword;
-        $this->user->role = $this->testUserRole;
-        $this->user->active = $this->testUserActive;
-        $this->userDAO->save($this->user);
+        // Create test user
+        $this->user = $this->createTestUser();
 
-        $this->job = $this->jobDAO->getInstance();
-        $this->job->user = $this->user;
-        $this->job->conversionStage = JOB_CONVERSION_STAGE_BIBTEXREFERENCES;
-        $this->job->setCitationStyleFileByTitle('Acta Ophthalmologica');
+        // Create test job
+        $this->job = $this->createTestJob(
+            array(
+                'user' => $this->user,
+                'conversionStage' => 5, // JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+            )
+        );
 
-        $this->document = $this->documentDAO->getInstance();
-        $this->document->job = $this->job;
-        $this->document->path = $this->testFile;
-        $this->document->conversionStage = JOB_CONVERSION_STAGE_BIBTEXREFERENCES;
+        // Create test document
+        $this->document = $this->createTestDocument(
+            array(
+                'job' => $this->job,
+                'path' => $this->testFile,
+                'conversionStage' => $this->job->conversionStage,
+            )
+        );
         $this->job->documents[] = $this->document;
 
-        $this->jobDAO->save($this->job);
+        $this->getJobDAO()->save($this->job);
     }
 
     /**
@@ -94,9 +89,7 @@ class HtmlJobTest extends ModelTest
      */
     protected function cleanTestData()
     {
-        $user = $this->userDAO->findOneBy(array('email' => $this->testUserEmail));
-        if (!$user) return;
-        $this->userDAO->remove($user);
+        $this->deleteTestUser();
 
         @unlink($this->testFile);
     }
