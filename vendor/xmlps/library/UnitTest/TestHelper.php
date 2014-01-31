@@ -35,8 +35,8 @@ trait TestHelper {
     protected function createTestUser($data = array())
     {
         // Randomize the user password
-        if (!isset($data['password']) and !empty($this->userPassword)) {
-            $this->userPassword = sha1(uniqid() . rand(99999));
+        if (!isset($data['password']) and empty($this->userPassword)) {
+            $this->userPassword = sha1(uniqid() . rand());
         }
 
         $this->overwriteProperties($data, 'user');
