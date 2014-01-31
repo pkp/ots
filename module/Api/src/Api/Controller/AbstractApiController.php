@@ -67,6 +67,9 @@ class AbstractApiController extends AbstractActionController {
 
         // Check if the user is authorized to access the method
         if (!$this->authorize($method)) {
+            // Set the forbidden response code
+            $this->getResponse()->setStatusCode(403);
+
             $actionResponse = array(
                 'error' => $this->translator->translate('api.error.invalidCredentials')
             );
