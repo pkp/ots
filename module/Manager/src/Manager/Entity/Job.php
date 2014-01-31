@@ -215,4 +215,18 @@ class Job extends DataObject
 
         return true;
     }
+
+    /**
+     * Removes documents associated with this job before the job is removed
+     *
+     * @return void
+     *
+     * @ORM\PreRemove
+     */
+    public function removeJobData()
+    {
+        $documentDAO = $this->getServiceLocator()->get('Manager\Model\DAO\DocumentDAO');
+        $documents = $documentDAO->findBy(array('job' => $this->id));
+        foreach ($documents as $document) { $documentDAO->remove($document); }
+    }
 }
