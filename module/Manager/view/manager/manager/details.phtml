@@ -14,7 +14,7 @@
         <label><?php echo $this->escapeHtml($this->translate('manager.job.documents')) ?>:</label>
         <ul id="documents" class="details">
           <?php foreach($this->job->documents as $document) : ?>
-            <li><?php echo $document->getFileName(); ?><a href="<?php echo $this->url('manager', array('action' => 'download', 'id' => $document->id)) . '" title="' . $this->translate('application.generic.download') ?>"></a></li>
+            <li><a href="<?php echo $this->url('manager', array('action' => 'download', 'id' => $document->id)) . '" title="' . $this->translate('application.generic.download') ?>"><?php echo $document->getFileName(); ?></a></li>
           <?php endforeach ?>
         </ul>
       </li>

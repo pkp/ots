@@ -448,13 +448,15 @@ a.details-action { @include icon('before', false, 'eye'); }
   ul.details {
     @include vertical-list;
 
+    li { list-style :none; }
+
     label { font-family: $highlightFont; }
 
     #documents {
       list-style-type: circle;
-      padding-left: $gutter * 2;
-      a { @include icon('after', true, 'download-3'); }
-      a:after { margin-left: $gutter; }
+      padding-left: $gutter;
+      a { @include icon('before', true, 'download-3'); }
+      a:before { margin-right: $gutter; }
     }
   }
 }

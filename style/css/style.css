@@ -793,12 +793,14 @@ a.details-action:before {
   padding-left: 0; }
   .manager-manager-details ul.details label {
     margin-right: 10px; }
+  .manager-manager-details ul.details li {
+    list-style: none; }
   .manager-manager-details ul.details label {
     font-family: Oswald, Sans-Serif; }
   .manager-manager-details ul.details #documents {
     list-style-type: circle;
-    padding-left: 20px; }
-    .manager-manager-details ul.details #documents a:after {
+    padding-left: 10px; }
+    .manager-manager-details ul.details #documents a:before {
       content: "\e0bf";
       speak: none;
       -webkit-font-smoothing: antialiased;
@@ -809,8 +811,8 @@ a.details-action:before {
       font-variant: normal;
       font-weight: normal;
       font-family: 'Icons'; }
-    .manager-manager-details ul.details #documents a:after {
-      margin-left: 10px; }
+    .manager-manager-details ul.details #documents a:before {
+      margin-right: 10px; }
 
 .manager-manager-details + aside ul {
   list-style: none; }
