@@ -24,7 +24,4 @@ $(function () {
             }
         }
     );
-
-    // Focus on the first element in the login form when the page is loaded
-    $('form[name="login"] *:input[type!=hidden]:first').focus();
 });
