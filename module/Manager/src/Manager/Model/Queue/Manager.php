@@ -107,7 +107,7 @@ class Manager {
             $job->status == JOB_STATUS_FAILED
         )
         {
-            $job->status == JOB_STATUS_PROCESSING;
+            $job->status = JOB_STATUS_PROCESSING;
         }
 
         // Stop if the job has failed
