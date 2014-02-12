@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"    
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:mml="http://www.w3.org/1998/Math/MathML"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     exclude-result-prefixes="xlink"
     version="1.0">
-    
-    
+
     <xsl:template match="/">
         <!-- new elements added for randomshapes layout -->
         <html>
             <head>
                 <meta charset="utf-8"/>
-                <meta name="viewport" content="width=device-width, initial-scale=1"/>  
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>
                 <xsl:for-each select="article/front/article-meta/title-group/article-title">
                     <title>
                         <xsl:value-of select="string(.)"/>
@@ -57,26 +56,25 @@
                             <xsl:for-each select="article/front/article-meta/abstract/sec/p">
                                 <p>
                                     <xsl:value-of select="string(.)"/>
-                                </p>  
+                                </p>
                             </xsl:for-each>
                         </section>
                         <a href="#" class="toggle-link version1" data-toggle="body"><h2><span class="glyphicon span-body glyphicon-chevron-down"></span>Manuscript</h2></a>
-                        
-        
-        <article itemscope="itemscope" itemtype="scholarlyarticle">
-            <!-- DROP ALL FRONT MATTER CURRENTLY
-            <xsl:apply-templates select="article/front"/> -->
-            <xsl:apply-templates select="article/body"/>
-            <xsl:apply-templates select="article/back"/>
-        </article>
-                        
+
+                        <article itemscope="itemscope" itemtype="scholarlyarticle">
+                            <!-- DROP ALL FRONT MATTER CURRENTLY
+                            <xsl:apply-templates select="article/front"/> -->
+                            <xsl:apply-templates select="article/body"/>
+                            <xsl:apply-templates select="article/back"/>
+                        </article>
+
                         <!-- closing tags for randomshapes layout -->
                     </div>
                 </div>
             </body>
         </html>
     </xsl:template>
-    
+
     <xsl:template match="body">
 
     <main class="{local-name()}" lang="en">
@@ -137,7 +135,7 @@
     </span>
     <xsl:if test="not(position() = last())">, </xsl:if>
   </xsl:template>
-  
+
   <!-- name -->
   <xsl:template name="name">
     <xsl:apply-templates select="given-names"/>
@@ -329,7 +327,7 @@
       </ul>
     </section>
   </xsl:template>
-  
+
   <!-- "et al" -->
   <xsl:template match="person-group/etal">
     <span class="{local-name()}">et al.</span>
@@ -354,5 +352,5 @@
   <xsl:template match="mml:math">
     <xsl:copy-of select="."/>
   </xsl:template>
-    
+
 </xsl:stylesheet>
