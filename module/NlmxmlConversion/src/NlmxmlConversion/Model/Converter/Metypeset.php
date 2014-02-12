@@ -76,6 +76,9 @@ class Metypeset extends AbstractConverter
         // Set the base command
         $command->setCommand($this->config['command']);
 
+        // Set the debug switch
+        $command->addSwitch('-d');
+
         // Set the input document type
         $command->addArgument('docx');
 
