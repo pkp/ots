@@ -399,6 +399,11 @@ a.details-action { @include icon('before', false, 'eye'); }
       td:nth-child(1),
       td:nth-child(2),
       td:nth-child(3) { text-align: center; }
+
+      td:nth-child(4) {
+        overflow: auto;
+        max-width: 1px;
+      }
     }
   }
 }
