@@ -78,9 +78,6 @@
     </xsl:template>
     
     <xsl:template match="body">
-    <nav>
-      <!--<xsl:call-template name="toc"/>-->
-    </nav>
 
     <main class="{local-name()}" lang="en">
       <xsl:apply-templates select="node()|@*"/>
@@ -193,23 +190,6 @@
     </section>
   </xsl:template>
 
-  <!-- section headings [modified from macrodocs]
-  <xsl:template match="title | fig/label | table-wrap/label">
-    <xsl:variable name="hierarchy" select="count(ancestor::sec | ancestor::back | ancestor::fig | ancestor::table-wrap)"/>
-
-    <xsl:if test="$hierarchy > 4">
-      <xsl:variable name="hierarchy">6</xsl:variable>
-    </xsl:if>
-
-    <xsl:variable name="heading">h<xsl:value-of select="$hierarchy + 1"/></xsl:variable>
-
-    <xsl:element name="{$heading}">
-      <xsl:attribute name="class">heading</xsl:attribute>
-      <xsl:attribute name="data-ignore-class"></xsl:attribute>
-      <xsl:apply-templates select="node()|@*"/>
-    </xsl:element>
-  </xsl:template> -->
-
   <xsl:template match="title">
     <h3 class="heading" data-ignore-class="">
       <xsl:attribute name="id">
@@ -242,11 +222,6 @@
     </a>
   </xsl:template>
 
-  <!-- cross-reference [modified from macrodocs]
-  <xsl:template match="xref">
-    <a class="{local-name()}" href="#{@rid}"><xsl:apply-templates select="node()|@*"/></a>
-  </xsl:template> -->
-
   <xsl:template match="xref">
     <a class="xref">
       <xsl:attribute name="href">
@@ -261,41 +236,6 @@
       <xsl:value-of select="string(.)"/>
     </a>
   </xsl:template>
-
-  <!-- figure [modified from macrodocs] 
-  <xsl:template match="fig">
-    <figure class="{local-name()}">
-      <xsl:apply-templates select="@*"/>
-
-      <div class="image-container">
-        <xsl:apply-templates select="graphic" mode="fig"/>
-      </div>
-
-      <figcaption>
-        <xsl:apply-templates select="label"/>
-        <xsl:apply-templates select="caption"/>
-      </figcaption>
-
-      <xsl:apply-templates select="p"/>
-    </figure>
-  </xsl:template> -->
-
-  <!-- figure title [modified from macrodocs]
-  <xsl:template match="title" mode="fig">
-    <div class="{local-name()}"><xsl:apply-templates select="node()|@*"/></div>
-  </xsl:template> -->
-
-  <!-- graphic [modified from macrodocs]
-  <xsl:template match="graphic | inline-graphic">
-    <xsl:variable name="href" select="@xlink:href"/>
-    <img class="{local-name()}" src="{$href}"><xsl:apply-templates select="@*"/></img>
-  </xsl:template> -->
-
-  <!-- figure graphic [modified from macrodocs]
-  <xsl:template match="graphic" mode="fig">
-    <xsl:variable name="href" select="@xlink:href"/>
-    <img class="{local-name()}" src="{$href}"><xsl:apply-templates select="@*"/></img>
-  </xsl:template> -->
 
   <xsl:template match="fig">
     <figure class="fig well">
@@ -341,23 +281,6 @@
     </section>
   </xsl:template>
 
-  <!-- reference list [modified from macrodocs]
-  <xsl:template match="ref-list">
-    <xsl:apply-templates select="title|@*"/>
-    <div class="ref-list-container" data-ignore-class="">
-      <ul class="{local-name()}">
-        <xsl:apply-templates select="ref|@*"/>
-      </ul>
-    </div>
-  </xsl:template> -->
-
-  <!-- reference list item [modified from macrodocs]
-  <xsl:template match="ref-list/ref">
-    <li class="{local-name()}">
-      <xsl:apply-templates select="mixed-citation | citation | element-citation|@*"/>
-    </li>
-  </xsl:template> -->
-
   <xsl:template match="ref-list">
     <a href="#" class="toggle-link version1" data-toggle="references"><h2><span class="glyphicon glyphicon-chevron-right"></span>References</h2></a>
     <section id="References">
@@ -380,38 +303,6 @@
       </ul>
     </section>
   </xsl:template>
-
-  <!-- mixed citation [modified from macrodocs]
-  <xsl:template match="mixed-citation | citation | element-citation"> 
-  
-  	<xsl:variable name="surnames" select="concat((person-group/name/surname),',')" / 
-	{publisher-name}
-	
-	<xsl:variable name="surnames"> 
-		<xsl:for-each  select="person-group/name/surname"><xsl:value-of select="normalize-space(.)"/>, </xsl:for-each>
-	</xsl:variable>
-
-  	<a class="{local-name()}" target="_blank" href="http://scholar.google.com/scholar?q={$surnames} {article-title} {year}">
-  		<xsl:value-of select="$surnames" /><xsl:text>"</xsl:text>
-     	<xsl:value-of select="article-title" /><xsl:text>" </xsl:text>
-     	<xsl:value-of select="publisher-name" /><xsl:text> </xsl:text>
-     	<xsl:value-of select="year"/>	
-  	</a>
-
-  </xsl:template> -->
-
-  <!-- article title in references  
-  
-  href="http://scholar.google.com/scholar?q=?q=intitle:&quot;{.}&quot;"
-    ?q=intitle: TEMPORARILY DISABLED BY DAMION SINCE WE DON'T HAVE article-title specifically. 
-    Had to add normalize-space(.) function as well so that \n \l were converted to " ", to enable google to get correct search string.  Also removed numbers as they are too specific.
-    /scholar?q={normalize-space(translate(.,'0123456789',''))}
-
-
-  <xsl:template match="mixed-citation/article-title|citation/article-title|element-citation/article-title">
-    <a class="{local-name()}" target="_blank" href="http://scholar.google.com/scholar?q={normalize-space(translate(.,'0123456789',''))}"><xsl:apply-templates select="node()|@*"/></a>
-  </xsl:template>
-  -->
   
   <!-- "et al" -->
   <xsl:template match="person-group/etal">
