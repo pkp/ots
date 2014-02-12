@@ -242,7 +242,9 @@ class Pandoc extends AbstractConverter
     {
         // Create a references DOM from the parsing output
         $referencesDom = new DomDocument();
-        if (!$referencesDom->loadHTML($this->output)) {
+
+        // Force XML encoding as the Pandoc output doesn't have any doctype
+        if (!$referencesDom->loadHTML('<?xml encoding="UTF-8">' . $this->output)) {
             $this->logger->debugTranslate(
                 'citationstyleconversion.converter.pandoc.createReferencesDomErrorLog',
                 $this->libxmlErrors()
