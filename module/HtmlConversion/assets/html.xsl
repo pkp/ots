@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"    
     xmlns:mml="http://www.w3.org/1998/Math/MathML"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     exclude-result-prefixes="xlink"
     version="1.0">
-
+    
+    
     <xsl:template match="/">
         <!-- new elements added for randomshapes layout -->
         <html>
             <head>
                 <meta charset="utf-8"/>
-                <meta name="viewport" content="width=device-width, initial-scale=1"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1"/>  
                 <xsl:for-each select="article/front/article-meta/title-group/article-title">
                     <title>
                         <xsl:value-of select="string(.)"/>
@@ -56,25 +57,26 @@
                             <xsl:for-each select="article/front/article-meta/abstract/sec/p">
                                 <p>
                                     <xsl:value-of select="string(.)"/>
-                                </p>
+                                </p>  
                             </xsl:for-each>
                         </section>
                         <a href="#" class="toggle-link version1" data-toggle="body"><h2><span class="glyphicon span-body glyphicon-chevron-down"></span>Manuscript</h2></a>
-
-                        <article itemscope="itemscope" itemtype="scholarlyarticle">
-                            <!-- DROP ALL FRONT MATTER CURRENTLY
-                            <xsl:apply-templates select="article/front"/> -->
-                            <xsl:apply-templates select="article/body"/>
-                            <xsl:apply-templates select="article/back"/>
-                        </article>
-
+                        
+        
+        <article itemscope="itemscope" itemtype="scholarlyarticle">
+            <!-- DROP ALL FRONT MATTER CURRENTLY
+            <xsl:apply-templates select="article/front"/> -->
+            <xsl:apply-templates select="article/body"/>
+            <xsl:apply-templates select="article/back"/>
+        </article>
+                        
                         <!-- closing tags for randomshapes layout -->
                     </div>
                 </div>
             </body>
         </html>
     </xsl:template>
-
+    
     <xsl:template match="body">
 
     <main class="{local-name()}" lang="en">
@@ -135,7 +137,7 @@
     </span>
     <xsl:if test="not(position() = last())">, </xsl:if>
   </xsl:template>
-
+  
   <!-- name -->
   <xsl:template name="name">
     <xsl:apply-templates select="given-names"/>
@@ -168,17 +170,43 @@
   </xsl:template>
 
   <!-- table elements [modified from macrodocs] -->
-  <xsl:template match="tbody | thead | tfoot | column | tr | th | td | colgroup | col">
-    <xsl:element name="{local-name()}">
-      <xsl:apply-templates select="node()|@*"/>
-    </xsl:element>
-  </xsl:template>
-
-  <xsl:template match="table">
-    <xsl:element name="{local-name()}">
-      <xsl:apply-templates select="node()|@*"/>
-      <xsl:attribute name="class">table</xsl:attribute>
-    </xsl:element>
+  <xsl:template match="table-wrap">
+    <xsl:for-each select="table">
+    <div class="well">
+    <p class="p">
+    <div class="table">
+    <table>
+      <xsl:for-each select="thead">
+        <thead>
+          <xsl:for-each select="tr">
+            <tr>
+              <xsl:for-each select="td">
+                <td>
+                  <xsl:value-of select="string(.)"/>
+                </td>
+              </xsl:for-each>
+            </tr>
+          </xsl:for-each>
+        </thead>
+      </xsl:for-each>
+      <xsl:for-each select="tbody">
+        <tbody>
+          <xsl:for-each select="tr">
+            <tr>
+              <xsl:for-each select="td">
+                <td>
+                  <xsl:value-of select="string(.)"/>
+                </td>
+              </xsl:for-each>
+            </tr>
+          </xsl:for-each>
+        </tbody>
+      </xsl:for-each>
+    </table>
+    </div>
+    </p>
+    </div>
+    </xsl:for-each>
   </xsl:template>
 
   <!-- sections -->
@@ -301,7 +329,7 @@
       </ul>
     </section>
   </xsl:template>
-
+  
   <!-- "et al" -->
   <xsl:template match="person-group/etal">
     <span class="{local-name()}">et al.</span>
@@ -326,5 +354,5 @@
   <xsl:template match="mml:math">
     <xsl:copy-of select="."/>
   </xsl:template>
-
+    
 </xsl:stylesheet>
