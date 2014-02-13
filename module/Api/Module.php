@@ -1,8 +1,6 @@
 <?php
 namespace Api;
 
-use Zend\Mvc\MvcEvent;
-
 class Module
 {
     /**
@@ -48,7 +46,6 @@ class Module
                     $sm = $cm->getServiceLocator();
                     $logger = $sm->get('Logger');
                     $translator = $sm->get('Translator');
-                    $authService = $sm->get('Zend\Authentication\AuthenticationService');
                     $jobDAO = $sm->get('Manager\Model\DAO\JobDAO');
                     $documentDAO = $sm->get('Manager\Model\DAO\DocumentDAO');
                     $queueManager = $sm->get('Manager\Model\Queue\Manager');
@@ -57,7 +54,6 @@ class Module
                     return new Controller\JobController(
                         $logger,
                         $translator,
-                        $authService,
                         $jobDAO,
                         $documentDAO,
                         $queueManager,
@@ -69,13 +65,11 @@ class Module
                     $sm = $cm->getServiceLocator();
                     $logger = $sm->get('Logger');
                     $translator = $sm->get('Translator');
-                    $authService = $sm->get('Zend\Authentication\AuthenticationService');
                     $citationStyles = $sm->get('CitationstyleConversion\Model\Citationstyles');
 
                     return new Controller\SiteController(
                         $logger,
                         $translator,
-                        $authService,
                         $citationStyles
                     );
                 },

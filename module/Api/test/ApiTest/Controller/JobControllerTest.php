@@ -38,9 +38,6 @@ class ApiControllerTest extends ControllerTest
     {
         $this->dispatch($this->buildQuery('submit', array(), false));
         $this->assertResponseStatusCode(403);
-        $response = json_decode($this->getResponse()->getContent());
-        $this->assertTrue(is_object($response));
-        $this->assertSame($response->status, 'error');
     }
 
     /**
