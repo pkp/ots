@@ -183,11 +183,27 @@ class Html extends AbstractConverter
             $it,
             RecursiveIteratorIterator::CHILD_FIRST
         );
-        foreach($files as $file) {
+        foreach ($files as $file) {
             if ($file->getType() == 'dir') { continue; }
             $zipPath = $file->getPathname();
             $zipPath = str_replace($this->config['html_includes'] . '/', '', $zipPath);
             $zip->addFile($file->getRealPath(), $zipPath);
+        }
+
+        // Add metypeset media files
+        $mediaDir = dirname($this->inputFile) . '/metypeset/media';
+        if (is_dir($mediaDir)) {
+            $it = new RecursiveDirectoryIterator($mediaDir);
+            $files = new RecursiveIteratorIterator(
+                $it,
+                RecursiveIteratorIterator::CHILD_FIRST
+            );
+            foreach ($files as $file) {
+                if ($file->getType() == 'dir') { continue; }
+                $zipPath = $file->getPathname();
+                $zipPath = str_replace($mediaDir, 'media', $zipPath);
+                $zip->addFile($file->getRealPath(), $zipPath);
+            }
         }
 
         $zip->close();
