@@ -20,20 +20,43 @@ class AclDispatchHandler
    {
         $application = $e->getApplication();
         $sm = $application->getServiceManager();
-        $authorized = $sm->get('ControllerPluginManager')
+
+        // Check if the user is already authenticated
+        $authenticated = $sm->get('ControllerPluginManager')
             ->get('ControllerAcl')
             ->authorize($e);
+        if ($authenticated) return;
 
-        if (!$authorized) {
-            $view = $e->getViewModel();
-            $translator = $sm->get('translator');
-            $view->setVariable('messages', array('error' => array(
-                $translator->translate(
-                    'application.acl.notAuthorized'
-                )
-            )));
-            $e->getResponse()->setStatusCode(403);
-            $e->stopPropagation();
+        // Check if the user submitted email and password parameters and try to
+        // authenticate using those (API authentication)
+        $request = $e->getRequest();
+        $email = $request->getQuery('email');
+        $password = $request->getQuery('password');
+
+        if (!empty($email) and !empty($password)) {
+            $authService = $sm->get(
+                'Zend\Authentication\AuthenticationService'
+            );
+            $adapter = $authService->getAdapter();
+            $adapter->setIdentityValue($email);
+            $adapter->setCredentialValue($password);
+            $authResult = $authService->authenticate();
+
+            if ($authResult->isValid()) {
+                $sm->get('Logger')->debugTranslate('user.authentication.sucessfulLoginLog', $email);
+                return;
+            }
         }
+
+        // Display an error message and return a 403
+        $view = $e->getViewModel();
+        $translator = $sm->get('Translator');
+        $view->setVariable('messages', array('error' => array(
+            $translator->translate(
+                'application.acl.notAuthorized'
+            )
+        )));
+        $e->getResponse()->setStatusCode(403);
+        $e->stopPropagation();
     }
 }
