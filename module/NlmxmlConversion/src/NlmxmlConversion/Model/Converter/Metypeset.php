@@ -73,8 +73,11 @@ class Metypeset extends AbstractConverter
     {
         $command = new Command;
 
-        // Set the base command
-        $command->setCommand($this->config['command']);
+        // Set the base command (Python fails with unicode issues if
+        // PYTHONIOENCODING is not set)
+        $command->setCommand(
+            'export PYTHONIOENCODING=UTF-8; ' . $this->config['command']
+        );
 
         // Set the debug switch
         $command->addSwitch('-d');
@@ -93,6 +96,9 @@ class Metypeset extends AbstractConverter
             throw new \Exception('No output directory given');
         }
         $command->addArgument($this->outputDirectory);
+
+        // Redirect STDERR to STDOUT to captue it in $this->output
+        $command->addRedirect('2>&1');
 
         $this->logger->debugTranslate(
             'nlmxmlconversion.metypeset.executeCommandLog',
