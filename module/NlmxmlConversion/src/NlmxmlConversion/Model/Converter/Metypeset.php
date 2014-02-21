@@ -94,9 +94,6 @@ class Metypeset extends AbstractConverter
         }
         $command->addArgument($this->outputDirectory);
 
-        // Redirect STDERR to STDOUT to captue it in $this->output
-        $command->addRedirect('2>&1');
-
         $this->logger->debugTranslate(
             'nlmxmlconversion.metypeset.executeCommandLog',
             $command->getCommand()
