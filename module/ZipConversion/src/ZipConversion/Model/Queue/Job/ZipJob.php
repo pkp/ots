@@ -31,7 +31,10 @@ class ZipJob extends AbstractQueueJob
         }
 
         foreach ($job->documents as $document) {
-            $zip->addFile($document->path, basename($document->path));
+            $zip->addFile(
+                $document->path,
+                str_replace($job->getDocumentPath() . '/', '', $document->path)
+            );
         }
         $zip->close();
 
