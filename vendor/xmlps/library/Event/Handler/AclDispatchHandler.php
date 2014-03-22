@@ -30,8 +30,14 @@ class AclDispatchHandler
         // Check if the user submitted email and password parameters and try to
         // authenticate using those (API authentication)
         $request = $e->getRequest();
-        $email = $request->getQuery('email');
-        $password = $request->getQuery('password');
+        if ($request->isPost()) {
+            $email = $request->getPost('email');
+            $password = $request->getPost('password');
+        }
+        else {
+            $email = $request->getQuery('email');
+            $password = $request->getQuery('password');
+        }
 
         if (!empty($email) and !empty($password)) {
             $authService = $sm->get(
