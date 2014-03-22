@@ -126,12 +126,12 @@ Parameters:
  * email
  * password
  * fileName
- * fieleContent
+ * fileContent
  * citationStyleHash
 
 I.e.
 ```
-http://example.com/api/job/submit?email=user@example.com&password=password&fileName=document.docx&citationStyleHash=citationStyleHashfileContent=Y29udGVudAo...
+http://example.com/api/job/submit?email=user@example.com&password=password&fileName=document.docx&citationStyleHash=c6de5efe3294b26391ea343053c19a84&fileContent=Y29udGVudAo...
 ```
 Example response:
 ```
