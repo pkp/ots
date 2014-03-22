@@ -52,15 +52,12 @@ class JobController extends AbstractActionController
     /**
      * Submit a new job
      *
-     * NOTE: the submitted file content needs to be base64_encoded.
-     * json_en/decode fails in certain cases otherwise
-     *
      * @return array Array with submission status information
      */
     public function submitAction()
     {
         // Make sure the file name parameter is provided
-        if (!($fileName = $this->params()->fromQuery('fileName'))) {
+        if (!($fileName = $this->params()->fromPost('fileName'))) {
             return new JsonModel(array(
                 'error' => $this->translator->translate('job.api.error.fileNameParameterMissing'),
                 'status' => 'error',
@@ -68,7 +65,7 @@ class JobController extends AbstractActionController
         }
 
         // Make sure the file content parameter is provided
-        if (!($fileContent = $this->params()->fromQuery('fileContent'))) {
+        if (!($fileContent = $this->params()->fromPost('fileContent'))) {
             return new JsonModel(array(
                 'error' => $this->translator->translate('job.api.error.fileContentParameterMissing'),
                 'status' => 'error',
@@ -76,7 +73,7 @@ class JobController extends AbstractActionController
         }
 
         // Make sure the citation style parameter is provided
-        if (!($citationStyleHash = $this->params()->fromQuery('citationStyleHash'))) {
+        if (!($citationStyleHash = $this->params()->fromPost('citationStyleHash'))) {
             return new JsonModel(array(
                 'error' => $this->translator->translate('job.api.error.citationStyleHashParameterMissing'),
                 'status' => 'error',
@@ -100,7 +97,7 @@ class JobController extends AbstractActionController
         // Create the inputFile
         $fileName = str_replace('/', '', $fileName);
         $fileName = $job->getDocumentPath() . '/' . $fileName;
-        file_put_contents($fileName, base64_decode($fileContent));
+        file_put_contents($fileName, $fileContent);
 
         // Create new document
         $document = $this->documentDAO->getInstance();
@@ -154,9 +151,9 @@ class JobController extends AbstractActionController
     /**
      * Retrieve a completed job
      *
-     * NOTE: the returned file content is base64_encoded
+     * NOTE: This will return requested document for download
      *
-     * @return array Array containing converted document
+     * @return void
      */
     public function retrieveAction()
     {
@@ -187,11 +184,15 @@ class JobController extends AbstractActionController
         }
 
         if (file_exists($document->path)) {
-            return new JsonModel(array(
-                'fileName' => preg_replace('#^.*/#', '', $document->path),
-                'fileContents' => base64_encode(file_get_contents($document->path)),
-                'status' => 'success',
-            ));
+            $response = $this->getResponse();
+            $headers = $response->getHeaders();
+            $headers->addHeaderLine('Content-Type', $document->mimeType);
+            $headers->addHeaderLine('Content-Length', $document->size);
+            $headers->addHeaderLine('Content-Disposition', 'attachment; filename="' . $document->getFileName()  . '"');
+            $response->send();
+
+            echo file_get_contents($document->path);
+            exit;
         }
     }
 

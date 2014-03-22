@@ -114,13 +114,13 @@ There is a simple REST API available to submit, view and retrieve jobs from/to t
 
 __Submit__
 
-Submit a job to the server. The fileContent needs to be the base64 encoded
-content of the submission file. The citationStyleHash is an internal identifier
+Submit a job to the server. The citationStyleHash is an internal identifier
 for the requested citaton style. A list of hashes can be retrieved through the
 citationStyleList API. The API will return the job id which can be used to
 retrieve the completed job later or to query the server for the job status.
 
 URL: api/job/submit
+Request type: POST
 Parameters:
 
  * email
@@ -131,7 +131,13 @@ Parameters:
 
 I.e.
 ```
-http://example.com/api/job/submit?email=user@example.com&password=password&fileName=document.docx&citationStyleHash=c6de5efe3294b26391ea343053c19a84&fileContent=Y29udGVudAo...
+http://example.com/api/job/submit
+POST parameters:
+    'email' => 'user@example.com'
+    'password' => 'passowrd'
+    'fileName' => 'document.docx'
+    'citationStyleHash' => 'c6de5efe3294b26391ea343053c19a84',
+    'fileContent' => '...'
 ```
 Example response:
 ```
@@ -145,6 +151,7 @@ the server.  A full list of statuses can be found
 [here](https://github.com/pkp/xmlps/blob/master/module/Manager/src/Manager/Entity/Job.php#L9).
 
 URL: api/job/status
+Request type: GET
 Parameters:
 
  * email
@@ -166,6 +173,7 @@ Returns a list of available citation styles and their internal ids. We support
 all citation styles from [citationstyles.org](http://citationstyles.org/)
 
 URL: api/job/citationStyleList
+Request type: GET
 Parameters:
 
  * email
@@ -182,13 +190,13 @@ Example response:
 
 __Retrieve__
 
-Retrieve a completed job. The jobConversionStage parameter specifys which type
+Retrieve a converted document. The jobConversionStage parameter specifys which type
 of conversion you want to get retrned. A full list of conversion stages can be
 found
 [here](https://github.com/pkp/xmlps/blob/master/module/Manager/src/Manager/Entity/Job.php#L14).
-The returned file contents will be base64 encoded.
 
 URL: api/job/retrieve
+Request type: GET
 Parameters:
 
  * email
@@ -202,5 +210,5 @@ http://example.com/api/job/retrieve?email=user@example.com&password=password&id=
 ```
 Example response:
 ```
-{"fileName":"documents.zip","fileContents":"UEsDBBQAAAAI...","status":"success"}
+The requested document or a JSON string with an error message.
 ```
