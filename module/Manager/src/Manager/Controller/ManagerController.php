@@ -89,7 +89,7 @@ class ManagerController extends AbstractActionController {
 
                 // Move the uploaded file to its job directory
                 $upload = $data['upload'];
-                $upload['path'] = $job->getDocumentPath() . '/' . $upload['name'];
+                $upload['path'] = $job->getUploadPath() . '/' . $upload['name'];
                 rename($upload['tmp_name'], $upload['path']);
 
                 // Create new document

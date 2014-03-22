@@ -96,7 +96,7 @@ class JobController extends AbstractActionController
 
         // Create the inputFile
         $fileName = str_replace('/', '', $fileName);
-        $fileName = $job->getDocumentPath() . '/' . $fileName;
+        $fileName = $job->getUploadPath() . '/' . $fileName;
         file_put_contents($fileName, $fileContent);
 
         // Create new document

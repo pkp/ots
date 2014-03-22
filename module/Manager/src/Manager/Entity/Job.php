@@ -147,7 +147,7 @@ class Job extends DataObject
     /**
      * Returns the document storage location for converted documents
      *
-     * @return void
+     * @return string Document storage location
      */
     public function getDocumentPath()
     {
@@ -162,6 +162,23 @@ class Job extends DataObject
         }
 
         return $documentPath;
+    }
+
+    /**
+     * Returns the document upload location for the original document
+     *
+     * @return string Upload location for original document
+     */
+    public function getUploadPath()
+    {
+        $uploadPath = $this->getDocumentPath() . '/upload';
+        if (!is_dir($uploadPath)) { @mkdir($uploadPath, 0777, true); }
+
+        if (!is_dir($uploadPath)) {
+            throw new \Exception('Couldn\'t create upload directory');
+        }
+
+        return $uploadPath;
     }
 
     /**
