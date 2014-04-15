@@ -252,12 +252,6 @@
       <xsl:attribute name="href">
         #<xsl:value-of select="@rid"/>
       </xsl:attribute>
-      <xsl:attribute name="rid">
-        <xsl:value-of select="@rid"/>
-      </xsl:attribute>
-      <xsl:attribute name="ref-type">
-        <xsl:value-of select="@ref-type"/>
-      </xsl:attribute>
       <xsl:value-of select="string(.)"/>
     </a>
   </xsl:template>
