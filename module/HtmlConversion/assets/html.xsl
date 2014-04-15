@@ -3,10 +3,11 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:mml="http://www.w3.org/1998/Math/MathML"
     xmlns:xlink="http://www.w3.org/1999/xlink"
-    exclude-result-prefixes="xlink"
+    exclude-result-prefixes="xlink xs mml"
     version="1.0">
 
     <xsl:template match="/">
+        <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html></xsl:text>
         <!-- new elements added for randomshapes layout -->
         <html>
             <head>
@@ -43,7 +44,8 @@
                                     <xsl:value-of select="string(.)"/>
                                 </h1>
                             </xsl:for-each>
-                            <div class="context authors" itemprop="authors">
+                            <div class="context authors">
+                            <!-- <div class="context authors" itemprop="authors"> -->
                                 <xsl:for-each select="article/front/article-meta/contrib-group/contrib/given-names">
                                     <xsl:value-of select="string(.)"/>,
                                 </xsl:for-each>
@@ -61,7 +63,8 @@
                         </section>
                         <a href="#" class="toggle-link version1" data-toggle="body"><h2><span class="glyphicon span-body glyphicon-chevron-down"></span>Manuscript</h2></a>
 
-                        <article itemscope="itemscope" itemtype="scholarlyarticle">
+                        <article itemscope="itemscope">
+                        <!-- <article itemscope="itemscope" itemtype="scholarlyarticle"> -->
                             <!-- DROP ALL FRONT MATTER CURRENTLY
                             <xsl:apply-templates select="article/front"/> -->
                             <xsl:apply-templates select="article/body"/>
@@ -91,14 +94,14 @@
   <!-- ordered list -->
   <xsl:template match="list[@list-type='order']">
     <ol class="{local-name()}">
-      <xsl:apply-templates select="node()|@*"/>
+      <xsl:apply-templates select="node()"/>
     </ol>
   </xsl:template>
 
   <!-- unordered list -->
   <xsl:template match="list">
     <ul class="{local-name()}">
-      <xsl:apply-templates select="node()|@*"/>
+      <xsl:apply-templates select="node()"/>
     </ul>
   </xsl:template>
 
@@ -171,7 +174,6 @@
   <xsl:template match="table-wrap">
     <xsl:for-each select="table">
     <div class="well">
-    <p class="p">
     <div class="table">
     <table>
       <xsl:for-each select="thead">
@@ -180,7 +182,7 @@
             <tr>
               <xsl:for-each select="td">
                 <td>
-                  <xsl:value-of select="string(.)"/>
+                  <xsl:apply-templates select="node()"/>
                 </td>
               </xsl:for-each>
             </tr>
@@ -193,7 +195,7 @@
             <tr>
               <xsl:for-each select="td">
                 <td>
-                  <xsl:value-of select="string(.)"/>
+                  <xsl:apply-templates select="node()"/>
                 </td>
               </xsl:for-each>
             </tr>
@@ -202,7 +204,6 @@
       </xsl:for-each>
     </table>
     </div>
-    </p>
     </div>
     </xsl:for-each>
   </xsl:template>
@@ -217,7 +218,7 @@
   <xsl:template match="title">
     <h3 class="heading" data-ignore-class="">
       <xsl:attribute name="id">
-        <xsl:value-of select="translate(string(.), ' ','')"/>
+        <xsl:value-of select="translate(string(.), '&#x20;&#x9;&#xD;&#xA;','')"/>
       </xsl:attribute>
       <xsl:value-of select="string(.)"/>
     </h3>
@@ -236,13 +237,13 @@
   <!-- links -->
   <xsl:template match="ext-link">
     <a class="{local-name()}" href="{@xlink:href}">
-      <xsl:apply-templates select="node()|@*"/>
+      <xsl:apply-templates select="node()"/>
     </a>
   </xsl:template>
 
   <xsl:template match="ext-link[@ext-link-type='doi']">
     <a class="{local-name()}" href="http://dx.doi.org/{@xlink:href}">
-      <xsl:apply-templates select="node()|@*"/>
+      <xsl:apply-templates select="node()"/>
     </a>
   </xsl:template>
 
