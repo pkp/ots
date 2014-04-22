@@ -202,6 +202,15 @@
           </xsl:for-each>
         </tbody>
       </xsl:for-each>
+      <xsl:for-each select="tr">
+        <tr>
+          <xsl:for-each select="td">
+            <td>
+              <xsl:apply-templates select="node()"/>
+            </td>
+          </xsl:for-each>
+        </tr>
+      </xsl:for-each>
     </table>
     </div>
     </div>
