@@ -56,7 +56,7 @@ return array(
             array('allow', 'member', 'controller:Api\Controller\Job:submit'),
             array('allow', 'member', 'controller:Api\Controller\Job:status'),
             array('allow', 'member', 'controller:Api\Controller\Job:retrieve'),
-            array('allow', 'member', 'controller:Api\Controller\Job:citationStyleList'),
+            array('allow', 'guest', 'controller:Api\Controller\Job:citationStyleList'),
             array('allow', 'member', 'controller:Api\Controller\Site:citationStyleAutocomplete'),
         ),
     ),
