@@ -18,8 +18,8 @@
                         <xsl:value-of select="string(.)"/>
                     </title>
                 </xsl:for-each>
-                <link href="style/app.css" rel="stylesheet"></link>
-                <script src="script/app.js"></script>
+                <link href="style/article.css" rel="stylesheet"></link>
+                <script src="script/article.js"></script>
             </head>
             <body>
                 <div class="container">
