@@ -108,7 +108,6 @@ class Manager {
         }
 
         // Stop if the job has failed
-
         if ($job->status == JOB_STATUS_FAILED) {
             $this->logger->infoTranslate(
                 'manager.queue.jobFailedLog',
