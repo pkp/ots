@@ -222,11 +222,12 @@ class BatchTestSuite
             $percentFailed
         );
 
-        $this->message("\nFiles failed to process:");
-        foreach($this->failedFileList as $file) {
-            $this->message('    %s', $file);
+        if ($this->failedFileList) {
+            $this->message("\nFiles failed to process:");
+            foreach($this->failedFileList as $file) {
+                $this->message('    %s', $file);
+            }
         }
-
     }
 
     /**
