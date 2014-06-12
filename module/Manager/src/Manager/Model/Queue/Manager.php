@@ -95,15 +95,12 @@ class Manager {
         // Don't requeue completed jobs
         if ($job->status == JOB_STATUS_COMPLETED) return;
 
-        // If the reference parsing has failed continue with the conversion but
-        // skip:
-        //
-        //  JOB_CONVERSION_STAGE_BIBTEX
-        //  JOB_CONVERSION_STAGE_BIBTEXREFERENCES
-        //  JOB_CONVERSION_STAGE_CITATIONSTYLE
-        //  JOB_CONVERSION_STAGE_XMP
+        // If the reference parsing has failed continue with the conversion
         if (
-            $job->conversionStage == JOB_CONVERSION_STAGE_REFERENCES and
+            (
+                $job->conversionStage == JOB_CONVERSION_STAGE_REFERENCES or
+                $job->conversionStage == JOB_CONVERSION_STAGE_CITATIONSTYLE
+            ) and
             $job->status == JOB_STATUS_FAILED
         )
         {
@@ -111,6 +108,7 @@ class Manager {
         }
 
         // Stop if the job has failed
+
         if ($job->status == JOB_STATUS_FAILED) {
             $this->logger->infoTranslate(
                 'manager.queue.jobFailedLog',
