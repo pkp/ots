@@ -117,7 +117,7 @@ class BatchTestSuite
             $path = $file->getPathname();
 
             foreach ($this->validExtensions as $extension) {
-                if (preg_match('/\.' . $extension . '$/', $path)) {
+                if (preg_match('/\.' . $extension . '$/i', $path)) {
                     $this->fileList[] = $path;
                 }
             }
