@@ -82,6 +82,9 @@ class Metypeset extends AbstractConverter
         // Set the debug switch
         $command->addSwitch('-d');
 
+        // Disable git debug filesystem
+        $command->addSwitch('--nogit');
+
         // Set the input document type
         $command->addArgument('docx');
 
