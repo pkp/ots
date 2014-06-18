@@ -55,7 +55,7 @@ return array(
     'conversion' => array(
         'docx' => array(
             'unoconv' => array(
-                'command' => '/opt/libreoffice4.1/program/python vendor/dagwieers/unoconv/unoconv',
+                'command' => '/opt/libreoffice4.2/program/python vendor/dagwieers/unoconv/unoconv',
             ),
         ),
         'nlmxml' => array(
