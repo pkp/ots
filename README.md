@@ -47,14 +47,14 @@ Requirements
 * [xml2bib](http://sourceforge.net/p/bibutils/home/xml2bib/) needs to be installed
 * [Pandoc](http://johnmacfarlane.net/pandoc/) & libghc-citeproc-hs-data needs to be installed
 * The XMP conversion needs [Exiftool](http://www.sno.phy.queensu.ca/~phil/exiftool/) to be installed
-* The docX conversion needs [LibreOffice](http://www.libreoffice.org/) with unoconv installed. The server is tested to work with LibreOffice 4.1.3.
+* The docX conversion needs [LibreOffice](http://www.libreoffice.org/) with unoconv installed. The server is tested to work with LibreOffice 4.2.4.
 
 ```
-wget http://download.documentfoundation.org/libreoffice/stable/4.1.3/deb/x86_64/LibreOffice_4.1.3_Linux_x86-64_deb.tar.gz
-tar -xzf LibreOffice_4.1.3_Linux_x86-64_deb.tar.gz
-rm -f LibreOffice_4.1.3_Linux_x86-64_deb.tar.gz
-sudo dpkg -i LibreOffice_4.1.3.2_Linux_x86-64_deb/DEBS/*.deb
-rm -rf LibreOffice_4.1.3.2_Linux_x86-64_deb
+wget http://download.documentfoundation.org/libreoffice/stable/4.2.4/deb/x86_64/LibreOffice_4.2.4_Linux_x86-64_deb.tar.gz
+tar -xzf LibreOffice_4.2.4_Linux_x86-64_deb.tar.gz
+rm -f LibreOffice_4.2.4_Linux_x86-64_deb.tar.gz
+sudo dpkg -i LibreOffice_4.2.4.2_Linux_x86-64_deb/DEBS/*.deb
+rm -rf LibreOffice_4.2.4.2_Linux_x86-64_deb
 ```
 
 Installation
