@@ -261,7 +261,8 @@ class BatchTestSuite
      *
      * @return string Markup server query URL
      */
-    function apiUrl($action, $params = array()) {
+    function apiUrl($action, $params = array())
+    {
         $apiUrl = $this->options['markupServerUrl'];
         $apiUrl = rtrim($apiUrl, '/');
 
@@ -283,7 +284,8 @@ class BatchTestSuite
      *
      * @return mixed API response
      */
-    function apiRequest($action, $params = array(), $isPost = false) {
+    function apiRequest($action, $params = array(), $isPost = false)
+    {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
