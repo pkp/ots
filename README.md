@@ -174,14 +174,10 @@ all citation styles from [citationstyles.org](http://citationstyles.org/)
 
 URL: api/job/citationStyleList
 Request type: GET
-Parameters:
-
- * email
- * password
 
 I.e.
 ```
-http://example.com/api/job/citationStyleList?email=user@example.com&password=password
+http://example.com/api/job/citationStyleList
 ```
 Example response:
 ```
