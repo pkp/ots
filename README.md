@@ -42,6 +42,7 @@ Module Description
 
 Requirements
 ------------
+* [Apache mod_headers](http://httpd.apache.org/docs/2.2/mod/mod_headers.html) needs to be installed and enabled
 * [Java VM](https://java.com/en/download/index.jsp) needs to be installed
 * Citation parsing has a variety of requirements please refer to the [ParsCit documentation](https://github.com/knmnyn/ParsCit/blob/master/INSTALL)
 * [xml2bib](http://sourceforge.net/p/bibutils/home/xml2bib/) needs to be installed
