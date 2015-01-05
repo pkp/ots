@@ -54,9 +54,12 @@ class ApiControllerTest extends ControllerTest
             'fileName' => 'Testfile.txt',
             'fileContent' => base64_encode('Test Content'),
             'citationStyleHash' => $keys[0],
+            'email' => $this->userEmail,
+            'password' => $this->userPassword,
         );
 
-        $this->dispatch($this->buildQuery('submit', $data));
+        $this->getRequest()->setMethod('POST')->setPost(new \Zend\Stdlib\Parameters($data));
+        $this->dispatch($this->buildQuery('submit', array(), false));
         $this->assertResponseStatusCode(200);
         $response = json_decode($this->getResponse()->getContent());
         $this->assertTrue(is_object($response));
