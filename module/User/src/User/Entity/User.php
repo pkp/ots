@@ -32,6 +32,11 @@ class User extends DataObject
     protected $id;
 
     /**
+     * @ORM\OneToMany(targetEntity="Manager\Entity\Job", mappedBy="user", cascade={"persist", "remove"})
+     */
+    protected $jobs;
+
+    /**
      * @ORM\Column(type="string", nullable=false, unique=true)
      */
     protected $email;
@@ -75,6 +80,16 @@ class User extends DataObject
      * @ORM\Column(type="boolean", nullable=true)
      */
     protected $active;
+
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->jobs = new ArrayCollection();
+    }
 
     /**
      * Sets the registration date timestamp
@@ -155,10 +170,6 @@ class User extends DataObject
      */
     public function removeJobData()
     {
-        $jobDAO = $this->getServiceLocator()->get('Manager\Model\DAO\JobDAO');
-        $jobs = $jobDAO->findBy(array('user' => $this->id));
-        foreach ($jobs as $job) { $jobDAO->remove($job); }
-
         // Remove the documents directory for this user
         $it = new RecursiveDirectoryIterator($this->getDocumentPath(), FilesystemIterator::SKIP_DOTS);
         $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);

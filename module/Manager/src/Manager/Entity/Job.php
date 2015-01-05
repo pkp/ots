@@ -40,7 +40,7 @@ class Job extends DataObject
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User\Entity\User")
+     * @ORM\ManyToOne(targetEntity="User\Entity\User", inversedBy="jobs")
      * @ORM\JoinColumn(name="userId", referencedColumnName="id")
      */
     protected $user;
