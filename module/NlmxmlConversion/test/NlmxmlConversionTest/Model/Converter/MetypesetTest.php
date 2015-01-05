@@ -67,7 +67,7 @@ class MetypesetTest extends ModelTest
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $this->testOutputDirectory . '/nlm/document.xml');
 
-        $this->assertSame($mimeType, 'application/xml');
+        $this->assertSame($mimeType, 'text/html');
     }
 
     /**
