@@ -81,29 +81,6 @@ class ApiControllerTest extends ControllerTest
     }
 
     /**
-     * Test if the job retrieve action works properly
-     *
-     * @return void
-     */
-    public function testRetrieveAction()
-    {
-        $this->dispatch($this->buildQuery(
-            'retrieve',
-            array(
-                'id' => $this->job->id,
-                'conversionStage' => JOB_CONVERSION_STAGE_ZIP,
-            )
-        ));
-
-        $this->assertResponseStatusCode(200);
-        $response = json_decode($this->getResponse()->getContent());
-        $this->assertTrue(is_object($response));
-        $this->assertSame($response->status, 'success');
-        $this->assertTrue(isset($response->fileName));
-        $this->assertTrue(isset($response->fileContents));
-    }
-
-    /**
      * Buid a query to the API
      *
      * @param mixed $call API endpoint to call
