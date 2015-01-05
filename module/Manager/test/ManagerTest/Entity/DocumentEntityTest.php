@@ -107,8 +107,9 @@ class DocumentEntityTest extends ModelTest
             )
         );
         $this->job->documents[] = $this->document;
+        $this->user->jobs[] = $this->job;
 
-        $this->getJobDAO()->save($this->job);
+        $this->getUserDAO()->save($this->user);
     }
 
     /**
