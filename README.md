@@ -63,7 +63,7 @@ Installation
 * Copy the source
 
 ```
-# git clone https://github.com/MichaelThessel/xmlps.git
+# git clone https://github.com/pkp/xmlps.git
 # cd xmlps
 ```
 * Install the dependencies
