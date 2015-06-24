@@ -49,12 +49,12 @@
         {
             "type": "package",
             "package": {
-                "name": "MichaelThessel/ParsCit",
-                "version": "110505b",
+                "name": "knmnyn/ParsCit",
+                "version": "dev-master",
                 "source": {
-                    "url": "https://github.com/MichaelThessel/ParsCit.git",
+                    "url": "https://github.com/knmnyn/ParsCit.git",
                     "type": "git",
-                    "reference": "110505b"
+                    "reference": "4872c93c2272e221c3588e4524925a284fde368c"
                 }
             }
         },
@@ -78,12 +78,15 @@
         "doctrine/doctrine-orm-module": "0.*",
         "zendframework/zend-developer-tools": "dev-master",
         "phpunit/phpunit": "3.7.*",
-        "slm/queue-doctrine": "0.3.x-dev",
+        "slm/queue-doctrine": "0.3.0-beta1",
         "slm/queue": "0.3.0-beta1",
         "dagwieers/unoconv": "0.6",
         "MartinPaulEve/meTypeset": "dev-master",
         "citation-style-language/styles": "dev-master",
-        "MichaelThessel/ParsCit": "110505b",
+        "knmnyn/ParsCit": "dev-master",
         "dyve/jquery-autocomplete": "dev-master"
+    },
+    "config": {
+        "process-timeout": 1800
     }
 }
