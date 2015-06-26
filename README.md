@@ -44,6 +44,7 @@ Requirements
 ------------
 * [Apache mod_headers](http://httpd.apache.org/docs/2.2/mod/mod_headers.html) needs to be installed and enabled
 * [Java VM](https://java.com/en/download/index.jsp) needs to be installed
+* MySQL
 * Citation parsing has a variety of requirements please refer to the [ParsCit documentation](https://github.com/knmnyn/ParsCit/blob/master/INSTALL)
 * [xml2bib](http://sourceforge.net/p/bibutils/home/xml2bib/) needs to be installed
 * [Pandoc](http://johnmacfarlane.net/pandoc/) & libghc-citeproc-hs-data needs to be installed
@@ -62,51 +63,55 @@ Installation
 ------------
 * Copy the source
 
-```
-# git clone https://github.com/pkp/xmlps.git
-# cd xmlps
-```
+  ```
+  # git clone https://github.com/pkp/xmlps.git
+  # cd xmlps
+  ```
+
 * Install the dependencies
 
-```
-# php composer.phar self-update
-# php composer.phar install
-```
+  ```
+  # php composer.phar self-update
+  # php composer.phar install
+  ```
+
+* Ensure there is a MySQL database called `xmlps`, and a MySQL user with access to it.
+
 * Configure the environment
 
-```
-cp config/autoload/local.php.dist config/autoload/local.php
-```
-* Change local.php according to your environment
+  ```
+  # cp config/autoload/local.php.dist config/autoload/local.php
+  ```
+  Change `local.php` to provide the MySQL user and password.
 
 * Initialize the database
 
-```
-# vendor/doctrine/doctrine-module/bin/doctrine-module  orm:schema-tool:update --force
-```
+  ```
+  # vendor/doctrine/doctrine-module/bin/doctrine-module  orm:schema-tool:update --force
+  ```
 
 * Run the shell script that starts the conversion queues
 
-```
-./start_queues.sh
-```
+  ```
+  # ./start_queues.sh
+  ```
 
 Unit tests
 ----------
 * After a successful installation the unit tests should complete without errors
 
-```
-# ./unittest.sh
-```
+  ```
+  # ./unittest.sh
+  ```
 
 Developer notes
 ---------------
 * SASS compilation, CSS and Javascript compression & unification is done using Guard (http://guardgem.org)
 * After making changes to Javascript (javascript/) or style files (style/scss/) recompile/recompress the style and Javascript files by running
 
-```
-# guard
-```
+  ```
+  # guard
+  ```
 
 API
 ---
