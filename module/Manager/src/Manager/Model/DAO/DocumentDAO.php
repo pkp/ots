@@ -15,4 +15,15 @@ class DocumentDAO extends DAO {
     {
         return 'Manager\Entity\Document';
     }
+
+    /**
+     * Returns a job paginator with all documents of this job ordered by creation
+     */
+    public function getDocumentPaginator($job)
+    {
+        return $this->getPaginator(
+            'SELECT d FROM Manager\Entity\Document AS d WHERE d.job = :jobId ORDER BY d.id DESC',
+            array('jobId' => $job->id)
+        );
+    }
 }

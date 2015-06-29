@@ -62,10 +62,26 @@ trait TestHelper {
     {
         $this->overwriteProperties($data, 'user');
 
-        $user = $this->getUserDAO()->findOneBy(array('email' => $this->userEmail));
+        $userDao = $this->getUserDAO();
+        $jobDao = $this->getJobDAO();
+        $docDao = $this->getDocumentDAO();
+
+        $user = $userDao->findOneBy(array('email' => $this->userEmail));
         if (!$user) return;
 
-        $this->getUserDAO()->remove($user);
+        // For each of the user’s jobs, ...
+        foreach ($jobDao->getJobPaginator($user) as $job) {
+            // ... get and delete each job’s documents, then ...
+            foreach ($docDao->getDocumentPaginator($job) as $doc) {
+                $docDao->remove($doc);
+            }
+
+            // ... delete each job.
+            $jobDao->remove($job);
+        }
+
+        // Finally, delete the user.
+        $userDao->remove($user);
     }
 
     /**
