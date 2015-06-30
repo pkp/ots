@@ -18,6 +18,10 @@ class JobDAO extends DAO {
 
     /**
      * Returns a user paginator with all jobs of this user ordered by creation
+     *
+     * @param User\Entity\User $user
+     *
+     * @return Zend\Paginator\Paginator
      */
     public function getJobPaginator($user)
     {
@@ -29,6 +33,8 @@ class JobDAO extends DAO {
 
     /**
      * Returns a admin job paginator with all users jobs ordered by creation
+     *
+     * @return Zend\Paginator\Paginator
      */
     public function getAdminJobPaginator()
     {

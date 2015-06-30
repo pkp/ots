@@ -18,6 +18,8 @@ class UserDAO extends DAO {
 
     /**
      * Returns a user paginator with all results ordered by email
+     *
+     * @return Zend\Paginator\Paginator
      */
     public function getUserPaginator()
     {

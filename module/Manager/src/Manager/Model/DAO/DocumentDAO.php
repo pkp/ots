@@ -18,6 +18,10 @@ class DocumentDAO extends DAO {
 
     /**
      * Returns a job paginator with all documents of this job ordered by creation
+     *
+     * @param Manager\Entity\Job $job
+     *
+     * @return Zend\Paginator\Paginator
      */
     public function getDocumentPaginator($job)
     {
