@@ -50,6 +50,7 @@ Requirements
 * [Pandoc](http://johnmacfarlane.net/pandoc/) & libghc-citeproc-hs-data needs to be installed
 * The XMP conversion needs [Exiftool](http://www.sno.phy.queensu.ca/~phil/exiftool/) to be installed
 * The docX conversion needs [LibreOffice](http://www.libreoffice.org/) with unoconv installed. The server is tested to work with LibreOffice 4.2.4.
+* The [PHP5 XSL module](http://www.php.net/manual/en/xsl.installation.php) must be installed.
 
 ```
 wget http://download.documentfoundation.org/libreoffice/stable/4.2.4/deb/x86_64/LibreOffice_4.2.4_Linux_x86-64_deb.tar.gz
