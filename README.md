@@ -85,7 +85,7 @@ Installation
   ```
   * Change `local.php` to provide the MySQL user and password.
 
-  * If using a version of unoconv installed via package manager (such as apt), override the command, e.g.:
+  * If using a version of unoconv installed via package manager (such as apt), you may need to override the command, *e.g.*:
 
     ```
         'conversion' => array(
