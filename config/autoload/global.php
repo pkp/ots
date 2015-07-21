@@ -65,7 +65,7 @@ return array(
         ),
         'references' => array(
             'parscit' => array(
-                'command' => 'vendor/MichaelThessel/ParsCit/bin/citeExtract.pl',
+                'command' => 'vendor/knmnyn/ParsCit/bin/citeExtract.pl',
                 'xsl' => 'module/ReferencesConversion/assets/parsCit.xsl',
             ),
         ),
