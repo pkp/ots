@@ -83,7 +83,19 @@ Installation
   ```
   # cp config/autoload/local.php.dist config/autoload/local.php
   ```
-  Change `local.php` to provide the MySQL user and password.
+  * Change `local.php` to provide the MySQL user and password.
+
+  * If using a version of unoconv installed via package manager (such as apt), override the command, e.g.:
+
+    ```
+        'conversion' => array(
+            'docx' => array(
+                'unoconv' => array(
+                    'command' => 'unoconv',
+                ),
+            ),
+        ),
+    ```
 
 * Initialize the database
 
