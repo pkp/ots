@@ -24,6 +24,10 @@ class UserControllerTest extends ControllerTest
         parent::setUp();
 
         $this->resetTestData();
+
+        // Stub out Sendmail in favor of a no-op mail substitute.
+        $transport = $this->sm->get('MailTransport');
+        $transport->setCallable(array($this, 'mailStub'));
     }
 
     /**
@@ -337,6 +341,20 @@ class UserControllerTest extends ControllerTest
     {
         $this->dispatch('/user/activate/id/' . uniqid());
         $this->assertResponseStatusCode(404);
+    }
+
+    /**
+     * Stub for pretending to send mail during testing.
+     *
+     * @param  string $to
+     * @param  string $subject
+     * @param  string $message
+     * @param  string $headers
+     * @param  $parameters
+     */
+    public function mailStub($to, $subject, $message, $headers, $parameters)
+    {
+        return;
     }
 
     /**
