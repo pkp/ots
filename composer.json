@@ -69,6 +69,18 @@
                     "reference": "master"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "pkp/jats2epub",
+                "version": "dev-master",
+                "source": {
+                    "url": "https://github.com/pkp/jats2epub",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
         }
     ],
     "homepage": "http://framework.zend.com/",
@@ -84,7 +96,8 @@
         "MartinPaulEve/meTypeset": "dev-master",
         "citation-style-language/styles": "dev-master",
         "knmnyn/ParsCit": "dev-master",
-        "dyve/jquery-autocomplete": "dev-master"
+        "dyve/jquery-autocomplete": "dev-master",
+	"pkp/jats2epub": "dev-master"
     },
     "config": {
         "process-timeout": 1800
