@@ -32,6 +32,7 @@ class Manager {
         'pdf' => 'PdfConversion\Model\Queue\Job\PdfJob',
         'xmp' => 'XmpConversion\Model\Queue\Job\XmpJob',
         'zip' => 'ZipConversion\Model\Queue\Job\ZipJob',
+        'epub' => 'EpubConversion\Model\Queue\Job\EpubJob'
     );
 
     /**
