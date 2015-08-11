@@ -9,8 +9,9 @@ class UnoconvTest extends ModelTest
 {
     protected $unoconv;
 
-    protected $testFile = 'module/DocxConversion/test/assets/document.odt';
-    protected $testFile2 = '/tmp/UNITTEST_unoconv_outputfile';
+    protected $testInputFile = 'module/DocxConversion/test/assets/document.odt';
+    protected $testDocxFile = '/tmp/UNITTEST_unoconv_docxfile.docx';
+    protected $testPdfFile = '/tmp/UNITTEST_unoconv_pdffile.pdf';
 
     /**
      * Initialize the test
@@ -33,7 +34,7 @@ class UnoconvTest extends ModelTest
     public function testInputFileDoesntExist()
     {
         $this->setExpectedException('Exception');
-        $this->unoconv->setInputFile($this->testFile . rand());
+        $this->unoconv->setInputFile($this->testInputFile . rand());
     }
 
     /**
@@ -41,23 +42,59 @@ class UnoconvTest extends ModelTest
      *
      * @return void
      */
-    public function testConversion()
+    public function testDocxConversion()
     {
-        $this->assertFalse(file_exists($this->testFile2));
+        $this->assertFalse(file_exists($this->testDocxFile));
 
-        $this->unoconv->setInputFile($this->testFile);
-        $this->unoconv->setOutputFile($this->testFile2);
+        $this->unoconv->setInputFile($this->testInputFile);
+        $this->unoconv->setOutputFile($this->testDocxFile);
         $this->unoconv->setFilter('docx7');
         $this->unoconv->convert();
 
         $this->assertSame($this->unoconv->getStatus(), true);
         $this->assertNotNull($this->unoconv->getOutput());
         $this->assertTrue($this->unoconv->getStatus());
+        $this->assertTrue(file_exists($this->testDocxFile));
         $this->assertNotSame(
-            file_get_contents($this->testFile),
-            file_get_contents($this->testFile2)
+            file_get_contents($this->testInputFile),
+            file_get_contents($this->testDocxFile)
         );
-        $this->assertTrue(file_exists($this->testFile2));
+
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $this->testDocxFile);
+
+        $this->assertSame($mimeType, 'application/zip');
+
+        $this->resetTestData();
+    }
+
+    /**
+     * Test if PDF conversion works properly
+     *
+     * @return void
+     */
+    public function testPdfConversion()
+    {
+        $this->assertFalse(file_exists($this->testPdfFile));
+
+        $this->unoconv->setInputFile($this->testInputFile);
+        $this->unoconv->setOutputFile($this->testPdfFile);
+        $this->unoconv->setFilter('pdf');
+        $this->unoconv->convert();
+
+        $this->assertSame($this->unoconv->getStatus(), true);
+        $this->assertNotNull($this->unoconv->getOutput());
+        $this->assertTrue($this->unoconv->getStatus());
+        $this->assertTrue(file_exists($this->testPdfFile));
+        $this->assertNotSame(
+            file_get_contents($this->testInputFile),
+            file_get_contents($this->testPdfFile)
+        );
+
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $this->testPdfFile);
+
+        $this->assertSame($mimeType, 'application/pdf');
 
         $this->resetTestData();
     }
@@ -69,6 +106,7 @@ class UnoconvTest extends ModelTest
      */
     protected function cleanTestData()
     {
-        @unlink($this->testFile2);
+        @unlink($this->testDocxFile);
+        @unlink($this->testPdfFile);
     }
 }
