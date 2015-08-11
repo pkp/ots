@@ -23,6 +23,7 @@ class Manager {
     // TODO: this should come from the config
     protected $queueMap = array(
         'docx' => 'DocxConversion\Model\Queue\Job\DocxJob',
+        'wppdf' => 'DocxConversion\Model\Queue\Job\WpPdfJob',
         'nlmxml' => 'NlmxmlConversion\Model\Queue\Job\NlmxmlJob',
         'references' => 'ReferencesConversion\Model\Queue\Job\ReferencesJob',
         'bibtex' => 'BibtexConversion\Model\Queue\Job\BibtexJob',

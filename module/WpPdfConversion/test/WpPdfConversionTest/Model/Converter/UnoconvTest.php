@@ -1,6 +1,6 @@
 <?php
 
-namespace DocxConversionTest\Model\Converter;
+namespace WpPdfConversionTest\Model\Converter;
 
 use PHPUnit_Framework_TestCase;
 use Xmlps\UnitTest\ModelTest;
@@ -9,8 +9,8 @@ class UnoconvTest extends ModelTest
 {
     protected $unoconv;
 
-    protected $testInputFile = 'module/DocxConversion/test/assets/document.odt';
-    protected $testOutputFile = '/tmp/UNITTEST_unoconv_docxfile.docx';
+    protected $testInputFile = 'module/WpPdfConversion/test/assets/document.odt';
+    protected $testOutputFile = '/tmp/UNITTEST_unoconv_pdffile.pdf';
 
     /**
      * Initialize the test
@@ -20,7 +20,7 @@ class UnoconvTest extends ModelTest
     public function setUp() {
         parent::setUp();
 
-        $this->unoconv = $this->sm->get('DocxConversion\Model\Converter\Unoconv');
+        $this->unoconv = $this->sm->get('WpPdfConversion\Model\Converter\Unoconv');
 
         $this->resetTestData();
     }
@@ -37,17 +37,17 @@ class UnoconvTest extends ModelTest
     }
 
     /**
-     * Test if the conversion works properly
+     * Test if PDF conversion works properly
      *
      * @return void
      */
-    public function testDocxConversion()
+    public function testPdfConversion()
     {
         $this->assertFalse(file_exists($this->testOutputFile));
 
         $this->unoconv->setInputFile($this->testInputFile);
         $this->unoconv->setOutputFile($this->testOutputFile);
-        $this->unoconv->setFilter('docx7');
+        $this->unoconv->setFilter('pdf');
         $this->unoconv->convert();
 
         $this->assertSame($this->unoconv->getStatus(), true);
@@ -62,7 +62,7 @@ class UnoconvTest extends ModelTest
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $this->testOutputFile);
 
-        $this->assertSame($mimeType, 'application/zip');
+        $this->assertSame($mimeType, 'application/pdf');
 
         $this->resetTestData();
     }

@@ -7,6 +7,7 @@
         <directory>module/Manager/test</directory>
         <directory>module/User/test</directory>
         <directory>module/DocxConversion/test</directory>
+        <directory>module/WpPdfConversion/test</directory>
         <directory>module/NlmxmlConversion/test</directory>
         <directory>module/ReferencesConversion/test</directory>
         <directory>module/BibtexConversion/test</directory>

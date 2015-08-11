@@ -12,6 +12,7 @@ return array(
         'Manager',
         'User',
         'DocxConversion',
+        'WpPdfConversion',
         'NlmxmlConversion',
         'ReferencesConversion',
         'BibtexConversion',

@@ -1,8 +1,8 @@
 <?php
 
-namespace DocxConversion;
+namespace WpPdfConversion;
 
-use DocxConversion\Model\Converter\Unoconv;
+use WpPdfConversion\Model\Converter\Unoconv;
 
 class Module
 {
@@ -44,14 +44,14 @@ class Module
     {
         return array(
             'factories' => array(
-                'DocxConversion\Model\Converter\Unoconv' => function($sm)
+                'WpPdfConversion\Model\Converter\Unoconv' => function($sm)
                 {
                     $config = $sm->get('Config');
                     $logger = $sm->get('Logger');
-                    if (!isset($config['conversion']['docx']['unoconv'])) {
+                    if (!isset($config['conversion']['wppdf']['unoconv'])) {
                         throw new \Exception('Unoconv configuration is missing');
                     }
-                    $config = $config['conversion']['docx']['unoconv'];
+                    $config = $config['conversion']['wppdf']['unoconv'];
 
                     return new Unoconv($config, $logger);
                 }
