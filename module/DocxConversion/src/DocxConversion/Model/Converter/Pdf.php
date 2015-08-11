@@ -14,6 +14,8 @@ class Pdf extends AbstractConverter
     protected $config;
     protected $logger;
 
+    protected $inputFile;
+
     /**
      * Constructor
      *
@@ -27,4 +29,27 @@ class Pdf extends AbstractConverter
         $this->config = $config;
         $this->logger = $logger;
     }
+
+    /**
+     * Set the file to convert
+     *
+     * @param mixed $inputFile
+     *
+     * @return void
+     */
+    public function setInputFile($inputFile)
+    {
+        if (!file_exists($inputFile)) {
+            throw new \Exception('Input file doesn\'t exist');
+        }
+
+        $this->inputFile = $inputFile;
+    }
+
+    /**
+     * Convert the document
+     *
+     * @return void
+     */
+    public function convert() {}
 }

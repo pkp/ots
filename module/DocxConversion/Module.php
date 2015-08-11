@@ -2,6 +2,7 @@
 
 namespace DocxConversion;
 
+use DocxConversion\Model\Converter\Pdf;
 use DocxConversion\Model\Converter\Unoconv;
 
 class Module
@@ -44,6 +45,14 @@ class Module
     {
         return array(
             'factories' => array(
+                'DocxConversion\Model\Converter\Pdf' => function($sm)
+                {
+                    $config = $sm->get('Config');
+                    $logger = $sm->get('Logger');
+                    $config = array(); //$config['conversion']['docx']['pdf'];
+
+                    return new Pdf($config, $logger);
+                },
                 'DocxConversion\Model\Converter\Unoconv' => function($sm)
                 {
                     $config = $sm->get('Config');
@@ -54,8 +63,8 @@ class Module
                     $config = $config['conversion']['docx']['unoconv'];
 
                     return new Unoconv($config, $logger);
-                },
-            ),
+                }
+            )
         );
     }
 
