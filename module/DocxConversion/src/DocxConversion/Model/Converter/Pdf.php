@@ -11,6 +11,9 @@ use Manager\Model\Converter\AbstractConverter;
  */
 class Pdf extends AbstractConverter
 {
+    protected $config;
+    protected $logger;
+
     /**
      * Constructor
      *
