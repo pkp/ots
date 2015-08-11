@@ -69,7 +69,18 @@
                     "reference": "master"
                 }
             }
-        }
+        },
+	{
+	    "type": "package",
+	    "package": {
+		"name": "CeON/CERMINE",
+		"version": "1.7",
+		"dist": {
+		    "url": "http://maven.ceon.pl/artifactory/simple/kdd-shapshots/pl/edu/icm/cermine/cermine-impl/1.7-SNAPSHOT/cermine-impl-1.7-20150520.094534-2-jar-with-dependencies.jar",
+		    "type": "file"
+		}
+	    }
+	}
     ],
     "homepage": "http://framework.zend.com/",
     "require": {
@@ -84,7 +95,8 @@
         "MartinPaulEve/meTypeset": "dev-master",
         "citation-style-language/styles": "dev-master",
         "knmnyn/ParsCit": "dev-master",
-        "dyve/jquery-autocomplete": "dev-master"
+        "dyve/jquery-autocomplete": "dev-master",
+	"CeON/CERMINE": "1.7"
     },
     "config": {
         "process-timeout": 1800
