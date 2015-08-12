@@ -3,11 +3,12 @@
 namespace Cermine\Model\Converter;
 
 use Xmlps\Logger\Logger;
+use Xmlps\Command\Command;
 
 use Manager\Model\Converter\AbstractConverter;
 
 /**
- * Converts documents using Open/Libreoffice and unoconv
+ * Extracts information from PDF documents using CERMINE
  */
 class Cermine extends AbstractConverter
 {
@@ -27,6 +28,11 @@ class Cermine extends AbstractConverter
      */
     public function __construct($config, Logger $logger)
     {
+        if (!isset($config['cerminejar']) ||
+            !isset($config['jre'])) {
+            throw new \Exception('CERMINE jar and/or Java are not configured');
+        }
+
         $this->config = $config;
         $this->logger = $logger;
     }
@@ -59,9 +65,51 @@ class Cermine extends AbstractConverter
     }
 
     /**
-     * Convert the document
+     * Extract content from the document.
      *
      * @return void
      */
-    public function convert() {}
+    public function convert()
+    {
+        // In the future, we might break this into multiple different
+        // kinds of actions supported by CERMINE, but for now it only
+        // performs extraction.
+
+        $this->logger->infoTranslate('cermine.cermine.beginConversion');
+
+        $command = new Command;
+
+        // Run Java or JRE...
+        $command->setCommand($this->config['jre']);
+
+        // ... with CERMINE in the classpath, ...
+        $command->addSwitch('-cp', $this->config['cerminejar']);
+
+        // ... the content extraction command, ...
+        $command->addArgument('pl.edu.icm.cermine.PdfNLMContentExtractor');
+
+        // ... the input file, ...
+        $command->addSwitch('-path', $this->inputFile);
+
+        // Send STDERR to STDOUT, so we can capture it, but send
+        // STDOUT to our destination.
+        $command->addRedirect('2>&1 >' . $this->outputFile);
+
+        $this->logger->debugTranslate(
+            'cermine.cermine.executeCommandLog',
+            $command->getCommand()
+        );
+
+        print "\n" . $command->getCommand() . "\n";
+
+        // Execute the conversion
+        $command->execute();
+        $this->status = $command->isSuccess();
+        $this->output = $command->getOutputString();
+
+        $this->logger->debugTranslate(
+            'cermine.cermine.executeCommandOutputLog',
+            $this->getOutput()
+        );
+    }
 }

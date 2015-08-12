@@ -48,7 +48,10 @@ class Module
                 {
                     $config = $sm->get('Config');
                     $logger = $sm->get('Logger');
-                    $config = array();
+                    if (!isset($config['conversion']['cermine'])) {
+                        throw new \Exception('CERMINE configuration is missing');
+                    }
+                    $config = $config['conversion']['cermine'];
 
                     return new Cermine($config, $logger);
                 }

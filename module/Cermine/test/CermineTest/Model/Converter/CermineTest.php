@@ -35,4 +35,45 @@ class CermineTest extends ModelTest
         $this->setExpectedException('Exception');
         $this->cermine->setInputFile($this->testInputFile . rand());
     }
+
+    /**
+     * Test if the conversion works properly
+     *
+     * @return void
+     */
+    public function testPdfContentExtraction() {
+        $this->assertFalse(file_exists($this->testOutputFile));
+
+        $this->cermine->setInputFile($this->testInputFile);
+        $this->cermine->setOutputFile($this->testOutputFile);
+        $this->cermine->convert();
+
+        $this->assertSame($this->cermine->getStatus(), true);
+        $this->assertNotNull($this->cermine->getOutput());
+        $this->assertTrue($this->cermine->getStatus());
+        $this->assertTrue(file_exists($this->testOutputFile));
+        $this->assertNotSame(
+            file_get_contents($this->testInputFile),
+            file_get_contents($this->testOutputFile)
+            );
+
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $this->testOutputFile);
+
+        $this->assertSame($mimeType, 'application/xml');
+
+        die();
+
+        $this->resetTestData();
+    }
+
+    /**
+     * Remove test data
+     *
+     * @return void
+     */
+    protected function cleanTestData()
+    {
+        //@unlink($this->testOutputFile);
+    }
 }

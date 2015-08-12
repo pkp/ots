@@ -102,5 +102,9 @@ return array(
                 'command' => 'exiftool',
             ),
         ),
-    ),
+        'cermine' => array(
+            'cerminejar' => 'vendor/CeON/CERMINE/cermine-impl-1.7-20150520.094534-2-jar-with-dependencies.jar',
+            'jre' => '/usr/bin/jre'
+        )
+    )
 );

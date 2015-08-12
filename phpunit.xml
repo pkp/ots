@@ -17,6 +17,7 @@
         <directory>module/PdfConversion/test</directory>
         <directory>module/XmpConversion/test</directory>
         <directory>module/ZipConversion/test</directory>
+        <directory>module/Cermine/test</directory>
       </testsuite>
     </testsuites>
 </phpunit>
