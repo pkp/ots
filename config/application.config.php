@@ -22,6 +22,7 @@ return array(
         'PdfConversion',
         'XmpConversion',
         'ZipConversion',
+        'Cermine'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
