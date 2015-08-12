@@ -19,6 +19,8 @@ Module Description
  * Handles job distribution to queues
 * DocxConversion
  * Converts documents to DocX format
+* WpPdfConversion
+ * Converts word processing documents directly to PDF
 * NlmxmlConversion
  * Converts documents to NLMXML format
 * ReferenceConversion
@@ -37,6 +39,8 @@ Module Description
  * Adds an XMP sidecar with metadata from the NLMXML to the PDF document
 * ZipConversion
  * Zips all documents
+* Cermine
+ * Uses [CERMINE](http://cermine.ceon.pl/) to extract information from PDF documents
 * API
  * Simple REST API to submit and retrieve jobs and to provide functionality for the frontends AJAX callbacks.
 
