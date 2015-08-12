@@ -62,8 +62,6 @@ class CermineTest extends ModelTest
 
         $this->assertSame($mimeType, 'application/xml');
 
-        die();
-
         $this->resetTestData();
     }
 
@@ -74,6 +72,6 @@ class CermineTest extends ModelTest
      */
     protected function cleanTestData()
     {
-        //@unlink($this->testOutputFile);
+        @unlink($this->testOutputFile);
     }
 }

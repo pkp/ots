@@ -100,8 +100,6 @@ class Cermine extends AbstractConverter
             $command->getCommand()
         );
 
-        print "\n" . $command->getCommand() . "\n";
-
         // Execute the conversion
         $command->execute();
         $this->status = $command->isSuccess();
