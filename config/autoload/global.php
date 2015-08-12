@@ -58,11 +58,6 @@ return array(
                 'command' => '/opt/libreoffice4.2/program/python vendor/dagwieers/unoconv/unoconv',
             ),
         ),
-        'wppdf' => array(
-            'unoconv' => array(
-                'command' => '/opt/libreoffice4.2/program/python vendor/dagwieers/unoconv/unoconv',
-            ),
-        ),
         'nlmxml' => array(
             'metypeset' => array(
                 'command' => 'vendor/MartinPaulEve/meTypeset/bin/meTypeset.py',

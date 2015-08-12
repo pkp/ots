@@ -2,8 +2,6 @@
 
 namespace WpPdfConversion;
 
-use WpPdfConversion\Model\Converter\Unoconv;
-
 class Module
 {
     /**
@@ -42,21 +40,6 @@ class Module
      */
     public function getServiceConfig()
     {
-        return array(
-            'factories' => array(
-                'WpPdfConversion\Model\Converter\Unoconv' => function($sm)
-                {
-                    $config = $sm->get('Config');
-                    $logger = $sm->get('Logger');
-                    if (!isset($config['conversion']['wppdf']['unoconv'])) {
-                        throw new \Exception('Unoconv configuration is missing');
-                    }
-                    $config = $config['conversion']['wppdf']['unoconv'];
-
-                    return new Unoconv($config, $logger);
-                }
-            )
-        );
+        return array();
     }
-
 }
