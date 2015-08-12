@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-28 14:26-1000\n"
-"PO-Revision-Date: 2014-01-31 16:09-1000\n"
-"Last-Translator: \n"
-"Language-Team: Michael Thessel\n"
+"POT-Creation-Date: 2015-08-12 17:52-0600\n"
+"PO-Revision-Date: 2015-08-12 17:54-0600\n"
+"Last-Translator: Christopher R. Maden <crism@maden.org>\n"
+"Language-Team: PKP\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,22 +14,144 @@ msgstr ""
 "noticeTranslate;warnTranslate;errTranslate;critTranslate;alertTranslate;"
 "emergTranslate\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.6.3\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-SearchPath-1: ../..\n"
 "X-Poedit-SearchPath-2: ../../../vendor/xmlps\n"
 
-#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:98
-msgid "nlmxmlconversion.metypeset.executeCommandLog"
+#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:103
+msgid "user.registration.confirmationEmailBody"
 msgstr ""
-"meTypeset is executing:\n"
-"%s "
+"Hi %s,\n"
+"\n"
+"Thanks for registering with the PKP XML Parsing Service.\n"
+"\n"
+"Please follow this link to activate your account:\n"
+"%s\n"
+"\n"
+"Your PKP XML Parsing Service Team."
 
-#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:108
-msgid "nlmxmlconversion.metypeset.executeCommandOutputLog"
+#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:110
+msgid "application.generic.adminName"
+msgstr "PKP XML Parsing Service"
+
+#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:114
+msgid "user.registration.confirmationEmailSubject"
+msgstr "PKP XML Parsing Service account creation confirmation"
+
+#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:118
+msgid "user.registration.confirmationEmailSentLog"
+msgstr "User registration confirmation email has been sent to \"%s\""
+
+#: ../../User/src/User/Form/PasswordResetFormInputFilter.php:89
+#: ../../User/src/User/Form/RegistrationFormInputFilter.php:133
+msgid "user.form.passwordsDontMatch"
+msgstr "The provided passwords don't match"
+
+#: ../../User/src/User/Form/RegistrationFormInputFilter.php:96
+msgid "user.registrationForm.userAlreadyExists"
+msgstr "This email address is already registered!"
+
+#: ../../User/src/User/Form/LoginForm.php:31
+#: ../../User/src/User/Form/RegistrationForm.php:31
+msgid "user.form.emailAddress"
+msgstr "Email Address"
+
+#: ../../User/src/User/Form/LoginForm.php:42
+#: ../../User/src/User/Form/RegistrationForm.php:42
+msgid "user.form.password"
+msgstr "Password"
+
+#: ../../User/src/User/Form/LoginForm.php:53
+msgid "user.loginForm.login"
+msgstr "Login"
+
+#: ../../User/src/User/Form/RegistrationForm.php:53
+#: ../../User/src/User/Form/PasswordResetForm.php:42
+msgid "user.form.passwordConfirm"
+msgstr "Confirm Password"
+
+#: ../../User/src/User/Form/RegistrationForm.php:65
+msgid "user.registrationForm.register"
+msgstr "Register"
+
+#: ../../User/src/User/Form/PasswordResetForm.php:31
+msgid "user.form.newPassword"
+msgstr "New Password"
+
+#: ../../User/src/User/Form/PasswordResetForm.php:53
+msgid "user.form.save"
+msgstr "Save"
+
+#: ../../User/src/User/Controller/UserController.php:124
+msgid "user.authentication.emailNotVerified"
 msgstr ""
-"meTypeset output:\n"
-"%s"
+"Your email address has not been verified. Please follow the instructions in "
+"the confirmation email you received to activate your account."
+
+#: ../../User/src/User/Controller/UserController.php:142
+msgid "user.authentication.sucessfulLogin"
+msgstr "Hi, welcome back!"
+
+#: ../../User/src/User/Controller/UserController.php:147
+#: ../../../vendor/xmlps/library/Event/Handler/AclDispatchHandler.php:52
+msgid "user.authentication.sucessfulLoginLog"
+msgstr "Successful login by %s"
+
+#: ../../User/src/User/Controller/UserController.php:157
+msgid "user.authentication.invalidLoginCredentials"
+msgstr "The login credentials you provided are invalid. Please try again."
+
+#: ../../User/src/User/Controller/UserController.php:188
+msgid "user.authentication.sucessfulLogout"
+msgstr "Thanks for visiting."
+
+#: ../../User/src/User/Controller/UserController.php:193
+msgid "user.authentication.sucessfulLogoutLog"
+msgstr "Successful logout by %s"
+
+#: ../../User/src/User/Controller/UserController.php:237
+msgid "user.registration.sucessfulRegistration"
+msgstr ""
+"Thanks for registering. A confirmation email has been sent to you. Please "
+"follow the instructions in the email to activate your account."
+
+#: ../../User/src/User/Controller/UserController.php:242
+msgid "user.registration.sucessfulRegistrationLog"
+msgstr "User %s registered successfully"
+
+#: ../../User/src/User/Controller/UserController.php:294
+msgid "user.register.sucessfulActivation"
+msgstr "Your account has been successfully activated."
+
+#: ../../User/src/User/Controller/UserController.php:299
+msgid "user.register.sucessfulActivationLog"
+msgstr "Successful account activation by %s"
+
+#: ../../User/src/User/Controller/UserController.php:333
+msgid "user.settings.saveSuccessConfirm"
+msgstr "Your settings have been updated!"
+
+#: ../../User/src/User/Controller/UserController.php:338
+msgid "user.settings.saveSuccessConfirmLog"
+msgstr "User %s updated settings"
+
+#: ../../User/src/User/Entity/User.php:269
+msgid "user.user.level.basic"
+msgstr "Basic"
+
+#: ../../User/src/User/Entity/User.php:270
+msgid "user.user.level.infinite"
+msgstr "Infinite"
+
+#: ../../User/src/User/Entity/User.php:283
+msgid "user.user.role.member"
+msgstr "Member"
+
+#: ../../User/src/User/Entity/User.php:284
+msgid "user.user.role.administrator"
+msgstr "Administrator"
 
 #: ../../BibtexreferencesConversion/src/BibtexreferencesConversion/Model/Converter/Bibtexreferences.php:87
 msgid "bibtexreferencesconversion.converter.startLog"
@@ -99,85 +221,113 @@ msgstr ""
 "Couldn't replace the reference list. LIBXML error:\n"
 "%s"
 
-#: ../../Manager/src/Manager/Form/UploadForm.php:33
-msgid "manager.uploadForm.file"
-msgstr "Select Document To Convert"
-
-#: ../../Manager/src/Manager/Form/UploadForm.php:43
-msgid "manager.uploadForm.citationStyles"
-msgstr "Select Citation Style"
-
-#: ../../Manager/src/Manager/Form/UploadForm.php:46
-msgid "manager.uploadForm.citationStyleAutocomplete"
-msgstr "Enter citation style name here"
-
-#: ../../Manager/src/Manager/Form/UploadForm.php:57
-#: ../../Manager/view/manager/manager/upload.phtml:15
-#: ../../User/view/user/user/index.phtml:41
-msgid "manager.uploadForm.uploadDocument"
-msgstr "Upload Document"
-
-#: ../../Manager/src/Manager/Entity/Job.php:140
-msgid "manager.job.status.pending"
-msgstr "Pending"
-
-#: ../../Manager/src/Manager/Entity/Job.php:141
-msgid "manager.job.status.processing"
-msgstr "Processing"
-
-#: ../../Manager/src/Manager/Entity/Job.php:142
-msgid "manager.job.status.completed"
-msgstr "Completed"
-
-#: ../../Manager/src/Manager/Entity/Job.php:143
-msgid "manager.job.status.failed"
-msgstr "Failed"
-
-#: ../../Manager/src/Manager/Controller/ManagerController.php:79
-msgid "manager.upload.success"
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Citationstyles.php:92
+msgid "citationstyleconversion.citationstyles.errorLoadingCslLog"
 msgstr ""
-"Your document has been successfully uploaded. It is now being processed."
-
-#: ../../Manager/src/Manager/Controller/ManagerController.php:102
-#: ../../Api/src/Api/Controller/JobController.php:108
-msgid "manager.job.createLog"
-msgstr "A new job has been created (%d)"
-
-#: ../../Manager/src/Manager/Controller/ManagerController.php:137
-msgid "manager.job.noEntriesFound"
-msgstr "No jobs found."
-
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:77
-msgid "manager.queue.receivedProcessingLog"
-msgstr "Processing queue received job (%d)"
-
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:116
-msgid "manager.queue.jobFailedLog"
-msgstr "Job %d failed."
-
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:181
-msgid "manager.queue.jobCompletedLog"
-msgstr "Job %d is completed"
-
-#: ../../Manager/src/Manager/Model/Queue/Manager.php:205
-msgid "manager.queue.receivedQueueLog"
-msgstr "Queued job (%d) in queue %s"
-
-#: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:71
-msgid "bibtexconversion.converter.startLog"
-msgstr "Starting bibtex conversion"
-
-#: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:79
-msgid "bibtexconversion.converter.xml2bib.commandLog"
-msgstr ""
-"Executing bibtex conversion command:\n"
+"Error loading CSL style file. Libxml error:\n"
 "%s"
 
-#: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:87
-msgid "bibtexconversion.converter.OutputLog"
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:129
+msgid "citationstyleconversion.converter.startLog"
+msgstr "Starting pandoc conversion"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:179
+msgid "citationstyleconversion.converter.pandoc.commandLog"
 msgstr ""
-"Bibtex conversion output:\n"
+"Executing pandoc conversion command:\n"
 "%s"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:189
+msgid "citationstyleconversion.converter.OutputLog"
+msgstr ""
+"Pandoc conversion output:\n"
+"%s"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:213
+msgid "citationstyleconversion.converter.NlmxmlDomErrorLog"
+msgstr ""
+"Couldn't load NLMXML input file. Invalid xml. LIBXML error:\n"
+"%s"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:249
+msgid "citationstyleconversion.converter.pandoc.createReferencesDomErrorLog"
+msgstr "Error creating DOM Document from pandoc output. LIBXML error:%s"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:264
+msgid "citationstyleconversion.converter.pandoc.loadHtmlErrorLog"
+msgstr "Error creating DOM Document from html document. LIBXML error:%s"
+
+#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:275
+msgid "citationstyleconversion.converter.pandoc.noReferencesSectionFoundLog"
+msgstr "Couldn't find references section in HTML document."
+
+#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:107
+msgid "nlmxmlconversion.metypeset.executeCommandLog"
+msgstr ""
+"meTypeset is executing:\n"
+"%s "
+
+#: ../../NlmxmlConversion/src/NlmxmlConversion/Model/Converter/Metypeset.php:117
+msgid "nlmxmlconversion.metypeset.executeCommandOutputLog"
+msgstr ""
+"meTypeset output:\n"
+"%s"
+
+#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:128
+msgid "docxconversion.unoconv.executeCommandLog"
+msgstr ""
+"Unoconv is executing:\n"
+"%s "
+
+#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:138
+msgid "docxconversion.unoconv.executeCommandOutputLog"
+msgstr ""
+"Unoconf output:\n"
+"%s"
+
+#: ../../Admin/src/Admin/Form/UserEditForm.php:42
+msgid "user.user.level"
+msgstr "Level"
+
+#: ../../Admin/src/Admin/Form/UserEditForm.php:54
+msgid "user.user.role"
+msgstr "Role"
+
+#: ../../Admin/src/Admin/Form/UserEditForm.php:66
+msgid "user.user.active"
+msgstr "Active"
+
+#: ../../Admin/src/Admin/Form/UserEditForm.php:77
+msgid "application.generic.save"
+msgstr "Save"
+
+#: ../../Admin/src/Admin/Form/UserRemovalForm.php:38
+msgid "application.generic.remove"
+msgstr "Remove"
+
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:63
+msgid "admin.user.noEntriesFound"
+msgstr "No user records found."
+
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:101
+msgid "admin.userManagement.userEditSuccess"
+msgstr "Sucessfully edited user \"%s\""
+
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:109
+msgid "admin.userManagement.userEditSuccessLog"
+msgstr "Edited user \"%s\""
+
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:167
+msgid "admin.userManagement.userRemovalSuccess"
+msgstr "Sucessfully removed user \"%s\""
+
+#: ../../Admin/src/Admin/Controller/UserManagementController.php:175
+msgid "admin.userManagement.userRemovalSuccessLog"
+msgstr "Removed user \"%s\""
+
+#: ../../Admin/src/Admin/Controller/SystemLogController.php:49
+msgid "admin.log.noEntriesFound"
+msgstr "No log entries found."
 
 #: ../../PdfConversion/src/PdfConversion/Model/Converter/Pdf.php:82
 msgid "pdfconversion.converter.startLog"
@@ -197,6 +347,67 @@ msgstr ""
 msgid "pdfconversion.wkhtmltopdf.executeCommandOutputLog"
 msgstr ""
 "Wkhtmltopdf output:\n"
+"%s"
+
+#: ../../Api/src/Api/Controller/JobController.php:62
+msgid "job.api.error.fileNameParameterMissing"
+msgstr "File name (fileName) parameter is missing."
+
+#: ../../Api/src/Api/Controller/JobController.php:70
+msgid "job.api.error.fileContentParameterMissing"
+msgstr "File content (fileContent) parameter is missing."
+
+#: ../../Api/src/Api/Controller/JobController.php:78
+msgid "job.api.error.citationStyleHashParameterMissing"
+msgstr "Citation style hash (citationStyleHash) parameter is missing."
+
+#: ../../Api/src/Api/Controller/JobController.php:86
+msgid "job.api.error.invalidCitationStyleHash"
+msgstr "Invalid citation style hash"
+
+#: ../../Api/src/Api/Controller/JobController.php:109
+#: ../../Manager/src/Manager/Controller/ManagerController.php:102
+msgid "manager.job.createLog"
+msgstr "A new job has been created (%d)"
+
+#: ../../Api/src/Api/Controller/JobController.php:166
+msgid "job.api.error.jobNotCompleted"
+msgstr "The job is not completed yet"
+
+#: ../../Api/src/Api/Controller/JobController.php:174
+msgid "job.api.error.conversionStageParameterMissing"
+msgstr "Conversion stage (conversionStage) parameter is missing."
+
+#: ../../Api/src/Api/Controller/JobController.php:182
+msgid "job.api.error.documentNotFound"
+msgstr "Couldn't find document"
+
+#: ../../Api/src/Api/Controller/JobController.php:210
+msgid "job.api.error.jobIdParameterMissing"
+msgstr "Job id (id) parameter is missing."
+
+#: ../../Api/src/Api/Controller/JobController.php:220
+msgid "job.api.error.invalidJobId"
+msgstr "Invalid job id (id) provided."
+
+#: ../../Api/src/Api/Controller/SiteController.php:50
+msgid "job.api.error.fragmentParameterMissing"
+msgstr "Citation style fragment (fragment) parameter is missing."
+
+#: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:71
+msgid "bibtexconversion.converter.startLog"
+msgstr "Starting bibtex conversion"
+
+#: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:79
+msgid "bibtexconversion.converter.xml2bib.commandLog"
+msgstr ""
+"Executing bibtex conversion command:\n"
+"%s"
+
+#: ../../BibtexConversion/src/BibtexConversion/Model/Converter/Bibtex.php:87
+msgid "bibtexconversion.converter.OutputLog"
+msgstr ""
+"Bibtex conversion output:\n"
 "%s"
 
 #: ../../ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php:122
@@ -271,83 +482,6 @@ msgstr ""
 "Successfully transformed bibliography:\n"
 "%s"
 
-#: ../../Admin/src/Admin/Form/UserRemovalForm.php:38
-#: ../../Admin/view/admin/user-management/list.phtml:26
-msgid "application.generic.remove"
-msgstr "Remove"
-
-#: ../../Admin/src/Admin/Form/UserEditForm.php:42
-msgid "user.user.level"
-msgstr "Level"
-
-#: ../../Admin/src/Admin/Form/UserEditForm.php:54
-msgid "user.user.role"
-msgstr "Role"
-
-#: ../../Admin/src/Admin/Form/UserEditForm.php:66
-msgid "user.user.active"
-msgstr "Active"
-
-#: ../../Admin/src/Admin/Form/UserEditForm.php:77
-msgid "application.generic.save"
-msgstr "Save"
-
-#: ../../Admin/src/Admin/Controller/SystemLogController.php:49
-msgid "admin.log.noEntriesFound"
-msgstr "No log entries found."
-
-#: ../../Admin/src/Admin/Controller/UserManagementController.php:63
-msgid "admin.user.noEntriesFound"
-msgstr "No user records found."
-
-#: ../../Admin/src/Admin/Controller/UserManagementController.php:101
-msgid "admin.userManagement.userEditSuccess"
-msgstr "Sucessfully edited user \"%s\""
-
-#: ../../Admin/src/Admin/Controller/UserManagementController.php:109
-msgid "admin.userManagement.userEditSuccessLog"
-msgstr "Edited user \"%s\""
-
-#: ../../Admin/src/Admin/Controller/UserManagementController.php:167
-msgid "admin.userManagement.userRemovalSuccess"
-msgstr "Sucessfully removed user \"%s\""
-
-#: ../../Admin/src/Admin/Controller/UserManagementController.php:175
-msgid "admin.userManagement.userRemovalSuccessLog"
-msgstr "Removed user \"%s\""
-
-#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:92
-msgid "htmlconversion.converter.startLog"
-msgstr "Starting HTML conversion"
-
-#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:97
-msgid "htmlconversion.converter.nlmxmlDomErrorLog"
-msgstr ""
-"Couldn't load XSL style sheet. LIBXML error:\n"
-"%s"
-
-#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:124
-msgid "htmlconversion.converter.xslFileNotFoundLog"
-msgstr "Couldn't find the specified XSL file."
-
-#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:132
-msgid "htmlconversion.converter.xslLoadErrorLog"
-msgstr ""
-"Couldn't load XSL style sheet. LIBXML error:\n"
-"%s"
-
-#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:144
-msgid "htmlconversion.converter.transformErrorLog"
-msgstr ""
-"Error tansforming NLMXML document to HTML. LIBXML error:\n"
-"%s"
-
-#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:152
-msgid "htmlconversion.converter.transformsSuccessLog"
-msgstr ""
-"Sucessfully converted NLMXML to HTML. HTML document:\n"
-"%s"
-
 #: ../../XmpConversion/src/XmpConversion/Model/Converter/Xmp.php:87
 msgid "xmpconversion.converter.loadXML.domErrorLog"
 msgstr ""
@@ -394,599 +528,384 @@ msgstr ""
 "Exiftool output (adding XMP sidecar):\n"
 "%s"
 
-#: ../../Api/src/Api/Controller/JobController.php:65
-msgid "job.api.error.fileNameParameterMissing"
-msgstr "File name (fileName) parameter is missing."
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:92
+msgid "htmlconversion.converter.startLog"
+msgstr "Starting HTML conversion"
 
-#: ../../Api/src/Api/Controller/JobController.php:72
-msgid "job.api.error.fileContentParameterMissing"
-msgstr "File content (fileContent) parameter is missing."
-
-#: ../../Api/src/Api/Controller/JobController.php:79
-msgid "job.api.error.citationStyleHashParameterMissing"
-msgstr "Citation style hash (citationStyleHash) parameter is missing."
-
-#: ../../Api/src/Api/Controller/JobController.php:86
-msgid "job.api.error.invalidCitationStyleHash"
-msgstr "Invalid citation style hash"
-
-#: ../../Api/src/Api/Controller/JobController.php:164
-msgid "job.api.error.jobNotCompleted"
-msgstr "The job is not completed yet"
-
-#: ../../Api/src/Api/Controller/JobController.php:171
-msgid "job.api.error.conversionStageParameterMissing"
-msgstr "Conversion stage (conversionStage) parameter is missing."
-
-#: ../../Api/src/Api/Controller/JobController.php:178
-msgid "job.api.error.documentNotFound"
-msgstr "Couldn't find document"
-
-#: ../../Api/src/Api/Controller/JobController.php:201
-msgid "job.api.error.jobIdParameterMissing"
-msgstr "Job id (id) parameter is missing."
-
-#: ../../Api/src/Api/Controller/JobController.php:210
-msgid "job.api.error.invalidJobId"
-msgstr "Invalid job id (id) provided."
-
-#: ../../Api/src/Api/Controller/AbstractApiController.php:63
-msgid "api.callMethodLog"
-msgstr "Api call to method: %s"
-
-#: ../../Api/src/Api/Controller/AbstractApiController.php:71
-msgid "api.error.invalidCredentials"
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:97
+msgid "htmlconversion.converter.nlmxmlDomErrorLog"
 msgstr ""
-"This API calls reqires to be authenticated. Please provide email and "
-"password."
-
-#: ../../Api/src/Api/Controller/AbstractApiController.php:113
-msgid "api.authentication.successLog"
-msgstr "API successfully authenticated user: %s"
-
-#: ../../Api/src/Api/Controller/AbstractApiController.php:118
-msgid "api.authentication.errorLog"
-msgstr "API couldn't authenticate user"
-
-#: ../../Api/src/Api/Controller/AbstractApiController.php:148
-msgid "api.responseLog"
-msgstr ""
-"API response:\n"
+"Couldn't load XSL style sheet. LIBXML error:\n"
 "%s"
 
-#: ../../Api/src/Api/Controller/SiteController.php:48
-msgid "job.api.error.fragmentParameterMissing"
-msgstr "Citation style fragment (fragment) parameter is missing."
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:124
+msgid "htmlconversion.converter.xslFileNotFoundLog"
+msgstr "Couldn't find the specified XSL file."
 
-#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:103
-msgid "user.registration.confirmationEmailBody"
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:132
+msgid "htmlconversion.converter.xslLoadErrorLog"
 msgstr ""
-"Hi %s,\n"
-"\n"
-"Thanks for registering with the PKP XML Parsing Service.\n"
-"\n"
-"Please follow this link to activate your account:\n"
-"%s\n"
-"\n"
-"Your PKP XML Parsing Service Team."
+"Couldn't load XSL style sheet. LIBXML error:\n"
+"%s"
 
-#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:110
-msgid "application.generic.adminName"
-msgstr "PKP XML Parsing Service"
-
-#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:114
-msgid "user.registration.confirmationEmailSubject"
-msgstr "PKP XML Parsing Service account creation confirmation"
-
-#: ../../User/src/User/Event/Handler/UserRegisterHandler.php:118
-msgid "user.registration.confirmationEmailSentLog"
-msgstr "User registration confirmation email has been sent to \"%s\""
-
-#: ../../User/src/User/Form/PasswordResetForm.php:31
-msgid "user.form.newPassword"
-msgstr "New Password"
-
-#: ../../User/src/User/Form/PasswordResetForm.php:42
-#: ../../User/src/User/Form/RegistrationForm.php:53
-msgid "user.form.passwordConfirm"
-msgstr "Confirm Password"
-
-#: ../../User/src/User/Form/PasswordResetForm.php:53
-msgid "user.form.save"
-msgstr "Save"
-
-#: ../../User/src/User/Form/PasswordResetFormInputFilter.php:89
-#: ../../User/src/User/Form/RegistrationFormInputFilter.php:133
-msgid "user.form.passwordsDontMatch"
-msgstr "The provided passwords don't match"
-
-#: ../../User/src/User/Form/LoginForm.php:31
-#: ../../User/src/User/Form/RegistrationForm.php:31
-msgid "user.form.emailAddress"
-msgstr "Email Address"
-
-#: ../../User/src/User/Form/LoginForm.php:42
-#: ../../User/src/User/Form/RegistrationForm.php:42
-msgid "user.form.password"
-msgstr "Password"
-
-#: ../../User/src/User/Form/LoginForm.php:53
-#: ../../User/view/user/user/index.phtml:27
-msgid "user.loginForm.login"
-msgstr "Login"
-
-#: ../../User/src/User/Form/RegistrationFormInputFilter.php:96
-msgid "user.registrationForm.userAlreadyExists"
-msgstr "This email address is already registered!"
-
-#: ../../User/src/User/Form/RegistrationForm.php:65
-#: ../../User/view/user/user/index.phtml:32
-msgid "user.registrationForm.register"
-msgstr "Register"
-
-#: ../../User/src/User/Entity/User.php:258
-msgid "user.user.level.basic"
-msgstr "Basic"
-
-#: ../../User/src/User/Entity/User.php:259
-msgid "user.user.level.infinite"
-msgstr "Infinite"
-
-#: ../../User/src/User/Entity/User.php:272
-msgid "user.user.role.member"
-msgstr "Member"
-
-#: ../../User/src/User/Entity/User.php:273
-msgid "user.user.role.administrator"
-msgstr "Administrator"
-
-#: ../../User/src/User/Controller/UserController.php:124
-msgid "user.authentication.emailNotVerified"
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:144
+msgid "htmlconversion.converter.transformErrorLog"
 msgstr ""
-"Your email address has not been verified. Please follow the instructions in "
-"the confirmation email you received to activate your account."
+"Error tansforming NLMXML document to HTML. LIBXML error:\n"
+"%s"
 
-#: ../../User/src/User/Controller/UserController.php:142
-msgid "user.authentication.sucessfulLogin"
-msgstr "Hi, welcome back!"
-
-#: ../../User/src/User/Controller/UserController.php:147
-msgid "user.authentication.sucessfulLoginLog"
-msgstr "Successful login by %s"
-
-#: ../../User/src/User/Controller/UserController.php:157
-msgid "user.authentication.invalidLoginCredentials"
-msgstr "The login credentials you provided are invalid. Please try again."
-
-#: ../../User/src/User/Controller/UserController.php:188
-msgid "user.authentication.sucessfulLogout"
-msgstr "Thanks for visiting."
-
-#: ../../User/src/User/Controller/UserController.php:193
-msgid "user.authentication.sucessfulLogoutLog"
-msgstr "Successful logout by %s"
-
-#: ../../User/src/User/Controller/UserController.php:237
-msgid "user.registration.sucessfulRegistration"
+#: ../../HtmlConversion/src/HtmlConversion/Model/Converter/Html.php:152
+msgid "htmlconversion.converter.transformsSuccessLog"
 msgstr ""
-"Thanks for registering. A confirmation email has been sent to you. Please "
-"follow the instructions in the email to activate your account."
+"Sucessfully converted NLMXML to HTML. HTML document:\n"
+"%s"
 
-#: ../../User/src/User/Controller/UserController.php:242
-msgid "user.registration.sucessfulRegistrationLog"
-msgstr "User %s registered successfully"
+#: ../../Cermine/src/Cermine/Model/Converter/Cermine.php:78
+msgid "cermine.cermine.startExtraction"
+msgstr "Starting CERMINE-based extraction."
 
-#: ../../User/src/User/Controller/UserController.php:294
-msgid "user.register.sucessfulActivation"
-msgstr "Your account has been successfully activated."
-
-#: ../../User/src/User/Controller/UserController.php:299
-msgid "user.register.sucessfulActivationLog"
-msgstr "Successful account activation by %s"
-
-#: ../../User/src/User/Controller/UserController.php:333
-msgid "user.settings.saveSuccessConfirm"
-msgstr "Your settings have been updated!"
-
-#: ../../User/src/User/Controller/UserController.php:338
-msgid "user.settings.saveSuccessConfirmLog"
-msgstr "User %s updated settings"
-
-#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:128
-msgid "docxconversion.unoconv.executeCommandLog"
+#: ../../Cermine/src/Cermine/Model/Converter/Cermine.php:99
+msgid "cermine.cermine.executeCommandLog"
 msgstr ""
-"Unoconv is executing:\n"
+"CERMINE is executing:\n"
 "%s "
 
-#: ../../DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:138
-msgid "docxconversion.unoconv.executeCommandOutputLog"
+#: ../../Cermine/src/Cermine/Model/Converter/Cermine.php:109
+msgid "cermine.cermine.executeCommandOutputLog"
 msgstr ""
-"Unoconf output:\n"
+"CERMINE output:\n"
 "%s"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Citationstyles.php:92
-msgid "citationstyleconversion.citationstyles.errorLoadingCslLog"
+#: ../../MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:82
+#, fuzzy
+msgid "MergeXMLOutputs.converter.startLog"
+msgstr "Starting PDF conversion"
+
+#: ../../MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:121
+msgid "MergeXMLOutputs.catter.executeCommandLog"
 msgstr ""
-"Error loading CSL style file. Libxml error:\n"
+
+#: ../../MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:131
+#, fuzzy
+msgid "MergeXMLOutputs.catter.executeCommandOutputLog"
+msgstr ""
+"meTypeset output:\n"
 "%s"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:129
-msgid "citationstyleconversion.converter.startLog"
-msgstr "Starting pandoc conversion"
+#: ../../Manager/src/Manager/Form/UploadForm.php:33
+msgid "manager.uploadForm.file"
+msgstr "Select Document To Convert"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:179
-msgid "citationstyleconversion.converter.pandoc.commandLog"
+#: ../../Manager/src/Manager/Form/UploadForm.php:43
+msgid "manager.uploadForm.citationStyles"
+msgstr "Select Citation Style"
+
+#: ../../Manager/src/Manager/Form/UploadForm.php:46
+msgid "manager.uploadForm.citationStyleAutocomplete"
+msgstr "Enter citation style name here"
+
+#: ../../Manager/src/Manager/Form/UploadForm.php:57
+msgid "manager.uploadForm.uploadDocument"
+msgstr "Upload Document"
+
+#: ../../Manager/src/Manager/Controller/ManagerController.php:79
+msgid "manager.upload.success"
 msgstr ""
-"Executing pandoc conversion command:\n"
-"%s"
+"Your document has been successfully uploaded. It is now being processed."
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:189
-msgid "citationstyleconversion.converter.OutputLog"
-msgstr ""
-"Pandoc conversion output:\n"
-"%s"
+#: ../../Manager/src/Manager/Controller/ManagerController.php:137
+msgid "manager.job.noEntriesFound"
+msgstr "No jobs found."
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:213
-msgid "citationstyleconversion.converter.NlmxmlDomErrorLog"
-msgstr ""
-"Couldn't load NLMXML input file. Invalid xml. LIBXML error:\n"
-"%s"
+#: ../../Manager/src/Manager/Entity/Job.php:142
+msgid "manager.job.status.pending"
+msgstr "Pending"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:247
-msgid "citationstyleconversion.converter.pandoc.createReferencesDomErrorLog"
-msgstr "Error creating DOM Document from pandoc output. LIBXML error:%s"
+#: ../../Manager/src/Manager/Entity/Job.php:143
+msgid "manager.job.status.processing"
+msgstr "Processing"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:262
-msgid "citationstyleconversion.converter.pandoc.loadHtmlErrorLog"
-msgstr "Error creating DOM Document from html document. LIBXML error:%s"
+#: ../../Manager/src/Manager/Entity/Job.php:144
+msgid "manager.job.status.completed"
+msgstr "Completed"
 
-#: ../../CitationstyleConversion/src/CitationstyleConversion/Model/Converter/Pandoc.php:273
-msgid "citationstyleconversion.converter.pandoc.noReferencesSectionFoundLog"
-msgstr "Couldn't find references section in HTML document."
+#: ../../Manager/src/Manager/Entity/Job.php:145
+msgid "manager.job.status.failed"
+msgstr "Failed"
 
-#: ../../../vendor/xmlps/library/Event/Handler/AclDispatchHandler.php:32
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:79
+msgid "manager.queue.receivedProcessingLog"
+msgstr "Processing queue received job (%d)"
+
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:115
+msgid "manager.queue.jobFailedLog"
+msgstr "Job %d failed."
+
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:180
+msgid "manager.queue.jobCompletedLog"
+msgstr "Job %d is completed"
+
+#: ../../Manager/src/Manager/Model/Queue/Manager.php:204
+msgid "manager.queue.receivedQueueLog"
+msgstr "Queued job (%d) in queue %s"
+
+#: ../../../vendor/xmlps/library/Event/Handler/AclDispatchHandler.php:62
 msgid "application.acl.notAuthorized"
 msgstr "You are not permitted to access the requested resource."
 
-#: ../view/layout/layout.phtml:11
-#: ../../Application/view/layout/layout.phtml:11
-msgid "application.meta.keywords"
-msgstr "NLM, XML, HTML, PDF Conversion, Public Knowledge Project, PKP"
-
-#: ../view/layout/layout.phtml:12
-#: ../../Application/view/layout/layout.phtml:12
-msgid "application.meta.description"
-msgstr ""
-"Conversion Service which converts Word-compatible inputs to production-ready "
-"NLM XML, HTML, and PDF."
-
-#: ../view/layout/layout.phtml:14
-#: ../../Application/view/layout/layout.phtml:14
-#: ../../User/view/_sideBar.phtml:2
-msgid "application.generic.siteTitle"
-msgstr "PKP XML Parsing Service"
-
-#: ../view/layout/layout.phtml:30
-#: ../../Application/view/layout/layout.phtml:30
-msgid "application.layout.systemLog"
-msgstr "System Log"
-
-#: ../view/layout/layout.phtml:31
-#: ../../Application/view/layout/layout.phtml:31
-msgid "application.layout.userManagement"
-msgstr "User Management"
-
-#: ../view/layout/layout.phtml:33
-#: ../../Manager/view/manager/manager/list.phtml:3
-#: ../../Application/view/layout/layout.phtml:33
-msgid "manager.job.list"
-msgstr "Jobs"
-
-#: ../view/layout/layout.phtml:34
-#: ../../Application/view/layout/layout.phtml:34
-msgid "application.layout.settings"
-msgstr "Settings"
-
-#: ../view/layout/layout.phtml:35
-#: ../../Application/view/layout/layout.phtml:35
-msgid "application.layout.logout"
-msgstr "Logout"
-
-#: ../view/layout/layout.phtml:41
-#: ../../Application/view/layout/layout.phtml:41
-msgid "application.layout.subHeading"
-msgstr ""
-"PDF, DOC, DOCX or ODT to XML (%sNLM-XML 3.0 compatible%s) document conversion"
-
-#: ../view/layout/layout.phtml:64
-#: ../../Application/view/layout/layout.phtml:64
-msgid "application.layout.contact"
-msgstr "Contact"
-
-#: ../view/layout/layout.phtml:65
-#: ../../Application/view/layout/layout.phtml:65
-msgid "application.layout.copyright"
-msgstr "Public Knowledge Project"
-
-#: ../view/error/index.phtml:2 ../../Application/view/error/index.phtml:2
-msgid "application.error.generic"
-msgstr "An error occurred"
-
-#: ../view/error/index.phtml:9 ../view/error/404.phtml:54
-#: ../../Application/view/error/index.phtml:9
-#: ../../Application/view/error/404.phtml:54
-msgid "application.error.additionalInformation"
-msgstr "Additional information"
-
-#: ../view/error/index.phtml:12 ../view/error/index.phtml:36
-#: ../view/error/404.phtml:57 ../view/error/404.phtml:81
-#: ../../Application/view/error/index.phtml:12
-#: ../../Application/view/error/index.phtml:36
-#: ../../Application/view/error/404.phtml:57
-#: ../../Application/view/error/404.phtml:81
-msgid "application.generic.file"
-msgstr "File"
-
-#: ../view/error/index.phtml:16 ../view/error/index.phtml:40
-#: ../view/error/404.phtml:61 ../view/error/404.phtml:85
-#: ../../Application/view/error/index.phtml:16
-#: ../../Application/view/error/index.phtml:40
-#: ../../Application/view/error/404.phtml:61
-#: ../../Application/view/error/404.phtml:85
-msgid "application.generic.message"
-msgstr "Message"
-
-#: ../view/error/index.phtml:20 ../view/error/index.phtml:44
-#: ../view/error/404.phtml:65 ../view/error/404.phtml:89
-#: ../../Application/view/error/index.phtml:20
-#: ../../Application/view/error/index.phtml:44
-#: ../../Application/view/error/404.phtml:65
-#: ../../Application/view/error/404.phtml:89
-msgid "application.error.stackTrace"
-msgstr "Stack trace"
-
-#: ../view/error/index.phtml:30 ../view/error/404.phtml:75
-#: ../../Application/view/error/index.phtml:30
-#: ../../Application/view/error/404.phtml:75
-msgid "application.error.previousExceptions"
-msgstr "Previous exceptions"
-
-#: ../view/error/index.phtml:59 ../view/error/404.phtml:104
-#: ../../Application/view/error/index.phtml:59
-#: ../../Application/view/error/404.phtml:104
-msgid "application.error.noExceptionAvailable"
-msgstr "No Exception available"
-
-#: ../view/error/404.phtml:2 ../../Application/view/error/404.phtml:2
-msgid "application.error.404"
-msgstr "A 404 error occurred"
-
-#: ../view/error/404.phtml:11 ../../Application/view/error/404.phtml:11
-msgid "application.error.controllerDispatch"
-msgstr "The requested controller was unable to dispatch the request."
-
-#: ../view/error/404.phtml:14 ../../Application/view/error/404.phtml:14
-msgid "application.error.controlerMap"
-msgstr ""
-"The requested controller could not be mapped to an existing controller class."
-
-#: ../view/error/404.phtml:17 ../../Application/view/error/404.phtml:17
-msgid "application.error.controllerNoDispatch"
-msgstr "The requested controller was not dispatchable."
-
-#: ../view/error/404.phtml:20 ../../Application/view/error/404.phtml:20
-msgid "application.error.noRoute"
-msgstr "The requested URL could not be matched by routing."
-
-#: ../view/error/404.phtml:23 ../../Application/view/error/404.phtml:23
-msgid "application.error.unknown404"
-msgstr "We cannot determine at this time why a 404 was generated."
-
-#: ../view/error/404.phtml:35 ../../Application/view/error/404.phtml:35
-msgid "application.generic.controller"
-msgstr "Controller"
-
-#: ../view/error/404.phtml:42 ../../Application/view/error/404.phtml:42
-msgid "application.error.controlerResolves"
-msgstr "resolves to %s"
-
-#: ../../Manager/view/manager/manager/upload.phtml:2
-msgid "application.manager.index"
-msgstr "Document Management"
-
-#: ../../Manager/view/manager/manager/details.phtml:2
-#: ../../Manager/view/manager/manager/details.phtml:8
-msgid "manager.job.details"
-msgstr "Job Details"
-
-#: ../../Manager/view/manager/manager/details.phtml:10
-#: ../../Manager/view/manager/manager/list.phtml:11
-msgid "manager.job.id"
-msgstr "Job Id"
-
-#: ../../Manager/view/manager/manager/details.phtml:11
-#: ../../Manager/view/manager/manager/list.phtml:16
-msgid "manager.job.creationDate"
-msgstr "Creation Date"
-
-#: ../../Manager/view/manager/manager/details.phtml:12
-#: ../../Manager/view/manager/manager/list.phtml:15
-msgid "manager.job.status"
-msgstr "Status"
-
-#: ../../Manager/view/manager/manager/details.phtml:14
-msgid "manager.job.documents"
-msgstr "Documents"
-
-#: ../../Manager/view/manager/manager/details.phtml:17
-msgid "application.generic.download"
-msgstr "Download"
-
-#: ../../Manager/view/manager/manager/details.phtml:26
-msgid "manager.job.details.document.list"
-msgstr "Document List"
-
-#: ../../Manager/view/manager/manager/details.phtml:28
-msgid "manager.job.details.document.docx"
-msgstr ""
-"Document.docx is the document converted to the Microsoft Office DocX "
-"standard."
-
-#: ../../Manager/view/manager/manager/details.phtml:29
-msgid "manager.job.details.document.nlmxml"
-msgstr "Document.xml is the document converted to the NLM3 XML standard."
-
-#: ../../Manager/view/manager/manager/details.phtml:30
-msgid "manager.job.details.document.bib.xml"
-msgstr "Document document.bib.xml contains the Bibliography in XML"
-
-#: ../../Manager/view/manager/manager/details.phtml:31
-msgid "manager.job.details.document.bib.tex"
-msgstr "Document document.bib contains the Bibliography in the Bibtex format"
-
-#: ../../Manager/view/manager/manager/details.phtml:32
-msgid "manager.job.details.document.html"
-msgstr ""
-"Html.zip contains the document in HTML format as well as the required assets "
-"to render the HTML."
-
-#: ../../Manager/view/manager/manager/details.phtml:33
-msgid "manager.job.details.document.pdf"
-msgstr "Document.pdf is the document in PDF format"
-
-#: ../../Manager/view/manager/manager/details.phtml:34
-msgid "manager.job.details.document.zip"
-msgstr "Documents.zip is a zip archive containing all the documents"
-
-#: ../../Manager/view/manager/manager/list.phtml:13
-msgid "manager.job.user"
-msgstr "User"
-
-#: ../../Manager/view/manager/manager/list.phtml:17
-msgid "manager.job.uploadFileName"
-msgstr "Upload File Name"
-
-#: ../../Manager/view/manager/manager/list.phtml:18
-#: ../../Admin/view/admin/user-management/list.phtml:12
-msgid "application.generic.actions"
-msgstr "Actions"
-
-#: ../../Manager/view/manager/manager/list.phtml:37
-msgid "application.generic.details"
-msgstr "Details"
-
-#: ../../Admin/view/admin/system-log/list.phtml:1
-msgid "application.layout.systemLog.list"
-msgstr "System Log"
-
-#: ../../Admin/view/admin/system-log/list.phtml:7
-msgid "admin.log.time"
-msgstr "Time"
-
-#: ../../Admin/view/admin/system-log/list.phtml:8
-msgid "admin.log.ipAddress"
-msgstr "Documents"
-
-#: ../../Admin/view/admin/system-log/list.phtml:9
-msgid "admin.log.priority"
-msgstr "Level"
-
-#: ../../Admin/view/admin/system-log/list.phtml:10
-msgid "admin.log.message"
-msgstr "Message"
-
-#: ../../Admin/view/admin/user-management/edit.phtml:1
-#: ../../Admin/view/admin/user-management/edit.phtml:13
-msgid "admin.userManagement.edit"
-msgstr "Edit User"
-
-#: ../../Admin/view/admin/user-management/list.phtml:1
-msgid "admin.userManagement.list"
-msgstr "List Users"
-
-#: ../../Admin/view/admin/user-management/list.phtml:7
-msgid "admin.userManagement.id"
-msgstr "User Id"
-
-#: ../../Admin/view/admin/user-management/list.phtml:8
-msgid "admin.userManagement.email"
-msgstr "Email"
-
-#: ../../Admin/view/admin/user-management/list.phtml:9
-msgid "admin.userManagement.role"
-msgstr "Role"
-
-#: ../../Admin/view/admin/user-management/list.phtml:10
-msgid "admin.userManagement.level"
-msgstr "Level"
-
-#: ../../Admin/view/admin/user-management/list.phtml:11
-msgid "admin.userManagement.lastLogin"
-msgstr "Last Login"
-
-#: ../../Admin/view/admin/user-management/list.phtml:25
-msgid "application.generic.edit"
-msgstr "Edit"
-
-#: ../../Admin/view/admin/user-management/remove.phtml:2
-msgid "admin.userManagement.removeUser"
-msgstr "Remove User"
-
-#: ../../Admin/view/admin/user-management/remove.phtml:14
-msgid "application.generic.confirm"
-msgstr "Confirm"
-
-#: ../../Admin/view/admin/user-management/remove.phtml:15
-msgid "admin.userManagement.userRemovalConfirm"
-msgstr "Do you really want to remove user \"%s\"?"
-
-#: ../../User/view/_sideBar.phtml:4
-msgid "application.index.sidebarDescription"
-msgstr ""
-"This is a new, experimental service being developed by the Public Knowledge "
-"Project to provide unsupervised conversion of Word/compatible inputs to "
-"production-ready NLM3 XML, HTML, and PDF. This service is currently under "
-"active development and output will not be perfect. Contact axfelix@gmail.com "
-"with any questions, and watch this space over the coming months."
-
-#: ../../User/view/_sideBar.phtml:6
-msgid "application.index.sidebarTips"
-msgstr "Tips on preparing your document:"
-
-#: ../../User/view/_sideBar.phtml:9
-msgid "application.index.sidebarTipsPDF"
-msgstr ""
-"PDFs must have embedded text (i.e. created from an already-digital "
-"document). Scanned PDFs must have been OCRed before being uploaded to our "
-"service (want us to add OCR support? ask!)"
-
-#: ../../User/view/_sideBar.phtml:10
-msgid "application.index.sidebarTipsCitation"
-msgstr ""
-"Ideally, citations (in your document that point to your bibliography) are "
-"formatted as numbers in brackets, e.g. [10] or [11,12,13]. Consequently, "
-"bracketed numbers should not occur in your document for any other reason."
-
-#: ../../User/view/_sideBar.phtml:11
-msgid "application.index.sidebarTipsCitationReference"
-msgstr ""
-"Citations can also be formatted as single references in parentheses, e.g. "
-"(Clancy, 2010) . Our software will re-style these citations according to the "
-"citation style you have selected."
-
-#: ../../User/view/_sideBar.phtml:12
-msgid "application.index.sidebarTipsBibliography"
-msgstr ""
-"Any bibliography entries which are not cited in your document are reported "
-"in a warning section at the bottom."
-
-#: ../../User/view/user/user/settings.phtml:2
-msgid "user.settings.title"
-msgstr "Settings"
-
-#: ../../User/view/user/user/settings.phtml:14
-msgid "user.settings.changePassword"
-msgstr "Change Password"
+#~ msgid "api.callMethodLog"
+#~ msgstr "Api call to method: %s"
+
+#~ msgid "api.error.invalidCredentials"
+#~ msgstr ""
+#~ "This API calls reqires to be authenticated. Please provide email and "
+#~ "password."
+
+#~ msgid "api.authentication.successLog"
+#~ msgstr "API successfully authenticated user: %s"
+
+#~ msgid "api.authentication.errorLog"
+#~ msgstr "API couldn't authenticate user"
+
+#~ msgid "api.responseLog"
+#~ msgstr ""
+#~ "API response:\n"
+#~ "%s"
+
+#~ msgid "application.meta.keywords"
+#~ msgstr "NLM, XML, HTML, PDF Conversion, Public Knowledge Project, PKP"
+
+#~ msgid "application.meta.description"
+#~ msgstr ""
+#~ "Conversion Service which converts Word-compatible inputs to production-"
+#~ "ready NLM XML, HTML, and PDF."
+
+#~ msgid "application.generic.siteTitle"
+#~ msgstr "PKP XML Parsing Service"
+
+#~ msgid "application.layout.systemLog"
+#~ msgstr "System Log"
+
+#~ msgid "application.layout.userManagement"
+#~ msgstr "User Management"
+
+#~ msgid "manager.job.list"
+#~ msgstr "Jobs"
+
+#~ msgid "application.layout.settings"
+#~ msgstr "Settings"
+
+#~ msgid "application.layout.logout"
+#~ msgstr "Logout"
+
+#~ msgid "application.layout.subHeading"
+#~ msgstr ""
+#~ "PDF, DOC, DOCX or ODT to XML (%sNLM-XML 3.0 compatible%s) document "
+#~ "conversion"
+
+#~ msgid "application.layout.contact"
+#~ msgstr "Contact"
+
+#~ msgid "application.layout.copyright"
+#~ msgstr "Public Knowledge Project"
+
+#~ msgid "application.error.generic"
+#~ msgstr "An error occurred"
+
+#~ msgid "application.error.additionalInformation"
+#~ msgstr "Additional information"
+
+#~ msgid "application.generic.file"
+#~ msgstr "File"
+
+#~ msgid "application.generic.message"
+#~ msgstr "Message"
+
+#~ msgid "application.error.stackTrace"
+#~ msgstr "Stack trace"
+
+#~ msgid "application.error.previousExceptions"
+#~ msgstr "Previous exceptions"
+
+#~ msgid "application.error.noExceptionAvailable"
+#~ msgstr "No Exception available"
+
+#~ msgid "application.error.404"
+#~ msgstr "A 404 error occurred"
+
+#~ msgid "application.error.controllerDispatch"
+#~ msgstr "The requested controller was unable to dispatch the request."
+
+#~ msgid "application.error.controlerMap"
+#~ msgstr ""
+#~ "The requested controller could not be mapped to an existing controller "
+#~ "class."
+
+#~ msgid "application.error.controllerNoDispatch"
+#~ msgstr "The requested controller was not dispatchable."
+
+#~ msgid "application.error.noRoute"
+#~ msgstr "The requested URL could not be matched by routing."
+
+#~ msgid "application.error.unknown404"
+#~ msgstr "We cannot determine at this time why a 404 was generated."
+
+#~ msgid "application.generic.controller"
+#~ msgstr "Controller"
+
+#~ msgid "application.error.controlerResolves"
+#~ msgstr "resolves to %s"
+
+#~ msgid "application.manager.index"
+#~ msgstr "Document Management"
+
+#~ msgid "manager.job.details"
+#~ msgstr "Job Details"
+
+#~ msgid "manager.job.id"
+#~ msgstr "Job Id"
+
+#~ msgid "manager.job.creationDate"
+#~ msgstr "Creation Date"
+
+#~ msgid "manager.job.status"
+#~ msgstr "Status"
+
+#~ msgid "manager.job.documents"
+#~ msgstr "Documents"
+
+#~ msgid "application.generic.download"
+#~ msgstr "Download"
+
+#~ msgid "manager.job.details.document.list"
+#~ msgstr "Document List"
+
+#~ msgid "manager.job.details.document.docx"
+#~ msgstr ""
+#~ "Document.docx is the document converted to the Microsoft Office DocX "
+#~ "standard."
+
+#~ msgid "manager.job.details.document.nlmxml"
+#~ msgstr "Document.xml is the document converted to the NLM3 XML standard."
+
+#~ msgid "manager.job.details.document.bib.xml"
+#~ msgstr "Document document.bib.xml contains the Bibliography in XML"
+
+#~ msgid "manager.job.details.document.bib.tex"
+#~ msgstr ""
+#~ "Document document.bib contains the Bibliography in the Bibtex format"
+
+#~ msgid "manager.job.details.document.html"
+#~ msgstr ""
+#~ "Html.zip contains the document in HTML format as well as the required "
+#~ "assets to render the HTML."
+
+#~ msgid "manager.job.details.document.pdf"
+#~ msgstr "Document.pdf is the document in PDF format"
+
+#~ msgid "manager.job.details.document.zip"
+#~ msgstr "Documents.zip is a zip archive containing all the documents"
+
+#~ msgid "manager.job.user"
+#~ msgstr "User"
+
+#~ msgid "manager.job.uploadFileName"
+#~ msgstr "Upload File Name"
+
+#~ msgid "application.generic.actions"
+#~ msgstr "Actions"
+
+#~ msgid "application.generic.details"
+#~ msgstr "Details"
+
+#~ msgid "application.layout.systemLog.list"
+#~ msgstr "System Log"
+
+#~ msgid "admin.log.time"
+#~ msgstr "Time"
+
+#~ msgid "admin.log.ipAddress"
+#~ msgstr "Documents"
+
+#~ msgid "admin.log.priority"
+#~ msgstr "Level"
+
+#~ msgid "admin.log.message"
+#~ msgstr "Message"
+
+#~ msgid "admin.userManagement.edit"
+#~ msgstr "Edit User"
+
+#~ msgid "admin.userManagement.list"
+#~ msgstr "List Users"
+
+#~ msgid "admin.userManagement.id"
+#~ msgstr "User Id"
+
+#~ msgid "admin.userManagement.email"
+#~ msgstr "Email"
+
+#~ msgid "admin.userManagement.role"
+#~ msgstr "Role"
+
+#~ msgid "admin.userManagement.level"
+#~ msgstr "Level"
+
+#~ msgid "admin.userManagement.lastLogin"
+#~ msgstr "Last Login"
+
+#~ msgid "application.generic.edit"
+#~ msgstr "Edit"
+
+#~ msgid "admin.userManagement.removeUser"
+#~ msgstr "Remove User"
+
+#~ msgid "application.generic.confirm"
+#~ msgstr "Confirm"
+
+#~ msgid "admin.userManagement.userRemovalConfirm"
+#~ msgstr "Do you really want to remove user \"%s\"?"
+
+#~ msgid "application.index.sidebarDescription"
+#~ msgstr ""
+#~ "This is a new, experimental service being developed by the Public "
+#~ "Knowledge Project to provide unsupervised conversion of Word/compatible "
+#~ "inputs to production-ready NLM3 XML, HTML, and PDF. This service is "
+#~ "currently under active development and output will not be perfect. "
+#~ "Contact axfelix@gmail.com with any questions, and watch this space over "
+#~ "the coming months."
+
+#~ msgid "application.index.sidebarTips"
+#~ msgstr "Tips on preparing your document:"
+
+#~ msgid "application.index.sidebarTipsPDF"
+#~ msgstr ""
+#~ "PDFs must have embedded text (i.e. created from an already-digital "
+#~ "document). Scanned PDFs must have been OCRed before being uploaded to our "
+#~ "service (want us to add OCR support? ask!)"
+
+#~ msgid "application.index.sidebarTipsCitation"
+#~ msgstr ""
+#~ "Ideally, citations (in your document that point to your bibliography) are "
+#~ "formatted as numbers in brackets, e.g. [10] or [11,12,13]. Consequently, "
+#~ "bracketed numbers should not occur in your document for any other reason."
+
+#~ msgid "application.index.sidebarTipsCitationReference"
+#~ msgstr ""
+#~ "Citations can also be formatted as single references in parentheses, e.g. "
+#~ "(Clancy, 2010) . Our software will re-style these citations according to "
+#~ "the citation style you have selected."
+
+#~ msgid "application.index.sidebarTipsBibliography"
+#~ msgstr ""
+#~ "Any bibliography entries which are not cited in your document are "
+#~ "reported in a warning section at the bottom."
+
+#~ msgid "user.settings.title"
+#~ msgstr "Settings"
+
+#~ msgid "user.settings.changePassword"
+#~ msgstr "Change Password"
 
 #~ msgid "application.generic.form.pleaseSelect"
 #~ msgstr "Please select"

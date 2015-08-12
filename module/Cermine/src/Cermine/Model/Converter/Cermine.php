@@ -75,7 +75,7 @@ class Cermine extends AbstractConverter
         // kinds of actions supported by CERMINE, but for now it only
         // performs extraction.
 
-        $this->logger->infoTranslate('cermine.cermine.beginConversion');
+        $this->logger->infoTranslate('cermine.cermine.startExtraction');
 
         $command = new Command;
 
