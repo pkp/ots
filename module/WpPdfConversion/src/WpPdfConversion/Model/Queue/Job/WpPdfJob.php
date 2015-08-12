@@ -18,7 +18,7 @@ class WpPdfJob extends AbstractQueueJob
      */
     public function process(Job $job)
     {
-        $unoconv = $this->sm->get('WpPdfConversion\Model\Converter\Unoconv');
+        $unoconv = $this->sm->get('DocxConversion\Model\Converter\Unoconv');
 
         // Fetch the document to convert
         $unconvertedDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_UNCONVERTED);
