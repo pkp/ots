@@ -57,11 +57,6 @@ class CermineTest extends ModelTest
             file_get_contents($this->testOutputFile)
             );
 
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_file($finfo, $this->testOutputFile);
-
-        $this->assertSame($mimeType, 'application/xml');
-
         $this->resetTestData();
     }
 
