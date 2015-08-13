@@ -25,6 +25,7 @@ return array(
                 'pdf' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'xmp' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'zip' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'epub' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory'
             ),
         ),
     ),
