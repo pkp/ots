@@ -8,6 +8,8 @@ done
 
 php public/index.php queue doctrine docx --start &
 echo "Started DocX queue [PID $!]"
+php public/index.php queue doctrine wppdf --start &
+echo "Started WpPdf queue [PID $!]"
 php public/index.php queue doctrine nlmxml --start &
 echo "Started NLMXML queue [PID $!]"
 php public/index.php queue doctrine references --start &
@@ -26,3 +28,5 @@ php public/index.php queue doctrine xmp --start &
 echo "Started XMP queue [PID $!]"
 php public/index.php queue doctrine zip --start &
 echo "Started Zip queue [PID $!]"
+php public/index.php queue doctrine cermine --start &
+echo "Started CERMINE queue [PID $!]"
