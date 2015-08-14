@@ -97,7 +97,7 @@
         "citation-style-language/styles": "dev-master",
         "knmnyn/ParsCit": "dev-master",
         "dyve/jquery-autocomplete": "dev-master",
-	"pkp/jats2epub": "dev-master"
+        "pkp/jats2epub": "dev-master"
     },
     "config": {
         "process-timeout": 1800
