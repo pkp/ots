@@ -21,13 +21,18 @@ class MergeJob extends AbstractQueueJob
     {
         $pdf = $this->sm->get('PdfConversion\Model\Converter\Merge');
 
-        // Fetch the zip file containing the html; check if we got one that has
-        // the citations converted first and fall back to unconverted HTML
+        // Fetch the two XML files output by meTypeset and CERMINE
+        // Not sure this will work gracefully at the moment,
+        // As both WpPdf conversion and Docx conversion are set to
+        // work from "unconverted" state; might need to configure
+        // a linear execution order for meTypeset and CERMINE?
+        // Need to do some more work here to handle two separate
+        // inputs, as well as removing the mentions of "pdf"
         if (
-            !($document = $job->getStageDocument(JOB_CONVERSION_STAGE_CITATIONSTYLE)) and
-            !($document = $job->getStageDocument(JOB_CONVERSION_STAGE_HTML))
+            !($document = $job->getStageDocument(JOB_CONVERSION_STAGE_PDF_EXTRACT)) and
+            !($document = $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML))
         ) {
-            throw new \Exception('Couldn\'t find the stage document');
+            throw new \Exception('CERMINE and meTypeset outputs not ready');
         }
 
         $outputFile = $job->getDocumentPath() . '/document.pdf';
@@ -35,7 +40,7 @@ class MergeJob extends AbstractQueueJob
         $pdf->setOutputFile($outputFile);
         $pdf->convert();
 
-        $job->conversionStage = JOB_CONVERSION_STAGE_PDF;
+        $job->conversionStage = JOB_CONVERSION_STAGE_MERGE;
 
         if (!$pdf->getStatus()) {
             $job->status = JOB_STATUS_FAILED;
@@ -46,7 +51,7 @@ class MergeJob extends AbstractQueueJob
         $pdfDocument = $documentDAO->getInstance();
         $pdfDocument->path = $outputFile;
         $pdfDocument->job = $job;
-        $pdfDocument->conversionStage = JOB_CONVERSION_STAGE_PDF;
+        $pdfDocument->conversionStage = JOB_CONVERSION_STAGE_MERGE;
 
         $job->documents[] = $pdfDocument;
 

@@ -30,3 +30,5 @@ php public/index.php queue doctrine zip --start &
 echo "Started Zip queue [PID $!]"
 php public/index.php queue doctrine cermine --start &
 echo "Started CERMINE queue [PID $!]"
+php public/index.php queue doctrine merge --start &
+echo "Started XML merge queue [PID $!]"
