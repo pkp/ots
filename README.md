@@ -35,6 +35,8 @@ Module Description
  * Converts the HTML document into PDF
 * XmpConversion
  * Adds an XMP sidecar with metadata from the NLMXML to the PDF document
+* EpubConversion
+ * Converts the NLMXML document into Epub format
 * ZipConversion
  * Zips all documents
 * API
