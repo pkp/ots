@@ -119,10 +119,11 @@ Installation
         ),
     ```
 
-* Make sure the cache directories are writable by your Web server process, *e.g*:
+* Make sure the cache directories are writable by your Web server process, and empty the cache directory, *e.g*:
 
   ```
   # chmod -R go+w var
+  # rm var/cache/zfcache-ea/*
   ```
 
 * Initialize the database
@@ -143,6 +144,8 @@ After a successful installation the unit tests should complete without errors:
 ```
 # ./unittest.sh
 ```
+
+You will need to re-empty the cache directories afterward, if your Web server runs as a different user than you.
 
 Developer notes
 ---------------
