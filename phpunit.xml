@@ -13,6 +13,7 @@
         <directory>module/BibtexConversion/test</directory>
         <directory>module/BibtexreferencesConversion/test</directory>
         <directory>module/HtmlConversion/test</directory>
+        <directory>module/EpubConversion/test</directory>
         <directory>module/CitationstyleConversion/test</directory>
         <directory>module/PdfConversion/test</directory>
         <directory>module/XmpConversion/test</directory>

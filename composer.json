@@ -70,6 +70,18 @@
                 }
             }
         },
+        {
+            "type": "package",
+            "package": {
+                "name": "pkp/jats2epub",
+                "version": "dev-master",
+                "source": {
+                    "url": "https://github.com/pkp/jats2epub",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        },
 	{
 	    "type": "package",
 	    "package": {
@@ -96,6 +108,7 @@
         "citation-style-language/styles": "dev-master",
         "knmnyn/ParsCit": "dev-master",
         "dyve/jquery-autocomplete": "dev-master",
+        "pkp/jats2epub": "dev-master",
 	"CeON/CERMINE": "1.7"
     },
     "config": {

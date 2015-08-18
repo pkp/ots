@@ -114,7 +114,7 @@ class Html extends AbstractConverter
     /**
      * Transform the NLMXML document to HTML
      *
-     * @return bool Wheter or not the transformation was successful
+     * @return bool Whether or not the transformation was successful
      */
     protected function transform()
     {

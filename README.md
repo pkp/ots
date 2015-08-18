@@ -39,6 +39,8 @@ Module Description
  * Converts the HTML document into PDF
 * XmpConversion
  * Adds an XMP sidecar with metadata from the NLMXML to the PDF document
+* EpubConversion
+ * Converts the NLMXML document into Epub format
 * ZipConversion
  * Zips all documents
 
@@ -91,17 +93,28 @@ Installation
 
 * Ensure there is a MySQL database called `xmlps`, and a MySQL user with access to it.
 
-* Configure the environment
+* Configure the environment:
 
-  ```
-  # cp config/autoload/local.php.dist config/autoload/local.php
-  ```
-
-  * Change `local.php` to provide the MySQL user and password.
-
-  * If using a version of unoconv installed via package manager (such as apt), you may need to override the command in `local.php`, *e.g.*:
+  * Copy the `local.php` template, then edit it:
 
     ```
+    # cp config/autoload/local.php.dist config/autoload/local.php
+    ```
+
+  * Provide the MySQL user and password.
+
+  * If you want debug messages to be displayed to the user (*i.e.*, if developing locally), set these options:
+
+    ```php
+        'view_manager' => array(
+            'display_not_found_reason' => true,
+            'display_exceptions' => true,
+        ),
+    ```
+
+  * If using a version of `unoconv` installed via package manager (such as apt), you may need to override the command, *e.g.*:
+
+    ```php
         'conversion' => array(
             'docx' => array(
                 'unoconv' => array(
@@ -111,10 +124,17 @@ Installation
         ),
     ```
 
+* Make sure the cache directories are writable by your Web server process, and empty the cache directory, *e.g*:
+
+  ```
+  # chmod -R go+w var
+  # rm var/cache/zfcache-ea/*
+  ```
+
 * Initialize the database
 
   ```
-  # vendor/doctrine/doctrine-module/bin/doctrine-module  orm:schema-tool:update --force
+  # vendor/doctrine/doctrine-module/bin/doctrine-module orm:schema-tool:update --force
   ```
 
 * Run the shell script that starts the conversion queues
@@ -129,6 +149,8 @@ After a successful installation the unit tests should complete without errors:
 ```
 # ./unittest.sh
 ```
+
+You will need to re-empty the cache directories afterward, if your Web server runs as a different user than you.
 
 Developer notes
 ---------------

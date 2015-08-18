@@ -29,6 +29,7 @@ class Manager {
         'bibtex' => 'BibtexConversion\Model\Queue\Job\BibtexJob',
         'bibtexreferences' => 'BibtexreferencesConversion\Model\Queue\Job\BibtexreferencesJob',
         'html' => 'HtmlConversion\Model\Queue\Job\HtmlJob',
+        'epub' => 'EpubConversion\Model\Queue\Job\EpubJob',
         'citationstyle' => 'CitationstyleConversion\Model\Queue\Job\CitationstyleJob',
         'pdf' => 'PdfConversion\Model\Queue\Job\PdfJob',
         'xmp' => 'XmpConversion\Model\Queue\Job\XmpJob',
