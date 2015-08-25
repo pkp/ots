@@ -23,7 +23,7 @@ class Manager {
     // TODO: this should come from the config
     protected $queueMap = array(
         'docx' => 'DocxConversion\Model\Queue\Job\DocxJob',
-        'wppdf' => 'DocxConversion\Model\Queue\Job\WpPdfJob',
+        'wppdf' => 'WpPdfConversion\Model\Queue\Job\WpPdfJob',
         'nlmxml' => 'NlmxmlConversion\Model\Queue\Job\NlmxmlJob',
         'references' => 'ReferencesConversion\Model\Queue\Job\ReferencesJob',
         'bibtex' => 'BibtexConversion\Model\Queue\Job\BibtexJob',
@@ -124,10 +124,15 @@ class Manager {
         switch ($job->conversionStage) {
             case JOB_CONVERSION_STAGE_UNCONVERTED:
                 $this->queueJob($job, 'docx');
+                $this->queueJob($job, 'wppdf');
                 break;
 
             case JOB_CONVERSION_STAGE_DOCX:
                 $this->queueJob($job, 'nlmxml');
+                break;
+
+            case JOB_CONVERSION_STAGE_WPPDF:
+                $this->queueJob($job, 'cermine');
                 break;
 
             case JOB_CONVERSION_STAGE_NLMXML:
