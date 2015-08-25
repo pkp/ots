@@ -137,6 +137,7 @@ class Manager {
                 }
                 else {
                     $this->queueJob($job, 'html');
+                    $this->queueJob($job, 'epub');
                 }
                 break;
 
@@ -146,6 +147,7 @@ class Manager {
 
             case JOB_CONVERSION_STAGE_BIBTEXREFERENCES:
                 $this->queueJob($job, 'html');
+                $this->queueJob($job, 'epub');
                 break;
 
             case JOB_CONVERSION_STAGE_HTML:
