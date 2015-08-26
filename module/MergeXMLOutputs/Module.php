@@ -1,6 +1,6 @@
 <?php
 
-namespace MergeXMLOutputs;
+namespace XmlMerge;
 
 use MergeXMLOutputs\Model\Converter\Merge;
 
@@ -44,16 +44,16 @@ class Module
     {
         return array(
             'factories' => array(
-                'MergeXMLOutputs\Model\Converter\MergeXML' => function($sm)
+                'MergeXMLOutputs\Model\Converter\Merge' => function($sm)
                 {
                     $config = $sm->get('Config');
                     $logger = $sm->get('Logger');
                     if (!isset($config['conversion']['merge'])) {
-                        throw new \Exception('XML merge converter configuration is missing');
+                        throw new \Exception('XML merge configuration is missing');
                     }
                     $config = $config['conversion']['merge'];
 
-                    return new Merge($config, $logger);
+                    return new Html($config, $logger);
                 },
             ),
         );

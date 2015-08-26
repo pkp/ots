@@ -6,54 +6,54 @@ use Manager\Model\Queue\Job\AbstractQueueJob;
 use Manager\Entity\Job;
 
 /**
- * Merges meTypeset and CERMINE XML outputs
+ * Merge the CERMINE and meTypeset XML outputs to a single file
+ *
+ * The output of this conversion is an XML file containing CERMINE's
+ * <head> output and meTypeset's <body> and <back> output.
  */
 class MergeJob extends AbstractQueueJob
 {
     /**
-     * Merges meTypeset and CERMINE XML outputs
-     * TODO: finish changing the below
+     * Merge the XML outputs to one file.
      *
      * @param Job $job
      * @return Job $job
      */
     public function process(Job $job)
     {
-        $pdf = $this->sm->get('PdfConversion\Model\Converter\Merge');
+        $mergedXML = $this->sm->get('MergeXMLOutputs\Model\Converter\Merge');
 
-        // Fetch the two XML files output by meTypeset and CERMINE
-        // Not sure this will work gracefully at the moment,
-        // As both WpPdf conversion and Docx conversion are set to
-        // work from "unconverted" state; might need to configure
-        // a linear execution order for meTypeset and CERMINE?
-        // Need to do some more work here to handle two separate
-        // inputs, as well as removing the mentions of "pdf"
-        if (
-            !($document = $job->getStageDocument(JOB_CONVERSION_STAGE_PDF_EXTRACT)) and
-            !($document = $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML))
-        ) {
-            throw new \Exception('CERMINE and meTypeset outputs not ready');
+        // Fetch the meTypeset output, on the assumption that it takes longer than the CERMINE output to be created
+        $meTypesetDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML;
+        if (!$meTypesetDocument) {
+            throw new \Exception('Couldn\'t find the meTypeset output');
         }
 
-        $outputFile = $job->getDocumentPath() . '/document.pdf';
-        $pdf->setInputFile($document->path);
-        $pdf->setOutputFile($outputFile);
-        $pdf->convert();
+        $cermineDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_CERMINE;
+        if (!$cermineDocument) {
+            throw new \Exception('Couldn\'t find the CERMINE output');
+        }
+
+        $outputFile = $job->getDocumentPath() . '/document.xml';
+        $mergedXML->setInputFile($meTypesetDocument->path);
+        $mergedXML->setInputFile($cermineDocument->path);        
+        $mergedXML->setOutputFile($outputFile);
+        $mergedXML->convert();
 
         $job->conversionStage = JOB_CONVERSION_STAGE_MERGE;
 
-        if (!$pdf->getStatus()) {
+        if (!$mergedXML->getStatus()) {
             $job->status = JOB_STATUS_FAILED;
             return $job;
         }
 
         $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
-        $pdfDocument = $documentDAO->getInstance();
-        $pdfDocument->path = $outputFile;
-        $pdfDocument->job = $job;
-        $pdfDocument->conversionStage = JOB_CONVERSION_STAGE_MERGE;
+        $mergedXMLDocument = $documentDAO->getInstance();
+        $mergedXMLDocument->path = $outputFile;
+        $mergedXMLDocument->job = $job;
+        $mergedXMLDocument->conversionStage = JOB_CONVERSION_STAGE_MERGE;
 
-        $job->documents[] = $pdfDocument;
+        $job->documents[] = $mergedXMLDocument;
 
         return $job;
     }

@@ -3,23 +3,20 @@
 namespace MergeXMLOutputs\Model\Converter;
 
 use Xmlps\Logger\Logger;
-use Xmlps\Command\Command;
+use Xmlps\Libxml\Libxml;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use FilesystemIterator;
-use ZipArchive;
 
 use Manager\Model\Converter\AbstractConverter;
 
 /**
- * Merges the front matter JATS output from CERMINE with the body and back
- * matter JATS output from meTypeset. Right now it parses XML with regex
- * because I'm a huge jerk. In the future it should both a) not do this,
- * and b) evaluate and compare body output from both libraries, rather than
- * simply discarding CERMINE's and using meTypeset's.
+ * Merges the CERMINE and meTypeset XML outputs
  */
 class Merge extends AbstractConverter
 {
+    use Libxml;
+
     protected $config;
     protected $logger;
 
@@ -51,7 +48,7 @@ class Merge extends AbstractConverter
     public function setInputFile($inputFile)
     {
         if (!file_exists($inputFile)) {
-            throw new \Exception("One or both of the parsers didn't complete successfully");
+            throw new \Exception('CERMINE and/or meTypeset outputs don\'t exist');
         }
 
         $this->inputFile = $inputFile;
@@ -72,64 +69,49 @@ class Merge extends AbstractConverter
         $this->outputFile = $outputFile;
     }
 
+
     /**
-     * Convert the HTML to PDF
+     * Merge the two XML outputs into one document.
      *
      * @return void
      */
     public function convert()
     {
-        $this->logger->debugTranslate('MergeXMLOutputs.converter.startLog');
+        if (!$this->merge()) {
+            $this->status = false;
+            return;
+        }
 
-        // Do the XML merge
-        $this->execute();
-
-        // Remove temporary files
-        $this->cleanup();
     }
 
     /**
-     * Do the XML merge
+     * Do the actual merge.
      *
-     * @return void
+     * @return bool Whether or not the transformation was successful
      */
-    protected function execute()
+    protected function merge()
     {
-        $command = new Command;
-
-        // Set the base command
-        // Figure out what the heck 'command' is
-        $command->setCommand($this->config['wkhtmltopdf']['command']);
-
-        // Add the input file
-        $inputFile = $this->outputTmpPath . '/document.xml';
-        if (!$inputFile) {
-            throw new \Exception('No input file given');
+        // Get the meTypeset output
+        $meTypesetOutputFile = $this->outputTmpPath . '/metypeset.xml';
+        $meTypesetOutput = file_get_contents($meTypesetOutputFile);
+        if (!$meTypesetOutputFile) {
+            throw new \Exception('No meTypeset output available');
         }
-        $command->addArgument($inputFile);
 
-        // Add the output directory
-        if (!$this->outputFile) {
-            throw new \Exception('No output file given');
+        // Get the CERMINE output
+        $cermineOutputFile = $this->outputTmpPath . '/cermine.xml';
+        $cermineOutput = file_get_contents($cermineOutputFile);
+        if (!$cermineOutputFile) {
+            throw new \Exception('No CERMINE output available');
         }
-        $command->addArgument($this->outputFile);
 
-        // Redirect STDERR to STDOUT to captue it in $this->output
-        $command->addRedirect('2>&1');
+        // Do the merge
+        $cermineFront = preg_replace("<body>.*", "", $cermineOutput);
+        $meTypesetBodyBack = preg_replace(".*?</front>", "", $meTypesetOutput);
+        $mergedXml = $cermineFront . $meTypesetBodyBack;
+        file_put_contents(($this->outputFile), $mergedXml);
 
-        $this->logger->debugTranslate(
-            'MergeXMLOutputs.catter.executeCommandLog',
-            $command->getCommand()
-        );
-
-        // Execute the conversion
-        $command->execute();
-        $this->status = $command->isSuccess();
-        $this->output = $command->getOutputString();
-
-        $this->logger->debugTranslate(
-            'MergeXMLOutputs.catter.executeCommandOutputLog',
-            $this->output
-        );
+        return true;
     }
+
 }

@@ -182,6 +182,10 @@ class Manager {
                 $this->queueJob($job, 'zip');
                 break;
 
+            case JOB_CONVERSION_STAGE_MERGE:
+                $this->queueJob($job, 'merge');
+                break;
+
             default:
                 $this->logger->infoTranslate(
                     'manager.queue.jobCompletedLog',
