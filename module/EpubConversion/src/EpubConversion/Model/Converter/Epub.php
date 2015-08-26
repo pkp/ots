@@ -104,6 +104,19 @@ class Epub extends AbstractConverter
         }
         $my_tmp = $mktemp->getOutputString();
 
+        $chmod = new Command;
+        $chmod->setCommand('chmod');
+        $chmod->addArgument('777');
+        $chmod->addArgument($my_tmp);
+        $chmod->execute();
+        if (!$chmod->isSuccess()) {
+            $this->logger->infoTranslate(
+                'epubconversion.converter.errorChmod'
+                );
+            $this->status = false;
+            return;
+        }
+
         // We’re going to cd to the working directory.  If our command
         // is relative to CWD, then we need to prefix CWD to it.
         // Currently, this logic presumes UNIX conventions, i.e., if
@@ -129,6 +142,14 @@ class Epub extends AbstractConverter
         $command->execute();
         $this->status = $command->isSuccess();
         $this->output = $command->getOutputString();
+
+        if (!$this->status) {
+            $this->logger->infoTranslate(
+                'epubconversion.converter.errorJats2epub',
+                $this->output
+                );
+            return;
+        }
 
         $this->logger->debugTranslate(
             'epubconversion.converter.executeCommandOutputLog',
