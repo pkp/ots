@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-26 03:06-0600\n"
-"PO-Revision-Date: 2015-08-26 03:06-0600\n"
+"POT-Creation-Date: 2015-08-26 16:56-0600\n"
+"PO-Revision-Date: 2015-08-26 16:58-0600\n"
 "Last-Translator: Christopher R. Maden <crism@maden.org>\n"
 "Language-Team: Michael Thessel\n"
 "Language: en_US\n"
@@ -572,21 +572,35 @@ msgstr "Creating temporary epub conversion working directory"
 
 #: ../../EpubConversion/src/EpubConversion/Model/Converter/Epub.php:99
 msgid "epubconversion.converter.errorMktemp"
-msgstr "Error creating epub working directory:%s"
+msgstr ""
+"Error creating epub working directory:\n"
+"%s"
 
-#: ../../EpubConversion/src/EpubConversion/Model/Converter/Epub.php:126
+#: ../../EpubConversion/src/EpubConversion/Model/Converter/Epub.php:114
+msgid "epubconversion.converter.errorChmod"
+msgstr "Error running chmod on temporary directory"
+
+#: ../../EpubConversion/src/EpubConversion/Model/Converter/Epub.php:139
 msgid "epubconversion.converter.startJats2epub"
 msgstr "Starting jats2epub"
 
-#: ../../EpubConversion/src/EpubConversion/Model/Converter/Epub.php:134
-msgid "epubconversion.converter.executeCommandOutputLog"
-msgstr "jats2epub output:%s"
+#: ../../EpubConversion/src/EpubConversion/Model/Converter/Epub.php:148
+msgid "epubconversion.converter.errorJats2epub"
+msgstr ""
+"Error running jats2epub:\n"
+"%s"
 
-#: ../../EpubConversion/src/EpubConversion/Model/Converter/Epub.php:142
+#: ../../EpubConversion/src/EpubConversion/Model/Converter/Epub.php:155
+msgid "epubconversion.converter.executeCommandOutputLog"
+msgstr ""
+"jats2epub output:\n"
+"%s"
+
+#: ../../EpubConversion/src/EpubConversion/Model/Converter/Epub.php:163
 msgid "epubconversion.converter.errorGlob"
 msgstr "Error finding epub conversion output"
 
-#: ../../EpubConversion/src/EpubConversion/Model/Converter/Epub.php:151
+#: ../../EpubConversion/src/EpubConversion/Model/Converter/Epub.php:172
 msgid "epubconversion.converter.endLog"
 msgstr "Epub conversion complete"
 
