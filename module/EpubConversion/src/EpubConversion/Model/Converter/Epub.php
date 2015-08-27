@@ -49,7 +49,7 @@ class Epub extends AbstractConverter
             throw new \Exception('NLM XML input file doesn\'t exist');
         }
 
-        $this->inputFile = $inputFile;
+        $this->inputFile = realpath($inputFile);
     }
 
     /**
@@ -117,14 +117,9 @@ class Epub extends AbstractConverter
             return;
         }
 
-        // We’re going to cd to the working directory.  If our command
-        // is relative to CWD, then we need to prefix CWD to it.
-        // Currently, this logic presumes UNIX conventions, i.e., if
-        // the command doesn’t start with '/', it is presumed to be
-        // relative.
-        if (substr($cmd_str, 0, 1) != '/') {
-            $cmd_str = getcwd() . '/' . $cmd_str;
-        }
+        // We’re going to cd to the working directory, so we need an
+        // absolute path to the command.
+        $cmd_str = realpath($cmd_str);
 
         $command = new Command;
 
