@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-12 18:23-0600\n"
-"PO-Revision-Date: 2015-08-12 18:23-0600\n"
+"POT-Creation-Date: 2015-08-26 16:56-0600\n"
+"PO-Revision-Date: 2015-08-26 16:58-0600\n"
 "Last-Translator: Christopher R. Maden <crism@maden.org>\n"
 "Language-Team: PKP\n"
 "Language: en_US\n"
@@ -561,6 +561,48 @@ msgid "htmlconversion.converter.transformsSuccessLog"
 msgstr ""
 "Sucessfully converted NLMXML to HTML. HTML document:\n"
 "%s"
+
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:74
+msgid "epubconversion.converter.startLog"
+msgstr "Starting epub conversion"
+
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:79
+msgid "epubconversion.converter.startMktemp"
+msgstr "Creating temporary epub conversion working directory"
+
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:99
+msgid "epubconversion.converter.errorMktemp"
+msgstr ""
+"Error creating epub working directory:\n"
+"%s"
+
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:114
+msgid "epubconversion.converter.errorChmod"
+msgstr "Error running chmod on temporary directory"
+
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:139
+msgid "epubconversion.converter.startJats2epub"
+msgstr "Starting jats2epub"
+
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:148
+msgid "epubconversion.converter.errorJats2epub"
+msgstr ""
+"Error running jats2epub:\n"
+"%s"
+
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:155
+msgid "epubconversion.converter.executeCommandOutputLog"
+msgstr ""
+"jats2epub output:\n"
+"%s"
+
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:163
+msgid "epubconversion.converter.errorGlob"
+msgstr "Error finding epub conversion output"
+
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:172
+msgid "epubconversion.converter.endLog"
+msgstr "Epub conversion complete"
 
 #: module/Cermine/src/Cermine/Model/Converter/Cermine.php:78
 msgid "cermine.cermine.startExtraction"
