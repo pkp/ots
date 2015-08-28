@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-26 16:56-0600\n"
-"PO-Revision-Date: 2015-08-26 16:58-0600\n"
+"POT-Creation-Date: 2015-08-27 22:22-0600\n"
+"PO-Revision-Date: 2015-08-27 22:22-0600\n"
 "Last-Translator: Christopher R. Maden <crism@maden.org>\n"
 "Language-Team: PKP\n"
 "Language: en_US\n"
@@ -580,27 +580,27 @@ msgstr ""
 msgid "epubconversion.converter.errorChmod"
 msgstr "Error running chmod on temporary directory"
 
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:139
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:134
 msgid "epubconversion.converter.startJats2epub"
 msgstr "Starting jats2epub"
 
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:148
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:143
 msgid "epubconversion.converter.errorJats2epub"
 msgstr ""
 "Error running jats2epub:\n"
 "%s"
 
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:155
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:150
 msgid "epubconversion.converter.executeCommandOutputLog"
 msgstr ""
 "jats2epub output:\n"
 "%s"
 
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:163
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:158
 msgid "epubconversion.converter.errorGlob"
 msgstr "Error finding epub conversion output"
 
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:172
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:167
 msgid "epubconversion.converter.endLog"
 msgstr "Epub conversion complete"
 
@@ -618,22 +618,6 @@ msgstr ""
 msgid "cermine.cermine.executeCommandOutputLog"
 msgstr ""
 "CERMINE output:\n"
-"%s"
-
-#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:82
-#, fuzzy
-msgid "MergeXMLOutputs.converter.startLog"
-msgstr "Starting PDF conversion"
-
-#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:121
-msgid "MergeXMLOutputs.catter.executeCommandLog"
-msgstr ""
-
-#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:131
-#, fuzzy
-msgid "MergeXMLOutputs.catter.executeCommandOutputLog"
-msgstr ""
-"meTypeset output:\n"
 "%s"
 
 #: module/Manager/src/Manager/Form/UploadForm.php:33
@@ -663,35 +647,35 @@ msgstr ""
 msgid "manager.job.noEntriesFound"
 msgstr "No jobs found."
 
-#: module/Manager/src/Manager/Entity/Job.php:142
+#: module/Manager/src/Manager/Entity/Job.php:144
 msgid "manager.job.status.pending"
 msgstr "Pending"
 
-#: module/Manager/src/Manager/Entity/Job.php:143
+#: module/Manager/src/Manager/Entity/Job.php:145
 msgid "manager.job.status.processing"
 msgstr "Processing"
 
-#: module/Manager/src/Manager/Entity/Job.php:144
+#: module/Manager/src/Manager/Entity/Job.php:146
 msgid "manager.job.status.completed"
 msgstr "Completed"
 
-#: module/Manager/src/Manager/Entity/Job.php:145
+#: module/Manager/src/Manager/Entity/Job.php:147
 msgid "manager.job.status.failed"
 msgstr "Failed"
 
-#: module/Manager/src/Manager/Model/Queue/Manager.php:79
+#: module/Manager/src/Manager/Model/Queue/Manager.php:81
 msgid "manager.queue.receivedProcessingLog"
 msgstr "Processing queue received job (%d)"
 
-#: module/Manager/src/Manager/Model/Queue/Manager.php:115
+#: module/Manager/src/Manager/Model/Queue/Manager.php:117
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: module/Manager/src/Manager/Model/Queue/Manager.php:180
+#: module/Manager/src/Manager/Model/Queue/Manager.php:193
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: module/Manager/src/Manager/Model/Queue/Manager.php:204
+#: module/Manager/src/Manager/Model/Queue/Manager.php:217
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
@@ -1018,6 +1002,16 @@ msgstr "Upload File Name"
 #: module/Manager/view/manager/manager/list.phtml:37
 msgid "application.generic.details"
 msgstr "Details"
+
+#, fuzzy
+#~ msgid "MergeXMLOutputs.converter.startLog"
+#~ msgstr "Starting PDF conversion"
+
+#, fuzzy
+#~ msgid "MergeXMLOutputs.catter.executeCommandOutputLog"
+#~ msgstr ""
+#~ "meTypeset output:\n"
+#~ "%s"
 
 #~ msgid "api.callMethodLog"
 #~ msgstr "Api call to method: %s"

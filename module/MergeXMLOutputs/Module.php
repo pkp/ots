@@ -1,6 +1,6 @@
 <?php
 
-namespace XmlMerge;
+namespace MergeXMLOutputs;
 
 use MergeXMLOutputs\Model\Converter\Merge;
 

@@ -23,7 +23,7 @@ return array(
         'PdfConversion',
         'XmpConversion',
         'ZipConversion',
-        'XmlMerge'
+        'MergeXMLOutputs',
         'Cermine'
     ),
 
