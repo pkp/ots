@@ -34,6 +34,8 @@ case "$1" in
     echo "Started XMP queue [PID $!]"
     $su 'php public/index.php queue doctrine zip --start' &
     echo "Started Zip queue [PID $!]"
+    $su 'php public/index.php queue doctrine epub --start' &
+    echo "Started Epub queue [PID $!]"    
     ;;
 'stop')
     RUNNING=`ps ax | grep 'public/index.php queue doctrine' | grep -v grep | awk '{print $1}'`
