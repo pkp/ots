@@ -124,15 +124,10 @@ class Manager {
         switch ($job->conversionStage) {
             case JOB_CONVERSION_STAGE_UNCONVERTED:
                 $this->queueJob($job, 'docx');
-                $this->queueJob($job, 'wppdf');
                 break;
 
             case JOB_CONVERSION_STAGE_DOCX:
                 $this->queueJob($job, 'nlmxml');
-                break;
-
-            case JOB_CONVERSION_STAGE_WPPDF:
-                $this->queueJob($job, 'cermine');
                 break;
 
             case JOB_CONVERSION_STAGE_NLMXML:
@@ -144,7 +139,6 @@ class Manager {
                     $this->queueJob($job, 'bibtex');
                 }
                 else {
-                    $this->queueJob($job, 'html');
                     $this->queueJob($job, 'epub');
                 }
                 break;
@@ -154,8 +148,11 @@ class Manager {
                 break;
 
             case JOB_CONVERSION_STAGE_BIBTEXREFERENCES:
-                $this->queueJob($job, 'html');
                 $this->queueJob($job, 'epub');
+                break;
+
+            case JOB_CONVERSION_STAGE_EPUB:
+                $this->queueJob($job, 'html');
                 break;
 
             case JOB_CONVERSION_STAGE_HTML:
@@ -176,16 +173,24 @@ class Manager {
                     $this->queueJob($job, 'xmp');
                 }
                 else {
-                    $this->queueJob($job, 'zip');
+                    $this->queueJob($job, 'wppdf');
                 }
                 break;
 
             case JOB_CONVERSION_STAGE_XMP:
-                $this->queueJob($job, 'zip');
+                $this->queueJob($job, 'wppdf');
                 break;
 
-            case JOB_CONVERSION_STAGE_MERGE:
+            case JOB_CONVERSION_STAGE_WP_PDF:
+                $this->queueJob($job, 'cermine');
+                break;
+
+            case JOB_CONVERSION_STAGE_PDF_EXTRACT:
                 $this->queueJob($job, 'merge');
+                break;
+
+            case JOB_CONVERSION_STAGE_XML_MERGE:
+                $this->queueJob($job, 'zip');
                 break;
 
             default:
