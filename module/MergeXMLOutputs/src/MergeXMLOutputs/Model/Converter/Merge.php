@@ -4,9 +4,7 @@ namespace MergeXMLOutputs\Model\Converter;
 
 use Xmlps\Logger\Logger;
 use Xmlps\Libxml\Libxml;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use FilesystemIterator;
+use DOMDocument;
 
 use Manager\Model\Converter\AbstractConverter;
 
@@ -20,9 +18,9 @@ class Merge extends AbstractConverter
     protected $config;
     protected $logger;
 
-    protected $inputFile;
+    protected $inputFileNlmXml;
+    protected $inputFileCermine;
     protected $outputFile;
-    protected $outputTmpPath;
 
     /**
      * Constructor
@@ -36,25 +34,40 @@ class Merge extends AbstractConverter
     {
         $this->config = $config;
         $this->logger = $logger;
+
+        $this->disableLibxmlErrorDisplay();
     }
 
     /**
-     * Set the input file to convert
+     * Set the input file to convert (meTypeset output)
      *
      * @param mixed $inputFile
      *
      * @return void
      */
-    public function setInputFile($inputFile)
+    public function setInputFileNlmxml($inputFile)
     {
         if (!file_exists($inputFile)) {
-            throw new \Exception('CERMINE and/or meTypeset outputs don\'t exist');
+            throw new \Exception('meTypeset input file doesn\'t exist');
         }
 
-        $this->inputFile = $inputFile;
+        $this->inputFileNlmxml = $inputFile;
+    }
 
-        $this->outputTmpPath = dirname($this->inputFile) . '/mergeTmp';
-        if (!is_dir($this->outputTmpPath)) mkdir($this->outputTmpPath);
+    /**
+     * Set the input file to convert (CERMINE output)
+     *
+     * @param mixed $inputFile
+     *
+     * @return void
+     */
+    public function setInputFileCermine($inputFile)
+    {
+        if (!file_exists($inputFile)) {
+            throw new \Exception('CERMINE input file doesn\'t exist');
+        }
+
+        $this->inputFileCermine = $inputFile;
     }
 
     /**
@@ -69,7 +82,6 @@ class Merge extends AbstractConverter
         $this->outputFile = $outputFile;
     }
 
-
     /**
      * Merge the two XML outputs into one document.
      *
@@ -77,11 +89,14 @@ class Merge extends AbstractConverter
      */
     public function convert()
     {
+        $this->logger->debugTranslate('mergexmloutputs.converter.startLog');
+
         if (!$this->merge()) {
             $this->status = false;
             return;
         }
 
+        $this->logger->debugTranslate('mergexmloutputs.converter.finishLog');
     }
 
     /**
@@ -92,24 +107,62 @@ class Merge extends AbstractConverter
     protected function merge()
     {
         // Get the meTypeset output
-        $meTypesetOutputFile = $this->outputTmpPath . '/metypeset.xml';
-        $meTypesetOutput = file_get_contents($meTypesetOutputFile);
-        if (!$meTypesetOutputFile) {
-            throw new \Exception('No meTypeset output available');
+        $meTypesetXml = file_get_contents($this->inputFileNlmxml);
+        $meTypesetDom = new DOMDocument();
+        if (!$meTypesetDom->loadXML($meTypesetXml)) {
+            $this->logger->debugTranslate(
+                'mergexmloutputs.converter.merge.noMeTypesetDomLog',
+                $this->libxmlErrors()
+            );
+            return false;
         }
 
         // Get the CERMINE output
-        $cermineOutputFile = $this->outputTmpPath . '/cermine.xml';
-        $cermineOutput = file_get_contents($cermineOutputFile);
-        if (!$cermineOutputFile) {
-            throw new \Exception('No CERMINE output available');
+        $cermineXml = file_get_contents($this->inputFileCermine);
+        $cermineDom = new DOMDocument();
+        if (!$cermineDom->loadXML($cermineXml)) {
+            $this->logger->debugTranslate(
+                'mergexmloutputs.converter.merge.noCermineDomLog',
+                $this->libxmlErrors()
+            );
+            return false;
         }
 
-        // Do the merge
-        $cermineFront = preg_replace("<body>.*", "", $cermineOutput);
-        $meTypesetBodyBack = preg_replace(".*?</front>", "", $meTypesetOutput);
-        $mergedXml = $cermineFront . $meTypesetBodyBack;
-        file_put_contents(($this->outputFile), $mergedXml);
+        // Find the old front matter.
+        $meTypesetFronts = $meTypesetDom->getElementsByTagName('front');
+        if (!$meTypesetFronts->length) {
+            $this->logger->debugTranslate(
+                'mergexmloutputs.converter.merge.noMeTypesetFront'
+            );
+            return false;
+        }
+        $meTypesetFront = $meTypesetFronts->item(0);
+
+        // Find the new front matter.
+        $cermineFronts = $cermineDom->getElementsByTagName('front');
+        if (!$cermineFronts->length) {
+            $this->logger->debugTranslate(
+                'mergexmloutputs.converter.merge.noCermineFront'
+            );
+            return false;
+        }
+        $cermineFront = $cermineFronts->item(0);
+
+        // Out with the old, in with the new!
+        $cermineFront = $meTypesetDom->importNode($cermineFront, true);
+        if (!$meTypesetFront->parentNode->replaceChild(
+                $cermineFront,
+                $meTypesetFront
+                )) {
+            $this->logger->debugTranslate(
+                'mergexmloutputs.converter.merge.replacementFail',
+                $this->libxmlErrors()
+            );
+            return false;
+        }
+
+        // Write out the updated document.
+        file_put_contents($this->outputFile, $meTypesetDom->saveXML());
 
         return true;
     }

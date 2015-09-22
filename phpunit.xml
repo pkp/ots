@@ -19,6 +19,7 @@
         <directory>module/XmpConversion/test</directory>
         <directory>module/ZipConversion/test</directory>
         <directory>module/Cermine/test</directory>
+	<directory>module/MergeXMLOutputs/test</directory>
       </testsuite>
     </testsuites>
 </phpunit>

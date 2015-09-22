@@ -48,12 +48,8 @@ class Module
                 {
                     $config = $sm->get('Config');
                     $logger = $sm->get('Logger');
-                    if (!isset($config['conversion']['merge'])) {
-                        throw new \Exception('XML merge configuration is missing');
-                    }
-                    $config = $config['conversion']['merge'];
 
-                    return new Html($config, $logger);
+                    return new Merge($config, $logger);
                 },
             ),
         );
