@@ -91,8 +91,7 @@ class Merge extends AbstractConverter
     {
         $this->logger->debugTranslate('mergexmloutputs.converter.startLog');
 
-        if (!$this->merge()) {
-            $this->status = false;
+        if (!$this->status = $this->merge()) {
             return;
         }
 
@@ -166,5 +165,4 @@ class Merge extends AbstractConverter
 
         return true;
     }
-
 }

@@ -23,24 +23,23 @@ class MergeJob extends AbstractQueueJob
     {
         $mergedXML = $this->sm->get('MergeXMLOutputs\Model\Converter\Merge');
 
-        // Fetch the meTypeset output, on the assumption that it takes longer than the CERMINE output to be created
-        $meTypesetDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML;
+        $meTypesetDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
         if (!$meTypesetDocument) {
             throw new \Exception('Couldn\'t find the meTypeset output');
         }
 
-        $cermineDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_CERMINE;
+        $cermineDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_PDF_EXTRACT);
         if (!$cermineDocument) {
             throw new \Exception('Couldn\'t find the CERMINE output');
         }
 
         $outputFile = $job->getDocumentPath() . '/document.xml';
-        $mergedXML->setInputFile($meTypesetDocument->path);
-        $mergedXML->setInputFile($cermineDocument->path);        
+        $mergedXML->setInputFileNlmxml($meTypesetDocument->path);
+        $mergedXML->setInputFileCermine($cermineDocument->path);        
         $mergedXML->setOutputFile($outputFile);
         $mergedXML->convert();
 
-        $job->conversionStage = JOB_CONVERSION_STAGE_MERGE;
+        $job->conversionStage = JOB_CONVERSION_STAGE_XML_MERGE;
 
         if (!$mergedXML->getStatus()) {
             $job->status = JOB_STATUS_FAILED;
@@ -51,7 +50,7 @@ class MergeJob extends AbstractQueueJob
         $mergedXMLDocument = $documentDAO->getInstance();
         $mergedXMLDocument->path = $outputFile;
         $mergedXMLDocument->job = $job;
-        $mergedXMLDocument->conversionStage = JOB_CONVERSION_STAGE_MERGE;
+        $mergedXMLDocument->conversionStage = JOB_CONVERSION_STAGE_XML_MERGE;
 
         $job->documents[] = $mergedXMLDocument;
 
