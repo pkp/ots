@@ -32,7 +32,7 @@ class EpubJob extends AbstractQueueJob
             throw new \Exception('Couldn\'t find the stage document');
         }
 
-        $outputFile = $job->getDocumentPath() . '/epub.epub';
+        $outputFile = $job->getDocumentPath() . '/document.epub';
         $epub->setInputFile($document->path);
         $epub->setOutputFile($outputFile);
         $epub->convert();

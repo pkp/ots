@@ -29,7 +29,7 @@ class CermineJob extends AbstractQueueJob
 
         // Convert the document
         $cermine->setInputFile($pdfDocument->path);
-        $outputPath = $job->getDocumentPath() . '/document.xml';
+        $outputPath = $job->getDocumentPath() . '/document_from_pdf.xml';
         $cermine->setOutputFile($outputPath);
         $cermine->convert();
 

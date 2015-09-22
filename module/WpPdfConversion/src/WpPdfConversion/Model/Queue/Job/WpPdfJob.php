@@ -29,7 +29,7 @@ class WpPdfJob extends AbstractQueueJob
         // Convert the document
         $unoconv->setFilter('pdf');
         $unoconv->setInputFile($unconvertedDocument->path);
-        $outputPath = $job->getDocumentPath() . '/document.pdf';
+        $outputPath = $job->getDocumentPath() . '/document_from_wp.pdf';
         $unoconv->setOutputFile($outputPath);
         $unoconv->convert();
 

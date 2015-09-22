@@ -33,7 +33,7 @@ class MergeJob extends AbstractQueueJob
             throw new \Exception('Couldn\'t find the CERMINE output');
         }
 
-        $outputFile = $job->getDocumentPath() . '/document.xml';
+        $outputFile = $job->getDocumentPath() . '/document_merged.xml';
         $mergedXML->setInputFileNlmxml($meTypesetDocument->path);
         $mergedXML->setInputFileCermine($cermineDocument->path);        
         $mergedXML->setOutputFile($outputFile);
