@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-27 22:22-0600\n"
-"PO-Revision-Date: 2015-08-27 22:22-0600\n"
+"POT-Creation-Date: 2015-09-22 20:37-0600\n"
+"PO-Revision-Date: 2015-09-22 20:40-0600\n"
 "Last-Translator: Christopher R. Maden <crism@maden.org>\n"
 "Language-Team: PKP\n"
 "Language: en_US\n"
@@ -620,6 +620,34 @@ msgstr ""
 "CERMINE output:\n"
 "%s"
 
+#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:92
+msgid "mergexmloutputs.converter.startLog"
+msgstr "Starting meTypeset/CERMINE merge operation."
+
+#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:98
+msgid "mergexmloutputs.converter.finishLog"
+msgstr "Merge of meTypeset and CERMINE output complete."
+
+#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:113
+msgid "mergexmloutputs.converter.merge.noMeTypesetDomLog"
+msgstr "Unable to read meTypeset output file."
+
+#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:124
+msgid "mergexmloutputs.converter.merge.noCermineDomLog"
+msgstr "Unable to read CERMINE output file."
+
+#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:134
+msgid "mergexmloutputs.converter.merge.noMeTypesetFront"
+msgstr "meTypeset output file has no front element."
+
+#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:144
+msgid "mergexmloutputs.converter.merge.noCermineFront"
+msgstr "CERMINE output file has no front element."
+
+#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:157
+msgid "mergexmloutputs.converter.merge.replacementFail"
+msgstr "Failed to replace meTypeset front element with CERMINE front element."
+
 #: module/Manager/src/Manager/Form/UploadForm.php:33
 msgid "manager.uploadForm.file"
 msgstr "Select Document To Convert"
@@ -671,11 +699,11 @@ msgstr "Processing queue received job (%d)"
 msgid "manager.queue.jobFailedLog"
 msgstr "Job %d failed."
 
-#: module/Manager/src/Manager/Model/Queue/Manager.php:193
+#: module/Manager/src/Manager/Model/Queue/Manager.php:198
 msgid "manager.queue.jobCompletedLog"
 msgstr "Job %d is completed"
 
-#: module/Manager/src/Manager/Model/Queue/Manager.php:217
+#: module/Manager/src/Manager/Model/Queue/Manager.php:222
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
 
@@ -1002,10 +1030,6 @@ msgstr "Upload File Name"
 #: module/Manager/view/manager/manager/list.phtml:37
 msgid "application.generic.details"
 msgstr "Details"
-
-#, fuzzy
-#~ msgid "MergeXMLOutputs.converter.startLog"
-#~ msgstr "Starting PDF conversion"
 
 #, fuzzy
 #~ msgid "MergeXMLOutputs.catter.executeCommandOutputLog"
