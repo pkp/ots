@@ -23,6 +23,7 @@ class Manager {
     // TODO: this should come from the config
     protected $queueMap = array(
         'docx' => 'DocxConversion\Model\Queue\Job\DocxJob',
+        'wppdf' => 'WpPdfConversion\Model\Queue\Job\WpPdfJob',
         'nlmxml' => 'NlmxmlConversion\Model\Queue\Job\NlmxmlJob',
         'references' => 'ReferencesConversion\Model\Queue\Job\ReferencesJob',
         'bibtex' => 'BibtexConversion\Model\Queue\Job\BibtexJob',
@@ -32,7 +33,9 @@ class Manager {
         'citationstyle' => 'CitationstyleConversion\Model\Queue\Job\CitationstyleJob',
         'pdf' => 'PdfConversion\Model\Queue\Job\PdfJob',
         'xmp' => 'XmpConversion\Model\Queue\Job\XmpJob',
-        'zip' => 'ZipConversion\Model\Queue\Job\ZipJob'
+        'zip' => 'ZipConversion\Model\Queue\Job\ZipJob',
+        'cermine' => 'Cermine\Model\Queue\Job\CermineJob',
+        'merge' => 'MergeXMLOutputs\Model\Queue\Job\MergeJob'
     );
 
     /**
@@ -136,7 +139,6 @@ class Manager {
                     $this->queueJob($job, 'bibtex');
                 }
                 else {
-                    $this->queueJob($job, 'html');
                     $this->queueJob($job, 'epub');
                 }
                 break;
@@ -146,8 +148,11 @@ class Manager {
                 break;
 
             case JOB_CONVERSION_STAGE_BIBTEXREFERENCES:
-                $this->queueJob($job, 'html');
                 $this->queueJob($job, 'epub');
+                break;
+
+            case JOB_CONVERSION_STAGE_EPUB:
+                $this->queueJob($job, 'html');
                 break;
 
             case JOB_CONVERSION_STAGE_HTML:
@@ -168,11 +173,23 @@ class Manager {
                     $this->queueJob($job, 'xmp');
                 }
                 else {
-                    $this->queueJob($job, 'zip');
+                    $this->queueJob($job, 'wppdf');
                 }
                 break;
 
             case JOB_CONVERSION_STAGE_XMP:
+                $this->queueJob($job, 'wppdf');
+                break;
+
+            case JOB_CONVERSION_STAGE_WP_PDF:
+                $this->queueJob($job, 'cermine');
+                break;
+
+            case JOB_CONVERSION_STAGE_PDF_EXTRACT:
+                $this->queueJob($job, 'merge');
+                break;
+
+            case JOB_CONVERSION_STAGE_XML_MERGE:
                 $this->queueJob($job, 'zip');
                 break;
 

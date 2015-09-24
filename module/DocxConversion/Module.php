@@ -54,8 +54,8 @@ class Module
                     $config = $config['conversion']['docx']['unoconv'];
 
                     return new Unoconv($config, $logger);
-                },
-            ),
+                }
+            )
         );
     }
 

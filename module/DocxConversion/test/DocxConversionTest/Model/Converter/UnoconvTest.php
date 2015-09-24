@@ -9,8 +9,8 @@ class UnoconvTest extends ModelTest
 {
     protected $unoconv;
 
-    protected $testFile = 'module/DocxConversion/test/assets/document.odt';
-    protected $testFile2 = '/tmp/UNITTEST_unoconv_outputfile';
+    protected $testInputFile = 'module/DocxConversion/test/assets/document.odt';
+    protected $testOutputFile = '/tmp/UNITTEST_unoconv_docxfile.docx';
 
     /**
      * Initialize the test
@@ -33,7 +33,7 @@ class UnoconvTest extends ModelTest
     public function testInputFileDoesntExist()
     {
         $this->setExpectedException('Exception');
-        $this->unoconv->setInputFile($this->testFile . rand());
+        $this->unoconv->setInputFile($this->testInputFile . rand());
     }
 
     /**
@@ -41,23 +41,28 @@ class UnoconvTest extends ModelTest
      *
      * @return void
      */
-    public function testConversion()
+    public function testDocxConversion()
     {
-        $this->assertFalse(file_exists($this->testFile2));
+        $this->assertFalse(file_exists($this->testOutputFile));
 
-        $this->unoconv->setInputFile($this->testFile);
-        $this->unoconv->setOutputFile($this->testFile2);
+        $this->unoconv->setInputFile($this->testInputFile);
+        $this->unoconv->setOutputFile($this->testOutputFile);
         $this->unoconv->setFilter('docx7');
         $this->unoconv->convert();
 
         $this->assertSame($this->unoconv->getStatus(), true);
         $this->assertNotNull($this->unoconv->getOutput());
         $this->assertTrue($this->unoconv->getStatus());
+        $this->assertTrue(file_exists($this->testOutputFile));
         $this->assertNotSame(
-            file_get_contents($this->testFile),
-            file_get_contents($this->testFile2)
+            file_get_contents($this->testInputFile),
+            file_get_contents($this->testOutputFile)
         );
-        $this->assertTrue(file_exists($this->testFile2));
+
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $this->testOutputFile);
+
+        $this->assertSame($mimeType, 'application/zip');
 
         $this->resetTestData();
     }
@@ -69,6 +74,6 @@ class UnoconvTest extends ModelTest
      */
     protected function cleanTestData()
     {
-        @unlink($this->testFile2);
+        @unlink($this->testOutputFile);
     }
 }

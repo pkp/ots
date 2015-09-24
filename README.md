@@ -19,8 +19,12 @@ Module Description
  * Handles job distribution to queues
 * DocxConversion
  * Converts documents to DocX format
+* WpPdfConversion
+ * Converts word processing documents directly to PDF
 * NlmxmlConversion
- * Converts documents to NLMXML format
+ * Uses [meTypeset](http://github.com/MartinPaulEve/meTypeset) to perform part of the NLM XML conversion
+* Cermine
+ * Uses [CERMINE](http://cermine.ceon.pl/) to perform part of the NLM XML conversion
 * ReferenceConversion
  * Parses references from DocX document into a seperate XML file
 * BibtexConversion
@@ -39,6 +43,7 @@ Module Description
  * Converts the NLMXML document into Epub format
 * ZipConversion
  * Zips all documents
+
 * API
  * Simple REST API to submit and retrieve jobs and to provide functionality for the frontends AJAX callbacks.
 
