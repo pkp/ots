@@ -23,7 +23,9 @@ class MergeJob extends AbstractQueueJob
     {
         $mergedXML = $this->sm->get('MergeXMLOutputs\Model\Converter\Merge');
 
-        $meTypesetDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
+        if (!$meTypesetDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_BIBTEXREFERENCES)) {
+            $meTypesetDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
+        }
         if (!$meTypesetDocument) {
             throw new \Exception('Couldn\'t find the meTypeset output');
         }
