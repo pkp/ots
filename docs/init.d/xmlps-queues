@@ -16,6 +16,8 @@ case "$1" in
     cd $base_path
     $su 'php public/index.php queue doctrine docx --start' &
     echo "Started DocX queue [PID $!]"
+    $su 'php public/index.php queue doctrine wppdf --start' &
+    echo "Started WpPdf queue [PID $!]"
     $su 'php public/index.php queue doctrine nlmxml --start' &
     echo "Started NLMXML queue [PID $!]"
     $su 'php public/index.php queue doctrine references --start' &
@@ -26,6 +28,8 @@ case "$1" in
     echo "Started BibtexReferences queue [PID $!]"
     $su 'php public/index.php queue doctrine html --start' &
     echo "Started HTML queue [PID $!]"
+    $su 'php public/index.php queue doctrine epub --start' &
+    echo "Started Epub queue [PID $!]"
     $su 'php public/index.php queue doctrine citationstyle --start' &
     echo "Started CitationStyle queue [PID $!]"
     $su 'php public/index.php queue doctrine pdf --start' &
@@ -34,8 +38,10 @@ case "$1" in
     echo "Started XMP queue [PID $!]"
     $su 'php public/index.php queue doctrine zip --start' &
     echo "Started Zip queue [PID $!]"
-    $su 'php public/index.php queue doctrine epub --start' &
-    echo "Started Epub queue [PID $!]"    
+    $su 'php public/index.php queue doctrine cermine --start' &
+    echo "Started CERMINE queue [PID $!]"
+    $su 'php public/index.php queue doctrine merge --start' &
+    echo "Started XML merge queue [PID $!]"
     ;;
 'stop')
     RUNNING=`ps ax | grep 'public/index.php queue doctrine' | grep -v grep | awk '{print $1}'`

@@ -16,6 +16,7 @@ return array(
         'queue_manager' => array(
             'factories' => array(
                 'docx' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'wppdf' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'nlmxml' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'references' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'bibtex' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
@@ -25,7 +26,9 @@ return array(
                 'citationstyle' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'pdf' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'xmp' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
-                'zip' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory'
+                'zip' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'cermine' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'merge' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory'
             )
         )
     )
