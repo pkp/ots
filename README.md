@@ -41,6 +41,8 @@ Module Description
  * Adds an XMP sidecar with metadata from the NLMXML to the PDF document
 * EpubConversion
  * Converts the NLMXML document into Epub format
+* MergeXMLOutputs
+ * Combines the CERMINE and meTypeset outputs (as modified by BibTeX processing, if appropriate) into a better NLM XML document
 * ZipConversion
  * Zips all documents
 
