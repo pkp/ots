@@ -1,0 +1,614 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article>
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">The Journal Title</journal-id>
+      <issn pub-type="epub">0000-000X</issn>
+      <publisher>
+        <publisher-name>The Publisher Name</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="doi">10.1000/123456</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Sample Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>A Sample Article Title</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Eve</surname>
+            <given-names>Martin Paul</given-names>
+          </name>
+          <xref ref-type="aff" rid="lincoln"/>
+        </contrib>
+        <aff id="lincoln">
+          <institution>University of Lincoln</institution>
+        </aff>
+      </contrib-group>
+      <pub-date pub-type="epub">
+        <year>2013</year>
+      </pub-date>
+      <volume>1</volume>
+      <issue>1</issue>
+      <fpage>1</fpage>
+      <lpage>2</lpage>
+      <permissions>
+        <copyright-statement>Copyright &#169; 2014, Martin Paul Eve</copyright-statement>
+        <license xmlns:xlink="http://www.w3.org/1999/xlink" license-type="open-access" xlink:href="http://creativecommons.org/licenses/by/2.0/">
+          <license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited. The citation of this article must include: the name(s) of the authors, the name of the journal, the full URL of the article (in a hyperlinked format if distributed online) and the DOI number of the article.</license-p>
+        </license>
+      </permissions>
+      <self-uri>https://www.martineve.com/</self-uri>
+      <abstract>
+        <p>This is a sample abstract that forms part of the metadataSample.xml file in meTypeset.</p>
+      </abstract>
+    </article-meta>
+  </front>
+  <body>
+    <sec>
+      <title/>
+      <p>MEASUREMENT SCIENCE REVIEW, Volume 2, Section 2, 2002</p>
+    </sec>
+    <sec>
+      <title>FUNDAMENTALS OF EEG MEASUREMENT</title>
+      <p>M. Teplan</p>
+      <p>Institute of Measurement Science, Slovak Academy of Sciences, D&#250;bravsk&#225; cesta 9,</p>
+      <p>841 04 Bratislava, Slovakia</p>
+      <p>michal.teplan@savba.sk</p>
+    </sec>
+    <sec>
+      <title>Abstract:</title>
+      <p>Electroencephalographic measurements are commonly used in medical and research areas. This review article presents an introduction into EEG measurement. Its purpose is to help with orientation in EEG field and with building basic knowledge for performing EEG recordings. The article is divided into two parts. In the first part, background of the subject, a brief historical overview, and some EEG related research areas are given. The second part explains EEG recording.</p>
+      <p>Keywords<italic>: </italic>Electroencephalography, EEG, brain waves, EEG recording, EEG amplifiers</p>
+    </sec>
+    <sec>
+      <title>1. Introduction</title>
+      <p>Modern medicine applies variety of recording techniques to the human body: </p>
+      <list>
+        <list-item>
+          <p>Electrocardiography (<xref rid="TO_LINK" ref-type="bibr" id="ID1856cea4-9be4-49e6-9083-b95f6f86abe1">ECG, heart</xref>).</p>
+        </list-item>
+        <list-item>
+          <p>Electromyography (<xref rid="TO_LINK" ref-type="bibr" id="ID62f7fef7-7d25-407e-990b-efc5b956f962">EMG, muscular contractions</xref>).</p>
+        </list-item>
+        <list-item>
+          <p>Electroencephalography (<xref rid="TO_LINK" ref-type="bibr" id="ID989e1873-b7ba-4c56-8423-124cc515d007">EEG, brain</xref>).</p>
+        </list-item>
+        <list-item>
+          <p>Magnetoencephalography (<xref rid="TO_LINK" ref-type="bibr" id="IDb9f9c1e3-34ba-4f94-9412-a9c04fbe58a3">MEG, brain</xref>). </p>
+        </list-item>
+        <list-item>
+          <p>Electroneurography (<xref rid="TO_LINK" ref-type="bibr" id="ID3155e62b-c10f-4ec2-95c0-152797147411">ENG</xref>)</p>
+        </list-item>
+        <list-item>
+          <p>Electrogastrography (<xref rid="TO_LINK" ref-type="bibr" id="ID6b766c05-5124-4fbb-b87c-5a58f1069c59">EGG, stomach</xref>). </p>
+        </list-item>
+        <list-item>
+          <p>Electrooptigraphy (<xref rid="TO_LINK" ref-type="bibr" id="IDe41321d4-9475-4696-927f-14a3312b632a">EOG, eye dipole field</xref>). </p>
+        </list-item>
+      </list>
+      <p>and imaging techniques based on different physical principles include:</p>
+      <list>
+        <list-item>
+          <p>Computer tomography (CT).</p>
+        </list-item>
+        <list-item>
+          <p>Magnetic resonance imaging (<xref rid="TO_LINK" ref-type="bibr" id="IDc32eeafa-e400-45f3-8862-811e384d4605">MRI</xref>).</p>
+        </list-item>
+        <list-item>
+          <p>Functional MRI (<xref rid="TO_LINK" ref-type="bibr" id="ID977cdb08-97e4-4f4b-92e6-cd5051e2a0f5">fMRI</xref>).</p>
+        </list-item>
+        <list-item>
+          <p>Positron emission tomography (<xref rid="TO_LINK" ref-type="bibr" id="ID30c79587-1dfc-4845-adc8-6bbb9e1ccda6">PET</xref>).</p>
+        </list-item>
+        <list-item>
+          <p>Single photon emission computed tomography (<xref rid="TO_LINK" ref-type="bibr" id="IDaa4efffe-5b58-437d-80b2-2cb4ed56a0b2">SPECT</xref>). </p>
+        </list-item>
+      </list>
+      <p><underline>Electroencephalography</underline> is a medical imaging technique that reads scalp electrical activity generated by brain structures. The electroencephalogram (<xref rid="IDed00eaab-120c-465c-912f-04ee7e7624bb" ref-type="bibr" id="IDb623d9ec-97ce-47a2-9c60-a07ef5122d22">EEG</xref>) is defined as electrical activity of an alternating type recorded from the scalp surface after being picked up by metal electrodes and conductive media. Electroencephalographic reading is a completely non-invasive procedure that can be applied repeatedly to patients, normal adults, and children with virtually no risk or limitation. The EEG measured directly from the cortical surface is called <underline>electrocortiogram</underline> while when using depth probes it is called <underline>electrogram</underline>. </p>
+      <p>When brain cells (<xref rid="TO_LINK" ref-type="bibr" id="IDe1bca1ce-5e04-427d-824f-6aef7be1c9b1">neurons</xref>) are activated, local current flows are produced. EEG measures mostly the currents that flow during synaptic excitations of the dendrites of many pyramidal <xref rid="TO_LINK" ref-type="bibr" id="ID72fa2505-2815-4987-a224-a9752a8e993c">neurons</xref> in the cerebral cortex. Differences of electrical potentials are caused by summed postsynaptic graded potentials from pyramidal cells that create electrical dipoles between soma (<xref rid="TO_LINK" ref-type="bibr" id="IDaf661919-eb3d-4d47-a7d9-5d7c9ff2bc6b">body of neuron</xref>) and apical dendrites (<xref rid="TO_LINK" ref-type="bibr" id="IDc1c0c6bd-208a-464c-849d-26f7af557d2a">neural branches</xref>). Brain electrical current consists mostly of Na+, K+, Ca++, and Cl- ions that are pumped through channels in neuron membranes in the direction governed by membrane potential. The detailed microscopic picture is more sophisticated, including different types of synapses involving variety of neurotransmitters. Only large populations of active neurons can generate electrical activity recordable on the head surface. Between electrode and neuronal layers current penetrates through skin, skull and several other layers. Weak electrical signals detected by the scalp electrodes are massively amplified, and then displayed on paper or stored to computer memory. </p>
+      <p>Due to capability to reflect both the normal and abnormal electrical activity of the brain, EEG has been found to be a very powerful tool in the field of neurology and clinical neurophysiology. The human brain electric activity starts around the 17-23 week of prenatal development. It is assumed that at birth the full number of neural cells is already developed, roughly 10E11 neurons. This makes an average density of 10,000 neurons per cubic mm. Neurons are mutually connected into neural nets through synapses. Adults have about 500 trillion (<xref rid="IDd15e7993-cc7b-46e2-b145-5ce616d98766" ref-type="bibr" id="ID3462fa77-6e00-4146-8802-f003c9ccf4ec">5.10E14</xref> ) synapses. The number of synapses per one neuron with age increases, however the number of neurons with age decreases, thus the total number of synapses decreases with age too. </p>
+    </sec>
+    <sec>
+      <title>2. Anatomical Foundation</title>
+      <p>Individual&#8217;s brain wave patterns are unique. In some cases, it is possible to distinguish persons only according to their typical brain activity. For example, subjects who regard themselves as rational types or as holistic/intuitive types may demonstrate certain higher activity in their frontal left and frontal right hemisphere respectively. The production of any of these rhythmic waveforms requires that areas of cerebral cortex be connected to other areas and the reticular activating system in the brain stem. Various regions of the brain do not emit the same brain wave frequency simultaneously. An EEG signal between electrodes placed on the scalp consists of many waves with different characteristics. A large amount of data received from even one single EEG recording presents a difficulty for interpretation. When analysing the EEG it is convenient to think of the brain as three sections:</p>
+      <list>
+        <list-item>
+          <p>Cerebrum. </p>
+        </list-item>
+        <list-item>
+          <p>Cerebellum.</p>
+        </list-item>
+        <list-item>
+          <p>Brain stem. </p>
+        </list-item>
+      </list>
+    </sec>
+    <sec>
+      <title>Cerebrum</title>
+      <p>The highest influence to EEG comes from the electric activity of cerebral cortex due to its surface position. The cerebrum is the dominant part of the central nervous system and has centers for conscious appreciation of sensation, initiation of movement, complex analysis and expressions of emotions and behavior. The cerebrum consists of left and right hemisphere with highly convoluted surface layer called cerebral cortex. The right one senses information from the left side of the body and controls movement on the left side. Similarly the left hemisphere is connected to the right side of the body. The cerebrum consists of several layers. The outer layer, approximately one centimetre thick, consists mostly of neurone cell bodies, which give it a grey appearance. The surface is highly convoluted with ridges (<xref rid="TO_LINK" ref-type="bibr" id="ID2870f647-fb7c-4f7c-ba0b-913ec1cd9fa0">gyri</xref>) and valleys (<xref rid="TO_LINK" ref-type="bibr" id="ID184eecc3-bce1-4722-87c0-282fdfc66162">sulci</xref>). The main, deeper sulci are called fissures. Beneath the outer layer are axons, which have a white appearance. Embedded in the white matter are further collections of cell bodies called nuclei. Some of the functions of the cerebrum are localised within specific anatomical structures, some are more widely distributed. The cerebral cortex contains six layers. There are two types of neurone cell bodies: pyramidal cells and stellate (<xref rid="TO_LINK" ref-type="bibr" id="IDdd184689-b5cb-4898-9611-c0e4076dac37">granule</xref>) cells. The pyramidal cells are large and tend to connect to distant structures in other parts of the cerebrum, thalamus, cerebellum and spinal chord. There are many feedback connections. Granule cells are smaller and only connect with other cells in their immediate vicinity.</p>
+    </sec>
+    <sec>
+      <title>Brain Stem</title>
+      <p>The brain stem is the oldest part in evolutionary terms, and its structure, size and function have changed little in the evolution of the vertebrates. It is an extension of the spinal chord and has three main functions:</p>
+      <list list-type="order">
+        <list-item>
+          <p>Connecting link between the cerebral cortex, cerebellum and spinal cord.</p>
+        </list-item>
+        <list-item>
+          <p>Control centre for basic body functions such as respiration, heart and blood flow regulation.</p>
+        </list-item>
+        <list-item>
+          <p>Integration centre for complex reflexes, such as maintenance of body position and posture.</p>
+        </list-item>
+      </list>
+      <p>The brain stem controls respiration, heart regulation, biorythms, neurohormone and hormone secretion, etc. There are four regions in the brain stem: medulla oblongata, pons, midbrain and diencephalon. Each contains nuclei (<xref rid="TO_LINK" ref-type="bibr" id="IDa14e8caf-10f8-48f1-9865-ef30f170b761">groups of neurone cell bodies</xref>) and bundles of axons. The pons is a bulge at the upper end of the medulla (<xref rid="TO_LINK" ref-type="bibr" id="IDaf531552-55b8-41fb-92e3-012870709e7f">Figure 94</xref>). The medulla has motor and sensory areas for the mouth, neck and throat, and also controls the respiratory and cardiovascular systems.</p>
+      <p>The pons contains cranial nerve nuclei associated with motor and sensory functions of the face. The midbrain contains the major nuclei that control eye movement, blinking and the pupillary light reflex. The diencephalon is at the upper end of the brain stem. It contains the thalamus that integrates sensation, before passing signals onto the cerebrum, and is the site where pain can be consciously appreciated. </p>
+    </sec>
+    <sec>
+      <title>Cerebellum</title>
+      <p>The cerebellum integrates information from the cerebral cortex, the spinal chord and the vestibular system of the inner ears. The information from the cerebral cortex is motor information concerning where the brain is moving consciously the body and limbs. Information from the spinal cord originates in the position sensors in the joints, tendons and muscles of the body. Information from the vestibular system concerns the orientation of the head in three-dimensional space and its movement. The cerebellum thereby serves to coordinate voluntary movement and maintain posture.</p>
+    </sec>
+    <sec>
+      <title>3. History</title>
+      <p>During more than 100 years of its history, encephalography has undergone massive progress. The existence of electrical currents in the brain was discovered in 1875 by an English physician Richard Caton. Caton observed the EEG from the exposed brains of rabbits and monkeys. In 1924 Hans Berger, a German neurologist, used his ordinary radio equipment to amplify the brain's electrical activity measured on the human scalp. He announced that weak electric currents generated in the brain could be recorded without opening the skull, and depicted graphically on a strip of paper. The activity that he observed changed according to the functional status of the brain, such as in sleep, anesthesia, lack of oxygen and in certain neural diseases, such as in epilepsy. Berger laid the foundations for many of the present applications of electroencephalography. He also used the word <italic>electroencephalogram </italic>as the first for describing brain electric potentials in humans. He was right with his suggestion, that brain activity changes in a consistent and recognizable way when the general status of the subject changes, as from relaxation to alertness. Later in 1934 Adrian and Matthews published the paper verifying concept of &#8220;human brain waves&#8221; and identified regular oscillations around 10 to 12 Hz which they termed &#8220;alpha rhythm&#8221;. </p>
+    </sec>
+    <sec>
+      <title>4. Brain waves classification</title>
+      <p>For obtaining basic brain patterns of individuals, subjects are instructed to close their eyes and relax. Brain patterns form wave shapes that are commonly sinusoidal. Usually, they are measured from peak to peak and normally range from 0.5 to 100 &#181;V in amplitude, which is about 100 times lower than ECG signals. By means of Fourier transform, power spectrum from the raw EEG signal is derived. In power spectrum contribution of sine waves with different frequencies are visible. Although the spectrum is continuous, ranging from 0 Hz up to one half of sampling frequency, the brain state of the individual may make certain frequencies more dominant. Brain waves have been categorized into four basic groups (<xref rid="TO_LINK" ref-type="bibr" id="ID69085825-0699-4d5a-9ad6-e0ccfa744583">Figure 1</xref>):</p>
+      <list>
+        <list-item>
+          <p>beta (<xref rid="TO_LINK" ref-type="bibr" id="IDda06c902-97cf-4ccd-8fd8-2e28cef72c97">13-30 Hz</xref>),</p>
+        </list-item>
+        <list-item>
+          <p>alpha (<xref rid="TO_LINK" ref-type="bibr" id="ID267b5c29-2f5b-4234-ab9e-5620443bb041">8-13 Hz</xref>),</p>
+        </list-item>
+        <list-item>
+          <p>theta (<xref rid="TO_LINK" ref-type="bibr" id="IDe4e2da75-e921-4ab2-aee2-da7dadd04638">4-8 Hz</xref>),</p>
+        </list-item>
+        <list-item>
+          <p>delta (<xref rid="TO_LINK" ref-type="bibr" id="IDbcee4cea-d364-46ab-a387-2a470494ae0f">0.5-4 Hz</xref>).</p>
+        </list-item>
+        <list-item>
+          <p>gamma (<xref rid="ID8fee1e20-f32d-4e49-a25e-6a1b16e633ea" ref-type="bibr" id="ID7fd34fa6-ea1f-4104-a2e3-b488770dff43">30-80</xref>)</p>
+        </list-item>
+      </list>
+      <fig position="float" orientation="portrait">
+        <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="media/image1.png" id="ID674fcbc6-fd7b-4338-a76a-8f62e17112c6" position="float" orientation="portrait" xlink:type="simple">
+          <label>Figure 1</label>
+          <caption>
+            <p>Brain wave samples with dominant frequencies belonging to beta, alpha, theta, and delta band</p>
+          </caption>
+        </graphic>
+      </fig>
+    </sec>
+    <sec>
+      <title>Alpha Rhythm</title>
+      <p>The best-known and most extensively studied rhythm of the human brain is the normal <underline>alpha</underline> rhythm. Alpha can be usually observed better in the posterior and occipital regions with typical amplitude about 50 &#181;V (<xref rid="TO_LINK" ref-type="bibr" id="IDeb20bd2d-df55-4435-93e7-711855b0e888">peak-peak</xref>). Alpha is also significant between posterior and central regions in comparison to other regions. Alpha activity is induced by closing the eyes and by relaxation, and abolished by eye opening or alerting by any mechanism (<xref rid="TO_LINK" ref-type="bibr" id="IDa29f4edd-d3c9-47ff-9af6-2b75463763c3">thinking, calculating</xref>). Most of the people are remarkably sensitive to the phenomenon of &#8220;eye closing&#8221;, i.e. when they close their eyes their wave pattern significantly changes from beta into alpha waves. The precise origin of the alpha rhythm is still not known. Alpha waves are usually attributed to summated dendrite potentials. </p>
+      <p><underline>Alpha</underline> waves contain frequencies between 8 and 13 Hz with amplitude less than 10 mV. They are found in normal people, who are awake and resting quietly, not being engaged in intense mental activity. Their amplitude is highest in the occipital region. When the person is asleep, the alpha waves disappear. When the person is alert and their attention is directed to a specific activity, the alpha waves are replaced by asynchronous waves of higher frequency and lower amplitude.</p>
+    </sec>
+    <sec>
+      <title>Beta Rhythm</title>
+      <p>EEG is sensitive to a continuum of states ranging from stress state, alertness to resting state, hypnosis, and sleep. During normal state of wakefulness with open eyes <underline>beta</underline> waves are dominant. Beta waves have a frequency range of 13 to 30 Hz, extending to 50 Hz under intense mental activity. They have their maximum amplitude (<xref rid="TO_LINK" ref-type="bibr" id="IDe6d7cdec-56a2-4eda-b780-611ffd47af33">less than 20 mV</xref>) on the parietal and frontal regions of the scalp. There are two types: beta I waves, lower frequencies which disappear during mental activity, and beta II waves, higher frequencies which appear during tension and intense mental activity.</p>
+    </sec>
+    <sec>
+      <title>Delta and Theta Rhythms</title>
+      <p>If sleep appears power of lower frequency bands (<xref ref-type="bibr" id="ID09e34c43-0e61-4977-a4e7-c2ba18f2eb2d" rid="TO_LINK">i.e. <underline>delta</underline> and <underline>theta</underline>
+            </xref>) increase. Sleep is generally divided into two broad types: nonrapid eye movement sleep (NREM) and REM sleep. NREM and REM occur in alternating cycles. NREM is further divided into stage I, stage II, stage III, and stage IV. The last two stages correspond to deeper sleep, where slow delta waves show higher proportions. With slower dominant frequencies responsiveness to stimuli decreases. </p>
+      <p><underline>Delta</underline> waves have a frequency content between 0.5 and 4 Hz with amplitude less than 100 mV. They occur during deep sleep, during infancy and in serious organic brain disease. They will occur after transactions of the upper brain stem separating the reticular activating system from the cerebral cortex. They are found in the central cerebrum, mostly the parietal lobes.</p>
+      <p><underline>Theta</underline> waves have a frequency range between 4 to 7 Hz with amplitude of less than 100 mV. They occur mainly in the parietal and temporal regions in sleep and also in children when awake, and during emotional stress in some adults, particularly during disappointment and frustration. Sudden removal of something causing pleasure will cause about 20 s of theta waves.</p>
+    </sec>
+    <sec>
+      <title>Gamma Rhythm</title>
+      <p><underline>Gamma</underline> waves have frequencies between 30 and 80 Hz with an amplitude of less than 2 mV  peak-to-peak and are found when the subject is paying attention or is having some other sensory stimulation.</p>
+    </sec>
+    <sec>
+      <title>5. Applications</title>
+      <p>The greatest advantage of EEG is speed. Complex patterns of neural activity can be recorded occurring within fractions of a second after a stimulus has been administered. EEG provides less spatial resolution compared to MRI and PET. Thus for better allocation within the brain, EEG images are often combined with MRI scans. EEG can determine the relative strengths and positions of electrical activity in different brain regions. Research and clinical applications of the EEG in humans and animals are used to:</p>
+      <list list-type="order">
+        <list-item>
+          <p>monitor alertness, coma and brain death;</p>
+        </list-item>
+        <list-item>
+          <p>locate areas of damage following head injury, stroke, tumor, etc.;</p>
+        </list-item>
+        <list-item>
+          <p>test afferent pathways (<xref rid="TO_LINK" ref-type="bibr" id="ID0f34cb05-0a3b-4679-a46b-6b4ecb4cb49f">by evoked potentials</xref>);</p>
+        </list-item>
+        <list-item>
+          <p>monitor cognitive engagement (<xref rid="TO_LINK" ref-type="bibr" id="ID2643e3f7-f1a1-4f9d-8e9b-62ab61af5950">alpha rhythm</xref>);</p>
+        </list-item>
+        <list-item>
+          <p>produce biofeedback situations, alpha, etc.;</p>
+        </list-item>
+        <list-item>
+          <p>control anesthesia depth (<xref rid="TO_LINK" ref-type="bibr" id="ID273d925f-37c9-4e14-b2cb-ae25cead78dc">&#8220;servo anesthesia&#8221;</xref>);</p>
+        </list-item>
+        <list-item>
+          <p>investigate epilepsy and locate seizure origin;</p>
+        </list-item>
+        <list-item>
+          <p>test epilepsy drug effects;	</p>
+        </list-item>
+        <list-item>
+          <p>assist in experimental cortical excision of epileptic focus;</p>
+        </list-item>
+        <list-item>
+          <p>onitor human and animal brain development;</p>
+        </list-item>
+        <list-item>
+          <p>est drugs for convulsive effects;</p>
+        </list-item>
+        <list-item>
+          <p>nvestigate sleep disorder and physiology.</p>
+        </list-item>
+      </list>
+      <p>Symmetry of alpha activity within hemispheres can be monitored. In cases of restricted lesions such as tumor, hemorrhage, and thrombosis, it is usual for the cortex to generate lower  frequencies. </p>
+      <p>EEG signal distortion can be manifested by:</p>
+      <list>
+        <list-item>
+          <p>Reduction in amplitude.</p>
+        </list-item>
+        <list-item>
+          <p>Decrease of dominant frequencies beyond the normal limit.</p>
+        </list-item>
+        <list-item>
+          <p>Production of spikes or special patterns. </p>
+        </list-item>
+      </list>
+    </sec>
+    <sec>
+      <title>Abnormal EEG</title>
+      <p>Abnormalities may be found in organic brain damage, tumors, infarcts, hemorrhages, demyelinating diseases, such as multiple sclerosis (MS), after viral encephalitis and in epilepsy. Generally tumors, infarcts and hemorrhages are better detected by other means, so the EEG is not used as a first option for diagnosis. The EEG is the main diagnostic tool for epilepsy. Epilepsy is characterized by uncontrolled excessive activity in all or part of the brain. If the activity is above a threshold, the patient will exhibit symptoms; such as convulsive contractions of the muscles; &#8220;absences&#8221; where the patient is unaware of their surroundings and does not respond to stimuli for a period of seconds or minutes; or abnormal behavior.</p>
+    </sec>
+    <sec>
+      <title>Epilepsy</title>
+      <p>Epilepsy may be partial or general. In general epilepsy the patient becomes unconscious, the patient has a general <italic>tonic </italic>contraction of all their muscles, followed by alternating <italic>clonic </italic>contractions. This is also known as <italic>grand mal </italic>epilepsy with <italic>tonic-clonic convulsion</italic>s. Following the seizure, which may last from a few seconds to four minutes, the patient is in a stupor for a minute to a day or more. The EEG shows large amplitude, low frequency spikes from all parts of the brain during grand mal. In between seizures, the patient may have a localized area of the brain showing large amplitude, low frequency spikes. This region is known as the focus.</p>
+      <p>Another form of epilepsy, formerly known as <italic>petit ma</italic>l, occurs as myoclonic and absence epilepsy. In the myoclonic the burst of neuron discharges last only a fraction of a second and there is a single, violent muscular jerk. In the absence form, there is a loss of consciousness lasting for a few seconds, sometimes associated with muscle twitching and eye blinking.</p>
+      <p>Partial epilepsy can involve any part of the brain. It usually arises from an area of brain that is damaged or scarred or has some other abnormality compressing the brain, such as a tumor. Depending on the site of the focus, it can cause a wave of contractions spreading over the body, a short period of amnesia only, an attack of rage or fear, or a repetitive movement. The patient may or may not be aware of the attack but is unable to control it. Stimulating the eyes with fixed or moving patterns can show defects in pathways concerned with vision, or point to epileptic foci in those pathways. If a repetitive pattern at the right frequency is displayed before the patient, focal or petit mal epilepsy may be provoked and recorded. Comparison of timing along the optic pathways between the right and left sides can show damage on one side causing delay in signals travelling from the retina to the occipital cortex at the back of the brain, where vision is consciously perceived. This is seen in viral optic neuritis, MS and vascular lesions (eg aneurysms: ballooning out of a defect in the wall of an artery). Recording from the temporal lobe of the cortex, where hearing is perceived, or the adjacent brain stem, while stimulating the ear with sound can detect defects in those pathways. The advantage of this technique is that it does not require the cooperation of the patient, so that infants may be tested for deafness.</p>
+      <p>Epileptic conditions produce stimulation of the cortex and the appearance of high-voltage waves (<xref rid="TO_LINK" ref-type="bibr" id="IDfeb2325e-4275-4d9a-b536-0266d415bb9b">up to 1000 &#181;V</xref>) referred to as &#8220;spikes&#8221; or &#8220;spike and wave&#8221;. EEG patterns have been shown to be modified by a wide range of variables, including biochemical, metabolic, circulatory, hormonal, neuroelectric, and behavioral factors. By tracking changes of electric activity during such drug abuse-related phenomena as euphoria and craving, brain areas and patterns of activity that mark these phenomena can be determined. As the EEG procedure is non-invasive and painless, it is being widely used to study the brain organization of cognitive processes such as perception, memory, attention, language, and emotion in normal adults and children. For this purpose, the most useful application of EEG recording is the ERP (<xref rid="TO_LINK" ref-type="bibr" id="ID7101fa72-76c3-4d7f-b24d-5b38bae98dd5">event related potential</xref>) technique.</p>
+    </sec>
+    <sec>
+      <title>Sleep</title>
+      <p>Sleep deprivation is one of the most common disorders of people today. Bright light exposure is a common treatment for many sleep difficulties, especially those associated with alterations in the circadian timing system. Electroencephalograms have been used to research bright light therapy and its effectiveness. Two studies by Badia and coworkers focused on the notion that true physiological arousal may be caused by exposure to bright light. One of the studies used electroencephalogram to monitor beta activity when subjects were exposed to light. Every 90 minutes a control group was exposed to alternating sequences of bright and dim light. With changes of illumination, log power density of the beta band increased and decreased. The dominant frequency within the beta band was greatly higher during bright light exposure than during dim light exposure.</p>
+    </sec>
+    <sec>
+      <title>Alcoholism</title>
+      <p>As one of the most readily available and widely used drugs in society, alcohol has been a focus of many researchers. Questions about the effects of alcohol on the body, particularly the brain, as well as inquires about alcoholism as a disease are continually posed by scientists. It is known that alcohol misuse has been linked to a large number of deleterious effects on the central nervous system. Alcoholic patients may be affected with several disorders at one time, making it difficult to identify the cause of cognitive disfunction in chronic alcoholics. Electroencephalography has become a major tool in aiding physicians to diagnose many of these disorders, as well as helping researchers to look closer at the origins of alcoholism, along with its effects. Scientists in Denmark conducted a long term study on the EEG sensitivity to alcohol as a determinant for the possible development of alcoholism in high-risk men. Standard doses of alcohol were administered to 19-year old sons of both alcoholics and non-alcoholics. An electroencephalograph, administered with the subject's eyes closed, used a six scalp lead configuration to measure four frequency bands (<xref rid="TO_LINK" ref-type="bibr" id="ID7c0d6fb6-9b7e-4224-8b57-a9d1fefabe3a">theta, slow alpha, fast alpha, and beta</xref>) and the mean alpha frequency. The researchers used the EEG frequency response to relate future alcohol dependence and level of consumption. Their results showed that a smaller EEG alpha frequency response to alcohol at 19 years was related to the development of alcohol dependence and high quantity and frequency of consumption ten years later. The Department of Psychology at the University of Tasmania in Australia investigated the link between heavy social drinking and sober cognitive functioning in young non-alcoholic adults. Heavy and light social drinkers (<xref rid="TO_LINK" ref-type="bibr" id="ID3f475575-d290-49ef-979b-cfafbdfebf77">male</xref>) completed a verbal free recall task using various word lists and had their event-related potentials (<xref rid="TO_LINK" ref-type="bibr" id="ID35424abf-9634-40cb-893b-2aad3f03a16d">ERP</xref>) recorded while under the influence of either a pharmacological challenge (<xref rid="TO_LINK" ref-type="bibr" id="IDa3d33410-509f-41e6-8333-d95dff376d91">larazepam</xref>) or a placebo. Each subject's electroencephalographic activity was recorded using an electrode skull cap sampling at a rate of 500 Hz. Grand-mean averages were computed for each electrode site and each drug treatment condition for all of the subjects in the group. Results showed that the event-related potential to recall and not recall words was reduced in heavy social drinkers following placebo. The larazepam produced a distinct pattern of antegrade memory deficits in both groups. </p>
+    </sec>
+    <sec>
+      <title>Stroke</title>
+      <p>Medical history is filled with accounts of patients having stroke-like symptoms. In the past, it was difficult to detect abnormalities inside the brain without resorting to surgery, and thus, knowledge pertaining to strokes remained hidden. The electroencephalogram, with its ability to detect abnormalities, such as those resulting from strokes, has opened many doors for the detection and treatment of strokes. A case study involving a 62-year old woman who suffered a small subcortical stroke compared a point-correlation dimension (<xref rid="TO_LINK" ref-type="bibr" id="IDbbbedcba-192f-4563-9d77-f26f0c3ce4f5">PD2</xref>) of the patient two years later to that of 13 healthy control subjects. An electroencephalograph was recorded from 22 locations on the scalp using an Electrocap. The EEG was recorded for two minutes under both eyes closed and eyes open conditions. The <xref rid="TO_LINK" ref-type="bibr" id="ID7490f9f6-0556-47ec-8b8b-ef70d2151451">PD2</xref> was then calculated from every EEG epoch recorded at all locations. After the PD2 calculation, an overall grand average was taken for all control subjects and the mean, for both eyes open and eye closed in the control group and the patient was computed. The scalp distribution of PD2, calculated from the EEG and plotted as z-score maps, showed that the control group's PD2 values were symmetrical in both conditions (<xref rid="TO_LINK" ref-type="bibr" id="ID46509a36-20a1-4aa9-bdc2-37776f1e953d">eyes opened and closed</xref>). In the patient's case, the distribution of PD2 was asymmetrical. Analysis of the patient's EEG reading showed a relative decreased of the fast frequency band activity at low dimensional area. This demonstrates that even though the patient showed no obvious results from her stroke, there is an observable difference in her brain waves compared to that of someone who has never had one.</p>
+    </sec>
+    <sec>
+      <title>Evoked potentials</title>
+      <p>Evoked potentials or event-related potentials (<xref rid="TO_LINK" ref-type="bibr" id="ID5cbc0328-ddc7-4eac-ac1e-a26af14aeede">ERPs</xref>) are significant voltage fluctuations resulting from evoked neural activity. Evoked potential is initiated by an external or internal stimulus. <xref rid="TO_LINK" ref-type="bibr" id="ID6008c0fa-4a86-46fb-b497-3fe546cfce42">ERPs</xref> are suitable methodology for studying the aspects of cognitive processes of both normal and abnormal nature (<xref rid="TO_LINK" ref-type="bibr" id="ID03bc3bcf-17de-40d0-a636-45c2e478b7a6">neurological or psychiatric disorders</xref>). Mental operations, such as those involved in perception, selective attention, language processing, and memory, proceed over time ranges in the order of tens of milliseconds. Whereas PET and MRI can localize regions of activation during a given mental task, ERPs can help in defining the time course of these activations. </p>
+      <p>Amplitudes of ERP components are often much smaller than spontaneous EEG components, so they are not to be recognized from raw EEG trace. They are extracted from set of single recordings by digital averaging of epochs (<xref rid="TO_LINK" ref-type="bibr" id="ID94bdc41f-6135-4e27-a6a5-6a97e7f03e63">recording periods</xref>) of EEG time-locked to repeated occurrences of sensory, cognitive, or motor events. The spontaneous background EEG fluctuations, which are random relatively to time point when the stimuli occurred, are averaged out, leaving the event-related brain potentials. These electrical signals reflect only that activity which is consistently associated with the stimulus processing in a time-locked way. The ERP thus reflects, with high temporal resolution, the patterns of neuronal activity evoked by a stimulus.</p>
+    </sec>
+    <sec>
+      <title>Quantitative electroencephalography</title>
+      <p>Technological advances increased the ability of encephalography to read brain activity data from the entire head simultaneously. Quantitative EEG (<xref rid="TO_LINK" ref-type="bibr" id="IDf0f4bfd0-08c4-4ff7-af60-92bbf1f1c811">QEEG</xref>) applies multi channel measurements that can better determine spatial structures and localize areas with brain activity or abnormality. The results are often used for topographic brain mapping represented with color maps in 2D and 3D to enhance visualization. </p>
+    </sec>
+    <sec>
+      <title>Brain computer interface</title>
+      <p>Brain computer interface (<xref rid="TO_LINK" ref-type="bibr" id="ID9068c638-daf9-4088-bb2f-e0090dbbca66">BCI</xref>) is a communication system that recognizes user&#8217;s command only from his or her brainwaves and reacts according to them. For this purpose PC or/and subject is trained. Simple task can consist of desired motion of an arrow displayed on the screen only through subject&#8217;s imaginary of the motion of his or her left or right hand. As the consequence of imaging process, certain characteristics of the brainwaves are raised and can be used for user&#8217;s command recognition, e.g. motor mu waves (brain waves of alpha range frequency associated with physical movements or intention to move) or certain ERPs.</p>
+    </sec>
+    <sec>
+      <title>EEG Biofeedback</title>
+      <p>So-called mindmachines or brainmachines are devices for induction of different mind states (<xref rid="TO_LINK" ref-type="bibr" id="ID12310554-8c3b-47e2-9ac1-9a7929f705a7">e.g. relaxation, top performance</xref>) by entrainment of the brain waves into desired frequency bands by repetitive visual and audio stimuli. For making the training more effective, biofeedback methods were involved. Originally, changes in finger skin resistance or temperature were monitored. EEG biofeedback or neurofeedback uses EEG signal for feedback input. It is suggested that this learning procedure may help a subject to modify his or her brainwave activity. </p>
+      <p>One of the methods involved in neurofeedback training is the so-called frequency following response. Changes in the functioning of the brain in desired way, e.g. increase in alpha activity generate appropriate visual, audio, or tactile response. Thus, a person can be aware of the right direction of the training. Some researchers assume that subjects can improve their mental performance, normalize behavior, and stabilize mood through the positive or negative feedback loop, while others are skeptical on these controversial issues. There are some findings indicating applications to certain range of conditions, as <italic>attention deficit disorder, depression, epilepsy, </italic>and <italic>alcoholis</italic>m. </p>
+    </sec>
+    <sec>
+      <title>6. EEG recording techniques</title>
+      <p>The EEG is usually recorded with the subject awake but resting on a bed with their eyes closed. The EEG is sometimes recorded when the patient is asleep or performing normal daily tasks. In order not to disturb the patient, only the electrodes, preamplifiers and stimulators are with the patient. Telemetry is used to communicate with the rest of the equipment in a different room.</p>
+      <p>Encephalographic measurements employ a recording system consisting of</p>
+      <list>
+        <list-item>
+          <p>electrodes with conductive media</p>
+        </list-item>
+        <list-item>
+          <p>amplifiers with filters</p>
+        </list-item>
+        <list-item>
+          <p>A/D converter</p>
+        </list-item>
+        <list-item>
+          <p>recording device.</p>
+        </list-item>
+        <list-item>
+          <p>Electrodes read the signal from the head surface. </p>
+        </list-item>
+        <list-item>
+          <p>Aamplifiers bring the microvolt signals into the range where they can be digitized   </p>
+        </list-item>
+      </list>
+      <p> accurately.</p>
+      <list>
+        <list-item>
+          <p>Converter changes signals from analog to digital form.</p>
+        </list-item>
+        <list-item>
+          <p>Personal computer (<xref rid="TO_LINK" ref-type="bibr" id="ID6985fa56-fad1-41f5-abc0-0a229f66c14a">or other relevant device</xref>) stores and displays obtained data. </p>
+        </list-item>
+      </list>
+      <p>Scalp recordings of neuronal activity in the brain, identified as the EEG, allow measurement of potential changes over time in basic electric circuit conducting between signal (<xref rid="TO_LINK" ref-type="bibr" id="IDd3da47e4-6e82-4fbc-8af9-d21c7ce7f150">active</xref>) electrode and reference electrode. Extra third electrode, called ground electrode, is needed for getting differential voltage by subtracting the same voltages showing at <xref rid="TO_LINK" ref-type="bibr" id="ID0ac178a4-0af9-4481-a61a-641fcd88af43">active</xref> and reference points. Minimal configuration for mono-channel EEG measurement consists of one active electrode, one (<xref rid="TO_LINK" ref-type="bibr" id="ID3c45bd7c-b820-449e-8eee-ffccf1300b10">or two specially linked together</xref>) reference and one ground electrode. The multi-channel configurations can comprise up to 128 or 256 active electrodes.</p>
+      <fig position="float" orientation="portrait">
+        <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="media/image2.png" id="ID9f377e07-3fbc-4910-b481-dcb81c6a5a27" position="float" orientation="portrait" xlink:type="simple">
+          <label>Figure 2</label>
+          <caption>
+            <p>Equipment for EEG recording: amplifier unit, electrode cap, conductive jelly, injection, and aid for disinfecting</p>
+          </caption>
+        </graphic>
+      </fig>
+    </sec>
+    <sec>
+      <title>Recording electrodes</title>
+      <p>The EEG recording electrodes and their proper function are critical for acquiring appropriately high quality data for interpretation. Many types of electrodes exist, often with different characteristics. Basically there are following types of electrodes:</p>
+      <list>
+        <list-item>
+          <p>disposable (<xref rid="TO_LINK" ref-type="bibr" id="ID843d5a71-e742-43f7-9b56-8d02995d6ff5">gel-less, and pre-gelled types</xref>)</p>
+        </list-item>
+        <list-item>
+          <p>reusable disc electrodes (<xref rid="TO_LINK" ref-type="bibr" id="IDc3a6f05d-dcf2-474c-9f56-68ea36080919">gold, silver, stainless steel or tin</xref>)</p>
+        </list-item>
+        <list-item>
+          <p>headbands and electrode caps</p>
+        </list-item>
+        <list-item>
+          <p>saline-based electrodes</p>
+        </list-item>
+        <list-item>
+          <p>needle electrodes</p>
+        </list-item>
+      </list>
+      <p>For multichannel montages, electrode caps are preferred, with a large number of electrodes installed on its surface (<xref rid="TO_LINK" ref-type="bibr" id="ID14cf0a13-ea61-4c09-bb7f-8f5174fa07b0">Figure 3</xref>). Commonly used scalp electrodes consist of Ag-AgCl disks, 1 to 3 mm in diameter, with long flexible leads that can be plugged into an amplifier. AgCl electrodes can accurately record also very slow changes in potential. Needle electrodes are used for long recordings and are invasively inserted under the scalp. Skin preparation differs, generally cleaning of the skin surface from oil and brushing from dried parts is recommended. With disposable and disc electrodes, abrasive paste is used for slight skin abrasion. With cap systems, abutting needle at the end of injection is used for skin scraping, which can cause irritation, pain and infection. Especially when person&#8217;s EEG is measured repeatedly and cap is mounted for the same electrode points, there is a threat of certain pain and bleeding. That is why the right hygiene and safety protocol should be kept. Using the silver-silver chloride electrodes, the space between the electrode and skin should be filled with conductive paste also helping to stick. With the cap systems, there is a small hole to inject conductive jelly. Conductive paste and conductive jelly serve as media to ensure lowering of contact impedance at electrode-skin interface. </p>
+      <p>Three types of electrode connections are used:</p>
+      <list list-type="order">
+        <list-item>
+          <p>Bipolar (<xref rid="TO_LINK" ref-type="bibr" id="ID86bb2582-f4b2-4927-a4d3-c80857f35356">between pairs of electrodes, usually adjacent</xref>).</p>
+        </list-item>
+        <list-item>
+          <p>Monopolar (between one electrode and a distant reference electrode usually attached to one or both earlobes).</p>
+        </list-item>
+        <list-item>
+          <p>Monopolar (between one electrode and a reference formed by averaging all the other electrodes by connecting them through resistors).</p>
+        </list-item>
+      </list>
+      <p>In 1958, International Federation in Electroencephalography and Clinical Neurophysiology adopted standardization for electrode placement called 10-20 electrode placement system. Electrodes are small, disposable, self-adhesive and contain their own electrode gel. This system standardized physical placement and designations of electrodes on the scalp. The head is divided into proportional distances from prominent skull landmarks (<xref rid="TO_LINK" ref-type="bibr" id="ID92f315d5-0695-4a30-a434-0d895edfe59d">nasion, preauricular points, inion</xref>) to provide adequate coverage of all regions of the brain. Label 10-20 designates proportional distance in percents between ears and nose where points for electrodes are chosen. Electrode placements are labeled according adjacent brain areas: F (<xref rid="TO_LINK" ref-type="bibr" id="IDf4d2a391-0b39-430b-963a-7b713ecc7894">frontal</xref>), C (<xref rid="TO_LINK" ref-type="bibr" id="IDf28b20f5-c9ee-4013-ba3c-37651c40b2bb">central</xref>), T (<xref rid="TO_LINK" ref-type="bibr" id="ID063d8fff-baca-4459-928b-13b10c98e167">temporal</xref>), P (<xref rid="TO_LINK" ref-type="bibr" id="ID72b39851-9c96-472f-958c-6a0036a13eee">posterior</xref>), and O (<xref rid="TO_LINK" ref-type="bibr" id="ID98145a0f-62cd-4db5-b1de-2263a3adb38a">occipital</xref>). The letters are accompanied by odd numbers at the left side of the head and with even numbers on the right side (<xref rid="TO_LINK" ref-type="bibr" id="ID6c7d24e7-9c61-4a90-9ef4-d07befb1e166">Figure 4</xref>). Left and right side is considered by convention from point of view of a subject. </p>
+      <fig position="float" orientation="portrait">
+        <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="media/image3.png" id="ID10879381-f06c-4d83-bf76-2a6f0eb9d57b" position="float" orientation="portrait" xlink:type="simple">
+          <label>Figure 3</label>
+          <caption>
+            <p>Electrode cap with electrodes placed after 10-20 electrode placement system</p>
+          </caption>
+        </graphic>
+      </fig>
+      <fig position="float" orientation="portrait">
+        <graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="media/image4.png" id="IDfa1c268a-529d-464e-b16d-8fe9b87e2e19" position="float" orientation="portrait" xlink:type="simple">
+          <label>Figure 4</label>
+          <caption>
+            <p>Labels for points according to the 10-20 electrode placement system</p>
+          </caption>
+        </graphic>
+      </fig>
+      <p>As it is known from tomography, different brain areas may be related to different functions of the brain. Each scalp electrode is located near certain brain centers:</p>
+      <list>
+        <list-item>
+          <p>F7 is located near centers for rational activities, </p>
+        </list-item>
+        <list-item>
+          <p>Fz near intentional and motivational centers, </p>
+        </list-item>
+        <list-item>
+          <p>F8 close to sources of emotional impulses. </p>
+        </list-item>
+        <list-item>
+          <p>Cortex around C3, C4, and Cz locations deals with sensory and motor functions. </p>
+        </list-item>
+        <list-item>
+          <p>Locations near P3, P4, and Pz contribute to activity of perception and differentiation. - -  </p>
+        </list-item>
+        <list-item>
+          <p>Near T3 and T4 emotional processors are located, while at T5, T6 certain memory   </p>
+        </list-item>
+      </list>
+      <p> functions stand. </p>
+      <p>- Primary visual areas can be found bellow points O1 and O2. </p>
+      <p>However the scalp electrodes may not reflect the particular areas of cortex, as the exact location of the active sources is still open problem due to limitations caused by the non-homogeneous properties of the skull, different orientation of the cortex sources, coherences between the sources, etc. </p>
+      <p>High impedance can lead to distortions, which can be difficult to separate from actual signal. It may allow inducing outside electric frequencies on the wires used or on the body. Impedance monitors are built in some commercially available EEG devices. In order to prevent signal distortions, impedances at each electrode contact with the scalp should all be bellow 5 K Ohms, and balanced within 1 K Ohm of each other. Similar standard is required for clinical use of the EEG and for publication in most reputable journals. Practically, impedance of the whole circuit comprising two electrodes is measured, but built in impedance checks usually display results already divided by two. Control of all impedances is desirable also after finishing every single measurement. </p>
+      <p>Several different recording reference electrode placements are mentioned in the literature. Physical references can be chosen as vertex (Cz), linked-ears, linked-mastoids, ipsilateral-ear, contralateral-ear, C7 reference, bipolar references, and tip of the nose. Reference-free techniques are represented by common average reference, weighted average reference, and source derivation. Each technique has its own set of advantages and disadvantages. The choice of reference may produce topographic distortion if relatively electrically neutral area is not employed. Linking reference electrodes from two earlobes or mastoids reduces the likelihood of artificially inflating activity in one hemisphere. Nevertheless, the use of this method may drift away "effective" reference from the midline plane if the electrical resistance at each electrode differs. Cz reference is advantageous when it is located in the middle among active electrodes however for close points it makes poor resolution. Reference-free techniques do not suffer from problems associated with an actual physical reference. Referencing to linked ears and vertex (Cz) are predominant. </p>
+      <p>With modern instrumentation, the choice of a ground electrode plays no significant role in the measurement. Forehead (<xref rid="TO_LINK" ref-type="bibr" id="ID25d83b49-0822-4ed7-9293-5615ceacf280">Fpz</xref>) or ear location is preferred, but sometimes wrist or leg is also used. The combination of all active electrodes with reference and ground electrode composes channels. The general configuration is called montage.</p>
+    </sec>
+    <sec>
+      <title>Amplifiers and filters</title>
+      <p>The signals need to be amplified to make them compatible with devices such as displays, recorders, or A/D converters. Amplifiers adequate to measure these signals have to satisfy very specific requirements. They have to provide amplification suitable to the physiological signal, reject superimposed noise and interference signals, and guarantee protection from damages through voltage and current surges for both patients and electronic equipment. The basic requirements that a biopotential amplifier has to satisfy are:</p>
+      <list>
+        <list-item>
+          <p>The physiological process to be monitored should not be influenced in any way by the </p>
+        </list-item>
+      </list>
+      <p> amplifier.</p>
+      <list>
+        <list-item>
+          <p>The measured signal should not be distorted.</p>
+        </list-item>
+        <list-item>
+          <p>The amplifier should provide the best possible separation of signal and interference.</p>
+        </list-item>
+        <list-item>
+          <p>The amplifier has to offer protection of the patient from any hazard of electric shock.</p>
+        </list-item>
+        <list-item>
+          <p>The amplifier itself has to be protected against damages that might result from high input </p>
+        </list-item>
+      </list>
+      <p> voltages as they occur during the application of defibrillators or electrosurgical  </p>
+      <p> instrumentation.</p>
+      <p>The input signal to the amplifier consists of five components:</p>
+      <list>
+        <list-item>
+          <p>The desired biopotential.</p>
+        </list-item>
+        <list-item>
+          <p>The undesired biopotentials.</p>
+        </list-item>
+        <list-item>
+          <p>A power line interference signal of 50/60 Hz and its harmonics.</p>
+        </list-item>
+        <list-item>
+          <p>Interference signals generated by the tissue/electrode interface.</p>
+        </list-item>
+        <list-item>
+          <p>Noise.</p>
+        </list-item>
+      </list>
+      <p>Proper design of the amplifier provides rejection of a large portion of the signal interference. The desired biopotential appears as the differential signal between the two input terminals of the differential amplifier. The amplifier gain is the ratio of the output signal to the input signal. </p>
+      <p>In order to provide optimum signal quality and adequate voltage level for further signal processing, the amplifier has to provide a gain of 100-100,000 (the highest need not to be the best, combination of more parameters is involved, e.g. the range of the A/D converter, sampling rate, noise of the used elements) and needs to maintain the best possible signal-to-noise ratio. </p>
+      <p>In order to decrease an impact of electrically noisy environment, differential amplifiers must have high common-mode rejection ratios (<xref rid="TO_LINK" ref-type="bibr" id="ID58b20f21-9214-4ddc-9dc4-75562bf4d06f">at least 100 dB</xref>) and high input impedance (<xref rid="TO_LINK" ref-type="bibr" id="ID8a393341-225c-473b-8371-41d73ae63d5f">at least 100 M Ohms</xref>). The common-mode rejection ratio is the ratio of the gain of differential mode (<xref rid="TO_LINK" ref-type="bibr" id="IDdbfd3f7b-1655-437e-8b50-7c9330793c77">wanted signal</xref>) over the gain of the common mode (<xref rid="TO_LINK" ref-type="bibr" id="IDe8e9fb23-b791-4226-8276-9f020869e558">original input signal between the inputs and ground</xref>). </p>
+      <p>Special electrically shielded rooms minimize the impact of urban electric background, in particular 50/60 Hz alternating current line noise. For usual medical purposes, shielded room is not necessary. For research purposes when maximal amount of information is desired, shielded room is used. Then amplifiers run on batteries and an optical cable leads to the PC standing outside from the shielded space. In addition to the optical cable, electrical/optical and optical/electrical converters are necessary. Usually information of interest lies bellow this line noise and we can use low-pass filters with cut-off bellow 50/60 Hz, or for keeping higher frequency bands a notch filter can be applied, that is able to reduce only a narrow band around 50/60 Hz (<xref rid="TO_LINK" ref-type="bibr" id="IDc9196b43-254e-4870-afcb-e31fc543ce79">but distorts phases</xref>).</p>
+      <p>When computers are used as recording devices, channels of analog signal are repeatedly sampled at a fixed time interval (<xref rid="TO_LINK" ref-type="bibr" id="ID4f4d627f-6bc8-4216-85d5-e38cf2009766">sampling interval</xref>), and each sample is converted into a digital representation by an analog- to-digital (<xref rid="TO_LINK" ref-type="bibr" id="IDe3a3ca6c-f063-47cf-b7a7-d6613ac6ce32">A/D</xref>) converter. The A/D converter is interfaced to a computer system so that each sample can be saved in the computer&#8217;s memory. The resolution of the converter is determined by the smallest amplitude that can be sampled. This is obtained by dividing the voltage range of the A/D converter by 2 raised to the power of the number of bits of the A/D converter. A/D converter usually uses minimally 12 bits (<xref rid="TO_LINK" ref-type="bibr" id="ID9c07628c-5d32-4153-9041-5696e4fb7069">discerning 4,096 value levels</xref>). Ability to resolve 0.5 &#181;V is recommended. Sufficient sampling rate is required, at least double of the highest frequency component of our interest. </p>
+      <p>Analog (<xref rid="TO_LINK" ref-type="bibr" id="IDdf504ef4-fc31-4e0f-9b63-a10c23e4642c">hardware</xref>) filters have to be integrated in the amplification unit. A high-pass filter is needed for reducing low frequencies coming from bioelectric flowing potentials (<xref rid="TO_LINK" ref-type="bibr" id="ID333a00a0-f249-4618-99a8-60478f5066f1">breathing, etc.</xref>), that remain in the signal after subtracting voltages toward ground electrode. Its cut-off frequency usually lies in the range of 0.1-0.7 Hz. To ensure that the signal is band limited, a low-pass filter with a cut-off frequency equal to the highest frequency of our interest is used (in the range from 40 Hz up to less than one half of the sampling rate). Analog low-pass filters prevent distortion of the signal by interference effects with sampling rate, called aliasing, which would occur if frequencies greater than one half of the sampling rate survive without diminishing. </p>
+      <p>Once data are stored, digital filtering can be used. The strength of the analog filters is limited thus for displaying and processing of the signals further decreasing of DC components is usually needed. It is possible to choose from linear (<xref rid="TO_LINK" ref-type="bibr" id="ID5fb7d943-ec99-4b25-988d-46a7298ad181">FIR, IIR</xref>) filtering or novel non-linear filtering methods. The choice should be done according to the objectives put on the signal processing. Predominantly finite impulse response (<xref rid="TO_LINK" ref-type="bibr" id="IDcf778410-ff8d-4237-a2ba-fc9c99f0601e">FIR</xref>) filters are used which do not distort wave phases. The data points width typically range on the order of 1000 and one of the window function (<xref rid="TO_LINK" ref-type="bibr" id="ID0768abbf-f435-437a-b9b8-5b27413ec63f">Blackman, Hanning, Hamming, or rectangular</xref>) should be chosen. Filters should be designed in a way to influence useful signal properties minimally. </p>
+      <p>Before performing the final measurements the whole EEG system should be tested. Inter-channel calibrations with known wave signal parameters should not display significant discrepancies. The output noise (<xref rid="TO_LINK" ref-type="bibr" id="ID137552da-e703-45ab-8a75-8b26dec0681a">referred to input</xref>) consists mainly from the noise caused by the analog amplifier circuitry and by A/D converter circuitry. Noise value should be consistent with manufacturer information, about 0.3-2 &#181;V pp. (<xref rid="TO_LINK" ref-type="bibr" id="ID3c5d12d0-f2c1-4bc3-a661-91de3a40efde">range from negative peak to positive peak</xref>) but this value depends on the way of noise estimation and on the system configuration (<xref rid="TO_LINK" ref-type="bibr" id="ID4db58d57-8d57-41ac-b94f-5ccfa92b2f6c">low-pass filter, sampling rate, choice of circuitry</xref>). The noise can be determined by connecting the inputs of the amplifier together, or abased them into a salty solution, or "short-circuiting" the inputs, and then measuring the output of the amplifier. The number of useful information bits can be counted as a power of two from the ratio of average EEG signal amplitude over the noise amplitude (<xref rid="TO_LINK" ref-type="bibr" id="IDbb9c5532-0155-4a35-82bf-e140c1c314b8">e.g. 50 &#181;V/1 &#181;V results in over 5 bits</xref>). </p>
+      <p>One of the limitations of recordings is due to storage requirements. For example, 1 hour of eight channels 14-bit signal sampled with 500 Hz occupies 200 MB of the memory. There exist portable recording systems used for longer monitoring of a subject without limiting movement of a person. Some ofthe commercial EEG recording systems comes from the following suppliers: Lexicor, Electrical geodesics, Biosemi, NeuroScan, Sigma Medizin, Contact Precision Instruments, Stellate, Thought Technology, Xltek.</p>
+    </sec>
+    <sec>
+      <title>Artefacts</title>
+      <p>Among basic evaluation of the EEG traces belongs scanning for signal distortions called artefacts. Usually it is a sequence with higher amplitude and different shape in comparison to signal sequences that doesn&#8217;t suffer by any large contamination. The artefact in the recorded EEG may be either patient-related or technical. Patient-related artefacts are unwanted physiological signals that may significantly disturb the EEG. Technical artefacts, such as AC power line noise, can be decreased by decreasing electrode impedance and by shorter electrode wires. The most common EEG artefact sources can be classified in following way:</p>
+      <p>Patient related:</p>
+      <list>
+        <list-item>
+          <p>any minor body movements</p>
+        </list-item>
+        <list-item>
+          <p>EMG</p>
+        </list-item>
+        <list-item>
+          <p>ECG (<xref rid="TO_LINK" ref-type="bibr" id="ID62587221-98e8-423d-b794-3ebe63a8405c">pulse, pace-maker</xref>)</p>
+        </list-item>
+        <list-item>
+          <p>eye movements</p>
+        </list-item>
+        <list-item>
+          <p>sweating</p>
+        </list-item>
+      </list>
+      <p>Technical:</p>
+      <list>
+        <list-item>
+          <p>50/60 Hz</p>
+        </list-item>
+        <list-item>
+          <p>impedance fluctuation</p>
+        </list-item>
+        <list-item>
+          <p>cable movements</p>
+        </list-item>
+        <list-item>
+          <p>broken wire contacts</p>
+        </list-item>
+        <list-item>
+          <p>too much electrode paste/jelly or dried pieces</p>
+        </list-item>
+        <list-item>
+          <p>low battery</p>
+        </list-item>
+      </list>
+      <p>Excluding the artefact segments from the EEG traces can be managed by the trained experts or automatically. For better discrimination of different physiological artefacts, additional electrodes for monitoring eye movement, ECG, and muscle activity may be important.</p>
+    </sec>
+    <sec>
+      <title>Notes on experimental set-up</title>
+      <p>For data acquisition of suitable quality, a choice of the right representative group of volunteers with appropriate spectrum of demographic data and other parameters should be considered. The position of subjects during the EEG measurements should be comfortable enough to avoid unwanted activities, a lying position diminishes the occurrence of some artefacts caused by feeble motion, on the other hand it may lead towards sleeping, especially when a darkened noiseless room is designed. Keeping of the same conditions and instructions for the subjects for the whole length of the experiment period is desired. </p>
+    </sec>
+    <sec>
+      <title>7. Conclusion</title>
+      <p>Electroencehalography belongs to electrobiological imaging tools widely used in medical and research areas. EEG measures changes in electric potentials caused by a large number of electric dipoles formed during neural excitations. EEG signal consists of different brain waves reflecting brain electrical activity according to electrode placements and functioning in the adjacent brain regions. For using EEG techniques, the following recording system components are necessary:</p>
+      <list>
+        <list-item>
+          <p>Electrode cap with conductive jelly or Ag-AgCl disc electrodes with conductive paste.</p>
+        </list-item>
+        <list-item>
+          <p>Amplifiers with overall amplification gain between 100-100,000, with input impedances at least 100 MOhms, and common-mode rejection ratio at least 100 dB.</p>
+        </list-item>
+        <list-item>
+          <p>Analog filters integrated in the unit with high pass filter with cut-off frequency in the range of 0.1-0.7 Hz and low pass filter with cut-off frequency less than one half of the sampling rate. In fact, frequencies above 50 Hz are rarely involved as they contribute negligibly to power spectrum of EEG.</p>
+        </list-item>
+        <list-item>
+          <p>At least 12 bit A/D converter with accuracy lower than overall noise (<xref rid="TO_LINK" ref-type="bibr" id="IDd1682170-470b-4e86-8b24-24943c96e961">0.3-2 &#181;V pp.</xref>), and sampling frequency usually between 128 &#8211; 1024 Hz.</p>
+        </list-item>
+        <list-item>
+          <p>Sufficiently quick PC for taking over data for recording and eventually for online analysis, with adequate volume of hard disc.</p>
+        </list-item>
+        <list-item>
+          <p>Digital high-pass FIR filter with similar cut-off frequency as analog high pass.</p>
+        </list-item>
+      </list>
+      <p>The general quality of recording equipment depends on the right combination of the mentioned parameters. Before further data processing, raw EEG signal should be checked for artefacts.</p>
+    </sec>
+    <sec>
+      <title>8. Future Developments</title>
+      <p>Attempts have been made to produce three-dimensional pictures of the brain from the EEG recordings. However this has not been successful as the recordings deep within the brain tend to be swamped by those closer to the surface and the brain and surrounding head are not homogeneous volume conductors, so that it is not possible to localise potentials accurately.</p>
+    </sec>
+    <sec>
+      <title>9. Other recording techniques</title>
+      <p><underline>Electromyograms</underline> (<xref rid="TO_LINK" ref-type="bibr" id="ID6ddfb800-6635-4ac5-b7d4-2f467f88be84">EMG</xref>), i.e. recordings made from muscle fibres, may be used to assess muscle disease or defects in the enervation of muscles, such as those that occur after trauma to their nerve supply. If the nerve supply is partially lost, instead of continuous patterns of muscle fibre action potentials being seen, only occasional ones are recorded. When a muscle is re-enervated after trauma to the nerve supply, some muscle fibres will take their supply from adjacent intact nerve fibres if the original nerve fibres fail to grow back. This causes muscle action potentials to occur in groups, instead of a more continuous spread.</p>
+      <p>The electrical currents associated with action potentials produce very weak magnetic fields. Typically the magnetic field of an alpha wave 5 cm from the scalp is 0.1 rT, whereas the earth&#8217;s magnetic field is ~50 mT. The use of superconducting quantum interference devices (<xref rid="TO_LINK" ref-type="bibr" id="ID6fe1dd59-4788-4fff-abde-e5bd4f516fc2">SQID</xref>) has enabled these fields to be recorded from the brain with the patient in a magnetically shielded room. These recordings are known as a <underline>magnetoencephalogram</underline> (<xref rid="TO_LINK" ref-type="bibr" id="ID45d984fe-2185-46f1-b39c-b6d4b71f77e8">MEG</xref>).</p>
+      <p>There are some theoretical and practical differences between EEG and MEG. Although the same electrical currents produce the MEG, it can provide complementary information to EEG.</p>
+      <p><underline>Electroneurograms</underline> (<xref rid="TO_LINK" ref-type="bibr" id="ID089ae0d9-35ee-4e73-8b01-371ee1551236">ENG</xref>), i.e. recordings made from nerves while stimulating them by electrical pulses or other means, may be used in conjunction with an EEG to test for peripheral and central nerve defects. Peripheral nerve defects may be found in vitamin deficiency, poisoning by alcohol or other substances or after injury. Central nerve defects may be found in demyelinating diseases, such as MS. Defects are shown by the lack of a response or the delay in response to a stimulus, which may be measured at any point along the pathway in the peripheral or central nervous system. </p>
+    </sec>
+  </body>
+  <back>
+    <ref-list>
+      <ref id="IDd15e7993-cc7b-46e2-b145-5ce616d98766">
+        <mixed-citation>E. Niedermeyer, F. H. Lopes da Silva. 1993. Electroencephalography: Basic principles, clinical applications and related fields, 3rd edition, Lippincott, Williams &amp; Wilkins, Philadelphia.</mixed-citation>
+      </ref>
+      <ref>
+        <mixed-citation>H. L. Atwood, W. A. MacKay. 1989. Essentials of neurophysiology, B.C. Decker, Hamilton, Canada.</mixed-citation>
+      </ref>
+      <ref id="ID1e110bfd-5a77-4c5a-b6a5-98274abbaf1b">
+        <mixed-citation>F. S. Tyner, J. R.Knott. 1989. Fundamentals of EEG technology, Volume 1: Basic concepts and methods, Raven press, New York.</mixed-citation>
+      </ref>
+      <ref id="IDf9d54724-c176-443d-a479-03ffb8fb55c4">
+        <mixed-citation>P. L. Nunez. 1995. Neocortical Dynamics and Human EEG Rhythms, Oxford University Press, New York.The university of Sydney, Fundamentals of Biomedical Engineerin<italic>g, </italic>Electroencephalogram, notes at http://www.eelab.usyd.edu.au/ELEC3801/notes/Electroencephalogram.htm.</mixed-citation>
+      </ref>
+      <ref id="IDec6af451-e882-45fa-95a3-9161cf9051fa">
+        <mixed-citation>D. Cohen. 1987. Magnetoencephalography. In: Adelman G. ed. Encyclopedia of Neuroscience, Birkhauser, Cambridge (USA), 601-604.</mixed-citation>
+      </ref>
+      <ref id="IDf3f8e546-9448-46af-9df1-5064a45bca16">
+        <mixed-citation>J. D. Bronzino. 1995. Principles of Electroencephalography. In: J.D. Bronzino ed. The Biomedical Engineering Handbook, pp. 201-212, CRC Press, Florida.</mixed-citation>
+      </ref>
+      <ref id="ID4cdec0cb-4eb8-41eb-b67d-b9fe684411e9">
+        <mixed-citation>R.D. Bickford. 1987. Electroencephalography. In: Adelman G. ed. Encyclopedia of Neuroscience, Birkhauser, Cambridge (USA), 371-373.</mixed-citation>
+      </ref>
+      <ref>
+        <mixed-citation>T.W. Picton et. al. 2000. Guidelines for using event-related potentials to study cognition: Recording standards and publication criteria. <italic>Psychophysiology </italic>37, 127-152.http://ric.uthscsa.edu/facts/erp.html, The Research Imaging Center, University of Texas.</mixed-citation>
+      </ref>
+      <ref>
+        <mixed-citation>A. S. Gevins, A. R&#233;mond (eds.). 1987. Handbook of electroencephalography and clinicalneurophysiology, Methods of analysis of brain electrical and magnetic signals, Elsevier, Amsterdam.</mixed-citation>
+      </ref>
+      <ref id="ID36f13fbb-bd5e-4d6d-bc87-00e3d11ee34d">
+        <mixed-citation>G.V. Kondraske. 1986. Neurophysiological measurements. In: J.D. Bronzino ed. BiomedicalEngineering and Instrumentation, pp. 138-179, PWS Publishing, Boston.</mixed-citation>
+      </ref>
+      <ref id="ID31d6ab50-9f4b-4609-aa0c-d01530778407">
+        <mixed-citation>H.H. Jasper. 1958. The ten-twenty electrode system of the International Federation.<italic>Electroencephalography and Clinical Neurophysiolog</italic>y, 371-375.</mixed-citation>
+      </ref>
+      <ref id="ID907f5c10-2736-4faf-b0a3-104eca1fbc21">
+        <mixed-citation>D. A. Kaiser. 1994. Interest in Films as Measured by Subjective &amp; Behavioral Ratings and Topographic EEG, Methodological Issues at http://www.skiltopo.com/papers/applied/articles/dakdiss2.htm, Los Angeles.Effects of Electrode Placement, http://www.focused-technology.com/electrod.ht<bold>m, </bold>California.</mixed-citation>
+      </ref>
+      <ref id="IDed00eaab-120c-465c-912f-04ee7e7624bb">
+        <mixed-citation>T. Collura. 1998. A Guide to Electrode Selection, Location, and Application for EEG Biofeedback, Ohio</mixed-citation>
+      </ref>
+      <ref id="ID8fee1e20-f32d-4e49-a25e-6a1b16e633ea">
+        <mixed-citation>H.N. Nagel. 1995. Biopotential Amplifiers. In: J.D. Bronzino ed. The Biomedical Engeneering Handbook, pp. 1185-1195, CRC Press, Florida.</mixed-citation>
+      </ref>
+      <ref>
+        <mixed-citation>D. Brunet, G. Young et al.. 2000. Electroencephalography, Guidelines for Clinical Practice and Facility Standards, College of Physicians and Surgeons of Ontario, Canada.</mixed-citation>
+      </ref>
+    </ref-list>
+  </back>
+</article>

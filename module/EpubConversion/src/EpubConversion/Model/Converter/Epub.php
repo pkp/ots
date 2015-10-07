@@ -104,19 +104,6 @@ class Epub extends AbstractConverter
         }
         $my_tmp = $mktemp->getOutputString();
 
-        $chmod = new Command;
-        $chmod->setCommand('chmod');
-        $chmod->addArgument('777');
-        $chmod->addArgument($my_tmp);
-        $chmod->execute();
-        if (!$chmod->isSuccess()) {
-            $this->logger->infoTranslate(
-                'epubconversion.converter.errorChmod'
-                );
-            $this->status = false;
-            return;
-        }
-
         // We’re going to cd to the working directory, so we need an
         // absolute path to the command.
         $cmd_str = realpath($cmd_str);
@@ -127,6 +114,9 @@ class Epub extends AbstractConverter
         // place).  Only argument is the input file.
         $command->setCommand('cd ' . $my_tmp . ' && ' . $cmd_str);
         $command->addArgument($this->inputFile);
+
+        // Look for a media directory.
+        $mediaDir = dirname($this->inputFile) . '/metypeset/media';
 
         // Redirect STDERR to STDOUT to captue it in $this->output
         $command->addRedirect('2>&1');
