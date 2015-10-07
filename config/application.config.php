@@ -12,6 +12,7 @@ return array(
         'Manager',
         'User',
         'DocxConversion',
+        'WpPdfConversion',
         'NlmxmlConversion',
         'ReferencesConversion',
         'BibtexConversion',
@@ -22,6 +23,8 @@ return array(
         'PdfConversion',
         'XmpConversion',
         'ZipConversion',
+        'MergeXMLOutputs',
+        'Cermine'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

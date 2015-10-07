@@ -17,6 +17,7 @@ class MetypesetTest extends ModelTest
 
     protected $testInputFile = 'module/NlmxmlConversion/test/assets/document.docx';
     protected $testOutputDirectory = '/tmp/UNITTEST_metypeset_outputdirectory';
+    protected $testOutputFileName = 'document.xml';
 
     /**
      * Initialize the test
@@ -56,16 +57,18 @@ class MetypesetTest extends ModelTest
         $this->metypeset->setInputFile($this->testInputFile);
         $this->metypeset->convert();
 
-        $this->assertTrue(is_file($this->testOutputDirectory . '/nlm/document.xml'));
+        $outputFile = $this->testOutputDirectory . '/nlm/' . $this->testOutputFileName;
+
+        $this->assertTrue(is_file($outputFile));
         $this->assertTrue($this->metypeset->getStatus());
 
         $this->assertNotSame(
             file_get_contents($this->testInputFile),
-            file_get_contents($this->testOutputDirectory . '/nlm/document.xml')
+            file_get_contents($outputFile)
         );
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_file($finfo, $this->testOutputDirectory . '/nlm/document.xml');
+        $mimeType = finfo_file($finfo, $outputFile);
 
         $this->assertSame($mimeType, 'text/html');
     }

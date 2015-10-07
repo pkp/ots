@@ -12,7 +12,8 @@ class ReferencesTest extends ModelTest
     protected $references;
 
     protected $testOutputDirectory = '/tmp/UNITTEST_references_outputdirectory';
-    protected $testInputAsset = 'module/ReferencesConversion/test/assets/document.xml';
+    protected $testInputFileName = 'document.xml';
+    protected $testInputAssets = 'module/ReferencesConversion/test/assets/';
     protected $testInputFile;
     protected $testOutputFile;
 
@@ -24,7 +25,7 @@ class ReferencesTest extends ModelTest
     public function setUp() {
         parent::setUp();
 
-        $this->testInputFile = $this->testOutputDirectory . '/document.xml';
+        $this->testInputFile = $this->testOutputDirectory . '/' . $this->testInputFileName;
         $this->testOutputFile = $this->testOutputDirectory . '/references.xml';
 
         $this->references = $this->sm->get('ReferencesConversion\Model\Converter\References');
@@ -77,7 +78,10 @@ class ReferencesTest extends ModelTest
     protected function createTestData()
     {
         mkdir($this->testOutputDirectory);
-        copy($this->testInputAsset, $this->testInputFile);
+        copy(
+            $this->testInputAssets . $this->testInputFileName,
+            $this->testInputFile
+            );
     }
 
     /**
