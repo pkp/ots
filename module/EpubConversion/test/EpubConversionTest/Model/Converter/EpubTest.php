@@ -14,6 +14,7 @@ class EpubTest extends ModelTest
     protected $testInputFileAsset = 'module/EpubConversion/test/assets/document.xml';
     protected $testInputFile = '/tmp/UNITTEST_epub_document.xml';
     protected $testOutputFile = '/tmp/UNITTEST_epub_epub.epub';
+    protected $expectedContentFile = 'OEBPS/index.html';
 
     /**
      * Initialize the test
@@ -61,6 +62,20 @@ class EpubTest extends ModelTest
         $mimeType = finfo_file($finfo, $this->testOutputFile);
 
         $this->assertSame($mimeType, 'application/epub+zip');
+
+        $epubZip = zip_open($this->testOutputFile);
+        $this->assertTrue(is_resource($epubZip));
+
+        $foundContent = false;
+        while ($zipDir = zip_read($epubZip)) {
+            $zipDirName = zip_entry_name($zipDir);
+            if ($zipDirName == $this->expectedContentFile) {
+                $foundContent = true;
+                break;
+            }
+        }
+        zip_close($epubZip);
+        $this->assertTrue($foundContent);
     }
 
     /**

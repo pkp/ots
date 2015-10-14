@@ -20,6 +20,8 @@ class EpubGraphicsTest extends ModelTest
     protected $testInputFile = '/tmp/UNITTEST_epub_document.xml';
     protected $testInputMediaDir = '/tmp/metypeset';
     protected $testOutputFile = '/tmp/UNITTEST_epub_epub.epub';
+    protected $expectedContentFile = 'OEBPS/index.html';
+    protected $expectedGraphicsDir = '/media/';
 
     /**
      * Initialize the test
@@ -67,6 +69,24 @@ class EpubGraphicsTest extends ModelTest
         $mimeType = finfo_file($finfo, $this->testOutputFile);
 
         $this->assertSame($mimeType, 'application/epub+zip');
+
+        $epubZip = zip_open($this->testOutputFile);
+        $this->assertTrue(is_resource($epubZip));
+
+        $foundContent = false;
+        $foundGraphics = false;
+        while ($zipDir = zip_read($epubZip)) {
+            $zipDirName = zip_entry_name($zipDir);
+            if ($zipDirName == $this->expectedContentFile) {
+                $foundContent = true;
+            }
+            if (strpos($zipDirName, $this->expectedGraphicsDir)) {
+                $foundGraphics = true;
+            }
+        }
+        zip_close($epubZip);
+        $this->assertTrue($foundContent);
+        $this->assertTrue($foundGraphics);
     }
 
     /**
