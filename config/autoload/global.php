@@ -55,12 +55,16 @@ return array(
     'conversion' => array(
         'docx' => array(
             'unoconv' => array(
-                'command' => '/opt/libreoffice4.2/program/python vendor/dagwieers/unoconv/unoconv',
+                // If $HOME is not writable by the Web server owner
+                // (typically www-data), then unoconv will fail.
+                'command' => 'HOME=/tmp /opt/libreoffice4.2/program/python vendor/dagwieers/unoconv/unoconv',
             ),
         ),
         'nlmxml' => array(
             'metypeset' => array(
-                'command' => 'vendor/MartinPaulEve/meTypeset/bin/meTypeset.py',
+                // If $HOME is not writable by the Web server owner
+                // (typically www-data), then unoconv will fail.
+                'command' => 'HOME=/tmp vendor/MartinPaulEve/meTypeset/bin/meTypeset.py',
             ),
         ),
         'references' => array(

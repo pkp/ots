@@ -3,18 +3,25 @@ namespace EpubConversionTest\Model\Converter;
 
 use PHPUnit_Framework_TestCase;
 use Xmlps\UnitTest\ModelTest;
+use SplFileInfo;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use FilesystemIterator;
 
 /**
  * Tests the Epub converter
  */
-class EpubTest extends ModelTest
+class EpubGraphicsTest extends ModelTest
 {
     protected $epub;
 
-    protected $testInputFileAsset = 'module/EpubConversion/test/assets/document.xml';
+    protected $testInputFileAsset = 'module/EpubConversion/test/assets/eeg_comicsans.xml';
+    protected $testInputMediaAsset = 'module/EpubConversion/test/assets/eeg_media';
     protected $testInputFile = '/tmp/UNITTEST_epub_document.xml';
+    protected $testInputMediaDir = '/tmp/metypeset';
     protected $testOutputFile = '/tmp/UNITTEST_epub_epub.epub';
     protected $expectedContentFile = 'OEBPS/index.html';
+    protected $expectedGraphicsDir = '/media/';
 
     /**
      * Initialize the test
@@ -67,15 +74,19 @@ class EpubTest extends ModelTest
         $this->assertTrue(is_resource($epubZip));
 
         $foundContent = false;
+        $foundGraphics = false;
         while ($zipDir = zip_read($epubZip)) {
             $zipDirName = zip_entry_name($zipDir);
             if ($zipDirName == $this->expectedContentFile) {
                 $foundContent = true;
-                break;
+            }
+            if (strpos($zipDirName, $this->expectedGraphicsDir)) {
+                $foundGraphics = true;
             }
         }
         zip_close($epubZip);
         $this->assertTrue($foundContent);
+        $this->assertTrue($foundGraphics);
     }
 
     /**
@@ -86,6 +97,28 @@ class EpubTest extends ModelTest
     protected function createTestData()
     {
         copy($this->testInputFileAsset, $this->testInputFile);
+
+        $mediaSrc = new SplFileInfo($this->testInputMediaAsset);
+        $srcPrefix = '/^' . preg_quote($mediaSrc->getRealPath(), '/') . '/';
+
+        $it = new RecursiveDirectoryIterator($this->testInputMediaAsset, FilesystemIterator::SKIP_DOTS);
+        $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::SELF_FIRST);
+        @mkdir($this->testInputMediaDir);
+        foreach($files as $file) {
+            $trueSrc = $file->getRealPath();
+
+            $dest = preg_replace(
+                $srcPrefix,
+                $this->testInputMediaDir,
+                $trueSrc
+                );
+
+            if ($file->isDir()){
+                @mkdir($dest);
+            } else {
+                copy($trueSrc, $dest);
+            }
+        }
     }
 
     /**
@@ -97,5 +130,18 @@ class EpubTest extends ModelTest
     {
         @unlink($this->testInputFile);
         @unlink($this->testOutputFile);
+
+        if (file_exists($this->testInputMediaDir)) {
+            $it = new RecursiveDirectoryIterator($this->testInputMediaDir, FilesystemIterator::SKIP_DOTS);
+            $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
+            foreach($files as $file) {
+                if ($file->isDir()){
+                    rmdir($file->getRealPath());
+                } else {
+                    unlink($file->getRealPath());
+                }
+            }
+            rmdir($this->testInputMediaDir);
+        }
     }
 }
