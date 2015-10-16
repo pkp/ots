@@ -62,7 +62,7 @@ class NlmxmlJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => 1, // JOB_CONVERSION_STAGE_DOCX
+                'conversionStage' => JOB_CONVERSION_STAGE_DOCX
             )
         );
 

@@ -139,7 +139,7 @@ class Manager {
                     $this->queueJob($job, 'bibtex');
                 }
                 else {
-                    $this->queueJob($job, 'epub');
+                    $this->queueJob($job, 'wppdf');
                 }
                 break;
 
@@ -148,6 +148,18 @@ class Manager {
                 break;
 
             case JOB_CONVERSION_STAGE_BIBTEXREFERENCES:
+                $this->queueJob($job, 'wppdf');
+                break;
+
+            case JOB_CONVERSION_STAGE_WP_PDF:
+                $this->queueJob($job, 'cermine');
+                break;
+
+            case JOB_CONVERSION_STAGE_PDF_EXTRACT:
+                $this->queueJob($job, 'merge');
+                break;
+
+            case JOB_CONVERSION_STAGE_XML_MERGE:
                 $this->queueJob($job, 'epub');
                 break;
 
@@ -173,23 +185,11 @@ class Manager {
                     $this->queueJob($job, 'xmp');
                 }
                 else {
-                    $this->queueJob($job, 'wppdf');
+                    $this->queueJob($job, 'zip');
                 }
                 break;
 
             case JOB_CONVERSION_STAGE_XMP:
-                $this->queueJob($job, 'wppdf');
-                break;
-
-            case JOB_CONVERSION_STAGE_WP_PDF:
-                $this->queueJob($job, 'cermine');
-                break;
-
-            case JOB_CONVERSION_STAGE_PDF_EXTRACT:
-                $this->queueJob($job, 'merge');
-                break;
-
-            case JOB_CONVERSION_STAGE_XML_MERGE:
                 $this->queueJob($job, 'zip');
                 break;
 

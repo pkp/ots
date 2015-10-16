@@ -62,7 +62,7 @@ class BibtexJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => 3, // JOB_CONVERSION_STAGE_REFERENCES
+                'conversionStage' => JOB_CONVERSION_STAGE_REFERENCES
             )
         );
 

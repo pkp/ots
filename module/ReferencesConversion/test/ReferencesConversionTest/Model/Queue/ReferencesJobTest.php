@@ -62,7 +62,7 @@ class ReferencesJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => 2, // JOB_CONVERSION_STAGE_NLMXML
+                'conversionStage' => JOB_CONVERSION_STAGE_NLMXML
             )
         );
 

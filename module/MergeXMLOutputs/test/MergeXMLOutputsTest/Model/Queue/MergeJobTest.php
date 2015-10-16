@@ -99,7 +99,7 @@ class MergeJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFileCermine,
-                'conversionStage' => JOB_CONVERSION_STAGE_PDF_EXTRACT
+                'conversionStage' => $this->job->conversionStage
             )
         );
         $this->job->documents[] = $this->documentCermine;

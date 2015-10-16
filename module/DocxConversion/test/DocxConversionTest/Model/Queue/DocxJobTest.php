@@ -61,7 +61,7 @@ class DocxJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => 0, // JOB_CONVERSION_STAGE_UNCONVERTED
+                'conversionStage' => JOB_CONVERSION_STAGE_UNCONVERTED
             )
         );
 

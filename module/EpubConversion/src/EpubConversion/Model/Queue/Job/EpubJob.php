@@ -23,11 +23,8 @@ class EpubJob extends AbstractQueueJob
     {
         $epub = $this->sm->get('EpubConversion\Model\Converter\Epub');
 
-        // Fetch the NLMXML document; if the references step failed fall back to
-        // the NLMXML document before the references conversion took place
-        if (!$document = $job->getStageDocument(JOB_CONVERSION_STAGE_BIBTEXREFERENCES)) {
-            $document = $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
-        }
+        // Fetch the NLMXML document resulting from merge
+        $document = $job->getStageDocument(JOB_CONVERSION_STAGE_XML_MERGE);
         if (!$document) {
             throw new \Exception('Couldn\'t find the stage document');
         }

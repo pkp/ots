@@ -62,7 +62,7 @@ class ZipJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => 4, // JOB_CONVERSION_STAGE_BIBTEX
+                'conversionStage' => JOB_CONVERSION_STAGE_XMP
             )
         );
 
