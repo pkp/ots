@@ -37,8 +37,8 @@ class HtmlJobTest extends ModelTest
      */
     public function testConversion()
     {
-        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_BIBTEXREFERENCES);
-        $this->assertSame($this->document->conversionStage, JOB_CONVERSION_STAGE_BIBTEXREFERENCES);
+        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_EPUB);
+        $this->assertSame($this->document->conversionStage, JOB_CONVERSION_STAGE_XML_MERGE);
         $documentCount = count($this->job->documents);
         $this->htmlJob->process($this->job);
         $this->assertNotSame($this->job->status, JOB_STATUS_FAILED);
@@ -61,7 +61,7 @@ class HtmlJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => 5, // JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+                'conversionStage' => JOB_CONVERSION_STAGE_EPUB
             )
         );
 
@@ -70,7 +70,7 @@ class HtmlJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFile,
-                'conversionStage' => $this->job->conversionStage,
+                'conversionStage' => JOB_CONVERSION_STAGE_XML_MERGE
             )
         );
         $this->job->documents[] = $this->document;

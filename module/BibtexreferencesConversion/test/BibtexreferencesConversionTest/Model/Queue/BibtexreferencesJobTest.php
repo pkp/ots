@@ -66,7 +66,7 @@ class BibtexreferencesJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => 4, // JOB_CONVERSION_STAGE_BIBTEX
+                'conversionStage' => JOB_CONVERSION_STAGE_BIBTEX
             )
         );
 
@@ -75,7 +75,7 @@ class BibtexreferencesJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFileNlmxml,
-                'conversionStage' => 2, // JOB_CONVERSION_STAGE_NLMXML
+                'conversionStage' => JOB_CONVERSION_STAGE_NLMXML
             )
         );
         $this->job->documents[] = $this->documentNlmxml;
@@ -85,7 +85,7 @@ class BibtexreferencesJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFileBibtex,
-                'conversionStage' => 4, // JOB_CONVERSION_STAGE_BIBTEX
+                'conversionStage' => $this->job->conversionStage
             )
         );
         $this->job->documents[] = $this->documentBibtex;

@@ -37,8 +37,8 @@ class EpubJobTest extends ModelTest
      */
     public function testConversion()
     {
-        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_BIBTEXREFERENCES);
-        $this->assertSame($this->document->conversionStage, JOB_CONVERSION_STAGE_BIBTEXREFERENCES);
+        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_XML_MERGE);
+        $this->assertSame($this->document->conversionStage, JOB_CONVERSION_STAGE_XML_MERGE);
         $documentCount = count($this->job->documents);
         $this->epubJob->process($this->job);
         $this->assertNotSame($this->job->status, JOB_STATUS_FAILED);
@@ -61,7 +61,7 @@ class EpubJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => 5, // JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+                'conversionStage' => JOB_CONVERSION_STAGE_XML_MERGE
             )
         );
 
