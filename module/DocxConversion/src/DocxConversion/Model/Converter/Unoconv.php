@@ -100,7 +100,7 @@ class Unoconv extends AbstractConverter
 
         // Set the base command.  If HOME is not set to a writeable
         // directory, unoconv won’t work.
-        $command->setCommand('HOME=/tmp ' . $this->config['command']);
+        $command->setCommand($this->config['command']);
 
         // Add verbosity switch
         if ($this->verbose) $command->addSwitch('-vvv');
