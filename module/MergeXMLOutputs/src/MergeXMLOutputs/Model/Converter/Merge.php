@@ -160,6 +160,20 @@ class Merge extends AbstractConverter
             return false;
         }
 
+        // Populate //front/title if it's empty for compatibility
+        $frontXPath = new DOMXPath($meTypesetDom);
+        $frontTitleQuery = '//front/title';
+        $frontTitleElements = $frontXPath->query($frontTitleQuery);
+        if ($frontTitleElements->length == 0) {
+          $frontStubDom = new DOMDocument;
+          $frontStubDom->LoadXML("<title>Article Title</title>");
+          $frontStubNode = $frontStubDom->getElementsByTagName("title")->item(0);
+          $frontStubNode = $meTypesetDom->(importNode($frontStubNode, true));
+          $frontNode = $meTypesetDom->getElementsByTagName('front');
+          $frontNode->appendChild($frontStubNode);
+        }
+
+
         // Write out the updated document.
         file_put_contents($this->outputFile, $meTypesetDom->saveXML());
 
