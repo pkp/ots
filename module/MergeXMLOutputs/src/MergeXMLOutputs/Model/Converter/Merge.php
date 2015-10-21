@@ -160,22 +160,26 @@ class Merge extends AbstractConverter
             return false;
         }
 
+        $newXml = $meTypesetDom->saveXML()
+
         // Populate //front/title if it's empty for compatibility
         $frontXPath = new DOMXPath($meTypesetDom);
         $frontTitleQuery = '//front/title';
         $frontTitleElements = $frontXPath->query($frontTitleQuery);
         if ($frontTitleElements->length == 0) {
-          $frontStubDom = new DOMDocument;
-          $frontStubDom->LoadXML("<title>Article Title</title>");
-          #$frontStubNode = $frontStubDom->getElementsByTagName("title")->item(0);
-          $frontNode = $meTypesetDom->getElementsByTagName('front')->item(0);
-          $frontNode = $frontStubDom->importNode($frontNode, true);
-          $frontStubDom->documentElement->appendChild($frontNode);
+          #$frontStubDom = new DOMDocument;
+          #$frontStubDom->LoadXML("<title>Article Title</title>");
+          #$frontNode = $meTypesetDom->getElementsByTagName('front')->item(0);
+          #$frontNode = $frontStubDom->importNode($frontNode, true);
+          #$frontStubDom->documentElement->appendChild($frontNode);
+          # the above doesn't work, so
+          # I'm parsing XML with regex again because I hate PHP
+          $newXml = preg_replace('/<front>/', '<front><title>Article Title</title>', $newXml);
         }
 
 
         // Write out the updated document.
-        file_put_contents($this->outputFile, $meTypesetDom->saveXML());
+        file_put_contents($this->outputFile, $newXml);
 
         return true;
     }
