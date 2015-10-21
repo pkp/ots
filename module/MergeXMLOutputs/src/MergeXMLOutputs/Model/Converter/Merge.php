@@ -160,7 +160,7 @@ class Merge extends AbstractConverter
             return false;
         }
 
-        $newXml = $meTypesetDom->saveXML()
+        $newXml = $meTypesetDom->saveXML();
 
         // Populate //front/title if it's empty for compatibility
         $frontXPath = new DOMXPath($meTypesetDom);
