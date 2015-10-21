@@ -65,8 +65,7 @@
 
                         <article itemscope="itemscope">
                         <!-- <article itemscope="itemscope" itemtype="scholarlyarticle"> -->
-                            <!-- DROP ALL FRONT MATTER CURRENTLY
-                            <xsl:apply-templates select="article/front"/> -->
+                            <xsl:apply-templates select="article/front"/>
                             <xsl:apply-templates select="article/body"/>
                             <xsl:apply-templates select="article/back"/>
                         </article>
