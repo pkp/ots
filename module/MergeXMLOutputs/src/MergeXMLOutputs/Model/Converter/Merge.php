@@ -167,10 +167,10 @@ class Merge extends AbstractConverter
         if ($frontTitleElements->length == 0) {
           $frontStubDom = new DOMDocument;
           $frontStubDom->LoadXML("<title>Article Title</title>");
-          $frontStubNode = $frontStubDom->getElementsByTagName("title")->item(0);
-          $frontStubNode = $meTypesetDom->(importNode($frontStubNode, true));
-          $frontNode = $meTypesetDom->getElementsByTagName('front');
-          $frontNode->appendChild($frontStubNode);
+          #$frontStubNode = $frontStubDom->getElementsByTagName("title")->item(0);
+          $frontNode = $meTypesetDom->getElementsByTagName('front')->item(0);
+          $frontNode = $frontStubDom->importNode($frontNode, true);
+          $frontStubDom->documentElement->appendChild($frontNode);
         }
 
 
