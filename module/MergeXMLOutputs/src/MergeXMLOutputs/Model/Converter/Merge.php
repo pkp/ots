@@ -165,7 +165,7 @@ class Merge extends AbstractConverter
 
         // Populate //front/title if it's empty for compatibility
         $frontXPath = new DOMXPath($meTypesetDom);
-        $frontTitleQuery = '//front/title';
+        $frontTitleQuery = '//article-meta/title-group';
         $frontTitleElements = $frontXPath->query($frontTitleQuery);
         if ($frontTitleElements->length == 0) {
           #$frontStubDom = new DOMDocument;
@@ -175,7 +175,7 @@ class Merge extends AbstractConverter
           #$frontStubDom->documentElement->appendChild($frontNode);
           # the above doesn't work, so
           # I'm parsing XML with regex again because I hate PHP
-          $newXml = preg_replace('/<front>/', '<front><title>Article Title</title>', $newXml);
+          $newXml = preg_replace('/<article-meta>/', '<article-meta><title-group><article-title>Article Title</article-title></title-group>', $newXml);
         }
 
 
