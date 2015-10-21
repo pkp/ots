@@ -5,6 +5,7 @@ namespace MergeXMLOutputs\Model\Converter;
 use Xmlps\Logger\Logger;
 use Xmlps\Libxml\Libxml;
 use DOMDocument;
+use DOMXPath;
 
 use Manager\Model\Converter\AbstractConverter;
 
