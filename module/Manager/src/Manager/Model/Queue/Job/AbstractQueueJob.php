@@ -23,11 +23,13 @@ abstract class AbstractQueueJob extends AbstractJob implements
     QueueAwareInterface,
     JobInterface
 {
+    protected $logger;
+
     protected $sm;
     protected $queue;
 
     /**
-     * Set the service locator
+     * Set the service locator and logger.
      *
      * @param ServiceLocatorInterface $sm
      *
@@ -40,6 +42,7 @@ abstract class AbstractQueueJob extends AbstractJob implements
         }
 
         $this->sm = $sm;
+        $this->logger = $this->sm->get('Logger');
     }
 
     /**
@@ -96,9 +99,12 @@ abstract class AbstractQueueJob extends AbstractJob implements
         // Process the job
         try {
             $job = $this->process($job);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            $this->logger->errTranslate(
+                'queuejob.execute.exception',
+                $e->getMessage()
+                );
             $job->status = JOB_STATUS_FAILED;
-            throw $e;
         }
 
         if (!($job instanceof Job)) {
