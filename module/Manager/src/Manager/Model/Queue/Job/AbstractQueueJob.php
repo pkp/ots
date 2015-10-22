@@ -94,7 +94,12 @@ abstract class AbstractQueueJob extends AbstractJob implements
         }
 
         // Process the job
-        $job = $this->process($job);
+        try {
+            $job = $this->process($job);
+        } catch (Exception $e) {
+            $job->status = JOB_STATUS_FAILED;
+            throw $e;
+        }
 
         if (!($job instanceof Job)) {
             throw new \Exception('process() needs to return a Manager\Entity\Job object');
