@@ -102,6 +102,7 @@ abstract class AbstractQueueJob extends AbstractJob implements
         } catch (\Exception $e) {
             $this->logger->errTranslate(
                 'queuejob.execute.exception',
+                get_class($this),
                 $e->getMessage()
                 );
             $job->status = JOB_STATUS_FAILED;

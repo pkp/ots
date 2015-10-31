@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-22 02:17-0600\n"
-"PO-Revision-Date: 2015-10-22 02:18-0600\n"
+"POT-Creation-Date: 2015-10-30 20:56-0600\n"
+"PO-Revision-Date: 2015-10-30 20:57-0600\n"
 "Last-Translator: Christopher R. Maden <crism@maden.org>\n"
 "Language-Team: PKP\n"
 "Language: en_US\n"
@@ -274,13 +274,13 @@ msgstr ""
 "meTypeset output:\n"
 "%s"
 
-#: module/DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:131
+#: module/DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:129
 msgid "docxconversion.unoconv.executeCommandLog"
 msgstr ""
 "Unoconv is executing:\n"
 "%s "
 
-#: module/DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:141
+#: module/DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:139
 msgid "docxconversion.unoconv.executeCommandOutputLog"
 msgstr ""
 "Unoconf output:\n"
@@ -706,7 +706,7 @@ msgstr "Queued job (%d) in queue %s"
 #: module/Manager/src/Manager/Model/Queue/Job/AbstractQueueJob.php:104
 msgid "queuejob.execute.exception"
 msgstr ""
-"A worker threw an exception:\n"
+"A worker threw an exception in %s:\n"
 "%s"
 
 #: vendor/xmlps/library/Event/Handler/AclDispatchHandler.php:62
