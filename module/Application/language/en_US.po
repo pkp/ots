@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: XMLPS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-22 20:37-0600\n"
-"PO-Revision-Date: 2015-09-22 20:40-0600\n"
+"POT-Creation-Date: 2015-10-30 20:56-0600\n"
+"PO-Revision-Date: 2015-10-30 20:57-0600\n"
 "Last-Translator: Christopher R. Maden <crism@maden.org>\n"
 "Language-Team: PKP\n"
 "Language: en_US\n"
@@ -274,13 +274,13 @@ msgstr ""
 "meTypeset output:\n"
 "%s"
 
-#: module/DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:128
+#: module/DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:129
 msgid "docxconversion.unoconv.executeCommandLog"
 msgstr ""
 "Unoconv is executing:\n"
 "%s "
 
-#: module/DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:138
+#: module/DocxConversion/src/DocxConversion/Model/Converter/Unoconv.php:139
 msgid "docxconversion.unoconv.executeCommandOutputLog"
 msgstr ""
 "Unoconf output:\n"
@@ -562,45 +562,41 @@ msgstr ""
 "Sucessfully converted NLMXML to HTML. HTML document:\n"
 "%s"
 
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:74
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:78
 msgid "epubconversion.converter.startLog"
 msgstr "Starting epub conversion"
 
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:79
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:83
 msgid "epubconversion.converter.startMktemp"
 msgstr "Creating temporary epub conversion working directory"
 
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:99
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:103
 msgid "epubconversion.converter.errorMktemp"
 msgstr ""
 "Error creating epub working directory:\n"
 "%s"
 
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:114
-msgid "epubconversion.converter.errorChmod"
-msgstr "Error running chmod on temporary directory"
-
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:134
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:137
 msgid "epubconversion.converter.startJats2epub"
 msgstr "Starting jats2epub"
 
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:143
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:146
 msgid "epubconversion.converter.errorJats2epub"
 msgstr ""
 "Error running jats2epub:\n"
 "%s"
 
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:150
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:153
 msgid "epubconversion.converter.executeCommandOutputLog"
 msgstr ""
 "jats2epub output:\n"
 "%s"
 
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:158
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:161
 msgid "epubconversion.converter.errorGlob"
 msgstr "Error finding epub conversion output"
 
-#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:167
+#: module/EpubConversion/src/EpubConversion/Model/Converter/Epub.php:170
 msgid "epubconversion.converter.endLog"
 msgstr "Epub conversion complete"
 
@@ -706,6 +702,12 @@ msgstr "Job %d is completed"
 #: module/Manager/src/Manager/Model/Queue/Manager.php:222
 msgid "manager.queue.receivedQueueLog"
 msgstr "Queued job (%d) in queue %s"
+
+#: module/Manager/src/Manager/Model/Queue/Job/AbstractQueueJob.php:104
+msgid "queuejob.execute.exception"
+msgstr ""
+"A worker threw an exception in %s:\n"
+"%s"
 
 #: vendor/xmlps/library/Event/Handler/AclDispatchHandler.php:62
 msgid "application.acl.notAuthorized"
@@ -1030,6 +1032,9 @@ msgstr "Upload File Name"
 #: module/Manager/view/manager/manager/list.phtml:37
 msgid "application.generic.details"
 msgstr "Details"
+
+#~ msgid "epubconversion.converter.errorChmod"
+#~ msgstr "Error running chmod on temporary directory"
 
 #, fuzzy
 #~ msgid "MergeXMLOutputs.catter.executeCommandOutputLog"
