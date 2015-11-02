@@ -5,6 +5,7 @@ namespace MergeXMLOutputs\Model\Converter;
 use Xmlps\Logger\Logger;
 use Xmlps\Libxml\Libxml;
 use DOMDocument;
+use DOMXPath;
 
 use Manager\Model\Converter\AbstractConverter;
 
@@ -160,8 +161,26 @@ class Merge extends AbstractConverter
             return false;
         }
 
+        $newXml = $meTypesetDom->saveXML();
+
+        // Populate //front/title if it's empty for compatibility
+        $frontXPath = new DOMXPath($meTypesetDom);
+        $frontTitleQuery = '//article-meta/title-group';
+        $frontTitleElements = $frontXPath->query($frontTitleQuery);
+        if ($frontTitleElements->length == 0) {
+          #$frontStubDom = new DOMDocument;
+          #$frontStubDom->LoadXML("<title>Article Title</title>");
+          #$frontNode = $meTypesetDom->getElementsByTagName('front')->item(0);
+          #$frontNode = $frontStubDom->importNode($frontNode, true);
+          #$frontStubDom->documentElement->appendChild($frontNode);
+          # the above doesn't work, so
+          # I'm parsing XML with regex again because I hate PHP
+          $newXml = preg_replace('/<article-meta>/', '<article-meta><title-group><article-title>Article Title</article-title></title-group>', $newXml);
+        }
+
+
         // Write out the updated document.
-        file_put_contents($this->outputFile, $meTypesetDom->saveXML());
+        file_put_contents($this->outputFile, $newXml);
 
         return true;
     }
