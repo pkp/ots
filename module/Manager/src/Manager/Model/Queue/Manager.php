@@ -22,6 +22,7 @@ class Manager {
     // Maps the queue name to the processing class
     // TODO: this should come from the config
     protected $queueMap = array(
+        'pathfinder' => 'PathFinder\Model\Queue\Job\PathFinderJob',
         'docx' => 'DocxConversion\Model\Queue\Job\DocxJob',
         'wppdf' => 'WpPdfConversion\Model\Queue\Job\WpPdfJob',
         'nlmxml' => 'NlmxmlConversion\Model\Queue\Job\NlmxmlJob',
@@ -123,6 +124,10 @@ class Manager {
         // Queue the job in the queue for the next processing step
         switch ($job->conversionStage) {
             case JOB_CONVERSION_STAGE_UNCONVERTED:
+                $this->queueJob($job, 'pathfinder');
+                break;
+
+            case JOB_CONVERSION_STAGE_WP_IN:
                 $this->queueJob($job, 'docx');
                 break;
 
@@ -141,6 +146,10 @@ class Manager {
                 else {
                     $this->queueJob($job, 'wppdf');
                 }
+                break;
+
+            case JOB_CONVERSION_PDF_IN:
+                $this->queueJob($job, 'wppdf');
                 break;
 
             case JOB_CONVERSION_STAGE_BIBTEX:
