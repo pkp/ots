@@ -133,7 +133,7 @@ Installation
   # rm var/cache/zfcache-ea/*
   ```
 
-* Initialize the database
+* Initialize the database (you may need to manually create an 'xmlps' database first)
 
   ```
   # vendor/doctrine/doctrine-module/bin/doctrine-module orm:schema-tool:update --force
