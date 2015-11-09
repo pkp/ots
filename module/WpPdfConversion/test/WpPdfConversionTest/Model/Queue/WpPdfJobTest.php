@@ -44,7 +44,7 @@ class WpPdfJobTest extends ModelTest
         );
         $this->assertSame(
             $this->document->conversionStage,
-            JOB_CONVERSION_STAGE_UNCONVERTED
+            JOB_CONVERSION_STAGE_WP_IN
         );
         $documentCount = count($this->job->documents);
         $this->wpPdfJob->process($this->job);
@@ -79,7 +79,7 @@ class WpPdfJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFile,
-                'conversionStage' => JOB_CONVERSION_STAGE_UNCONVERTED
+                'conversionStage' => JOB_CONVERSION_STAGE_WP_IN
             )
         );
         $this->job->documents[] = $this->document;

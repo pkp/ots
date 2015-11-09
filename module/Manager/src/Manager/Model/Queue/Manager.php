@@ -153,7 +153,7 @@ class Manager {
             // versions together.
             // After merging, or after extraction if coming straight
             // from PDF, carry on to epub and HTML generation.
-            case JOB_CONVERSION_PDF_EXTRACT:
+            case JOB_CONVERSION_STAGE_PDF_EXTRACT:
                 $this->queueJob($job, 'references');
                 break;
             case JOB_CONVERSION_STAGE_REFERENCES:

@@ -21,7 +21,11 @@ class CermineJob extends AbstractQueueJob
         $cermine = $this->sm->get('Cermine\Model\Converter\Cermine');
 
         // Fetch the document to convert
-        $pdfDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_WP_PDF);
+        if ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
+            $pdfDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_PDF_IN);
+        } else {
+            $pdfDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_WP_PDF);
+        }
 
         if (!$pdfDocument) {
             throw new \Exception('Couldn\'t find the stage document');
