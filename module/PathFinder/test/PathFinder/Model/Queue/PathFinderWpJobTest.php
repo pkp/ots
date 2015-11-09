@@ -92,9 +92,14 @@ class PathFinderWpJobTest extends ModelTest
         );
 
         // The stage now ought to indicate that we are following the
-        // WP path.
+        // WP path, and the document itself ought to be marked
+        // accordingly.
         $this->assertSame(
             $this->job->conversionStage,
+            JOB_CONVERSION_STAGE_WP_IN
+        );
+        $this->assertSame(
+            $this->document->conversionStage,
             JOB_CONVERSION_STAGE_WP_IN
         );
     }

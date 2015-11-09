@@ -42,11 +42,11 @@ class MergeJobTest extends ModelTest
     {
         $this->assertSame(
             $this->job->conversionStage,
-            JOB_CONVERSION_STAGE_PDF_EXTRACT
+            JOB_CONVERSION_STAGE_BIBTEXREFERENCES
             );
         $this->assertSame(
             $this->documentNlmxml->conversionStage,
-            JOB_CONVERSION_STAGE_NLMXML
+            JOB_CONVERSION_STAGE_BIBTEXREFERENCES
             );
         $this->assertSame(
             $this->documentCermine->conversionStage,
@@ -80,7 +80,7 @@ class MergeJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => JOB_CONVERSION_STAGE_PDF_EXTRACT
+                'conversionStage' => JOB_CONVERSION_STAGE_BIBTEXREFERENCES
             )
         );
 
@@ -89,7 +89,7 @@ class MergeJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFileNlmxml,
-                'conversionStage' => JOB_CONVERSION_STAGE_NLMXML
+                'conversionStage' => $this->job->conversionStage
             )
         );
         $this->job->documents[] = $this->documentNlmxml;
@@ -99,7 +99,7 @@ class MergeJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFileCermine,
-                'conversionStage' => $this->job->conversionStage
+                'conversionStage' => JOB_CONVERSION_STAGE_PDF_EXTRACT
             )
         );
         $this->job->documents[] = $this->documentCermine;

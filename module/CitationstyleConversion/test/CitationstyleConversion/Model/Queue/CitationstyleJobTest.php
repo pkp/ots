@@ -68,7 +68,7 @@ class CitationstyleJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => 6, // JOB_CONVERSION_STAGE_HTML
+                'conversionStage' => JOB_CONVERSION_STAGE_HTML
             )
         );
 
@@ -77,7 +77,7 @@ class CitationstyleJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFileNlmxml,
-                'conversionStage' => 5, // JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+                'conversionStage' => JOB_CONVERSION_STAGE_BIBTEXREFERENCES
             )
         );
         $this->job->documents[] = $this->documentNlmxml;
@@ -87,7 +87,7 @@ class CitationstyleJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFileBibtex,
-                'conversionStage' => 4, // JOB_CONVERSION_STAGE_BIBTEX
+                'conversionStage' => JOB_CONVERSION_STAGE_BIBTEX
             )
         );
         $this->job->documents[] = $this->documentBibtex;
@@ -97,7 +97,7 @@ class CitationstyleJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFileHtml,
-                'conversionStage' => 6, // JOB_CONVERSION_STAGE_HTML
+                'conversionStage' => JOB_CONVERSION_STAGE_HTML
             )
         );
         $this->job->documents[] = $this->documentHtml;

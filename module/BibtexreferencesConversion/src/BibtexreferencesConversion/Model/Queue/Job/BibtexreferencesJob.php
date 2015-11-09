@@ -21,9 +21,16 @@ class BibtexreferencesJob extends AbstractQueueJob
     {
         $bibtexreferences = $this->sm->get('BibtexreferencesConversion\Model\Converter\Bibtexreferences');
 
-        // Fetch the NLMXML document in which the references will be replaced
-        $nlmxmlDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
-        if (!$nlmxmlDocument) {
+        // Fetch the NLMXML document in which the references will be
+        // replaced.
+        if ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
+            $xmlDocument =
+                $job->getStageDocument(JOB_CONVERSION_STAGE_PDF_EXTRACT);
+        } else {
+            $xmlDocument =
+                $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
+        }
+        if (!$xmlDocument) {
             throw new \Exception('Couldn\'t find the stage document');
         }
 
@@ -34,7 +41,7 @@ class BibtexreferencesJob extends AbstractQueueJob
         }
 
         // Do the reference list replacement
-        $bibtexreferences->setInputFileNlmxml($nlmxmlDocument->path);
+        $bibtexreferences->setInputFileNlmxml($xmlDocument->path);
         $bibtexreferences->setInputFileBibtex($bibtexDocument->path);
         $bibtexreferences->convert();
 
@@ -46,7 +53,7 @@ class BibtexreferencesJob extends AbstractQueueJob
         }
 
         // We didn't create a new document; just change the conversion stage
-        $nlmxmlDocument->conversionStage = JOB_CONVERSION_STAGE_BIBTEXREFERENCES;
+        $xmlDocument->conversionStage = JOB_CONVERSION_STAGE_BIBTEXREFERENCES;
 
         return $job;
     }

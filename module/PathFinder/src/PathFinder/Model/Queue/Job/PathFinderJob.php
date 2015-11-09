@@ -39,9 +39,13 @@ class PathFinderJob extends AbstractQueueJob
         if ($mimeType == 'application/pdf') {
             $job->inputFileFormat = JOB_INPUT_TYPE_PDF;
             $job->conversionStage = JOB_CONVERSION_STAGE_PDF_IN;
+            $unconvertedDocument->conversionStage =
+                JOB_CONVERSION_STAGE_PDF_IN;
         } else {
             $job->inputFileFormat = JOB_INPUT_TYPE_WP;
             $job->conversionStage = JOB_CONVERSION_STAGE_WP_IN;
+            $unconvertedDocument->conversionStage =
+                JOB_CONVERSION_STAGE_WP_IN;
         }
 
         return $job;

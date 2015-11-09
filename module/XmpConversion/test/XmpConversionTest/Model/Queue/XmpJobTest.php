@@ -67,7 +67,7 @@ class XmpJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => 8, // JOB_CONVERSION_STAGE_PDF
+                'conversionStage' => JOB_CONVERSION_STAGE_PDF
             )
         );
 
@@ -76,7 +76,7 @@ class XmpJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFileNlmxml,
-                'conversionStage' => 5, // JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+                'conversionStage' => JOB_CONVERSION_STAGE_BIBTEXREFERENCES
             )
         );
         $this->job->documents[] = $this->documentNlmxml;
@@ -86,7 +86,7 @@ class XmpJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFilePdf,
-                'conversionStage' => 8, // JOB_CONVERSION_STAGE_PDF
+                'conversionStage' => JOB_CONVERSION_STAGE_PDF
             )
         );
         $this->job->documents[] = $this->documentPdf;

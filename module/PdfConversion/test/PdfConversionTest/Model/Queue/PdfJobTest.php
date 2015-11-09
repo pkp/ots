@@ -61,7 +61,7 @@ class PdfJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => 7, // JOB_CONVERSION_STAGE_CITATIONSTYLE
+                'conversionStage' => JOB_CONVERSION_STAGE_CITATIONSTYLE
             )
         );
 

@@ -38,12 +38,21 @@ class DocxJobTest extends ModelTest
      */
     public function testConversion()
     {
-        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_UNCONVERTED);
-        $this->assertSame($this->document->conversionStage, JOB_CONVERSION_STAGE_UNCONVERTED);
+        $this->assertSame(
+            $this->job->conversionStage,
+            JOB_CONVERSION_STAGE_WP_IN
+        );
+        $this->assertSame(
+            $this->document->conversionStage,
+            JOB_CONVERSION_STAGE_WP_IN
+        );
         $documentCount = count($this->job->documents);
         $this->docxJob->process($this->job);
         $this->assertSame($documentCount + 1, count($this->job->documents));
-        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_DOCX);
+        $this->assertSame(
+            $this->job->conversionStage,
+            JOB_CONVERSION_STAGE_DOCX
+        );
     }
 
     /**
@@ -61,7 +70,7 @@ class DocxJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => JOB_CONVERSION_STAGE_UNCONVERTED
+                'conversionStage' => JOB_CONVERSION_STAGE_WP_IN
             )
         );
 
@@ -70,7 +79,7 @@ class DocxJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFile,
-                'conversionStage' => $this->job->conversionStage,
+                'conversionStage' => $this->job->conversionStage
             )
         );
         $this->job->documents[] = $this->document;

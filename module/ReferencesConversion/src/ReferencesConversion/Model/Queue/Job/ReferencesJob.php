@@ -21,14 +21,20 @@ class ReferencesJob extends AbstractQueueJob
         $references = $this->sm->get('ReferencesConversion\Model\Converter\References');
 
         // Fetch the document to convert
-        $nlmxmlDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
-        if (!$nlmxmlDocument) {
+        if ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
+            $xmlDocument =
+                $job->getStageDocument(JOB_CONVERSION_STAGE_PDF_EXTRACT);
+        } else {
+            $xmlDocument =
+                $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
+        }
+        if (!$xmlDocument) {
             throw new \Exception('Couldn\'t find the stage document');
         }
 
         // Parse the references
         $outputFile = $job->getDocumentPath() . '/document.bib.xml';
-        $references->setInputFile($nlmxmlDocument->path);
+        $references->setInputFile($xmlDocument->path);
         $references->setOutputDirectory($job->getDocumentPath());
         $references->setOutputFile($outputFile);
         $references->convert();
@@ -48,8 +54,8 @@ class ReferencesJob extends AbstractQueueJob
 
         $job->documents[] = $referenceXmlDocument;
 
-        // Flag the reference parsing as successful. This will influence which
-        // conversion steps will be executed.
+        // Flag the reference parsing as successful. This will
+        // influence which conversion steps will be executed.
         $job->referenceParsingSuccess = true;
 
         return $job;

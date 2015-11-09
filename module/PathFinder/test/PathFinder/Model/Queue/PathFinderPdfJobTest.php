@@ -91,9 +91,14 @@ class PathFinderPdfJobTest extends ModelTest
         );
 
         // The stage now ought to indicate that we are following the
-        // PDF path.
+        // PDF path, and the document itself ought to be marked
+        // accordingly.
         $this->assertSame(
             $this->job->conversionStage,
+            JOB_CONVERSION_STAGE_PDF_IN
+        );
+        $this->assertSame(
+            $this->document->conversionStage,
             JOB_CONVERSION_STAGE_PDF_IN
         );
     }
