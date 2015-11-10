@@ -722,9 +722,9 @@ msgstr "PKP XML Parsing Service"
 msgid "application.index.sidebarDescription"
 msgstr ""
 "This is a new, experimental service being developed by the Public Knowledge "
-"Project to provide unsupervised conversion of Word/compatible inputs to "
+"Project to provide unsupervised conversion of Word/compatible and PDF input to "
 "production-ready NLM3 XML, HTML, and PDF. This service is currently under "
-"active development and output will not be perfect. Contact axfelix@gmail.com "
+"active development and output will not be perfect. Contact Alex at garnett@sfu.ca "
 "with any questions, and watch this space over the coming months."
 
 #: module/User/view/_sideBar.phtml:6
@@ -742,8 +742,7 @@ msgstr ""
 msgid "application.index.sidebarTipsCitation"
 msgstr ""
 "Ideally, citations (in your document that point to your bibliography) are "
-"formatted as numbers in brackets, e.g. [10] or [11,12,13]. Consequently, "
-"bracketed numbers should not occur in your document for any other reason."
+"formatted as numbers in brackets, e.g. [10] or [11,12,13]."
 
 #: module/User/view/_sideBar.phtml:11
 msgid "application.index.sidebarTipsCitationReference"
@@ -755,8 +754,7 @@ msgstr ""
 #: module/User/view/_sideBar.phtml:12
 msgid "application.index.sidebarTipsBibliography"
 msgstr ""
-"Any bibliography entries which are not cited in your document are reported "
-"in a warning section at the bottom."
+"Code and API documentation are available at http://github.com/pkp/xmlps"
 
 #: module/User/view/user/user/settings.phtml:2
 msgid "user.settings.title"
