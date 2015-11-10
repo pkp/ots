@@ -26,6 +26,11 @@ define('JOB_CONVERSION_STAGE_EPUB', 11);
 define('JOB_CONVERSION_STAGE_WP_PDF', 12);
 define('JOB_CONVERSION_STAGE_PDF_EXTRACT', 13);
 define('JOB_CONVERSION_STAGE_XML_MERGE', 14);
+define('JOB_CONVERSION_STAGE_WP_IN', 15);
+define('JOB_CONVERSION_STAGE_PDF_IN', 16);
+
+define('JOB_INPUT_TYPE_WP', 0);
+define('JOB_INPUT_TYPE_PDF', 1);
 
 /**
  * Job
@@ -73,6 +78,11 @@ class Job extends DataObject
      * @ORM\Column(type="boolean", nullable=false)
      */
     protected $referenceParsingSuccess = false;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    protected $inputFileFormat = JOB_INPUT_TYPE_WP;
 
     /**
      * @ORM\Column(type="string", nullable=false)
