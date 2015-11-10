@@ -21,7 +21,13 @@ $user = $this->identity();
     foreach ($this->jobs as $job) {
       if (!isset($statusMap)) $statusMap = $job->getStatusMap();
 
-      $document = $job->getStageDocument(JOB_CONVERSION_STAGE_UNCONVERTED);
+      if ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
+          $document = $job->getStageDocument(JOB_CONVERSION_STAGE_PDF_IN);
+      } elseif ($job->inputFileFormat == JOB_INPUT_TYPE_WP) {
+          $document = $job->getStageDocument(JOB_CONVERSION_STAGE_WP_IN);
+      } else {
+          $document = $job->getStageDocument(JOB_CONVERSION_STAGE_UNCONVERTED);
+      }
       $uploadFileName = $document ? basename($document->path) : '';
 
       echo '<tr>';

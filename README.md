@@ -17,6 +17,8 @@ Module Description
  * Receives conversion jobs
  * Job list
  * Handles job distribution to queues
+* PathFinder
+ * Determines which conversion path to take
 * DocxConversion
  * Converts documents to DocX format
 * WpPdfConversion

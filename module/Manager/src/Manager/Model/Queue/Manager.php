@@ -22,6 +22,7 @@ class Manager {
     // Maps the queue name to the processing class
     // TODO: this should come from the config
     protected $queueMap = array(
+        'pathfinder' => 'PathFinder\Model\Queue\Job\PathFinderJob',
         'docx' => 'DocxConversion\Model\Queue\Job\DocxJob',
         'wppdf' => 'WpPdfConversion\Model\Queue\Job\WpPdfJob',
         'nlmxml' => 'NlmxmlConversion\Model\Queue\Job\NlmxmlJob',
@@ -122,51 +123,68 @@ class Manager {
 
         // Queue the job in the queue for the next processing step
         switch ($job->conversionStage) {
+            // Figure out what we’re dealing with and what path to
+            // take.
             case JOB_CONVERSION_STAGE_UNCONVERTED:
-                $this->queueJob($job, 'docx');
+                $this->queueJob($job, 'pathfinder');
                 break;
 
+            // If we have a word processing document, convert to
+            // standard WP format and also to XML and PDF.
+            case JOB_CONVERSION_STAGE_WP_IN:
+                $this->queueJob($job, 'docx');
+                break;
             case JOB_CONVERSION_STAGE_DOCX:
                 $this->queueJob($job, 'nlmxml');
                 break;
-
             case JOB_CONVERSION_STAGE_NLMXML:
-                $this->queueJob($job, 'references');
-                break;
-
-            case JOB_CONVERSION_STAGE_REFERENCES:
-                if ($job->referenceParsingSuccess) {
-                    $this->queueJob($job, 'bibtex');
-                }
-                else {
-                    $this->queueJob($job, 'wppdf');
-                }
-                break;
-
-            case JOB_CONVERSION_STAGE_BIBTEX:
-                $this->queueJob($job, 'bibtexreferences');
-                break;
-
-            case JOB_CONVERSION_STAGE_BIBTEXREFERENCES:
                 $this->queueJob($job, 'wppdf');
                 break;
 
+            // Convert our PDF (input or conversion result) to XML.
+            case JOB_CONVERSION_STAGE_PDF_IN:
             case JOB_CONVERSION_STAGE_WP_PDF:
                 $this->queueJob($job, 'cermine');
                 break;
 
+            // Extract information from the XML.  If we had WP input,
+            // use that XML derivation preferentially; when done, or
+            // if reference extraction fails, merge the two XML
+            // versions together.
+            // After merging, or after extraction if coming straight
+            // from PDF, carry on to epub and HTML generation.
             case JOB_CONVERSION_STAGE_PDF_EXTRACT:
-                $this->queueJob($job, 'merge');
+                $this->queueJob($job, 'references');
                 break;
-
+            case JOB_CONVERSION_STAGE_REFERENCES:
+                if ($job->referenceParsingSuccess) {
+                    $this->queueJob($job, 'bibtex');
+                } elseif ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
+                    $this->queueJob($job, 'epub');
+                } else {
+                    $this->queueJob($job, 'merge');
+                }
+                break;
+            case JOB_CONVERSION_STAGE_BIBTEX:
+                $this->queueJob($job, 'bibtexreferences');
+                break;
+            case JOB_CONVERSION_STAGE_BIBTEXREFERENCES:
+                if ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
+                    $this->queueJob($job, 'epub');
+                } else {
+                    $this->queueJob($job, 'merge');
+                }
+                break;
             case JOB_CONVERSION_STAGE_XML_MERGE:
                 $this->queueJob($job, 'epub');
                 break;
-
             case JOB_CONVERSION_STAGE_EPUB:
                 $this->queueJob($job, 'html');
                 break;
 
+            // If reference extraction was successful, clean up the
+            // references in the generated HTML; either way, then
+            // carry on to PDF generation.
             case JOB_CONVERSION_STAGE_HTML:
                 if ($job->referenceParsingSuccess) {
                     $this->queueJob($job, 'citationstyle');
@@ -175,11 +193,13 @@ class Manager {
                     $this->queueJob($job, 'pdf');
                 }
                 break;
-
             case JOB_CONVERSION_STAGE_CITATIONSTYLE:
                 $this->queueJob($job, 'pdf');
                 break;
 
+            // If reference extraction was successful, clean up the
+            // references in the PDF; either way, go on to package up
+            // all the relevant output products.
             case JOB_CONVERSION_STAGE_PDF:
                 if ($job->referenceParsingSuccess) {
                     $this->queueJob($job, 'xmp');
@@ -188,7 +208,6 @@ class Manager {
                     $this->queueJob($job, 'zip');
                 }
                 break;
-
             case JOB_CONVERSION_STAGE_XMP:
                 $this->queueJob($job, 'zip');
                 break;

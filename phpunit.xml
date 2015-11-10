@@ -4,22 +4,23 @@
         <directory>module/Admin/test</directory>
         <directory>module/Api/test</directory>
         <directory>module/Application/test</directory>
-        <directory>module/Manager/test</directory>
-        <directory>module/User/test</directory>
-        <directory>module/DocxConversion/test</directory>
-        <directory>module/WpPdfConversion/test</directory>
-        <directory>module/NlmxmlConversion/test</directory>
-        <directory>module/ReferencesConversion/test</directory>
         <directory>module/BibtexConversion/test</directory>
         <directory>module/BibtexreferencesConversion/test</directory>
-        <directory>module/HtmlConversion/test</directory>
-        <directory>module/EpubConversion/test</directory>
+        <directory>module/Cermine/test</directory>
         <directory>module/CitationstyleConversion/test</directory>
+        <directory>module/DocxConversion/test</directory>
+        <directory>module/EpubConversion/test</directory>
+        <directory>module/HtmlConversion/test</directory>
+        <directory>module/Manager/test</directory>
+        <directory>module/MergeXMLOutputs/test</directory>
+        <directory>module/NlmxmlConversion/test</directory>
+        <directory>module/PathFinder/test</directory>
         <directory>module/PdfConversion/test</directory>
+        <directory>module/ReferencesConversion/test</directory>
+        <directory>module/User/test</directory>
+        <directory>module/WpPdfConversion/test</directory>
         <directory>module/XmpConversion/test</directory>
         <directory>module/ZipConversion/test</directory>
-        <directory>module/Cermine/test</directory>
-        <directory>module/MergeXMLOutputs/test</directory>
       </testsuite>
     </testsuites>
 </phpunit>

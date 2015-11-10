@@ -38,12 +38,21 @@ class WpPdfJobTest extends ModelTest
      */
     public function testConversion()
     {
-        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_BIBTEXREFERENCES);
-        $this->assertSame($this->document->conversionStage, JOB_CONVERSION_STAGE_UNCONVERTED);
+        $this->assertSame(
+            $this->job->conversionStage,
+            JOB_CONVERSION_STAGE_NLMXML
+        );
+        $this->assertSame(
+            $this->document->conversionStage,
+            JOB_CONVERSION_STAGE_WP_IN
+        );
         $documentCount = count($this->job->documents);
         $this->wpPdfJob->process($this->job);
         $this->assertSame($documentCount + 1, count($this->job->documents));
-        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_WP_PDF);
+        $this->assertSame(
+            $this->job->conversionStage,
+            JOB_CONVERSION_STAGE_WP_PDF
+        );
     }
 
     /**
@@ -61,7 +70,7 @@ class WpPdfJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+                'conversionStage' => JOB_CONVERSION_STAGE_NLMXML
             )
         );
 
@@ -70,7 +79,7 @@ class WpPdfJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFile,
-                'conversionStage' => JOB_CONVERSION_STAGE_UNCONVERTED,
+                'conversionStage' => JOB_CONVERSION_STAGE_WP_IN
             )
         );
         $this->job->documents[] = $this->document;

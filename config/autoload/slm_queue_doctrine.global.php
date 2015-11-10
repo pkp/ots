@@ -15,6 +15,7 @@ return array(
         ),
         'queue_manager' => array(
             'factories' => array(
+                'pathfinder' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'docx' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'wppdf' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'nlmxml' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',

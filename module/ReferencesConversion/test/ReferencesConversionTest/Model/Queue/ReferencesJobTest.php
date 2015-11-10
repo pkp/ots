@@ -38,13 +38,22 @@ class ReferencesJobTest extends ModelTest
      */
     public function testConversion()
     {
-        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_NLMXML);
-        $this->assertSame($this->document->conversionStage, JOB_CONVERSION_STAGE_NLMXML);
+        $this->assertSame(
+            $this->job->conversionStage,
+            JOB_CONVERSION_STAGE_PDF_EXTRACT
+        );
+        $this->assertSame(
+            $this->document->conversionStage,
+            JOB_CONVERSION_STAGE_NLMXML
+        );
         $documentCount = count($this->job->documents);
         $this->referencesJob->process($this->job);
         $this->assertNotSame($this->job->status, JOB_STATUS_FAILED);
         $this->assertSame($documentCount + 1, count($this->job->documents));
-        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_REFERENCES);
+        $this->assertSame(
+            $this->job->conversionStage,
+            JOB_CONVERSION_STAGE_REFERENCES
+        );
     }
 
     /**
@@ -62,7 +71,7 @@ class ReferencesJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => JOB_CONVERSION_STAGE_NLMXML
+                'conversionStage' => JOB_CONVERSION_STAGE_PDF_EXTRACT
             )
         );
 
@@ -71,7 +80,7 @@ class ReferencesJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFile,
-                'conversionStage' => $this->job->conversionStage,
+                'conversionStage' => JOB_CONVERSION_STAGE_NLMXML
             )
         );
         $this->job->documents[] = $this->document;
