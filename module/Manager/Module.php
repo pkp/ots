@@ -57,7 +57,16 @@ class Module
                 },
                 'Manager\Entity\Job' => function($sm)
                 {
-                    return new Job;
+                    $config = $sm->get('Config');
+
+                    if (!isset($config['conversion']['manager']['job'])) {
+                        throw new \Exception(
+                            'Job configuration is missing'
+                        );
+                    }
+                    $config = $config['conversion']['manager']['job'];
+
+                    return new Job($config);
                 },
                 'Manager\Form\UploadForm' => function($sm)
                 {

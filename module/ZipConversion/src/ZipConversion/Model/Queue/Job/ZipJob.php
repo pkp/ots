@@ -6,7 +6,7 @@ use Manager\Model\Queue\Job\AbstractQueueJob;
 use Manager\Entity\Job;
 
 /**
- * Creates a zip file of all the existing documents
+ * Creates a zip file of all the relevant existing documents.
  */
 class ZipJob extends AbstractQueueJob
 {
@@ -30,7 +30,7 @@ class ZipJob extends AbstractQueueJob
             throw new \Exception('Couldn\'t create zip archive');
         }
 
-        foreach ($job->documents as $document) {
+        foreach ($job->getOutputDocuments() as $document) {
             $zip->addFile(
                 $document->path,
                 str_replace($job->getDocumentPath() . '/', '', $document->path)

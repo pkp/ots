@@ -2,9 +2,9 @@
 
 namespace Manager\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Xmlps\DataObject\DataObject;
-use Doctrine\Common\Collections\ArrayCollection;
 
 define('JOB_STATUS_PENDING', 0);
 define('JOB_STATUS_PROCESSING', 1);
@@ -33,7 +33,8 @@ define('JOB_INPUT_TYPE_WP', 0);
 define('JOB_INPUT_TYPE_PDF', 1);
 
 /**
- * Job
+ * a user-submitted job with multiple stages, to be acted on by
+ * independent queue processors
  *
  * @ORM\Entity
  * @ORM\Table(name="job")
@@ -90,12 +91,24 @@ class Job extends DataObject
     protected $citationStyleFile;
 
     /**
+     * @var mixed $config
+     */
+    protected $config;
+
+    /**
      * Constructor
+     *
+     * @param mixed $config
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($config)
     {
+        if (!isset($config['outputs'])) {
+            throw new \Exception('Job outputs are not configured');
+        }
+
+        $this->config = $config;
         $this->documents = new ArrayCollection();
     }
 
@@ -141,7 +154,6 @@ class Job extends DataObject
         }
     }
 
-
     /**
      * Maps job status to display strings
      *
@@ -162,6 +174,9 @@ class Job extends DataObject
      * Returns the document storage location for converted documents
      *
      * @return string Document storage location
+     *
+     * @throws Exception if user is not set, job has no ID, or the
+     * document path can not be found nor created
      */
     public function getDocumentPath()
     {
@@ -182,6 +197,9 @@ class Job extends DataObject
      * Returns the document upload location for the original document
      *
      * @return string Upload location for original document
+     *
+     * @throws Exception if upload directory can not be found nor
+     * created
      */
     public function getUploadPath()
     {
@@ -209,6 +227,27 @@ class Job extends DataObject
                 return $document;
             }
         }
+    }
+
+    /**
+     * Returns an array of documents, only the outputs of stages
+     * deemed “interesting,” as defined in the configuration file.
+     *
+     * Returns an ordered list, which means O(mn) performance, but m
+     * and n are still very small.
+     *
+     * @return array of Document
+     */
+    public function getOutputDocuments()
+    {
+        $outputs = array();
+        foreach ($this->config['outputs'] as $stage) {
+            $doc = $this->getStageDocument($stage);
+            if ($doc) {
+                $outputs[] = $doc;
+            }
+        }
+        return $outputs;
     }
 
     /**
