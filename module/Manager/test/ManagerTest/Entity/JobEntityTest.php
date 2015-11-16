@@ -120,8 +120,15 @@ class JobEntityTest extends ModelTest
         $this->assertSame(2, count($job->documents));
 
         $outputs = $job->getOutputDocuments();
-
+        $this->assertInternalType("array", $outputs);
         $this->assertSame(1, count($outputs));
+        $doc = $outputs[0];
+        $this->assertInstanceOf("Manager\Entity\Document", $doc);
+        $this->assertSame(
+            $doc->conversionStage,
+            JOB_CONVERSION_STAGE_WP_IN
+        );
+        $this->assertSame($doc->path, $this->testWpFile);
     }
 
     /**

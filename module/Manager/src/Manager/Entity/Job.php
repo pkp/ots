@@ -91,7 +91,7 @@ class Job extends DataObject
     protected $citationStyleFile;
 
     /**
-     * @var mixed $config
+     * @ORM\Column(type="array", nullable=false)
      */
     protected $config;
 
@@ -101,6 +101,8 @@ class Job extends DataObject
      * @param mixed $config
      *
      * @return void
+     *
+     * @throws Exception if config does not have outputs key.
      */
     public function __construct($config)
     {
