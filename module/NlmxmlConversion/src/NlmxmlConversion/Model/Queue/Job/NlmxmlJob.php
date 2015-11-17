@@ -40,7 +40,7 @@ class NlmxmlJob extends AbstractQueueJob
             return $job;
         }
 
-        $outputPath = $job->getDocumentPath() . '/' . $xmlFile;
+        $outputPath = $job->getDocumentPath() . '/document_metypeset.xml';
         @copy($meTypesetOutputPath, $outputPath);
 
         $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');

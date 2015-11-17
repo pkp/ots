@@ -33,7 +33,7 @@ class EpubJob extends AbstractQueueJob
         }
         if (!$document) {
             $document =
-                $job->getStageDocument(JOB_CONVERSTION_STAGE_PDF_EXTRACT);
+                $job->getStageDocument(JOB_CONVERSION_STAGE_PDF_EXTRACT);
         }
         if (!$document) {
             throw new \Exception('Couldn\'t find the stage document');

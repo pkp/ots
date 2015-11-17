@@ -32,33 +32,32 @@ class MergeJob extends AbstractQueueJob
             throw new \Exception('Couldn\'t find the CERMINE output');
         }
 
-        // If we started with PDF, then just mark the CERMINE output
-        // as our result, and we’re done.
-        if ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
-            $cermineDocument->conversionStage = $job->conversionStage;
-            return;
-        }
-
-        if (!$meTypesetDocument =
-            $job->getStageDocument(JOB_CONVERSION_STAGE_BIBTEXREFERENCES)) {
-            $meTypesetDocument =
-                $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
-        }
-        if (!$meTypesetDocument) {
-            throw new \Exception('Couldn\'t find the meTypeset output');
-        }
-
-        $outputFile = $job->getDocumentPath() . '/document_merged.xml';
-        $mergedXML->setInputFileNlmxml($meTypesetDocument->path);
-        $mergedXML->setInputFileCermine($cermineDocument->path);        
-        $mergedXML->setOutputFile($outputFile);
-        $mergedXML->convert();
-
+        $outputFile = $job->getDocumentPath() . '/document.xml';
         $job->conversionStage = JOB_CONVERSION_STAGE_XML_MERGE;
 
-        if (!$mergedXML->getStatus()) {
-            $job->status = JOB_STATUS_FAILED;
-            return $job;
+        if ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
+            @copy($cermineDocument->path, $outputFile);
+        } else {
+            if (!$meTypesetDocument =
+                $job->getStageDocument(
+                    JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+                )) {
+                $meTypesetDocument =
+                    $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
+            }
+            if (!$meTypesetDocument) {
+                throw new \Exception('Couldn\'t find the meTypeset output');
+            }
+
+            $mergedXML->setInputFileNlmxml($meTypesetDocument->path);
+            $mergedXML->setInputFileCermine($cermineDocument->path);
+            $mergedXML->setOutputFile($outputFile);
+            $mergedXML->convert();
+
+            if (!$mergedXML->getStatus()) {
+                $job->status = JOB_STATUS_FAILED;
+                return $job;
+            }
         }
 
         $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
