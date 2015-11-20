@@ -53,6 +53,29 @@ return array(
         'adminEmail' => 'axfelix@gmail.com',
     ),
     'conversion' => array(
+        'manager' => array(
+            'job' => array(
+                // A list of stage constants (from
+                // \Manager\Entity\Job) whose output should be
+                // delivered to the user.
+                //
+                // These constants should be moved to index.php for
+                // global accessibility, or maybe even defined here.
+                'outputs' => array(
+                    15, // JOB_CONVERSION_STAGE_WP_IN
+                    16, // JOB_CONVERSION_STAGE_PDF_IN
+                    14, // JOB_CONVERSION_STAGE_XML_MERGE
+                    3,  // JOB_CONVERSION_STAGE_REFERENCES
+                    4,  // JOB_CONVERSION_STAGE_BIBTEX
+                    6,  // JOB_CONVERSION_STAGE_HTML
+                    7,  // JOB_CONVERSION_STAGE_CITATIONSTYLE
+                    11, // JOB_CONVERSION_STAGE_EPUB
+                    8,  // JOB_CONVERSION_STAGE_PDF
+                    9,  // JOB_CONVERSION_STAGE_XMP
+                    10  // JOB_CONVERSION_STAGE_ZIP
+                )
+            )
+        ),
         'docx' => array(
             'unoconv' => array(
                 // If $HOME is not writable by the Web server owner

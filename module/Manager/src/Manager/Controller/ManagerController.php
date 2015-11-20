@@ -26,6 +26,11 @@ class ManagerController extends AbstractActionController {
      *
      * @param Logger $logger
      * @param Translator $translator
+     * @param Manager $queueManager
+     * @param UploadForm $uploadForm
+     * @param UploadFormInputFilter $uploadFormInputFilter
+     * @param DocumentDAO $documentDAO
+     * @param JobDAO $jobDAO
      *
      * @return void
      */
