@@ -26,8 +26,17 @@ class MergeJob extends AbstractQueueJob
     {
         $mergedXML = $this->sm->get('MergeXMLOutputs\Model\Converter\Merge');
 
-        $cermineDocument =
-            $job->getStageDocument(JOB_CONVERSION_STAGE_PDF_EXTRACT);
+        $cermineDocument = null;
+
+        if ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
+            $cermineDocument = $job->getStageDocument(
+                JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+            );
+        }
+        if (!$cermineDocument) {
+            $cermineDocument =
+                $job->getStageDocument(JOB_CONVERSION_STAGE_PDF_EXTRACT);
+        }
         if (!$cermineDocument) {
             throw new \Exception('Couldn\'t find the CERMINE output');
         }

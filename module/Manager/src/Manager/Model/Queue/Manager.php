@@ -151,8 +151,7 @@ class Manager {
             // use that XML derivation preferentially; when done, or
             // if reference extraction fails, merge the two XML
             // versions together.
-            // After merging, or after extraction if coming straight
-            // from PDF, carry on to epub and HTML generation.
+            // After merging, carry on to epub and HTML generation.
             case JOB_CONVERSION_STAGE_PDF_EXTRACT:
                 $this->queueJob($job, 'references');
                 break;
