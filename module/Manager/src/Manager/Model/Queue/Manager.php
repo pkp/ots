@@ -159,8 +159,6 @@ class Manager {
             case JOB_CONVERSION_STAGE_REFERENCES:
                 if ($job->referenceParsingSuccess) {
                     $this->queueJob($job, 'bibtex');
-                } elseif ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
-                    $this->queueJob($job, 'epub');
                 } else {
                     $this->queueJob($job, 'merge');
                 }
