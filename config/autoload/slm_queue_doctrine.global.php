@@ -29,7 +29,8 @@ return array(
                 'xmp' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'zip' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'cermine' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
-                'merge' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory'
+                'merge' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'ner' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory'
             )
         )
     )

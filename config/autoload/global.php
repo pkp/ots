@@ -72,7 +72,8 @@ return array(
                     11, // JOB_CONVERSION_STAGE_EPUB
                     8,  // JOB_CONVERSION_STAGE_PDF
                     9,  // JOB_CONVERSION_STAGE_XMP
-                    10  // JOB_CONVERSION_STAGE_ZIP
+                    10,  // JOB_CONVERSION_STAGE_ZIP
+                    17,  // JOB_CONVERSION_STAGE_NER_EXTRACT
                 )
             )
         ),
@@ -135,6 +136,10 @@ return array(
         'cermine' => array(
             'cerminejar' => 'vendor/CeON/CERMINE/cermine-impl-1.7-20150919.175508-12-jar-with-dependencies.jar',
             'jre' => '/usr/bin/jre'
+        ),
+        'ner' => array(
+            'ner' => '/root/workspace/pkp/mitie/MITIE/ner_stream',
+            'model' => '/root/workspace/pkp/mitie/MITIE/MITIE-models/english/ner_model.dat'
         )
     )
 );

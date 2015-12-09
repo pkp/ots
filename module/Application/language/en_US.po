@@ -1154,3 +1154,13 @@ msgstr "Details"
 
 #~ msgid "PKP XML Parsing Service"
 #~ msgstr "foo"
+
+#: module/NERExtraction/src/NERExtraction/Model/Converter/NERExtractor.php
+msgid "ner.extractor.startExtraction"
+msgstr "Starting Named Entity extraction."
+
+#: module/NERExtraction/src/NERExtraction/Model/Converter/NERExtractor.php
+msgid "ner.extractor.executeCommandLog"
+msgstr ""
+"NER is executing:\n"
+"%s "
