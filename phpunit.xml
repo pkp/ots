@@ -21,6 +21,7 @@
         <directory>module/WpPdfConversion/test</directory>
         <directory>module/XmpConversion/test</directory>
         <directory>module/ZipConversion/test</directory>
+        <directory>module/NERExtraction/test</directory>
       </testsuite>
     </testsuites>
 </phpunit>

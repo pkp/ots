@@ -25,7 +25,8 @@ return array(
         'User',
         'WpPdfConversion',
         'XmpConversion',
-        'ZipConversion'
+        'ZipConversion',
+        'NERExtraction'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
