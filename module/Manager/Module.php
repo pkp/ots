@@ -75,8 +75,18 @@ class Module
                 },
                 'Manager\Form\UploadFormInputFilter' => function($sm)
                 {
+                    $config = $sm->get('Config');
+
+                    if (!isset($config['upload']['valid_mime_types'])) {
+                        throw new \Exception(
+                                'List of valid document mime types is missing'
+                                );
+                    }
+                    
+                    $config = $config['upload'];
+                    
                     $citationStyles = $sm->get('CitationstyleConversion\Model\Citationstyles');
-                    return new UploadFormInputFilter($citationStyles);
+                    return new UploadFormInputFilter($config, $citationStyles);
                 },
                 'Manager\Model\DAO\DocumentDAO' => function($sm)
                 {
