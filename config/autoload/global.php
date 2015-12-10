@@ -52,6 +52,14 @@ return array(
     'notification' => array(
         'adminEmail' => 'axfelix@gmail.com',
     ),
+    'upload' => array(
+        'valid_mime_types' => array(
+            'application/rtf',
+            'application/pdf',
+            'application/msword',
+            'application/vnd.oasis.opendocument.text',
+        )
+    ),
     'conversion' => array(
         'manager' => array(
             'job' => array(

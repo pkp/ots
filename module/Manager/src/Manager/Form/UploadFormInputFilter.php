@@ -10,14 +10,16 @@ use CitationstyleConversion\Model\Citationstyles;
 
 class UploadFormInputFilter implements InputFilterAwareInterface
 {
+    protected $config;
     protected $citationStyles;
 
     public $upload;
 
     protected $inputFilter;
 
-    public function __construct(Citationstyles $citationStyles)
+    public function __construct($config, Citationstyles $citationStyles)
     {
+        $this->config = $config;
         $this->citationStyles = $citationStyles;
     }
 
@@ -67,6 +69,14 @@ class UploadFormInputFilter implements InputFilterAwareInterface
                         ),
                     ),
                 ),
+                    'validators' => array(
+                            array(
+                                    'name' => '\Zend\Validator\File\MimeType',
+                                    'options' => array(
+                                        'mimeType' => $this->config['valid_mime_types']
+                                    )
+                            )
+                    ),
             )));
 
             // Style selector
