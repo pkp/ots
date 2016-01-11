@@ -35,7 +35,7 @@ class BibtexreferencesJob extends AbstractQueueJob
         }
 
         // Fetch the bibtex document which will be converted to NLMXML
-        $bibtexDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_BIBTEX);
+        $bibtexDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_REFERENCES);
         if (!$bibtexDocument) {
             throw new \Exception('Couldn\'t find the stage document');
         }

@@ -21,13 +21,14 @@ class BibtexJob extends AbstractQueueJob
         $bibtex = $this->sm->get('BibtexConversion\Model\Converter\Bibtex');
 
         // Fetch the document to convert
-        $referencesDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_REFERENCES);
+        $referencesDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_PARSCIT);
         if (!$referencesDocument) {
             throw new \Exception('Couldn\'t find the stage document');
         }
 
         // Parse the bibtex
         $outputFile = $job->getDocumentPath() . '/document.bib';
+        $outputFileExisted = file_exists($outputFile);
         $bibtex->setInputFile($referencesDocument->path);
         $bibtex->setOutputFile($outputFile);
         $bibtex->convert();
@@ -39,13 +40,21 @@ class BibtexJob extends AbstractQueueJob
             return $job;
         }
 
-        $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
-        $bibtexDocument = $documentDAO->getInstance();
-        $bibtexDocument->path = $outputFile;
-        $bibtexDocument->job = $job;
-        $bibtexDocument->conversionStage = JOB_CONVERSION_STAGE_BIBTEX;
+        // add entry only if file didn't previously exist
+        if (!$outputFileExisted) {
+            $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
+            $bibtexDocument = $documentDAO->getInstance();
+            $bibtexDocument->path = $outputFile;
+            $bibtexDocument->job = $job;
+            $bibtexDocument->conversionStage = JOB_CONVERSION_STAGE_BIBTEX;
 
-        $job->documents[] = $bibtexDocument;
+            $job->documents[] = $bibtexDocument;
+        }
+        else {
+            // update bib document size
+            $bibtexDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_REFERENCES);
+            $bibtexDocument->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
+        }
 
         return $job;
     }

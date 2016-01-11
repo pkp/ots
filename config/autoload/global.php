@@ -83,6 +83,7 @@ return array(
                     9,  // JOB_CONVERSION_STAGE_XMP
                     10,  // JOB_CONVERSION_STAGE_ZIP
                     17,  // JOB_CONVERSION_STAGE_NER_EXTRACT
+                    18,  // JOB_CONVERSION_STAGE_PARSCIT
                 )
             )
         ),
@@ -101,10 +102,10 @@ return array(
             ),
         ),
         'references' => array(
-            'parscit' => array(
-                'command' => 'vendor/knmnyn/ParsCit/bin/citeExtract.pl',
-                'xsl' => 'module/ReferencesConversion/assets/parsCit.xsl',
-            ),
+            'crossref_api' => array(
+                'endpoint' => 'http://search.crossref.org/dois',
+                'score_threshold' => 1
+             )
         ),
         'bibtex' => array(
             'xml2bib' => array(
@@ -149,6 +150,10 @@ return array(
         'ner' => array(
             'ner' => '/root/workspace/pkp/mitie/MITIE/ner_stream',
             'model' => '/root/workspace/pkp/mitie/MITIE/MITIE-models/english/ner_model.dat'
-        )
+        ),
+        'parsCit' => array(
+            'command' => 'vendor/knmnyn/ParsCit/bin/citeExtract.pl',
+            'xsl' => 'module/ParsCitConversion/assets/parsCit.xsl',
+        ),
     )
 );

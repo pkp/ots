@@ -38,8 +38,8 @@ class BibtexJobTest extends ModelTest
      */
     public function testConversion()
     {
-        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_REFERENCES);
-        $this->assertSame($this->document->conversionStage, JOB_CONVERSION_STAGE_REFERENCES);
+        $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_PARSCIT);
+        $this->assertSame($this->document->conversionStage, JOB_CONVERSION_STAGE_PARSCIT);
         $documentCount = count($this->job->documents);
         $this->bibtexJob->process($this->job);
         $this->assertNotSame($this->job->status, JOB_STATUS_FAILED);
@@ -62,7 +62,7 @@ class BibtexJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => JOB_CONVERSION_STAGE_REFERENCES
+                'conversionStage' => JOB_CONVERSION_STAGE_PARSCIT
             )
         );
 

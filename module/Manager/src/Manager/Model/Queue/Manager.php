@@ -37,7 +37,8 @@ class Manager {
         'zip' => 'ZipConversion\Model\Queue\Job\ZipJob',
         'cermine' => 'Cermine\Model\Queue\Job\CermineJob',
         'merge' => 'MergeXMLOutputs\Model\Queue\Job\MergeJob',
-        'ner' => 'NERExtraction\Model\Queue\Job\NERExtractionJob'
+        'ner' => 'NERExtraction\Model\Queue\Job\NERExtractionJob',
+        'parsCit' => 'ParsCitConversion\Model\Queue\Job\ParsCitJob',
     );
 
     /**
@@ -157,6 +158,9 @@ class Manager {
                 $this->queueJob($job, 'references');
                 break;
             case JOB_CONVERSION_STAGE_REFERENCES:
+                $this->queueJob($job, 'parsCit');
+                break;
+            case JOB_CONVERSION_STAGE_PARSCIT:
                 if ($job->referenceParsingSuccess) {
                     $this->queueJob($job, 'bibtex');
                 } else {

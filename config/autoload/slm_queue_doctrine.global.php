@@ -30,7 +30,8 @@ return array(
                 'zip' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'cermine' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'merge' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
-                'ner' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory'
+                'ner' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'parscit' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
             )
         )
     )

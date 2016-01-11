@@ -112,7 +112,7 @@
             <p>REFERENCES</p>
             <ref-list><ref rid="R1">Abeyratna, S., Paramei, G., Tawfik, H., and Huang, R. An affective interface for conveying user feedback. <italic>Proc. Computer Modeling and Simulation</italic>, IEEE Computer Society (2010), 369-374.</ref>
             <ref rid="R2">Alwin, D.F. and Krosnick, J.A. The measurement of values in surveys: A comparison of ratings and rankings. <italic>Public Opinion Quarterly 49</italic>, 4 (1985), 535 -552.</ref>
-            <ref rid="R3">Amatriain, X., Pujol, J., and Oliver, N. I like it... I like it not: Evaluating user ratings noise in recommender systems. <italic>Proc. UMAP 2009</italic>. Springer (2009), 247-258.</ref></ref-list>
+            <ref rid="R3">Amatriain, X., Pujol, J., and Oliver, N. I like it... I like it not: Evaluating user ratings noise in recommender systems. <italic>Proc. UMAP 2009</italic>. Springer (2009), 247-258.</ref><ref rid="R4"><citation><person-group person-group-type="author"><name><surname>Tommi</surname><given-names/></name><name><surname>Haussler</surname><given-names>David</given-names></name></person-group><article-title>Exploiting generative models in discriminative classifiers</article-title><source>In Advances in Neural Information Processing Systems 11</source><year>1999</year><fpage>487</fpage><lpage>493</lpage></citation></ref></ref-list>
          </sec>
       </sec>
    </body>

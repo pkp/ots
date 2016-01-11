@@ -22,6 +22,7 @@
         <directory>module/XmpConversion/test</directory>
         <directory>module/ZipConversion/test</directory>
         <directory>module/NERExtraction/test</directory>
+        <directory>module/ParsCitConversion/test</directory>
       </testsuite>
     </testsuites>
 </phpunit>
