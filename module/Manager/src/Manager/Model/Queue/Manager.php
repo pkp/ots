@@ -106,8 +106,7 @@ class Manager {
             (
                 $job->conversionStage == JOB_CONVERSION_STAGE_REFERENCES or
                 $job->conversionStage == JOB_CONVERSION_STAGE_CITATIONSTYLE or
-                $job->conversionStage ==
-                    JOB_CONVERSION_STAGE_NER_EXTRACT
+                $job->conversionStage == JOB_CONVERSION_STAGE_NER_EXTRACT
             ) and
             $job->status == JOB_STATUS_FAILED
         )
