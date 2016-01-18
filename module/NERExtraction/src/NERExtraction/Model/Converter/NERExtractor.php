@@ -27,7 +27,8 @@ class NERExtractor extends AbstractConverter
      */
     public function __construct($config, Logger $logger)
     {
-        if (!isset($config['ner']) ||
+        if (!isset($config['install_path']) ||
+            !isset($config['command']) ||
             !isset($config['model'])) {
             throw new \Exception('NER script and/or model file are not configured');
         }
@@ -74,7 +75,7 @@ class NERExtractor extends AbstractConverter
         $this->logger->infoTranslate('ner.extractor.startExtraction');
         
         $command = new Command;
-        $command->setCommand("cat {$filepath} | {$this->config['ner']} {$this->config['model']}");
+        $command->setCommand("cat {$filepath} | {$this->config['install_path']}/{$this->config['command']} {$this->config['install_path']}/{$this->config['model']}");
         
         $this->logger->debugTranslate(
                 'ner.extractor.executeCommandLog',
