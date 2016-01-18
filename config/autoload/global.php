@@ -147,7 +147,7 @@ return array(
             'jre' => '/usr/bin/jre'
         ),
         'ner' => array(
-            'install_path' => '<path to MITIE install>',
+            'install_path' => '/opt/mitie',
             'command' => 'ner_stream',
             'model' => 'MITIE-models/english/ner_model.dat'
         )
