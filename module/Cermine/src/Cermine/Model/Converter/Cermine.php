@@ -4,14 +4,19 @@ namespace Cermine\Model\Converter;
 
 use Xmlps\Logger\Logger;
 use Xmlps\Command\Command;
+use Xmlps\Libxml\Libxml;
 
 use Manager\Model\Converter\AbstractConverter;
+use DOMDocument;
+use DOMXpath;
 
 /**
  * Extracts information from PDF documents using CERMINE
  */
 class Cermine extends AbstractConverter
 {
+    use Libxml;
+    
     protected $config;
     protected $logger;
 
@@ -35,6 +40,8 @@ class Cermine extends AbstractConverter
 
         $this->config = $config;
         $this->logger = $logger;
+        
+        $this->disableLibxmlErrorDisplay();
     }
 
     /**
@@ -109,5 +116,40 @@ class Cermine extends AbstractConverter
             'cermine.cermine.executeCommandOutputLog',
             $this->getOutput()
         );
+        
+        // fix rid attribute
+        $this->fixRidAttributes();
+    }
+    
+    /**
+     * Fix xref rid attribute to get rid of potential multiple ids
+     *
+     * @return void
+     */
+    protected function fixRidAttributes()
+    {
+        $dom = new DOMDocument();
+        if (!$dom->load($this->outputFile)) {
+            $this->logger->debugTranslate(
+                'cermine.converter.xmlLoadErrorLog',
+                $this->libxmlErrors()
+            );
+        }
+        
+        $domXpath = new DOMXPath($dom);
+        
+        $xrefs = $domXpath->query("//xref");
+        
+        foreach($xrefs as $item) {
+            $rid = trim($item->getAttribute('rid'));
+            
+            // match first id
+            if (!preg_match('/^(\d+)/', $rid, $matches)) continue;
+            
+            $item->removeAttribute('rid');
+            $item->setAttribute('rid', 'R'.$matches[1]);
+            
+            file_put_contents($this->outputFile, $dom->saveXML());
+        }
     }
 }

@@ -1164,3 +1164,15 @@ msgid "ner.extractor.executeCommandLog"
 msgstr ""
 "NER is executing:\n"
 "%s "
+
+#: module/ReferencesConversion/src/ReferencesConversion/Model/Converter/References.php
+msgid "parsCit.converter.apiQueryLog"
+msgstr ""
+"DOI call to CrossRef's api:\n"
+"%s "
+
+#: module/Cermine/src/Cermine/Model/Converter/Cermine.php
+msgid "cermine.converter.xmlLoadErrorLog"
+msgstr ""
+"Couldn't load command output xml. LIBXML error:\n"
+"%s"

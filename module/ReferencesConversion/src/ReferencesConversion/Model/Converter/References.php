@@ -299,12 +299,23 @@ class References extends AbstractConverter
 
             // Convert bibliography DOM node to string
             $references = array('REFERENCES');
-            foreach ($bibliography->getElementsByTagName('ref') as $reference) {
+            $all_refs = $bibliography->getElementsByTagName('ref');
+            $refs_count = $all_refs->length;
+            foreach ($all_refs as $reference) {
                 // Extract the reference id
                 $rid = '';
-                if ($reference->hasAttribute('rid')) {
-                    $rid = $reference->getAttribute('rid') . '. ';
+                if ($reference->hasAttribute('id')) {
+                    $rid = trim($reference->getAttribute('id'));
                 }
+
+                // check if rid is numeric 
+                // if not numeric, replace by numeric or 
+                // pandoc will fallback to author names and break
+                if (!is_numeric($rid)) {
+                    $rid = ++$refs_count;
+                }
+
+                $rid  .= '. ';
 
                 // Extract the reference content
                 $referenceText = preg_replace('/\s+/s', ' ', $reference->textContent);
@@ -335,11 +346,17 @@ class References extends AbstractConverter
         $unknowns = array();
         $raw = file_get_contents($referencesFile);
         foreach(explode("\n", $raw) as $entry) {
+            // ignore this line
+            if (trim($entry) == 'REFERENCES') continue;
+            
             $entry = trim($entry);
             if (empty($entry)) continue;
             $doi = $this->queryCrossRefAPIForDOI($entry);
             if (!is_null($doi)) {
                 $bt = $this->queryCrossRefAPIForBibTex($doi);
+                
+                // replace id with original id
+                $bt = $this->replaceGeneratedBibtexIDWithInitial($entry, $bt);
                 $bibtex[] = $bt;
             }
             else {
@@ -356,6 +373,29 @@ class References extends AbstractConverter
     }
     
     /**
+     * Replace bibtex id with initial ID from nlxml
+     *
+     * @param string $reference reference from bibliography
+     * @param string $bibtex Bibtex from crossref
+     * @return string $bibtex
+     */
+    function replaceGeneratedBibtexIDWithInitial($reference, $bibtex)
+    {
+        if (!preg_match('/^(\d+)\.\s.*$/', $reference, $matches)) {
+            return $bibtex;
+        }
+
+        $initialID = "R{$matches[1]}";
+
+        $matches = preg_split("/@(.*)[{(](.*),/U", $bibtex, 2, PREG_SPLIT_DELIM_CAPTURE);
+        if (count($matches) == 1) {
+            return $bibtex;
+        }
+
+        return '@' . $matches[1] . '{' . $initialID . ',' . $matches[3] . PHP_EOL . PHP_EOL;
+    }
+
+    /**
      * Query CrossRef's api
      *
      * @param string $reference reference from bibliography
@@ -370,7 +410,7 @@ class References extends AbstractConverter
         $uri = $this->config['crossref_api']['endpoint'] . "?q=" . urlencode($reference);
     
         $this->logger->debugTranslate(
-                'doiquery.converter.apiQueryLog',
+                'parsCit.converter.apiQueryLog',
                 $uri
                 );
     
@@ -405,7 +445,7 @@ class References extends AbstractConverter
         }
         
         $this->logger->debugTranslate(
-                'doiquery.converter.apiQueryLog',
+                'parsCit.converter.apiQueryLog',
                 $doiUrl
                 );
         

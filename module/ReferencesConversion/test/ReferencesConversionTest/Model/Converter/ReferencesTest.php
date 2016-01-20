@@ -87,7 +87,7 @@ class ReferencesTest extends ModelTest
 
         $this->assertSame($mimeType, 'text/plain');
         
-        $excerpt = '@inproceedings{Abeyratna_2010';
+        $excerpt = '{10.1109/uksim.2010.75}';
         $content = file_get_contents($this->testOutputFile);
         $this->assertTrue(is_int(strpos($content, $excerpt)));
     }
