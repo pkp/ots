@@ -91,7 +91,7 @@ return array(
             'unoconv' => array(
                 // If $HOME is not writable by the Web server owner
                 // (typically www-data), then unoconv will fail.
-                'command' => 'HOME=/tmp /opt/libreoffice4.2/program/python vendor/dagwieers/unoconv/unoconv',
+                'command' => 'HOME=/tmp /opt/libreoffice5.0/program/python vendor/dagwieers/unoconv/unoconv',
             ),
         ),
         'nlmxml' => array(

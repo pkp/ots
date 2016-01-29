@@ -102,11 +102,12 @@ class Manager {
         // Don't requeue completed jobs
         if ($job->status == JOB_STATUS_COMPLETED) return;
 
-        // If the reference parsing has failed continue with the conversion
+        // If the reference parsing or NER extraction has failed, continue with the conversion
         if (
             (
                 $job->conversionStage == JOB_CONVERSION_STAGE_REFERENCES or
-                $job->conversionStage == JOB_CONVERSION_STAGE_CITATIONSTYLE
+                $job->conversionStage == JOB_CONVERSION_STAGE_CITATIONSTYLE or
+                $job->conversionStage == JOB_CONVERSION_STAGE_NER_EXTRACT
             ) and
             $job->status == JOB_STATUS_FAILED
         )
