@@ -73,7 +73,7 @@ class JobEntityTest extends ModelTest
     public function testOutputListing()
     {
         $job = $this->getJobDAO()->getInstance();
-        $this->assertSame(12, count($job->config['outputs']));
+        $this->assertSame(13, count($job->config['outputs']));
 
         foreach ($job->config['outputs'] as $stage) {
             $this->assertInternalType("int", $stage);

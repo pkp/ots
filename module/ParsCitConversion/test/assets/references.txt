@@ -1,0 +1,31 @@
+REFERENCES
+
+E. Niedermeyer, F. H. Lopes da Silva. 1993. Electroencephalography: Basic principles, clinical applications and related fields, 3rd edition, Lippincott, Williams & Wilkins, Philadelphia.
+
+H. L. Atwood, W. A. MacKay. 1989. Essentials of neurophysiology, B.C. Decker, Hamilton, Canada.
+
+F. S. Tyner, J. R.Knott. 1989. Fundamentals of EEG technology, Volume 1: Basic concepts and methods, Raven press, New York.
+
+P. L. Nunez. 1995. Neocortical Dynamics and Human EEG Rhythms, Oxford University Press, New York.The university of Sydney, Fundamentals of Biomedical Engineering, Electroencephalogram, notes at http://www.eelab.usyd.edu.au/ELEC3801/notes/Electroencephalogram.htm.
+
+D. Cohen. 1987. Magnetoencephalography. In: Adelman G. ed. Encyclopedia of Neuroscience, Birkhauser, Cambridge (USA), 601-604.
+
+J. D. Bronzino. 1995. Principles of Electroencephalography. In: J.D. Bronzino ed. The Biomedical Engineering Handbook, pp. 201-212, CRC Press, Florida.
+
+R.D. Bickford. 1987. Electroencephalography. In: Adelman G. ed. Encyclopedia of Neuroscience, Birkhauser, Cambridge (USA), 371-373.
+
+T.W. Picton et. al. 2000. Guidelines for using event-related potentials to study cognition: Recording standards and publication criteria. Psychophysiology 37, 127-152.http://ric.uthscsa.edu/facts/erp.html, The Research Imaging Center, University of Texas.
+
+A. S. Gevins, A. Rémond (eds.). 1987. Handbook of electroencephalography and clinicalneurophysiology, Methods of analysis of brain electrical and magnetic signals, Elsevier, Amsterdam.
+
+G.V. Kondraske. 1986. Neurophysiological measurements. In: J.D. Bronzino ed. BiomedicalEngineering and Instrumentation, pp. 138-179, PWS Publishing, Boston.
+
+H.H. Jasper. 1958. The ten-twenty electrode system of the International Federation.Electroencephalography and Clinical Neurophysiology, 371-375.
+
+D. A. Kaiser. 1994. Interest in Films as Measured by Subjective & Behavioral Ratings and Topographic EEG, Methodological Issues at http://www.skiltopo.com/papers/applied/articles/dakdiss2.htm, Los Angeles.Effects of Electrode Placement, http://www.focused-technology.com/electrod.htm, California.
+
+T. Collura. 1998. A Guide to Electrode Selection, Location, and Application for EEG Biofeedback, Ohio
+
+H.N. Nagel. 1995. Biopotential Amplifiers. In: J.D. Bronzino ed. The Biomedical Engeneering Handbook, pp. 1185-1195, CRC Press, Florida.
+
+D. Brunet, G. Young et al.. 2000. Electroencephalography, Guidelines for Clinical Practice and Facility Standards, College of Physicians and Surgeons of Ontario, Canada.

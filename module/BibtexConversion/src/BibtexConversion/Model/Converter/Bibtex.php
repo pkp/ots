@@ -89,7 +89,7 @@ class Bibtex extends AbstractConverter
         );
 
         if ($this->status = $command->isSuccess()) {
-            file_put_contents($this->outputFile, $command->getOutputString());
+            file_put_contents($this->outputFile, $command->getOutputString(), FILE_APPEND);
         }
     }
 }

@@ -30,8 +30,10 @@ class CitationstyleJob extends AbstractQueueJob
         }
 
         // Fetch the Bibtex document
-        if (!$documentBibtex = $job->getStageDocument(JOB_CONVERSION_STAGE_BIBTEX)) {
-            throw new \Exception('Couldn\'t find the Bibtex stage document');
+        if (!$documentBibtex = $job->getStageDocument(JOB_CONVERSION_STAGE_REFERENCES)) {
+            if (!$documentBibtex = $job->getStageDocument(JOB_CONVERSION_STAGE_BIBTEX)) {
+                throw new \Exception('Couldn\'t find the Bibtex stage document');
+            }
         }
 
         // Fetch the Html document

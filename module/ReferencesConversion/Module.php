@@ -48,10 +48,10 @@ class Module
                 {
                     $config = $sm->get('Config');
                     $logger = $sm->get('Logger');
-                    if (!isset($config['conversion']['references']['parscit'])) {
-                        throw new \Exception('Parscit configuration is missing');
+                    if (!isset($config['conversion']['references'])) {
+                        throw new \Exception("CrossRef's configuration is missing");
                     }
-                    $config = $config['conversion']['references']['parscit'];
+                    $config = $config['conversion']['references'];
 
                     return new References($config, $logger);
                 },

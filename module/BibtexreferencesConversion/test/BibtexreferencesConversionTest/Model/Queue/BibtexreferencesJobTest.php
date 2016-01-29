@@ -42,7 +42,7 @@ class BibtexreferencesJobTest extends ModelTest
     {
         $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_BIBTEX);
         $this->assertSame($this->documentNlmxml->conversionStage, JOB_CONVERSION_STAGE_NLMXML);
-        $this->assertSame($this->documentBibtex->conversionStage, JOB_CONVERSION_STAGE_BIBTEX);
+        $this->assertSame($this->documentBibtex->conversionStage, JOB_CONVERSION_STAGE_REFERENCES);
         $documentCount = count($this->job->documents);
         $this->bibtexreferencesJob->process($this->job);
         $this->assertNotSame($this->job->status, JOB_STATUS_FAILED);
@@ -85,7 +85,7 @@ class BibtexreferencesJobTest extends ModelTest
             array(
                 'job' => $this->job,
                 'path' => $this->testFileBibtex,
-                'conversionStage' => $this->job->conversionStage
+                'conversionStage' => JOB_CONVERSION_STAGE_REFERENCES
             )
         );
         $this->job->documents[] = $this->documentBibtex;

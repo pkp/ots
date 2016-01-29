@@ -21,7 +21,8 @@
     <xsl:template match="citation">
         <xsl:element name="mods" namespace="http://www.loc.gov/mods/v3">
             <xsl:attribute name="ID">
-                <xsl:value-of select="concat('R',str:tokenize(marker,'.')[1])"/>
+                <xsl:variable name="count" select="count(preceding::citation | ancestor::citation) +1"/>
+                <xsl:value-of select="concat('R',$count)"/>
             </xsl:attribute>
             <xsl:apply-templates select="title"/>
             <xsl:element name="typeOfResource" namespace="http://www.loc.gov/mods/v3">text</xsl:element>

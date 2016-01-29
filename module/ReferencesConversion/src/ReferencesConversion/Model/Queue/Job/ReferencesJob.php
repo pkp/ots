@@ -33,13 +33,20 @@ class ReferencesJob extends AbstractQueueJob
         }
 
         // Parse the references
-        $outputFile = $job->getDocumentPath() . '/document.bib.xml';
+        $outputFile = $job->getDocumentPath() . '/document.bib';
+        $parsCitReferencesFile = $job->getDocumentPath() . '/references/parsCit.txt';
         $references->setInputFile($xmlDocument->path);
+        $references->setParsCitReferencesFilePath($parsCitReferencesFile);
         $references->setOutputDirectory($job->getDocumentPath());
         $references->setOutputFile($outputFile);
         $references->convert();
 
-        $job->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
+        if (file_exists($parsCitReferencesFile)) {
+            $job->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
+        }
+        else {
+            $job->conversionStage = JOB_CONVERSION_STAGE_BIBTEX;
+        }
 
         if (!$references->getStatus()) {
             $job->status = JOB_STATUS_FAILED;
@@ -47,16 +54,12 @@ class ReferencesJob extends AbstractQueueJob
         }
 
         $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
-        $referenceXmlDocument = $documentDAO->getInstance();
-        $referenceXmlDocument->path = $outputFile;
-        $referenceXmlDocument->job = $job;
-        $referenceXmlDocument->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
+        $referenceBibtexDocument = $documentDAO->getInstance();
+        $referenceBibtexDocument->path = $outputFile;
+        $referenceBibtexDocument->job = $job;
+        $referenceBibtexDocument->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
 
-        $job->documents[] = $referenceXmlDocument;
-
-        // Flag the reference parsing as successful. This will
-        // influence which conversion steps will be executed.
-        $job->referenceParsingSuccess = true;
+        $job->documents[] = $referenceBibtexDocument;
 
         return $job;
     }

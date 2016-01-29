@@ -1,5 +1,5 @@
 <?php
-namespace ReferencesConversionTest\Model\Converter;
+namespace ParsCitConversionTest\Model\Converter;
 
 use PHPUnit_Framework_TestCase;
 use Xmlps\UnitTest\ModelTest;
@@ -7,15 +7,14 @@ use Xmlps\UnitTest\ModelTest;
 /**
  * Tests the References converter
  */
-class ReferencesTest extends ModelTest
+class ParsCitTest extends ModelTest
 {
-    protected $references;
+    protected $parsCit;
 
-    protected $testOutputDirectory = '/tmp/UNITTEST_references_outputdirectory';
-    protected $testInputFileName = 'document.xml';
-    protected $testInputAssets = 'module/ReferencesConversion/test/assets/';
+    protected $testOutputDirectory = '/tmp/UNITTEST_parscit_outputdirectory';
+    protected $testInputFileName = 'references.txt';
+    protected $testInputAssets = 'module/ParsCitConversion/test/assets/';
     protected $testInputFile;
-    protected $parsCitReferencesFile;
     protected $testOutputFile;
 
     /**
@@ -27,10 +26,9 @@ class ReferencesTest extends ModelTest
         parent::setUp();
 
         $this->testInputFile = $this->testOutputDirectory . '/' . $this->testInputFileName;
-        $this->testOutputFile = $this->testOutputDirectory . '/references.bib';
-        $this->parsCitReferencesFile = $this->testOutputDirectory . '/parsCit.txt';
+        $this->testOutputFile = $this->testOutputDirectory . '/references.xml';
 
-        $this->references = $this->sm->get('ReferencesConversion\Model\Converter\References');
+        $this->parsCit = $this->sm->get('ParsCitConversion\Model\Converter\ParsCit');
 
         $this->resetTestData();
     }
@@ -43,22 +41,7 @@ class ReferencesTest extends ModelTest
     public function testInputFileDoesntExist()
     {
         $this->setExpectedException('Exception');
-        $this->references->setInputFile($this->testInputFile . rand());
-    }
-    
-    /**
-     * Test if the input file validation works properly
-     *
-     * @return void
-     */
-    public function testParsCitReferencesFileNotSet()
-    {
-        $this->setExpectedException('Exception');
-        
-        $this->references->setInputFile($this->testInputFile);
-        $this->references->setOutputDirectory($this->testOutputDirectory);
-        $this->references->setOutputFile($this->testOutputFile);
-        $this->references->convert();
+        $this->parsCit->setInputFile($this->testInputFile . rand());
     }
 
     /**
@@ -68,28 +51,22 @@ class ReferencesTest extends ModelTest
      */
     public function testConversion()
     {
-        $this->references->setInputFile($this->testInputFile);
-        $this->references->setParsCitReferencesFilePath($this->parsCitReferencesFile);
-        $this->references->setOutputDirectory($this->testOutputDirectory);
-        $this->references->setOutputFile($this->testOutputFile);
-        $this->references->convert();
+        $this->parsCit->setInputFile($this->testInputFile);
+        $this->parsCit->setOutputDirectory($this->testOutputDirectory);
+        $this->parsCit->setOutputFile($this->testOutputFile);
+        $this->parsCit->convert();
 
         $this->assertTrue(is_file($this->testOutputFile));
-        $this->assertTrue($this->references->getStatus());
+        $this->assertTrue($this->parsCit->getStatus());
 
-        $this->assertNotSame(
-            file_get_contents($this->testInputFile),
-            file_get_contents($this->testOutputFile)
-        );
+        $excerpt = '<namePart type="family">Niedermeyer</namePart>';
+        $content = file_get_contents($this->testOutputFile);
+        $this->assertTrue(is_int(strpos($content, $excerpt)));
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $this->testOutputFile);
 
-        $this->assertSame($mimeType, 'text/plain');
-        
-        $excerpt = '@inproceedings{Abeyratna_2010';
-        $content = file_get_contents($this->testOutputFile);
-        $this->assertTrue(is_int(strpos($content, $excerpt)));
+        $this->assertSame($mimeType, 'application/xml');
     }
 
     /**

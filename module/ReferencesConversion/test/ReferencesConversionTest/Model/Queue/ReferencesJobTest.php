@@ -50,9 +50,9 @@ class ReferencesJobTest extends ModelTest
         $this->referencesJob->process($this->job);
         $this->assertNotSame($this->job->status, JOB_STATUS_FAILED);
         $this->assertSame($documentCount + 1, count($this->job->documents));
-        $this->assertSame(
-            $this->job->conversionStage,
-            JOB_CONVERSION_STAGE_REFERENCES
+        $this->assertTrue(
+            in_array($this->job->conversionStage,
+            array(JOB_CONVERSION_STAGE_REFERENCES, JOB_CONVERSION_STAGE_PARSCIT))
         );
     }
 

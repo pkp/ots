@@ -24,6 +24,7 @@ class References extends AbstractConverter
     protected $logger;
 
     protected $inputFile;
+    protected $parsCitReferencesFile = null;
     protected $outputDirectory;
     protected $outputFile;
 
@@ -41,12 +42,12 @@ class References extends AbstractConverter
      */
     public function __construct($config, Logger $logger)
     {
-        if (!isset($config['command'])) {
-            throw new \Exception('Parscit command is not configured');
+        if (!isset($config['crossref_api']['endpoint'])) {
+            throw new \Exception("CrossRef's api endpoint is not configured");
         }
 
-        if (!isset($config['xsl'])) {
-            throw new \Exception('XSL file is not configured');
+        if (!isset($config['crossref_api']['score_threshold'])) {
+            throw new \Exception('Api result score threshold is not configured');
         }
 
         $this->config = $config;
@@ -75,6 +76,18 @@ class References extends AbstractConverter
 
         // Parse the DOM tree from the XML
         $this->parseDom();
+    }
+
+    /**
+     * Set path to file for unknown references
+     *
+     * @param mixed $path
+     *
+     * @return void
+     */
+    public function setParsCitReferencesFilePath($path)
+    {
+        $this->parsCitReferencesFile = $path;
     }
 
     /**
@@ -136,6 +149,10 @@ class References extends AbstractConverter
      */
     public function convert()
     {
+        if (is_null($this->parsCitReferencesFile)) {
+            throw new \Exception('Path to file for unknown references not set');
+        }
+
         $this->logger->debugTranslate('referencesconversion.converter.startLog');
 
         if (
@@ -150,16 +167,9 @@ class References extends AbstractConverter
         }
 
         // Parse the bibliography
-        if (
-            !($bibliography = $this->parseBibliography()) or
-            !($bibliography instanceof DOMDocument)
-        ) {
-            $this->status = false;
-            return;
-        }
+        $this->parseBibliography();
 
-        // Create an XML file containing the bibliography
-        file_put_contents($this->outputFile, $bibliography->saveXML());
+        $this->status = true;
     }
 
     /**
@@ -175,22 +185,25 @@ class References extends AbstractConverter
         // Create a temporary file for the parsCit command to process
         $referencesFile = $this->getReferenceFile($bibliography);
 
-        // Process the temporary file with parsCit
-        $this->parsCitExecute($referencesFile);
+        // Process references
+        $result = $this->processReferences($referencesFile);
 
-        $this->logger->debugTranslate(
-            'referencesconversion.converter.parsCit.commandOutputLog',
-            $this->output
-        );
+        // Create bibtex file
+        if (!empty($result['bibtex'])) {
+            file_put_contents($this->outputFile, implode(PHP_EOL . PHP_EOL, $result['bibtex']) . PHP_EOL . PHP_EOL);
+        }
 
-        // Exit if parsing failed
-        if (!$this->status) { return false; }
+        // if unknowns, save for parsCit job
+        if (isset($result['unknowns']) && !empty($result['unknowns'])) {
+            array_unshift($result['unknowns'], 'REFERENCES');
+            $unknowns = implode(PHP_EOL . PHP_EOL, $result['unknowns']);
 
-        // Load the citation list into a DOMNodeList
-        if (!($bibliography = $this->loadCitationList())) return false;
+            if (!file_exists(dirname($this->parsCitReferencesFile))) {
+                @mkdir(dirname($this->parsCitReferencesFile));
+            }
 
-        // XSLT transform the bibliography
-        return $this->transform($bibliography);
+            file_put_contents($this->parsCitReferencesFile, $unknowns);
+        }
     }
 
     /**
@@ -312,159 +325,105 @@ class References extends AbstractConverter
         return $referencesFile;
     }
 
-    /**
-     * Runs the citation parser
-     *
-     * @param string $referencesFile Reference file to parse
-     *
-     * @return void
-     */
-    protected function parsCitExecute($referencesFile)
+    protected function processReferences($referencesFile)
     {
-        // Build the shell command
-        $command = new Command;
-        $command->setCommand($this->config['command']);
-        $command->addSwitch('-m', 'extract_citations');
-        $command->addArgument($referencesFile);
-
-        $this->logger->debugTranslate(
-            'referencesconversion.converter.parsCit.commandLog',
-            $command->getCommand()
-        );
-
-        // Run the ParsCit conversion
-        $command->execute();
-        $this->status = $command->isSuccess();
-        $this->output = $command->getOutputString();
-
-        // Remove the temporary files
-        $this->parsCitCleanup($referencesFile);
-    }
-
-    /**
-     * Remove temporary files after ParsCit conversion
-     *
-     * @param string $referencesFile The reference file to clean up
-     *
-     * @return void
-     */
-    protected function parsCitCleanup($referencesFile)
-    {
-        $referencesBaseFile = preg_replace('/\.[^.]+$/', '', $referencesFile);
-        @unlink($referencesBaseFile . '.body');
-        @unlink($referencesBaseFile . '.cite');
-        @unlink($referencesBaseFile . '.txt');
-    }
-
-    /**
-     * Load the citation list from the parsCit XML output into a DOMNodeList
-     *
-     * @return DOMNodeList ParsCit output as DOMNodeList
-     */
-    protected function loadCitationList()
-    {
-        // Create DOM tree from output
-        $dom = new DOMDocument;
-        if (!$dom->loadXML($this->output)) {
-            $this->logger->debugTranslate(
-                'referencesconversion.converter.parsCit.noDOMLog',
-                $this->libxmlErrors()
-            );
-            return false;
-        }
-        $domXpath = new DOMXPath($dom);
-
-        // Fetch the citation list node
-        $parsed = $domXpath->query(
-            '/algorithms/algorithm[@name="ParsCit"]/citationList/*'
-        );
-
-        if (!$parsed->length) {
-            $this->logger->debugTranslate(
-                'referencesconversion.converter.parsCit.noListNodeLog'
-            );
-            return false;
+        if (!file_exists($referencesFile)) {
+            return NULL;
         }
 
-        $this->logger->debugTranslate(
-            'referencesconversion.converter.parsCit.successLog'
-        );
-
-        return $parsed;
-    }
-
-    /**
-     * XSLT transform the bibliography
-     *
-     * @param DOMNodeList $bibliography
-     *
-     * @return DOMDocument Transformed document
-     */
-    protected function transform(DOMNodeList $bibliography)
-    {
-        $this->logger->debugTranslate(
-            'referencesconversion.converter.transformBibliography.startLog'
-        );
-
-        // Create a new document with citationList as root element
-        $dom = new DOMDocument;
-        $dom->appendChild($dom->createElement('citationList'));
-        foreach ($bibliography as $reference) {
-            $reference = $dom->importNode($reference, true);
-            $dom->documentElement->appendChild($reference);
-        }
-
-        // Load the XSL stylesheet
-        $xslt = new XSLTProcessor();
-        if (!($xsl = simplexml_load_string(file_get_contents($this->config['xsl'])))) {
-            $this->logger->debugTranslate(
-                'referencesconversion.converter.transformBibliography.styleSheetErrorLog'
-            );
-            return false;
-        }
-        $xslt->importStylesheet($xsl);
-
-        // Transform the citation list
-        if (!($dom = $xslt->transformToDoc($dom))) {
-            $this->logger->debugTranslate(
-                'referencesconversion.converter.transformBibliography.transformErrorLog',
-                $this->libxmlErrors()
-            );
-
-            return false;
-        };
-
-        // Clean the title elements
-        $dom = $this->cleanTransformedTitles($dom);
-
-        $this->logger->debugTranslate(
-            'referencesconversion.converter.transformBibliography.successLog',
-            $dom->saveXML()
-        );
-
-        return $dom;
-    }
-
-    /**
-     * Clean , . or "in" from titles if necessary
-     *
-     * @param DOMDocument $dom
-     * @return DOMDocument Document with cleaned titles
-     */
-    protected function cleanTransformedTitles(DOMDocument $dom)
-    {
-        $titles = $dom->getElementsByTagName('title');
-
-        if ($titles->length) {
-            foreach ($titles as $title) {
-                $title->nodeValue = preg_replace(
-                    '/(.+?)\s*\.?,?\s*(in)?$/is',
-                    '\1',
-                    $title->nodeValue
-                );
+        $bibtex = array();
+        $unknowns = array();
+        $raw = file_get_contents($referencesFile);
+        foreach(explode("\n", $raw) as $entry) {
+            $entry = trim($entry);
+            if (empty($entry)) continue;
+            $doi = $this->queryCrossRefAPIForDOI($entry);
+            if (!is_null($doi)) {
+                $bt = $this->queryCrossRefAPIForBibTex($doi);
+                $bibtex[] = $bt;
+            }
+            else {
+                $unknowns[] = $entry;
             }
         }
-
-        return $dom;
+        
+        return array(
+            'bibtex' => $bibtex,
+            'unknowns' => $unknowns 
+        );
+        
+        @unlink($referencesFile);
+    }
+    
+    /**
+     * Query CrossRef's api
+     *
+     * @param string $reference reference from bibliography
+     * @return string DOI
+     */
+    protected function queryCrossRefAPIForDOI($reference)
+    {
+        if (empty($reference)) {
+            return NULL;
+        }
+    
+        $uri = $this->config['crossref_api']['endpoint'] . "?q=" . urlencode($reference);
+    
+        $this->logger->debugTranslate(
+                'doiquery.converter.apiQueryLog',
+                $uri
+                );
+    
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_URL => $uri
+        ));
+    
+        if ( ! $response = curl_exec($curl)) {
+            return NULL;
+        }
+    
+        curl_close($curl);
+        $resultObj = json_decode($response);
+    
+        if (isset($resultObj[0])) {
+            $first = $resultObj[0];
+            if (isset($first->doi) && isset($first->score)
+                    && (intval($first->score) >= $this->config['crossref_api']['score_threshold'])) {
+                        return $first->doi;
+                    }
+        }
+    
+        return NULL;
+    }
+    
+    protected function queryCrossRefAPIForBibTex($doiUrl)
+    {
+        if (empty($doiUrl)) {
+            return NULL;
+        }
+        
+        $this->logger->debugTranslate(
+                'doiquery.converter.apiQueryLog',
+                $doiUrl
+                );
+        
+        $curl = curl_init();
+        $headers = array("Accept: application/x-bibtex");
+        curl_setopt_array($curl, array(
+                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_URL => $doiUrl,
+                CURLOPT_HTTPHEADER => $headers,
+                CURLOPT_FOLLOWLOCATION => 1,
+        ));
+        
+        if ( ! $response = curl_exec($curl)) {
+            return NULL;
+        }
+        
+        curl_close($curl);
+        
+        return $response;
     }
 }
