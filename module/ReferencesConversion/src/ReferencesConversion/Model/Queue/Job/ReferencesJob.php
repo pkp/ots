@@ -45,6 +45,7 @@ class ReferencesJob extends AbstractQueueJob
             $job->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
         }
         else {
+            $job->referenceParsingSuccess = true;
             $job->conversionStage = JOB_CONVERSION_STAGE_BIBTEX;
         }
 
