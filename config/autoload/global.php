@@ -148,8 +148,9 @@ return array(
             'jre' => '/usr/bin/jre'
         ),
         'ner' => array(
-            'ner' => '/root/workspace/pkp/mitie/MITIE/ner_stream',
-            'model' => '/root/workspace/pkp/mitie/MITIE/MITIE-models/english/ner_model.dat'
+            'install_path' => '/opt/mitie',
+            'command' => 'ner_stream',
+            'model' => 'MITIE-models/english/ner_model.dat'
         ),
         'parsCit' => array(
             'command' => 'vendor/knmnyn/ParsCit/bin/citeExtract.pl',
