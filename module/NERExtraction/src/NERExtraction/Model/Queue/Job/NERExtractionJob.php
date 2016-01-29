@@ -27,6 +27,8 @@ class NERExtractionJob extends AbstractQueueJob
             throw new \Exception("Couldn't find the stage document");
         }
         
+        $job->conversionStage = JOB_CONVERSION_STAGE_NER_EXTRACT;
+        
         // generate named entities document
         $extractor->setInputFile($doc->path);
         $outputPath = $job->getDocumentPath() . '/named-entities.json'; 
@@ -46,7 +48,6 @@ class NERExtractionJob extends AbstractQueueJob
         $jsonDocument->conversionStage = JOB_CONVERSION_STAGE_NER_EXTRACT;
         
         $job->documents[] = $jsonDocument;
-        $job->conversionStage = JOB_CONVERSION_STAGE_NER_EXTRACT;
         
         return $job;
     }
