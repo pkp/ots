@@ -13,8 +13,10 @@ class ReferencesTest extends ModelTest
 
     protected $testOutputDirectory = '/tmp/UNITTEST_references_outputdirectory';
     protected $testInputFileName = 'document.xml';
+    protected $testInputFileName2 = 'document_from_pdf.xml';
     protected $testInputAssets = 'module/ReferencesConversion/test/assets/';
     protected $testInputFile;
+    protected $testInputFile2;
     protected $parsCitReferencesFile;
     protected $testOutputFile;
 
@@ -27,6 +29,7 @@ class ReferencesTest extends ModelTest
         parent::setUp();
 
         $this->testInputFile = $this->testOutputDirectory . '/' . $this->testInputFileName;
+        $this->testInputFile2 = $this->testOutputDirectory . '/' . $this->testInputFileName2;
         $this->testOutputFile = $this->testOutputDirectory . '/references.bib';
         $this->parsCitReferencesFile = $this->testOutputDirectory . '/parsCit.txt';
 
@@ -91,6 +94,22 @@ class ReferencesTest extends ModelTest
         $content = file_get_contents($this->testOutputFile);
         $this->assertTrue(is_int(strpos($content, $excerpt)));
     }
+    
+    /**
+     * Test conversion failure
+     *
+     * @return void
+     */
+    public function testConversionFailure()
+    {
+        $this->references->setInputFile($this->testInputFile2);
+        $this->references->setParsCitReferencesFilePath($this->parsCitReferencesFile);
+        $this->references->setOutputDirectory($this->testOutputDirectory);
+        $this->references->setOutputFile($this->testOutputFile);
+        $this->references->convert();
+        
+        $this->assertFalse(is_file($this->testOutputFile));
+    }
 
     /**
      * Create the test data
@@ -103,6 +122,10 @@ class ReferencesTest extends ModelTest
         copy(
             $this->testInputAssets . $this->testInputFileName,
             $this->testInputFile
+            );
+        copy(
+            $this->testInputAssets . $this->testInputFileName2,
+            $this->testInputFile2
             );
     }
 

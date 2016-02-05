@@ -15,7 +15,9 @@ class ReferencesJobTest extends ModelTest
     protected $referencesJob;
 
     protected $testAsset = 'module/ReferencesConversion/test/assets/document.xml';
+    protected $testAsset2 = 'module/ReferencesConversion/test/assets/document_from_pdf.xml';
     protected $testFile = '/tmp/UNITTEST_document.xml';
+    protected $testFile2 = '/tmp/UNITTEST_document2.xml';
 
     /**
      * Initialize the test
@@ -57,12 +59,36 @@ class ReferencesJobTest extends ModelTest
     }
 
     /**
+     * Test conversion failure
+     *
+     * @return void
+     */
+    public function testConversionFailure()
+    {
+        $this->job->documents[0]->setPath($this->testFile2);
+
+        $this->assertSame(
+            $this->job->conversionStage,
+            JOB_CONVERSION_STAGE_PDF_EXTRACT
+        );
+        $this->assertSame(
+            $this->document->conversionStage,
+            JOB_CONVERSION_STAGE_NLMXML
+        );
+        $documentCount = count($this->job->documents);
+        $this->referencesJob->process($this->job);
+        $this->assertSame($this->job->status, JOB_STATUS_FAILED);
+        $this->assertSame($documentCount, count($this->job->documents));
+    }
+
+    /**
      * Create test data
      *
      * @return void
      */
     protected function createTestData() {
         @copy($this->testAsset, $this->testFile);
+        @copy($this->testAsset2, $this->testFile2);
 
         // Create test user
         $this->user = $this->createTestUser();
@@ -98,5 +124,6 @@ class ReferencesJobTest extends ModelTest
         $this->deleteTestUser();
 
         @unlink($this->testFile);
+        @unlink($this->testFile2);
     }
 }
