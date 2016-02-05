@@ -22,9 +22,11 @@ class ParsCitJob extends AbstractQueueJob
 
         // path to reference file
         $docpath = $job->getDocumentPath() . '/references/parsCit.txt';
-        
+
+        // continue if there's not reference document. reference job has probably failed.
         if (!file_exists($docpath)) {
-            throw new \Exception("Couldn't find references document");
+            $job->conversionStage = JOB_CONVERSION_STAGE_PARSCIT;
+            return $job;
         }
         
         $outputFile = $job->getDocumentPath() . '/document.bib.xml';

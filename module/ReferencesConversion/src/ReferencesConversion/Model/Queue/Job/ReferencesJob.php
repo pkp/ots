@@ -41,17 +41,16 @@ class ReferencesJob extends AbstractQueueJob
         $references->setOutputFile($outputFile);
         $references->convert();
 
-        if (file_exists($parsCitReferencesFile)) {
-            $job->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
-        }
-        else {
-            $job->referenceParsingSuccess = true;
-            $job->conversionStage = JOB_CONVERSION_STAGE_BIBTEX;
-        }
+        $job->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
 
-        if (!$references->getStatus()) {
+        if (!file_exists($outputFile) || !$references->getStatus()) {
             $job->status = JOB_STATUS_FAILED;
             return $job;
+        }
+
+        if (!file_exists($parsCitReferencesFile)) {
+            $job->referenceParsingSuccess = true;
+            $job->conversionStage = JOB_CONVERSION_STAGE_BIBTEX;
         }
 
         $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
