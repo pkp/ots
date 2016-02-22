@@ -241,14 +241,14 @@ class Pandoc extends AbstractConverter
         $references = $dom->getElementsByTagName('ref');
         if (!$references->length) return false;
 
-        $rids = array();
+        $ids = array();
         foreach ($references as $reference) {
-            $rids[] = '@' . $reference->getAttribute('rid');
+            $ids[] = '@' . $reference->getAttribute('id');
         }
 
         file_put_contents(
             $this->referencesFile,
-            implode(PHP_EOL . PHP_EOL, $rids) . PHP_EOL . PHP_EOL . '#References'
+            implode(PHP_EOL . PHP_EOL, $ids) . PHP_EOL . PHP_EOL . '#References'
         );
 
         return true;

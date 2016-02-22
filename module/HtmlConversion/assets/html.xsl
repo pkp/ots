@@ -315,14 +315,14 @@
         <xsl:for-each select="ref">
           <li>
             <xsl:attribute name="rid">
-              <xsl:value-of select="@rid"/>
+              <xsl:value-of select="@id"/>
             </xsl:attribute>
             <a>
               <xsl:attribute name="name">
-                <xsl:value-of select="@rid"/>
+                <xsl:value-of select="@id"/>
               </xsl:attribute>
             </a>
-            <xsl:for-each select="citation">
+            <xsl:for-each select="element-citation">
               <xsl:value-of select="string(.)"/>
             </xsl:for-each>
           </li>
