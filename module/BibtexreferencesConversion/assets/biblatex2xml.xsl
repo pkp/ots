@@ -9,8 +9,8 @@ XSL for converting BIB2MODS output XML to NLM <ref><citation> style.
 <xsl:template match="/">
 <ref-list>
         <xsl:for-each select="/modsCollection/mods">
-        <ref rid="{@ID}">
-            <citation>
+        <ref id="{@ID}">
+            <element-citation>
                 <person-group person-group-type="author">
                     <xsl:for-each select="name">
                         <name>
