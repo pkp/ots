@@ -314,7 +314,7 @@
       <ul>
         <xsl:for-each select="ref">
           <li>
-            <xsl:attribute name="rid">
+            <xsl:attribute name="id">
               <xsl:value-of select="@id"/>
             </xsl:attribute>
             <a>
