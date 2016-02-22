@@ -67,7 +67,7 @@ XSL for converting BIB2MODS output XML to NLM <ref><citation> style.
                         </lpage>
                     </xsl:for-each>
                 </xsl:for-each>
-            </citation>
+            </element-citation>
         </ref>
     </xsl:for-each>
 </ref-list>
