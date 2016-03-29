@@ -55,6 +55,11 @@ class CitationstyleJobTest extends ModelTest
 
     */
 
+    public function testNoWarnings()
+    {
+        ;
+    }
+
     /**
      * Create test data
      *
