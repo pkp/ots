@@ -145,7 +145,7 @@ return array(
         ),
         'cermine' => array(
             'cerminejar' => 'vendor/CeON/CERMINE/cermine-impl-1.8-jar-with-dependencies.jar',
-            'jre' => '/usr/bin/jre'
+            'jre' => 'java'
         ),
         'ner' => array(
             'install_path' => '/opt/mitie',
