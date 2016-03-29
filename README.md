@@ -6,95 +6,95 @@ Module Description
 
 -   User
 
--   Authentication
+Authentication
 
--   Registration
+Registration
 
--   New password
+New password
 
 -   Admin
 
--   Confirm registrations
+Confirm registrations
 
--   Set a user's document conversion rate
+Set a user's document conversion rate
 
--   Delete user
+Delete user
 
--   Edit User
+Edit User
 
--   System log viewer
+System log viewer
 
 -   Manager
 
--   Receives conversion jobs
+Receives conversion jobs
 
--   Job list
+Job list
 
--   Handles job distribution to queues
+Handles job distribution to queues
 
 -   PathFinder
 
--   Determines which conversion path to take
+Determines which conversion path to take
 
 -   DocxConversion
 
--   Converts documents to DocX format
+Converts documents to DocX format
 
 -   WpPdfConversion
 
--   Converts word processing documents directly to PDF
+Converts word processing documents directly to PDF
 
 -   NlmxmlConversion
 
--   Uses [meTypeset](<http://github.com/MartinPaulEve/meTypeset>) to perform part of the NLM XML conversion
+Uses [meTypeset](<http://github.com/MartinPaulEve/meTypeset>) to perform part of the NLM XML conversion
 
 -   Cermine
 
--   Uses [CERMINE](<http://cermine.ceon.pl/>) to perform part of the NLM XML conversion
+Uses [CERMINE](<http://cermine.ceon.pl/>) to perform part of the NLM XML conversion
 
 -   ReferenceConversion
 
--   Parses references from DocX document into a seperate XML file
+Parses references from DocX document into a seperate XML file
 
 -   BibtexConversion
 
--   Converts references from the previous step into Bibtex
+Converts references from the previous step into Bibtex
 
 -   BibtexreferenceConversion
 
--   Converts Bibtex references into NLMXML and merges the converted references into the NLMXML document
+Converts Bibtex references into NLMXML and merges the converted references into the NLMXML document
 
 -   HtmlConversion
 
--   Converts the NLMXML document into HTML
+Converts the NLMXML document into HTML
 
 -   CitationStyleConversion
 
--   Formats the citations in the HTML document according to the citationstyle requested by the user
+Formats the citations in the HTML document according to the citationstyle requested by the user
 
 -   PdfConversion
 
--   Converts the HTML document into PDF
+Converts the HTML document into PDF
 
 -   XmpConversion
 
--   Adds an XMP sidecar with metadata from the NLMXML to the PDF document
+Adds an XMP sidecar with metadata from the NLMXML to the PDF document
 
 -   EpubConversion
 
--   Converts the NLMXML document into Epub format
+Converts the NLMXML document into Epub format
 
 -   MergeXMLOutputs
 
--   Combines the CERMINE and meTypeset outputs (as modified by BibTeX processing, if appropriate) into a better NLM XML document
+Combines the CERMINE and meTypeset outputs (as modified by BibTeX processing, if appropriate) into a better NLM XML document
 
 -   ZipConversion
 
--   Zips all documents
+Zips all documents
 
 -   API
 
--   Simple REST API to submit and retrieve jobs and to provide functionality for the frontends AJAX callbacks.
+Simple REST API to submit and retrieve jobs and to provide functionality for the frontends AJAX callbacks.
 
 Requirements
 ------------
@@ -102,6 +102,8 @@ Requirements
 -   [Apache mod\_headers](<http://httpd.apache.org/docs/2.2/mod/mod_headers.html>) needs to be installed and enabled
 
 -   [Java VM](<https://java.com/en/download/index.jsp>) needs to be installed
+
+-   sendmail needs to be installed and configured
 
 -   [MySQL](<https://www.mysql.com/>)
 
