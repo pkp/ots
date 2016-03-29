@@ -88,7 +88,7 @@
                 "name": "CeON/CERMINE",
                 "version": "1.7.12",
                 "dist": {
-                    "url": "http://maven.ceon.pl/artifactory/simple/kdd-shapshots/pl/edu/icm/cermine/cermine-impl/1.7-SNAPSHOT/cermine-impl-1.7-20150919.175508-12-jar-with-dependencies.jar",
+                    "url": "http://maven.ceon.pl/artifactory/simple/kdd-releases/pl/edu/icm/cermine/cermine-impl/1.8/cermine-impl-1.8-jar-with-dependencies.jar",
                     "type": "file"
                 }
             }
