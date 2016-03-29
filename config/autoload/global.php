@@ -144,7 +144,7 @@ return array(
             ),
         ),
         'cermine' => array(
-            'cerminejar' => 'vendor/CeON/CERMINE/cermine-impl-1.7-20150919.175508-12-jar-with-dependencies.jar',
+            'cerminejar' => 'vendor/CeON/CERMINE/cermine-impl-1.8-jar-with-dependencies.jar',
             'jre' => '/usr/bin/jre'
         ),
         'ner' => array(

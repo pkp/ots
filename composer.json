@@ -86,7 +86,7 @@
             "type": "package",
             "package": {
                 "name": "CeON/CERMINE",
-                "version": "1.7.12",
+                "version": "1.8",
                 "dist": {
                     "url": "http://maven.ceon.pl/artifactory/simple/kdd-releases/pl/edu/icm/cermine/cermine-impl/1.8/cermine-impl-1.8-jar-with-dependencies.jar",
                     "type": "file"
@@ -109,7 +109,7 @@
         "knmnyn/ParsCit": "dev-master",
         "dyve/jquery-autocomplete": "dev-master",
         "pkp/jats2epub": "dev-master",
-        "CeON/CERMINE": "1.7.12"
+        "CeON/CERMINE": "1.8"
     },
     "config": {
         "process-timeout": 1800
