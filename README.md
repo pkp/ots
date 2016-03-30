@@ -6,95 +6,95 @@ Module Description
 
 -   User
 
-Authentication
+    -   Authentication
 
-Registration
+    -   Registration
 
-New password
+    -   New password
 
 -   Admin
 
-Confirm registrations
+    -   Confirm registrations
 
-Set a user's document conversion rate
+    -   Set a user's document conversion rate
 
-Delete user
+    -   Delete user
 
-Edit User
+    -   Edit User
 
-System log viewer
+    -   System log viewer
 
 -   Manager
 
-Receives conversion jobs
+    -   Receives conversion jobs
 
-Job list
+    -   Job list
 
-Handles job distribution to queues
+    -   Handles job distribution to queues
 
 -   PathFinder
 
-Determines which conversion path to take
+    -   Determines which conversion path to take
 
 -   DocxConversion
 
-Converts documents to DocX format
+    -   Converts documents to DocX format
 
 -   WpPdfConversion
 
-Converts word processing documents directly to PDF
+    -   Converts word processing documents directly to PDF
 
 -   NlmxmlConversion
 
-Uses [meTypeset](<http://github.com/MartinPaulEve/meTypeset>) to perform part of the NLM XML conversion
+    -   Uses [meTypeset](<http://github.com/MartinPaulEve/meTypeset>) to perform part of the NLM XML conversion
 
 -   Cermine
 
-Uses [CERMINE](<http://cermine.ceon.pl/>) to perform part of the NLM XML conversion
+    -   Uses [CERMINE](<http://cermine.ceon.pl/>) to perform part of the NLM XML conversion
 
 -   ReferenceConversion
 
-Parses references from DocX document into a seperate XML file
+    -   Parses references from DocX document into a seperate XML file
 
 -   BibtexConversion
 
-Converts references from the previous step into Bibtex
+    -   Converts references from the previous step into Bibtex
 
 -   BibtexreferenceConversion
 
-Converts Bibtex references into NLMXML and merges the converted references into the NLMXML document
+    -   Converts Bibtex references into NLMXML and merges the converted references into the NLMXML document
 
 -   HtmlConversion
 
-Converts the NLMXML document into HTML
+    -   Converts the NLMXML document into HTML
 
 -   CitationStyleConversion
 
-Formats the citations in the HTML document according to the citationstyle requested by the user
+    -   Formats the citations in the HTML document according to the citationstyle requested by the user
 
 -   PdfConversion
 
-Converts the HTML document into PDF
+    -   Converts the HTML document into PDF
 
 -   XmpConversion
 
-Adds an XMP sidecar with metadata from the NLMXML to the PDF document
+    -   Adds an XMP sidecar with metadata from the NLMXML to the PDF document
 
 -   EpubConversion
 
-Converts the NLMXML document into Epub format
+    -   Converts the NLMXML document into Epub format
 
 -   MergeXMLOutputs
 
-Combines the CERMINE and meTypeset outputs (as modified by BibTeX processing, if appropriate) into a better NLM XML document
+    -   Combines the CERMINE and meTypeset outputs (as modified by BibTeX processing, if appropriate) into a better NLM XML document
 
 -   ZipConversion
 
-Zips all documents
+    -   Zips all documents
 
 -   API
 
-Simple REST API to submit and retrieve jobs and to provide functionality for the frontends AJAX callbacks.
+    -   Simple REST API to submit and retrieve jobs and to provide functionality for the frontends AJAX callbacks.
 
  
 
@@ -109,6 +109,8 @@ Requirements
 
 -   sendmail needs to be installed and configured
 
+-   zip and unzip need to be installed, and I have to mention this because they aren’t by default on Ubuntu for some reason.
+
 -   [MySQL](<https://www.mysql.com/>)
 
 -   citation parsing has a variety of requirements, as listed in the [ParsCit documentation](<https://github.com/knmnyn/ParsCit/blob/master/INSTALL>)
@@ -119,11 +121,9 @@ Requirements
 
 -   The XMP conversion needs [Exiftool](<http://www.sno.phy.queensu.ca/~phil/exiftool/>) to be installed
 
--   The docX conversion needs [LibreOffice](<http://www.libreoffice.org/>) with unoconv installed. The server is tested to work with LibreOffice 4.2.4.
+-   The docX conversion needs [LibreOffice](<http://www.libreoffice.org/>) with unoconv installed. The server is tested to work with LibreOffice 4.2.4 through 5.x.
 
-`wget http://download.documentfoundation.org/libreoffice/stable/4.2.4/deb/x86_64/LibreOffice_4.2.4_Linux_x86-64_deb.tar.gz   tar -xzf LibreOffice_4.2.4_Linux_x86-64_deb.tar.gz   rm -f LibreOffice_4.2.4_Linux_x86-64_deb.tar.gz   sudo dpkg -i LibreOffice_4.2.4.2_Linux_x86-64_deb/DEBS/*.deb   rm -rf LibreOffice_4.2.4.2_Linux_x86-64_deb`
-
--   The [PHP5 XSL module](<http://www.php.net/manual/en/xsl.installation.php>) must be installed.
+-   The [PHP5 XSL and curl module](<http://www.php.net/manual/en/xsl.installation.php>)s must be installed.
 
  
 
