@@ -175,7 +175,7 @@ Installation
 
 `# chmod -R go+w var   # rm var/cache/zfcache-ea/*`
 
--   You need to manually set the path to the MITIE libraries from https://github.com/mit-nlp/MITIE\#compiling-mitie-as-a-shared-library as in https://github.com/pkp/xmlps/commit/63963bfc75f0ebb3be2bfcfca44865a15700b5e0 in order for the Named Entity Recognition module to work.
+-   You need to manually set the path to the MITIE libraries and the ner\_stream binary from https://github.com/mit-nlp/MITIE as in https://github.com/pkp/xmlps/commit/63963bfc75f0ebb3be2bfcfca44865a15700b5e0 in order for the Named Entity Recognition module to work.
 
 -   Initialize the database (you may need to manually create an 'xmlps' database first)
 
