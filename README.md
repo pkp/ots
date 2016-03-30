@@ -96,10 +96,14 @@ Zips all documents
 
 Simple REST API to submit and retrieve jobs and to provide functionality for the frontends AJAX callbacks.
 
+ 
+
 Requirements
 ------------
 
 -   [Apache mod\_headers](<http://httpd.apache.org/docs/2.2/mod/mod_headers.html>) needs to be installed and enabled
+
+-   meTypeset needs the python lxml library
 
 -   [Java VM](<https://java.com/en/download/index.jsp>) needs to be installed
 
@@ -120,6 +124,8 @@ Requirements
 `wget http://download.documentfoundation.org/libreoffice/stable/4.2.4/deb/x86_64/LibreOffice_4.2.4_Linux_x86-64_deb.tar.gz   tar -xzf LibreOffice_4.2.4_Linux_x86-64_deb.tar.gz   rm -f LibreOffice_4.2.4_Linux_x86-64_deb.tar.gz   sudo dpkg -i LibreOffice_4.2.4.2_Linux_x86-64_deb/DEBS/*.deb   rm -rf LibreOffice_4.2.4.2_Linux_x86-64_deb`
 
 -   The [PHP5 XSL module](<http://www.php.net/manual/en/xsl.installation.php>) must be installed.
+
+ 
 
 Installation
 ------------
@@ -188,37 +194,37 @@ Sample sites-available/httpd.conf:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <VirtualHost *:80>
-	ServerAdmin webmaster@localhost
+    ServerAdmin webmaster@localhost
 
-	DocumentRoot /var/www/html/public
-	<Directory />
-		Options FollowSymLinks
-		AllowOverride All
-	</Directory>
-	<Directory /var/www/html/public>
-		Options -Indexes +FollowSymLinks +MultiViews
-		AllowOverride All
-		Order allow,deny
-		allow from all
-	</Directory>
+    DocumentRoot /var/www/html/public
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride All
+    </Directory>
+    <Directory /var/www/html/public>
+        Options -Indexes +FollowSymLinks +MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+    </Directory>
 
 
 
-	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-	<Directory "/usr/lib/cgi-bin">
-		AllowOverride None
-		Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
-		Order allow,deny
-		Allow from all
-	</Directory>
+    ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+    <Directory "/usr/lib/cgi-bin">
+        AllowOverride None
+        Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+        Order allow,deny
+        Allow from all
+    </Directory>
 
-	ErrorLog ${APACHE_LOG_DIR}/error.log
+    ErrorLog ${APACHE_LOG_DIR}/error.log
 
-	# Possible values include: debug, info, notice, warn, error, crit,
-	# alert, emerg.
-	LogLevel warn
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
 
-	CustomLog ${APACHE_LOG_DIR}/access.log combined
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
 
     Alias /doc/ "/usr/share/doc/"
     <Directory "/usr/share/doc/">
@@ -245,6 +251,8 @@ After a successful installation the unit tests should complete without errors:
 
 You will need to re-empty the cache directories afterward, if your Web server runs as a different user than you.
 
+ 
+
 Developer notes
 ---------------
 
@@ -253,6 +261,8 @@ Developer notes
 -   After making changes to Javascript (javascript/) or style files (style/scss/) recompile/recompress the style and Javascript files by running
 
 `# guard`
+
+ 
 
 API
 ---
