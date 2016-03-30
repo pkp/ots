@@ -39,9 +39,8 @@ class CitationstyleJobTest extends ModelTest
     /**
      * Test if the conversion works properly
      *
-     * This is commented out until we recreate the sample html.zip
-     *
      * @return void
+     */
 
     public function testConversion()
     {
@@ -53,12 +52,6 @@ class CitationstyleJobTest extends ModelTest
         $this->assertSame($this->job->conversionStage, JOB_CONVERSION_STAGE_CITATIONSTYLE);
     }
 
-    */
-
-    public function testNoWarnings()
-    {
-        ;
-    }
 
     /**
      * Create test data
