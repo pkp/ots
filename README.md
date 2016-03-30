@@ -113,17 +113,17 @@ Requirements
 
 -   [MySQL](<https://www.mysql.com/>)
 
--   citation parsing has a variety of requirements, as listed in the [ParsCit documentation](<https://github.com/knmnyn/ParsCit/blob/master/INSTALL>)
+-   citation parsing has a variety of requirements, as listed in the [ParsCit documentation.](<https://github.com/knmnyn/ParsCit/blob/master/INSTALL>) At minimum, you need Perl XML Twig and XML Writer, a working Ruby installation, and CRF++ binaries.
 
 -   [xml2bib](<http://sourceforge.net/p/bibutils/home/xml2bib/>) needs to be installed
 
--   [Pandoc](<http://johnmacfarlane.net/pandoc/>) & libghc-citeproc-hs-data needs to be installed
+-   [Pandoc, pandoc-citeproc, and](<http://johnmacfarlane.net/pandoc>) libghc-citeproc-hs-data need to be installed
 
 -   The XMP conversion needs [Exiftool](<http://www.sno.phy.queensu.ca/~phil/exiftool/>) to be installed
 
 -   The docX conversion needs [LibreOffice](<http://www.libreoffice.org/>) with unoconv installed. The server is tested to work with LibreOffice 4.2.4 through 5.x.
 
--   The [PHP5 XSL and curl module](<http://www.php.net/manual/en/xsl.installation.php>)s must be installed.
+-   The PHP5 xsl and curl modules must be installed.
 
  
 
