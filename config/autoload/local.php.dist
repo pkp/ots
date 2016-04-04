@@ -4,6 +4,13 @@ return array(
     'modules' => array(
         'ZendDeveloperTools',
     ),
+    'conversion' => array(
+        'docx' => array(
+            'unoconv' => array(
+                'command' => 'unoconv',
+            ),
+        ),
+    ),
     'doctrine' => array(
         'connection' => array(
             'orm_default' => array(
