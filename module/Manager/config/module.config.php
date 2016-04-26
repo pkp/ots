@@ -32,7 +32,33 @@ return array(
                     ),
                 ),
             ),
-        ),
+            'editor' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/manager/editor/id/:id',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Manager\Controller\Manager',
+                        'action' => 'editor',
+                    ),
+                ),
+            ),
+            'xml' => array(
+                'type' => 'segment',
+                'options' => array(
+                        'route' => '/manager/xml/id/:id',
+                        'constraints' => array(
+                                'id' => '[0-9]+',
+                        ),
+                        'defaults' => array(
+                                'controller' => 'Manager\Controller\Manager',
+                                'action' => 'xml',
+                        ),
+                ),
+            ),
+    ),
     ),
     'view_manager' => array(
         'template_path_stack' => array(
@@ -61,12 +87,16 @@ return array(
             'controller:Manager\Controller\Manager:download',
             'controller:Manager\Controller\Manager:list',
             'controller:Manager\Controller\Manager:upload',
+            'controller:Manager\Controller\Manager:editor',
+            'controller:Manager\Controller\Manager:xml',
         ),
         'rules' => array(
             array('allow', 'member', 'controller:Manager\Controller\Manager:details'),
             array('allow', 'member', 'controller:Manager\Controller\Manager:download'),
             array('allow', 'member', 'controller:Manager\Controller\Manager:list'),
             array('allow', 'member', 'controller:Manager\Controller\Manager:upload'),
+            array('allow', 'member', 'controller:Manager\Controller\Manager:editor'),
+            array('allow', 'member', 'controller:Manager\Controller\Manager:xml'),
         ),
     ),
 );
