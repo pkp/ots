@@ -245,19 +245,11 @@ class ManagerController extends AbstractActionController {
             return;
         }
 
-        $path = $job->getDocumentPath() . '/document.xml';
-        $docpath = dirname($_SERVER['SCRIPT_FILENAME']) . '/../' . $path;
-        
-        if (!file_exists($docpath)) {
-            $this->getResponse()->setStatusCode(404);
-            return;
-        }
-
         $response = $this->getEvent()->getResponse();
         $response->setHeaders(Headers::fromString(
             "Content-Type: {$document->mimeType}\r\n"
         ));
-        $response->setContent(file_get_contents($docpath));
+        $response->setContent(file_get_contents($document->path));
 
         return $response;
     }
