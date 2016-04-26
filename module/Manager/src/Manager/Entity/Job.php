@@ -33,6 +33,7 @@ define('JOB_CONVERSION_STAGE_PARSCIT', 18);
 
 define('JOB_INPUT_TYPE_WP', 0);
 define('JOB_INPUT_TYPE_PDF', 1);
+define('JOB_INPUT_TYPE_XML', 2);
 
 /**
  * a user-submitted job with multiple stages, to be acted on by

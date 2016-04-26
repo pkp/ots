@@ -17,7 +17,7 @@ class PathFinderJob extends AbstractQueueJob
      * Set flags and state depending on input
      *
      * @param Job $job
-     * 
+     *
      * @return Job $job
      *
      * @throws Exception if input stage document can’t be found
@@ -25,7 +25,7 @@ class PathFinderJob extends AbstractQueueJob
     public function process(Job $job)
     {
         // Fetch the initial input document.
-        $unconvertedDocument = 
+        $unconvertedDocument =
             $job->getStageDocument(JOB_CONVERSION_STAGE_UNCONVERTED);
         if (!$unconvertedDocument) {
             throw new \Exception(
@@ -41,6 +41,16 @@ class PathFinderJob extends AbstractQueueJob
             $job->conversionStage = JOB_CONVERSION_STAGE_PDF_IN;
             $unconvertedDocument->conversionStage =
                 JOB_CONVERSION_STAGE_PDF_IN;
+        } elseif ($mimeType == 'text/xml') {
+            $job->inputFileFormat = JOB_INPUT_TYPE_XML;
+            $job->conversionStage = JOB_CONVERSION_STAGE_XML_MERGE;
+            $unconvertedDocument->conversionStage =
+                JOB_CONVERSION_STAGE_XML_MERGE;
+        } elseif ($mimeType == 'application/xml') {
+            $job->inputFileFormat = JOB_INPUT_TYPE_XML;
+            $job->conversionStage = JOB_CONVERSION_STAGE_XML_MERGE;
+            $unconvertedDocument->conversionStage =
+                JOB_CONVERSION_STAGE_XML_MERGE;
         } else {
             $job->inputFileFormat = JOB_INPUT_TYPE_WP;
             $job->conversionStage = JOB_CONVERSION_STAGE_WP_IN;

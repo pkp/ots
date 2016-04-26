@@ -25,6 +25,8 @@ $user = $this->identity();
           $document = $job->getStageDocument(JOB_CONVERSION_STAGE_PDF_IN);
       } elseif ($job->inputFileFormat == JOB_INPUT_TYPE_WP) {
           $document = $job->getStageDocument(JOB_CONVERSION_STAGE_WP_IN);
+      } elseif ($job->inputFileFormat == JOB_INPUT_TYPE_XML) {
+          $document = $job->getStageDocument(JOB_CONVERSION_STAGE_XML_MERGE);
       } else {
           $document = $job->getStageDocument(JOB_CONVERSION_STAGE_UNCONVERTED);
       }

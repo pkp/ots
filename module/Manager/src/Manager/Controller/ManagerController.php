@@ -207,18 +207,18 @@ class ManagerController extends AbstractActionController {
      */
     public function editorAction()
     {
-        $documentId = (int) $this->params()->fromRoute('id');
+        $jobId = (int) $this->params()->fromRoute('id');
         
         $user = $this->identity();
         if (
-            !($document = $this->documentDAO->find($documentId)) or
-            ($document->job->user->id != $user->id and !$user->isAdministrator())
+            !($job = $this->jobDAO->find($jobId)) or
+            ($job->user->id != $user->id and !$user->isAdministrator())
         ) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
         
-        $this->layout()->setTemplate('layout/editor')->setVariable('documentId', $documentId);
+        $this->layout()->setTemplate('layout/editor')->setVariable('jobId', $jobId);
                 
     }
     
@@ -227,18 +227,19 @@ class ManagerController extends AbstractActionController {
      */
     public function xmlAction()
     {
-        $documentId = (int) $this->params()->fromRoute('id');
-        $jobParams = array('id' => $documentId);
+        $jobId = (int) $this->params()->fromRoute('id');
+        $jobParams = array('id' => $jobId);
         
         if (!($job = $this->jobDAO->findOneBy($jobParams))) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
+        
+        $document = $job->getStageDocument(JOB_CONVERSION_STAGE_XML_MERGE);
     
         $user = $this->identity();
         if (
-                !($document = $this->documentDAO->find($documentId)) or
-                ($document->job->user->id != $user->id and !$user->isAdministrator())
+                $document->job->user->id != $user->id and !$user->isAdministrator()
                 ) {
             $this->getResponse()->setStatusCode(404);
             return;

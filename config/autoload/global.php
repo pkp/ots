@@ -54,6 +54,8 @@ return array(
     ),
     'upload' => array(
         'valid_mime_types' => array(
+            'application/xml',
+            'text/xml',
             'application/rtf',
             'application/pdf',
             'application/msword',
