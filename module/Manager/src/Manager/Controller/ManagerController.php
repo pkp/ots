@@ -201,4 +201,63 @@ class ManagerController extends AbstractActionController {
 
         return $response;
     }
+    
+    /**
+     * Edit jats document
+     */
+    public function editorAction()
+    {
+        $documentId = (int) $this->params()->fromRoute('id');
+        
+        $user = $this->identity();
+        if (
+            !($document = $this->documentDAO->find($documentId)) or
+            ($document->job->user->id != $user->id and !$user->isAdministrator())
+        ) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+        
+        $this->layout()->setTemplate('layout/editor')->setVariable('documentId', $documentId);
+                
+    }
+    
+    /**
+     * get raw jats file
+     */
+    public function xmlAction()
+    {
+        $documentId = (int) $this->params()->fromRoute('id');
+        $jobParams = array('id' => $documentId);
+        
+        if (!($job = $this->jobDAO->findOneBy($jobParams))) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+    
+        $user = $this->identity();
+        if (
+                !($document = $this->documentDAO->find($documentId)) or
+                ($document->job->user->id != $user->id and !$user->isAdministrator())
+                ) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $path = $job->getDocumentPath() . '/document.xml';
+        $docpath = dirname($_SERVER['SCRIPT_FILENAME']) . '/../' . $path;
+        
+        if (!file_exists($docpath)) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $response = $this->getEvent()->getResponse();
+        $response->setHeaders(Headers::fromString(
+            "Content-Type: {$document->mimeType}\r\n"
+        ));
+        $response->setContent(file_get_contents($docpath));
+
+        return $response;
+    }
 }
