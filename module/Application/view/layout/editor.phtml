@@ -3,6 +3,7 @@
   <meta charset="UTF-8">
   <meta name="documentUrl" content="/manager/xml/id/<?php echo $jobId ?>">
 </head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
   <script type="text/javascript" src="/scientist/app.js"></script>
   <script type="text/javascript">
 
@@ -13,7 +14,13 @@
       window.app = DocumentPage.static.mount({
         documentUrl: documentUrl,
         onSave: function(xml) {
-          console.log('TODO: save new XML.', xml);
+
+            var params = {'content':xml};
+            $.post(documentUrl, params, function(data) 
+            {
+                // post processing code goes here
+            }, 'json');
+
         }
       }, document.body);
     };
