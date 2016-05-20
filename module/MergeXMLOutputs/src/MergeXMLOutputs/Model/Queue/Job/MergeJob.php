@@ -44,8 +44,19 @@ class MergeJob extends AbstractQueueJob
         $outputFile = $job->getDocumentPath() . '/document.xml';
         $job->conversionStage = JOB_CONVERSION_STAGE_XML_MERGE;
 
+        // grobid document
+        $grobidDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_GROBID);
+
         if ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
             @copy($cermineDocument->path, $outputFile);
+
+            // grobid abstract
+            if (!is_null($grobidDocument)) {
+                $newXml = file_get_contents($outputFile);
+                $newXml = $mergedXML->process_grobid_xml($grobidDocument->path, $newXml);
+                file_put_contents($outputFile, $newXml);
+            }
+
         } else {
             if (!$meTypesetDocument =
                 $job->getStageDocument(
@@ -56,6 +67,10 @@ class MergeJob extends AbstractQueueJob
             }
             if (!$meTypesetDocument) {
                 throw new \Exception('Couldn\'t find the meTypeset output');
+            }
+
+            if (!is_null($grobidDocument)) {
+                $mergedXML->setInputFileGrobid($grobidDocument->path);
             }
 
             $mergedXML->setInputFileNlmxml($meTypesetDocument->path);

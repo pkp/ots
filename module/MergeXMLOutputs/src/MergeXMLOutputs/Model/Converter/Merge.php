@@ -21,6 +21,7 @@ class Merge extends AbstractConverter
 
     protected $inputFileNlmXml;
     protected $inputFileCermine;
+    protected $inputFileGrobid;
     protected $outputFile;
 
     /**
@@ -69,6 +70,22 @@ class Merge extends AbstractConverter
         }
 
         $this->inputFileCermine = $inputFile;
+    }
+
+    /**
+     * Set the input file to convert (GROBID output)
+     *
+     * @param mixed $inputFile
+     *
+     * @return void
+     */
+    public function setInputFileGrobid($inputFile)
+    {
+        if (!file_exists($inputFile)) {
+            throw new \Exception('GROBID input file doesn\'t exist');
+        }
+
+        $this->inputFileGrobid = $inputFile;
     }
 
     /**
@@ -178,10 +195,82 @@ class Merge extends AbstractConverter
           $newXml = preg_replace('/<article-meta>/', '<article-meta><title-group><article-title>Article Title</article-title></title-group>', $newXml);
         }
 
+        $newXml = $this->process_grobid_xml($this->inputFileGrobid, $newXml);
 
         // Write out the updated document.
         file_put_contents($this->outputFile, $newXml);
 
         return true;
+    }
+
+    /*
+     * merges abstract from grobid
+     *
+     * @param grobidDocumentPath path to grobid xml
+     * @param $newXml document xml content
+     */
+    public function process_grobid_xml($grobidDocumentPath, $newXml)
+    {
+        if (!is_null($grobidDocumentPath)) {
+
+            // Get Grobid output
+            $grobidXml = file_get_contents($grobidDocumentPath);
+            $grobidDom = new DOMDocument();
+            if (!$grobidDom->loadXML($grobidXml)) {
+                $this->logger->debugTranslate(
+                        'mergexmloutputs.converter.merge.noGrobidDomLog',
+                        $this->libxmlErrors()
+                        );
+                return false;
+            }
+
+            // Find grobid abstract
+            $grobidAbstract = $grobidDom->getElementsByTagName('abstract');
+            if (!$grobidAbstract->length) {
+                $this->logger->debugTranslate(
+                    'mergexmloutputs.converter.merge.noGrobidAbstract'
+                );
+                return false;
+            }
+
+            $grobidAbstract = $grobidAbstract->item(0);
+            $grobidAbstractRaw = trim(utf8_encode($grobidAbstract->nodeValue));
+
+            // cancel if abstract is empty
+            if (empty($grobidAbstractRaw)) {
+                return $newXml;
+            }
+
+            // if new xml contains <abstract>, replace
+            $newXmlDom = new DOMDocument();
+            if (!$newXmlDom->loadXML($newXml)) {
+                $this->logger->debugTranslate(
+                    'mergexmloutputs.converter.merge.newXmlLoadFailureDomLog',
+                    $this->libxmlErrors()
+                );
+                return false;
+            }
+
+            // create new element
+            $newAbstract = $newXmlDom->createElement('abstract');
+            $newAbstract->nodeValue = $grobidAbstractRaw;
+
+            if ($OldAbstract = $newXmlDom->getElementsByTagName('abstract')) {
+                $OldAbstract = $OldAbstract->item(0);
+
+                $OldAbstract->parentNode->replaceChild($newAbstract, $OldAbstract);
+                $newXml = $newXmlDom->saveXML();
+            }
+            // or add abstract tag
+            else {
+                $parent = $newXmlDom->getElementsByTagName('article-meta')->item(0);
+                $parent->appendChild($newAbstract);
+                $newXml = $newXmlDom->saveXML();
+            }
+
+            return $newXml;
+        }
+
+        return $newXml;
     }
 }

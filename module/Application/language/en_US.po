@@ -632,6 +632,10 @@ msgstr "Unable to read meTypeset output file."
 msgid "mergexmloutputs.converter.merge.noCermineDomLog"
 msgstr "Unable to read CERMINE output file."
 
+#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php
+msgid "mergexmloutputs.converter.merge.noGrobidDomLog"
+msgstr "Unable to read GROBID output file."
+
 #: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:134
 msgid "mergexmloutputs.converter.merge.noMeTypesetFront"
 msgstr "meTypeset output file has no front element."
@@ -639,6 +643,14 @@ msgstr "meTypeset output file has no front element."
 #: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:144
 msgid "mergexmloutputs.converter.merge.noCermineFront"
 msgstr "CERMINE output file has no front element."
+
+#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php
+msgid "mergexmloutputs.converter.merge.noGrobidAbstract"
+msgstr "GROBID output file has no abstract element."
+
+#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php
+msgid "mergexmloutputs.converter.merge.newXmlLoadFailureDomLog"
+msgstr "Error loading new xml file."
 
 #: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php:157
 msgid "mergexmloutputs.converter.merge.replacementFail"
@@ -1175,4 +1187,26 @@ msgstr ""
 msgid "cermine.converter.xmlLoadErrorLog"
 msgstr ""
 "Couldn't load command output xml. LIBXML error:\n"
+"%s"
+
+#: module/GrobidConversion/src/GrobidConversion/Model/Converter/Grobid.php
+msgid "grobid.converter.executeCommandLog"
+msgstr ""
+"Grobid is executing:\n"
+"%s "
+
+#: module/GrobidConversion/src/GrobidConversion/Model/Converter/Grobid.php
+msgid "grobid.converter.xslFileNotFoundLog"
+msgstr "Couldn't find the specified XSL file."
+
+#: module/GrobidConversion/src/GrobidConversion/Model/Converter/Grobid.php
+msgid "grobid.converter.transformErrorLog"
+msgstr ""
+"Error tansforming TEIXML document to JATS. LIBXML error:\n"
+"%s"
+
+#: module/GrobidConversion/src/GrobidConversion/Model/Converter/Grobid.php
+msgid "grobid.converter.transformsSuccessLog"
+msgstr ""
+"Sucessfully converted TEIXML to JATS. JATS document:\n"
 "%s"

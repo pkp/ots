@@ -39,6 +39,7 @@ class Manager {
         'merge' => 'MergeXMLOutputs\Model\Queue\Job\MergeJob',
         'ner' => 'NERExtraction\Model\Queue\Job\NERExtractionJob',
         'parsCit' => 'ParsCitConversion\Model\Queue\Job\ParsCitJob',
+        'grobid' => 'GrobidConversion\Model\Queue\Job\GrobidJob',
     );
 
     /**
@@ -102,12 +103,13 @@ class Manager {
         // Don't requeue completed jobs
         if ($job->status == JOB_STATUS_COMPLETED) return;
 
-        // If the reference parsing or NER extraction has failed, continue with the conversion
+        // If the reference parsing, NER or Grobid extraction has failed, continue with the conversion
         if (
             (
                 $job->conversionStage == JOB_CONVERSION_STAGE_REFERENCES or
                 $job->conversionStage == JOB_CONVERSION_STAGE_CITATIONSTYLE or
-                $job->conversionStage == JOB_CONVERSION_STAGE_NER_EXTRACT
+                $job->conversionStage == JOB_CONVERSION_STAGE_NER_EXTRACT or
+                $job->conversionStage == JOB_CONVERSION_STAGE_GROBID
             ) and
             $job->status == JOB_STATUS_FAILED
         )
@@ -150,12 +152,16 @@ class Manager {
                 $this->queueJob($job, 'cermine');
                 break;
 
+            case JOB_CONVERSION_STAGE_PDF_EXTRACT:
+                $this->queueJob($job, 'grobid');
+                break;
+
             // Extract information from the XML.  If we had WP input,
             // use that XML derivation preferentially; when done, or
             // if reference extraction fails, merge the two XML
             // versions together.
             // After merging, carry on to epub and HTML generation.
-            case JOB_CONVERSION_STAGE_PDF_EXTRACT:
+            case JOB_CONVERSION_STAGE_GROBID:
                 $this->queueJob($job, 'references');
                 break;
             case JOB_CONVERSION_STAGE_REFERENCES:
@@ -240,8 +246,6 @@ class Manager {
         }
 
         $datestr = date("r", time());
-        $line = "[$datestr] QUEUE => {$queue} for JOB => {$job->id} under PID => " . getmypid() . PHP_EOL;
-        error_log($line, 3, '/var/local/queue_debug.out');
 
         $this->logger->infoTranslate(
             'manager.queue.receivedQueueLog',

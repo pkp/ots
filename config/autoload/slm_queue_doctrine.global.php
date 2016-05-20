@@ -32,6 +32,7 @@ return array(
                 'merge' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'ner' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'parscit' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'grobid' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
             )
         )
     )

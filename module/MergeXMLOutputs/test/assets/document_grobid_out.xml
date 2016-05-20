@@ -1,0 +1,63 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">
+<article>
+  <front>
+    <journal-meta>
+      <journal-id journal-id-type="publisher-id">The Journal Title</journal-id>
+      <issn pub-type="epub">0000-000X</issn>
+      <publisher>
+        <publisher-name>The Publisher Name</publisher-name>
+      </publisher>
+    </journal-meta>
+    <article-meta>
+      <article-id pub-id-type="doi">10.1000/123456</article-id>
+      <article-categories>
+        <subj-group>
+          <subject>Sample Articles</subject>
+        </subj-group>
+      </article-categories>
+      <title-group>
+        <article-title>A Sample Article Title</article-title>
+      </title-group>
+      <contrib-group>
+        <contrib contrib-type="author">
+          <name>
+            <surname>Eve</surname>
+            <given-names>Martin Paul</given-names>
+          </name>
+          <xref ref-type="aff" rid="lincoln"/>
+        </contrib>
+        <aff id="lincoln">
+          <institution>University of Lincoln</institution>
+        </aff>
+      </contrib-group>
+      <pub-date pub-type="epub">
+        <year>2013</year>
+      </pub-date>
+      <volume>1</volume>
+      <issue>1</issue>
+      <fpage>1</fpage>
+      <lpage>2</lpage>
+      <permissions>
+        <copyright-statement>Copyright &#169; 2014, Martin Paul Eve</copyright-statement>
+        <license xmlns:xlink="http://www.w3.org/1999/xlink" license-type="open-access" xlink:href="http://creativecommons.org/licenses/by/2.0/">
+          <license-p>This is an open-access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited. The citation of this article must include: the name(s) of the authors, the name of the journal, the full URL of the article (in a hyperlinked format if distributed online) and the DOI number of the article.</license-p>
+        </license>
+      </permissions>
+      <self-uri>https://www.martineve.com/</self-uri>
+      <abstract>
+        <p>This is a sample abstract from GROBID.</p>
+      </abstract>
+    </article-meta>
+  </front>
+  <body>
+    <sec>
+      <title>Aenean eget lectus sed nisi vulputate feugiat eu eget erat</title>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean tempus sapien sit amet felis ultricies, nec ultricies nisl dapibus. Suspendisse ac elementum urna. Mauris at auctor leo, nec porttitor lectus. Fusce pretium bibendum consequat. Proin vitae hendrerit velit, eget accumsan odio. Donec porta mauris metus, id placerat leo lobortis sit amet. Sed auctor mattis dictum.</p>
+      <p>Aenean eget lectus sed nisi vulputate feugiat eu eget erat. Donec gravida aliquet tortor posuere egestas. Morbi sit amet dictum velit, non euismod lorem. Vestibulum placerat vestibulum nulla sit amet dapibus. Mauris at diam eget mi lobortis porttitor a ac odio. Nunc eget arcu non nibh consequat placerat. Praesent ac est pharetra, egestas justo nec, hendrerit erat.</p>
+      <p>Duis eget odio accumsan, mattis felis et, rhoncus mauris. Vestibulum fermentum sodales sem at consequat. Maecenas fringilla risus at eros feugiat, ac sodales diam varius. Pellentesque ante mi, bibendum eleifend tincidunt at, hendrerit ut eros. Cras quis bibendum augue, non viverra tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Ut lobortis felis vel nunc aliquet fermentum.</p>
+      <p>Cras facilisis tellus magna, vel vestibulum metus euismod at. Vestibulum scelerisque metus at adipiscing dapibus. Vivamus ullamcorper ac orci viverra congue. Nam ac viverra sapien. Vestibulum vel neque vitae tellus dignissim congue sed a elit. Proin a dolor luctus, congue sapien id, ornare neque. Donec lacinia nunc ac augue pulvinar semper. Nullam feugiat venenatis libero, non suscipit arcu mattis dignissim. Quisque euismod varius cursus. Cras vitae rhoncus urna, vel adipiscing odio. Nunc sit amet quam nulla. Curabitur vel nunc ut felis eleifend egestas nec vitae felis.</p>
+      <p>Donec vel nibh tristique, vestibulum odio quis, porttitor velit. Vivamus porta quam quis sodales facilisis. Donec in felis quis mauris dignissim mollis. Morbi mattis quam bibendum nunc congue tincidunt. Donec cursus neque porttitor arcu feugiat gravida. Fusce varius pretium sapien, ornare ultrices tortor consequat ac. Suspendisse ut velit at nulla posuere ultricies sed ac nibh. Nam eu tellus pulvinar, facilisis lacus ut, auctor elit.</p>
+    </sec>
+  </body>
+  <back/>
+</article>

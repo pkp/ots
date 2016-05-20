@@ -28,6 +28,7 @@ return array(
         'ZipConversion',
         'NERExtraction',
         'ParsCitConversion',
+        'GrobidConversion'
     ),
 
     // These are various options for the listeners attached to the ModuleManager
