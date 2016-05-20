@@ -156,5 +156,12 @@ return array(
             'command' => 'vendor/knmnyn/ParsCit/bin/citeExtract.pl',
             'xsl' => 'module/ParsCitConversion/assets/parsCit.xsl',
         ),
+        'grobid' => array(
+            'jre' => 'java',
+            'jre_args' => '-Xmx1024m',
+            'install_path' => '/opt/grobid',
+            'jarfile' => 'grobid-core-0.4.0.one-jar.jar',   // located in <install_path>/grobid-core/target/
+            'xsl' => 'module/GrobidConversion/assets/grobid-jats.xsl',
+        ),
     )
 );
