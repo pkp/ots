@@ -246,6 +246,8 @@ class Manager {
         }
 
         $datestr = date("r", time());
+        $line = "[$datestr] QUEUE => {$queue} for JOB => {$job->id} under PID => " . getmypid() . PHP_EOL;
+        error_log($line, 3, '/var/local/queue_debug.out');
 
         $this->logger->infoTranslate(
             'manager.queue.receivedQueueLog',
