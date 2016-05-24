@@ -9,6 +9,7 @@ class MergeJobTest extends ModelTest
 {
     protected $documentCermine;
     protected $documentNlmxml;
+    protected $documentGrobid;
     protected $job;
     protected $user;
 
@@ -18,6 +19,8 @@ class MergeJobTest extends ModelTest
     protected $testFileCermine = '/tmp/UNITTEST_merge_cermine.xml';
     protected $testAssetNlmxml = 'module/MergeXMLOutputs/test/assets/document_nlm_out.xml';
     protected $testFileNlmxml = '/tmp/UNITTEST_merge_nlm.xml';
+    protected $testAssetGrobid = 'module/MergeXMLOutputs/test/assets/document_grobid_out.xml';
+    protected $testFileGrobid = '/tmp/UNITTEST_merge_grobid.xml';
 
     /**
      * Initialize the test
@@ -52,6 +55,10 @@ class MergeJobTest extends ModelTest
             $this->documentCermine->conversionStage,
             JOB_CONVERSION_STAGE_PDF_EXTRACT
             );
+        $this->assertSame(
+                $this->documentGrobid->conversionStage,
+                JOB_CONVERSION_STAGE_GROBID
+                );
         $documentCount = count($this->job->documents);
 
         $this->mergeJob->process($this->job);
@@ -61,7 +68,7 @@ class MergeJobTest extends ModelTest
         $this->assertSame(
             $this->job->conversionStage,
             JOB_CONVERSION_STAGE_XML_MERGE
-            );
+        );
     }
 
     /**
@@ -72,6 +79,7 @@ class MergeJobTest extends ModelTest
     protected function createTestData() {
         @copy($this->testAssetCermine, $this->testFileCermine);
         @copy($this->testAssetNlmxml, $this->testFileNlmxml);
+        @copy($this->testAssetGrobid, $this->testFileGrobid);
 
         // Create test user
         $this->user = $this->createTestUser();
@@ -104,6 +112,16 @@ class MergeJobTest extends ModelTest
         );
         $this->job->documents[] = $this->documentCermine;
 
+        // Create GROBID test document
+        $this->documentGrobid = $this->createTestDocument(
+            array(
+                    'job' => $this->job,
+                    'path' => $this->testFileGrobid,
+                    'conversionStage' => JOB_CONVERSION_STAGE_GROBID
+            )
+        );
+        $this->job->documents[] = $this->documentGrobid;
+
         $this->getJobDAO()->save($this->job);
     }
 
@@ -118,5 +136,6 @@ class MergeJobTest extends ModelTest
 
         @unlink($this->testFileCermine);
         @unlink($this->testFileNlmxml);
+        @unlink($this->testFileGrobid);
     }
 }

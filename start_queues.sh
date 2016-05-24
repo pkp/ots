@@ -40,3 +40,5 @@ php public/index.php queue doctrine ner --start &
 echo "Started NER queue [PID $!]"
 php public/index.php queue doctrine parsCit --start &
 echo "Started ParsCit queue [PID $!]"
+php public/index.php queue doctrine grobid --start &
+echo "Started Grobid queue [PID $!]"

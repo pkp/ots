@@ -23,6 +23,7 @@
         <directory>module/ZipConversion/test</directory>
         <directory>module/NERExtraction/test</directory>
         <directory>module/ParsCitConversion/test</directory>
+        <directory>module/GrobidConversion/test</directory>
       </testsuite>
     </testsuites>
 </phpunit>
