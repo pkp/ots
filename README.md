@@ -52,6 +52,10 @@ Module Description
 
     -   Uses [CERMINE](<http://cermine.ceon.pl/>) to perform part of the NLM XML conversion
 
+-   Grobid
+
+    -   Uses Grobid to perform part of the NLM XML conversion
+
 -   ReferenceConversion
 
     -   Parses references from DocX document into a seperate XML file
@@ -237,6 +241,10 @@ Sample sites-available/httpd.conf:
 
 </VirtualHost>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
+
+Note that you will probably want to make sure that port 8080 is blocked from non-localhost connections so that external submissions can not be made directly to the Grobid module service.
 
  
 
