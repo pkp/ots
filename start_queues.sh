@@ -5,6 +5,7 @@ for pid in $RUNNING; do
     echo "Killing queue process [PID $pid]"
     kill -9 $pid
 done
+kill $(ps ax | grep grobid-service | grep -v grep | awk '{print $1}')
 
 php public/index.php queue doctrine bibtex --start &
 echo "Started Bibtex queue [PID $!]"
