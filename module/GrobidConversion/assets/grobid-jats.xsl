@@ -10,6 +10,7 @@
 	<xsl:template match="/">
 		<article article-type="research-article">
 			<xsl:apply-templates select="tei:TEI/tei:teiHeader"/>
+			<xsl:apply-templates select="tei:TEI/tei:text"/>
 		</article>
 	</xsl:template>
 
@@ -55,6 +56,18 @@
 	</front>
 	</xsl:template>
 
+	<xsl:template match="tei:text">
+	<back>
+		<ref-list>
+			<xsl:for-each select="tei:back/tei:div/tei:listBibl/tei:biblStruct">
+				<ref>
+					<!-- <xsl:value-of select="normalize-space()"/> -->
+					<xsl:for-each select="tei:analytic/tei:author/tei:persName"><xsl:value-of select="normalize-space()"/>, </xsl:for-each>(<xsl:value-of select="tei:monogr/tei:imprint/tei:date/@when"/>) <xsl:value-of select="tei:analytic/tei:title"/>. <xsl:value-of select="tei:monogr/tei:title"/>
+				</ref>
+			</xsl:for-each>
+		</ref-list>
+	</back>
+	</xsl:template>
 
 
   <xsl:template match="tei:title">
