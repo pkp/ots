@@ -47,8 +47,11 @@ class GrobidTest extends ModelTest
         $this->grobid->setOutputFile($this->testOutputFile);
         $this->grobid->convert();
         
-        $this->assertNotNull($this->grobid->getOutput());
-        $this->assertTrue($this->grobid->getStatus());
+        // TODO find a way to test batch conversion only and service conversion only features tests
+        // these commented lines below apply to batch mode only
+        // $this->assertNotNull($this->grobid->getOutput());
+        // $this->assertTrue($this->grobid->getStatus());
+        
         $this->assertTrue(file_exists($this->testOutputFile));
         $this->assertNotSame(
                 file_get_contents($this->testInputFile),

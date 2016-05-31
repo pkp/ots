@@ -162,6 +162,7 @@ return array(
             'jre' => 'java',
             'jre_args' => '-Xmx1024m',
             'install_path' => '/opt/grobid',
+            'mode' => 'service', // valid values are service or batch
             'jarfile' => 'grobid-core-0.4.0.one-jar.jar',   // located in <install_path>/grobid-core/target/
             'xsl' => 'module/GrobidConversion/assets/grobid-jats.xsl',
         ),
