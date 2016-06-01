@@ -98,7 +98,7 @@ class Grobid extends AbstractConverter
             // batch mode setup
             $tempdirpath = $this->setupBatchModeConversionDir();
             
-            $rawcmd = "{$java} {$java_args} -jar {$install_path}/grobid-core/target/{$jarfile} -gH {$install_path}/grobid-home -gP {$install_path}/grobid-home/config/grobid.properties -dIn {$tempdirpath} -dOut {$tempdirpath} -r -exe processHeader ";
+            $rawcmd = "{$java} {$java_args} -jar {$install_path}/grobid-core/target/{$jarfile} -gH {$install_path}/grobid-home -gP {$install_path}/grobid-home/config/grobid.properties -dIn {$tempdirpath} -dOut {$tempdirpath} -r -exe processFullText ";
             
             $command->setCommand($rawcmd);
         
@@ -271,12 +271,12 @@ class Grobid extends AbstractConverter
         exec($cmd);
         
         // wait 3 * 10 sec for the process to start
-        for ($i=3; $i>=1; $i++) {
+        for ($i=6; $i>=1; $i--) {
+            sleep(5);
+            
             if ($this->grobidServiceIsRunning()) {
                 return true;
             }
-            
-            sleep(10);
         }
         
         return false;
