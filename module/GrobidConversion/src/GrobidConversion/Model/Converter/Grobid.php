@@ -98,7 +98,7 @@ class Grobid extends AbstractConverter
             // batch mode setup
             $tempdirpath = $this->setupBatchModeConversionDir();
             
-            $rawcmd = "{$java} {$java_args} -jar {$install_path}/grobid-core/target/{$jarfile} -gH {$install_path}/grobid-home -gP {$install_path}/grobid-home/config/grobid.properties -dIn {$tempdirpath} -dOut {$tempdirpath} -r -exe processFullText ";
+            $rawcmd = "{$java} {$java_args} -Dlog4j.configuration={$tempdirpath}/grobid.properties -jar {$install_path}/grobid-core/target/{$jarfile} -gH {$install_path}/grobid-home -gP {$install_path}/grobid-home/config/grobid.properties -dIn {$tempdirpath} -dOut {$tempdirpath} -r -exe processFullText ";
             
             $command->setCommand($rawcmd);
         
@@ -220,6 +220,9 @@ class Grobid extends AbstractConverter
         $tempdirpath = sys_get_temp_dir() . '/grobid_' . uniqid();
         mkdir($tempdirpath, 0777);
         copy($this->inputFile, $tempdirpath . '/document.pdf');
+        
+        // temporary log4j config file
+        file_put_contents("{$tempdirpath}/grobid.properties", "log4j.rootLogger=OFF".PHP_EOL);
         
         return $tempdirpath;
     }
