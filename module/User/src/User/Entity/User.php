@@ -322,6 +322,6 @@ class User extends DataObject
     public function activate()
     {
        $this->active = true;
-       $this->activationKey = null;
+       $this->activationKey = ''; 
     }
 }
