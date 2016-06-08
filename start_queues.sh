@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 RUNNING=`ps ax | grep 'public/index.php queue doctrine' | grep -v grep | awk '{print $1}'`
 
 for pid in $RUNNING; do
