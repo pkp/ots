@@ -256,7 +256,7 @@ class Grobid extends AbstractConverter
      */
     protected function grobidServiceIsRunning()
     {
-        exec("ps aux | grep 'grobid-service' | grep -v grep | awk '{ print $2 }' | head -1", $out);
+        exec("ps aux | grep 'jetty' | grep -v grep | awk '{ print $2 }' | head -1", $out);
         return !empty($out);
     }
     
