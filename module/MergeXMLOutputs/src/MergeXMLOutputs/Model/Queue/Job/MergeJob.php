@@ -53,23 +53,23 @@ class MergeJob extends AbstractQueueJob
             if (!$meTypesetDocument) {
                 throw new \Exception('Couldn\'t find the meTypeset output');
             }
-        }
 
-        $mergedXML->setInputFileNlmxml($meTypesetDocument->path);
-        $mergedXML->setInputFileCermine($cermineDocument->path);
-        $mergedXML->setOutputFile($outputFile);
-        $mergedXML->convert();
+            $mergedXML->setInputFileNlmxml($meTypesetDocument->path);
+            $mergedXML->setInputFileCermine($cermineDocument->path);
+            $mergedXML->setOutputFile($outputFile);
+            $mergedXML->convert();
+
+            if (!$mergedXML->getStatus()) {
+                $job->status = JOB_STATUS_FAILED;
+                return $job;
+            }
+        }
 
         if (!is_null($grobidDocument)) {
             $mergedXML->setInputFileGrobid($grobidDocument->path);
             $newXml = file_get_contents($outputFile);
             $newXml = $mergedXML->process_grobid_xml($grobidDocument->path, $newXml);
             file_put_contents($outputFile, $newXml);
-        }
-
-        if (!$mergedXML->getStatus()) {
-            $job->status = JOB_STATUS_FAILED;
-            return $job;
         }
 
         $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
