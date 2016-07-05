@@ -268,6 +268,14 @@ class Merge extends AbstractConverter
                 $newXml = $newXmlDom->saveXML();
             }
 
+            // add grobid ref list if there isn't one
+            $grobidReflist = $grobidDom->getElementsByTagName('ref-list')->item(0);
+            $oldBack = $newXmlDom->getElementsByTagName('back')->item(0);
+            if ($grobidReflist->childNodes->length !== 0 && $oldBack->childNodes->length === 0){
+              $newReflist = $newXmlDom->importNode($grobidReflist, true);
+              $oldBack->appendChild($newReflist);
+              $newXml = $newXmlDom->saveXML();
+            }
             return $newXml;
         }
 
