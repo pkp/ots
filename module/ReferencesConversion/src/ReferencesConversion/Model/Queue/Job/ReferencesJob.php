@@ -21,7 +21,7 @@ class ReferencesJob extends AbstractQueueJob
         $references = $this->sm->get('ReferencesConversion\Model\Converter\References');
 
         // Fetch the document to convert
-        $job->getStageDocument(JOB_CONVERSION_STAGE_XML_MERGE);
+        $xmlDocument=$job->getStageDocument(JOB_CONVERSION_STAGE_XML_MERGE);
 
         if (!$xmlDocument) {
             throw new \Exception('Couldn\'t find the stage document');
