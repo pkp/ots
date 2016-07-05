@@ -23,13 +23,8 @@ class BibtexreferencesJob extends AbstractQueueJob
 
         // Fetch the NLMXML document in which the references will be
         // replaced.
-        if ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
-            $xmlDocument =
-                $job->getStageDocument(JOB_CONVERSION_STAGE_PDF_EXTRACT);
-        } else {
-            $xmlDocument =
-                $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
-        }
+        $job->getStageDocument(JOB_CONVERSION_STAGE_XML_MERGE);
+        
         if (!$xmlDocument) {
             throw new \Exception('Couldn\'t find the stage document');
         }
