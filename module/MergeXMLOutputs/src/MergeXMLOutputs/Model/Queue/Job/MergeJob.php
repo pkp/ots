@@ -34,6 +34,10 @@ class MergeJob extends AbstractQueueJob
             );
         }
         if (!$cermineDocument) {
+            $cermineDocument =
+                $job->getStageDocument(JOB_CONVERSION_STAGE_PDF_EXTRACT);
+        }
+        if (!$cermineDocument) {
             throw new \Exception('Couldn\'t find the CERMINE output');
         }
 
