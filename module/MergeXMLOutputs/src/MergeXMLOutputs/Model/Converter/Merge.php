@@ -255,7 +255,7 @@ class Merge extends AbstractConverter
             $newAbstract = $newXmlDom->createElement('abstract');
             $newAbstract->nodeValue = $grobidAbstractRaw;
 
-            if ($OldAbstract = $newXmlDom->getElementsByTagName('abstract')) {
+if (($OldAbstract = $newXmlDom->getElementsByTagName('abstract')) && $OldAbstract->length) {
                 $OldAbstract = $OldAbstract->item(0);
 
                 $OldAbstract->parentNode->replaceChild($newAbstract, $OldAbstract);
@@ -271,7 +271,7 @@ class Merge extends AbstractConverter
             // add grobid ref list if there isn't one
             $grobidReflist = $grobidDom->getElementsByTagName('ref-list')->item(0);
             $oldBack = $newXmlDom->getElementsByTagName('back')->item(0);
-            if ($grobidReflist->childNodes->length !== 0 && $oldBack->childNodes->length === 0){
+            if (!is_null($grobidReflist) && ($grobidReflist->childNodes->length !== 0) && ($oldBack->childNodes->length === 0)){
               $newReflist = $newXmlDom->importNode($grobidReflist, true);
               $oldBack->appendChild($newReflist);
               $newXml = $newXmlDom->saveXML();
