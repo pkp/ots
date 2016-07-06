@@ -181,7 +181,7 @@ class Manager {
                 $this->queueJob($job, 'bibtexreferences');
                 break;
             case JOB_CONVERSION_STAGE_BIBTEXREFERENCES:
-                $this->queueJob($job, 'ner');
+                $this->queueJob($job, 'epub');
                 break;
             case JOB_CONVERSION_STAGE_NER_EXTRACT:
                 $this->queueJob($job, 'epub');
