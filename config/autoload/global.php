@@ -86,6 +86,7 @@ return array(
                     10,  // JOB_CONVERSION_STAGE_ZIP
                     17,  // JOB_CONVERSION_STAGE_NER_EXTRACT
                     18,  // JOB_CONVERSION_STAGE_PARSCIT
+                    5,  // JOB_CONVERSION_STAGE_BIBTEXREFERENCES
                 )
             )
         ),
