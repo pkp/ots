@@ -255,7 +255,7 @@ class Merge extends AbstractConverter
             $newAbstract = $newXmlDom->createElement('abstract');
             $newAbstract->nodeValue = $grobidAbstractRaw;
 
-if (($OldAbstract = $newXmlDom->getElementsByTagName('abstract')) && $OldAbstract->length) {
+            if (($OldAbstract = $newXmlDom->getElementsByTagName('abstract')) && $OldAbstract->length) {
                 $OldAbstract = $OldAbstract->item(0);
 
                 $OldAbstract->parentNode->replaceChild($newAbstract, $OldAbstract);
