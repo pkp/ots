@@ -30,7 +30,7 @@ class MergeJob extends AbstractQueueJob
 
         if ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
             $cermineDocument = $job->getStageDocument(
-                JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+                JOB_CONVERSION_STAGE_PDF_EXTRACT
             );
         }
         if (!$cermineDocument) {
@@ -50,27 +50,12 @@ class MergeJob extends AbstractQueueJob
         if ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
             @copy($cermineDocument->path, $outputFile);
 
-            // grobid abstract
-            if (!is_null($grobidDocument)) {
-                $newXml = file_get_contents($outputFile);
-                $newXml = $mergedXML->process_grobid_xml($grobidDocument->path, $newXml);
-                file_put_contents($outputFile, $newXml);
-            }
-
         } else {
-            if (!$meTypesetDocument =
-                $job->getStageDocument(
-                    JOB_CONVERSION_STAGE_BIBTEXREFERENCES
-                )) {
-                $meTypesetDocument =
-                    $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
-            }
+            $meTypesetDocument =
+                $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
+
             if (!$meTypesetDocument) {
                 throw new \Exception('Couldn\'t find the meTypeset output');
-            }
-
-            if (!is_null($grobidDocument)) {
-                $mergedXML->setInputFileGrobid($grobidDocument->path);
             }
 
             $mergedXML->setInputFileNlmxml($meTypesetDocument->path);
@@ -82,6 +67,13 @@ class MergeJob extends AbstractQueueJob
                 $job->status = JOB_STATUS_FAILED;
                 return $job;
             }
+        }
+
+        if (!is_null($grobidDocument)) {
+            $mergedXML->setInputFileGrobid($grobidDocument->path);
+            $newXml = file_get_contents($outputFile);
+            $newXml = $mergedXML->process_grobid_xml($grobidDocument->path, $newXml);
+            file_put_contents($outputFile, $newXml);
         }
 
         $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');

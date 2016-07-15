@@ -86,6 +86,7 @@ return array(
                     10,  // JOB_CONVERSION_STAGE_ZIP
                     17,  // JOB_CONVERSION_STAGE_NER_EXTRACT
                     18,  // JOB_CONVERSION_STAGE_PARSCIT
+                    5,  // JOB_CONVERSION_STAGE_BIBTEXREFERENCES
                 )
             )
         ),
@@ -155,7 +156,7 @@ return array(
             'model' => 'MITIE-models/english/ner_model.dat'
         ),
         'parsCit' => array(
-            'command' => 'vendor/knmnyn/ParsCit/bin/citeExtract.pl',
+            'command' => 'vendor/pkp/ParsCit/bin/citeExtract.pl',
             'xsl' => 'module/ParsCitConversion/assets/parsCit.xsl',
         ),
         'grobid' => array(
