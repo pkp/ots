@@ -156,7 +156,7 @@ return array(
             'model' => 'MITIE-models/english/ner_model.dat'
         ),
         'parsCit' => array(
-            'command' => 'vendor/knmnyn/ParsCit/bin/citeExtract.pl',
+            'command' => 'vendor/pkp/ParsCit/bin/citeExtract.pl',
             'xsl' => 'module/ParsCitConversion/assets/parsCit.xsl',
         ),
         'grobid' => array(
