@@ -43,12 +43,12 @@ class PathFinderJob extends AbstractQueueJob
                 JOB_CONVERSION_STAGE_PDF_IN;
         } elseif ($mimeType == 'text/xml') {
             $job->inputFileFormat = JOB_INPUT_TYPE_XML;
-            $job->conversionStage = JOB_CONVERSION_STAGE_XML_MERGE;
+            $job->conversionStage = JOB_CONVERSION_STAGE_BIBTEXREFERENCES;
             $unconvertedDocument->conversionStage =
                 JOB_CONVERSION_STAGE_XML_MERGE;
         } elseif ($mimeType == 'application/xml') {
             $job->inputFileFormat = JOB_INPUT_TYPE_XML;
-            $job->conversionStage = JOB_CONVERSION_STAGE_XML_MERGE;
+            $job->conversionStage = JOB_CONVERSION_STAGE_BIBTEXREFERENCES;
             $unconvertedDocument->conversionStage =
                 JOB_CONVERSION_STAGE_XML_MERGE;
         } else {
