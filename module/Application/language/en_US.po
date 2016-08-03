@@ -24,20 +24,20 @@ msgid "user.registration.confirmationEmailBody"
 msgstr ""
 "Hi %s,\n"
 "\n"
-"Thanks for registering with the PKP XML Parsing Service.\n"
+"Thanks for registering with the Open Typesetting Stack.\n"
 "\n"
 "Please follow this link to activate your account:\n"
 "%s\n"
 "\n"
-"Your PKP XML Parsing Service Team."
+"Your Open Typesetting Stack Team."
 
 #: module/User/src/User/Event/Handler/UserRegisterHandler.php:110
 msgid "application.generic.adminName"
-msgstr "PKP XML Parsing Service"
+msgstr "Open Typesetting Stack"
 
 #: module/User/src/User/Event/Handler/UserRegisterHandler.php:114
 msgid "user.registration.confirmationEmailSubject"
-msgstr "PKP XML Parsing Service account creation confirmation"
+msgstr "Open Typesetting Stack account creation confirmation"
 
 #: module/User/src/User/Event/Handler/UserRegisterHandler.php:118
 msgid "user.registration.confirmationEmailSentLog"
@@ -728,7 +728,7 @@ msgstr "You are not permitted to access the requested resource."
 #: module/User/view/_sideBar.phtml:2
 #: module/Application/view/layout/layout.phtml:14
 msgid "application.generic.siteTitle"
-msgstr "PKP XML Parsing Service"
+msgstr "Open Typesetting Stack"
 
 #: module/User/view/_sideBar.phtml:4
 msgid "application.index.sidebarDescription"
@@ -953,7 +953,7 @@ msgstr "Logout"
 #: module/Application/view/layout/layout.phtml:41
 msgid "application.layout.subHeading"
 msgstr ""
-"PDF, DOC, DOCX or ODT to XML (%sNLM-XML 3.0 compatible%s) document conversion"
+"Open Typesetting Stack"
 
 #: module/Application/view/layout/layout.phtml:64
 msgid "application.layout.contact"
@@ -1098,7 +1098,7 @@ msgstr "Details"
 #~ msgstr "A new user (%s) has registered please activate the account."
 
 #~ msgid "user.registration.adminNotificationEmailSubject"
-#~ msgstr "PKP XML Parsing Service account awaits activation"
+#~ msgstr "Open Typesetting Stack account awaits activation"
 
 #~ msgid "user.registration.adminNotificationEmailSentLog"
 #~ msgstr "User registration admin notification email has been sent to \"%s\""
@@ -1108,7 +1108,7 @@ msgstr "Details"
 #~ msgstr "Upload Document"
 
 #~ msgid "user.registration.confirmationEmailFrom"
-#~ msgstr "PKP XML Parsing Service"
+#~ msgstr "Open Typesetting Stack"
 
 #~ msgid "admin.userManagement.userLevel"
 #~ msgstr "Level"
@@ -1164,7 +1164,7 @@ msgstr "Details"
 #~ "class."
 #~ msgstr "The requested controller was unable to dispatch the request"
 
-#~ msgid "PKP XML Parsing Service"
+#~ msgid "Open Typesetting Stack"
 #~ msgstr "foo"
 
 #: module/NERExtraction/src/NERExtraction/Model/Converter/NERExtractor.php
