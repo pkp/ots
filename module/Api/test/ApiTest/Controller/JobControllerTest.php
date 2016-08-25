@@ -39,6 +39,29 @@ class ApiControllerTest extends ControllerTest
         $this->dispatch($this->buildQuery('submit', array(), false));
         $this->assertResponseStatusCode(403);
     }
+    
+    /**
+     * Test old job submission using plaintext password
+     *
+     * @return void
+     */
+    public function testOldSubmitAction()
+    {
+        $styleMap = $this->citationStyles->getStyleMap();
+        $keys = array_keys($styleMap);
+
+        $data = array(
+            'fileName' => 'Testfile.txt',
+            'fileContent' => base64_encode('Test Content'),
+            'citationStyleHash' => $keys[0],
+            'email' => $this->userEmail,
+            'password' => $this->userPassword,
+        );
+
+        $this->getRequest()->setMethod('POST')->setPost(new \Zend\Stdlib\Parameters($data));
+        $this->dispatch($this->buildQuery('submit', array(), false));
+        $this->assertResponseStatusCode(403);
+    }
 
     /**
      * Test if a job can be submitted
@@ -55,7 +78,7 @@ class ApiControllerTest extends ControllerTest
             'fileContent' => base64_encode('Test Content'),
             'citationStyleHash' => $keys[0],
             'email' => $this->userEmail,
-            'password' => $this->userPassword,
+            'access_token' => $this->apiAccessToken,
         );
 
         $this->getRequest()->setMethod('POST')->setPost(new \Zend\Stdlib\Parameters($data));
@@ -96,7 +119,7 @@ class ApiControllerTest extends ControllerTest
         // Add the test user credentials to the query
         if ($authorized) {
             $data['email'] = $this->userEmail;
-            $data['password'] = $this->userPassword;
+            $data['access_token'] = $this->apiAccessToken;
         }
         return '/api/job/' . $call . '?' . http_build_query($data);
     }
