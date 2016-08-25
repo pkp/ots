@@ -117,6 +117,6 @@ class UserEntityTest extends ModelTest
 
         $this->user->activate();
         $this->assertTrue($this->user->active === true);
-        $this->assertTrue($this->user->activationKey === null);
+        $this->assertTrue($this->user->activationKey === '');
     }
 }

@@ -327,7 +327,7 @@ class UserControllerTest extends ControllerTest
 
         $this->testUser = $this->getUserDAO()->findOneBy(array('email' => $this->testUserEmail));
         $this->assertTrue($this->testUser->isActive());
-        $this->assertNull($this->testUser->activationKey);
+        $this->assertEmpty($this->testUser->activationKey);
 
         $this->resetTestData();
     }
