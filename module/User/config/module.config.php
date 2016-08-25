@@ -58,6 +58,7 @@ return array(
             'controller:User\Controller\User:logout',
             'controller:User\Controller\User:register',
             'controller:User\Controller\User:settings',
+            'controller:User\Controller\User:token',
         ),
         'rules' => array(
             array('allow', 'guest', 'controller:User\Controller\User:activate'),
@@ -66,6 +67,7 @@ return array(
             array('allow', 'guest', 'controller:User\Controller\User:register'),
             array('allow', 'member', 'controller:User\Controller\User:logout'),
             array('allow', 'member', 'controller:User\Controller\User:settings'),
+            array('allow', 'member', 'controller:User\Controller\User:token'),
             array('deny', 'member', 'controller:User\Controller\User:login'),
             array('deny', 'member', 'controller:User\Controller\User:activate'),
             array('deny', 'member', 'controller:User\Controller\User:register'),

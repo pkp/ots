@@ -10,6 +10,7 @@ use User\Form\RegistrationForm;
 use User\Form\RegistrationFormInputFilter;
 use User\Form\PasswordResetForm;
 use User\Form\PasswordResetFormInputFilter;
+use User\Form\ApiAuthTokenForm;
 use Manager\Form\UploadForm;
 use Manager\Form\UploadFormInputFilter;
 use Zend\Mvc\I18n\Translator;
@@ -27,6 +28,7 @@ class UserController extends AbstractActionController {
     protected $passwordResetFormInputFilter;
     protected $uploadForm;
     protected $uploadFormInputFilter;
+    protected $apiAuthTokenForm;
 
     /**
      * Constructor
@@ -52,7 +54,8 @@ class UserController extends AbstractActionController {
         PasswordResetForm $passwordResetForm,
         PasswordResetFormInputFilter $passwordResetFormInputFilter,
         UploadForm $uploadForm,
-        UploadFormInputFilter $uploadFormInputFilter
+        UploadFormInputFilter $uploadFormInputFilter,
+        ApiAuthTokenForm $apiAuthTokenForm
     )
     {
         $this->userDAO = $userDAO;
@@ -66,6 +69,7 @@ class UserController extends AbstractActionController {
         $this->passwordResetFormInputFilter = $passwordResetFormInputFilter;
         $this->uploadForm = $uploadForm;
         $this->uploadFormInputFilter = $uploadFormInputFilter;
+        $this->apiAuthTokenForm = $apiAuthTokenForm;
     }
 
     /**
@@ -345,7 +349,39 @@ class UserController extends AbstractActionController {
 
         return array(
             'passwordResetForm' => $this->passwordResetForm,
+            'apiAuthTokenForm' => $this->apiAuthTokenForm,
+            'user' => $this->identity(),
         );
+    }
+    
+    /**
+     * Process api token generation form
+     *
+     * @return void
+     */
+    public function tokenAction()
+    {
+        if ($this->request->isPost()) {
+            // generate and save new token
+            $user = $this->identity();
+            $user->apiAccessToken = sha1(uniqid());
+            $this->userDAO->save($user);
+            
+            $flashMessenger = $this->flashMessenger();
+            $flashMessenger->setNamespace('success');
+            $flashMessenger->addMessage(
+                $this->translator->translate(
+                    'user.ApiAuthTokenForm.generateSuccess'
+                )
+            );
+
+            $this->logger->infoTranslate(
+                'user.settings.tokenGenerationSuccessConfirmLog',
+                $user->email
+            );
+        }
+        
+        return $this->redirect()->toRoute('user', array('action' => 'settings'));
     }
 
     /**

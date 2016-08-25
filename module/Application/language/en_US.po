@@ -77,6 +77,22 @@ msgstr "Confirm Password"
 msgid "user.registrationForm.register"
 msgstr "Register"
 
+#: module/User/src/User/Form/ApiAuthTokenForm.php:32
+msgid "user.ApiAuthTokenForm.submit"
+msgstr "Generate token"
+
+#: module/User/view/user/user/index.phtml:18
+msgid "user.ApiAuthTokenForm.notdefinedtext"
+msgstr "CLICK THE BUTTON BELOW TO GENERATE YOUR TOKEN."
+
+#: module/User/src/User/Controller/UserController.php:374
+msgid "user.ApiAuthTokenForm.generateSuccess"
+msgstr "Your new token was generated successfully!"
+
+#: module/User/src/User/Controller/UserController.php:379
+msgid "user.settings.tokenGenerationSuccessConfirmLog"
+msgstr "User %s has generated a new token"
+
 #: module/User/src/User/Form/PasswordResetForm.php:31
 msgid "user.form.newPassword"
 msgstr "New Password"
