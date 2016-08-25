@@ -37,8 +37,10 @@ trait TestHelper {
         // Randomize the user password
         if (!isset($data['password']) and empty($this->userPassword)) {
             $this->userPassword = sha1(uniqid() . rand());
-            $this->apiAccessToken = sha1(uniqid());
         }
+        
+        // api access token
+        $this->apiAccessToken = sha1(uniqid());
 
         $this->overwriteProperties($data, 'user');
 
