@@ -7,11 +7,34 @@ if (isset($this->passwordResetForm)) {
   $passwordResetForm->prepare();
   $passwordResetForm = $this->form()->render($passwordResetForm);
 }
+
+if (isset($this->apiAuthTokenForm)) {
+  $apiAuthTokenForm->setAttribute('action', $this->url('user', array('action' => 'token')));
+  $apiAuthTokenForm = $this->apiAuthTokenForm;
+  $apiAuthTokenForm->prepare();
+  $apiAuthTokenForm = $this->form()->render($apiAuthTokenForm);
+}
+
+$token = !is_null($user->apiAccessToken) 
+    ? $user->apiAccessToken 
+    : $this->translate('user.ApiAuthTokenForm.notdefinedtext');
+    
+
 ?>
 
 <div class="page user-user-settings">
-  <div class="box">
-    <label><?php echo $this->translate('user.settings.changePassword') ?></label>
-    <?php echo $passwordResetForm; ?>
+    <div class="box-wrapper">
+    
+        <div class="box">
+            <label><?php echo $this->translate('user.settings.changePassword') ?></label>
+            <?php echo $passwordResetForm; ?>
+        </div>
+
+        <div class="box" style="margin-top:30px;">
+            <label>Api authentication</label>
+            <pre style="background-color: #fff; font-weight: bold; padding: 3px; text-align: center;"><?php print $token; ?></pre>
+            <?php echo $apiAuthTokenForm; ?>
+        </div>
+  
   </div>
 </div>

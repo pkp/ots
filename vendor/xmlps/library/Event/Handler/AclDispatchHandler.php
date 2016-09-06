@@ -32,20 +32,20 @@ class AclDispatchHandler
         $request = $e->getRequest();
         if ($request->isPost()) {
             $email = $request->getPost('email');
-            $password = $request->getPost('password');
+            $access_token = $request->getPost('access_token');
         }
         else {
             $email = $request->getQuery('email');
-            $password = $request->getQuery('password');
+            $access_token = $request->getQuery('access_token');
         }
 
-        if (!empty($email) and !empty($password)) {
+        if (!empty($email) and !empty($access_token)) {
             $authService = $sm->get(
                 'Zend\Authentication\AuthenticationService'
             );
             $adapter = $authService->getAdapter();
             $adapter->setIdentityValue($email);
-            $adapter->setCredentialValue($password);
+            $adapter->setCredentialValue($access_token);
             $authResult = $authService->authenticate();
 
             if ($authResult->isValid()) {

@@ -80,6 +80,11 @@ class User extends DataObject
      * @ORM\Column(type="boolean", nullable=true)
      */
     protected $active;
+    
+    /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    protected $apiAccessToken;
 
     /**
      * Constructor
@@ -243,7 +248,8 @@ class User extends DataObject
     public static function validatePassword(User $user, $password)
     {
         return (
-            $user->password == self::hashPassword($password, $user->getPasswordSalt())
+            ($user->password == self::hashPassword($password, $user->getPasswordSalt()))
+                || ($user->apiAccessToken == $password)
         );
     }
 

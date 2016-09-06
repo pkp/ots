@@ -9,6 +9,7 @@ use User\Form\LoginFormInputFilter;
 use User\Form\RegistrationForm;
 use User\Form\RegistrationFormInputFilter;
 use User\Form\PasswordResetForm;
+use User\Form\ApiAuthTokenForm;
 use User\Form\PasswordResetFormInputFilter;
 use User\Model\DAO\UserDAO;
 
@@ -98,6 +99,11 @@ class Module
                     $translator = $sm->get('translator');
                     return new RegistrationForm($translator);
                 },
+                'User\Form\ApiAuthTokenForm' => function($sm)
+                {
+                    $translator = $sm->get('translator');
+                    return new ApiAuthTokenForm($translator);
+                },
                 'User\Form\RegistrationFormInputFilter' => function($sm)
                 {
                     $userDAO = $sm->get('User\Model\DAO\UserDAO');
@@ -143,6 +149,7 @@ class Module
                     $passwordResetFormInputFilter = $sm->get('User\Form\PasswordResetFormInputFilter');
                     $uploadForm = $sm->get('Manager\Form\UploadForm');
                     $uploadFormInputFilter = $sm->get('Manager\Form\UploadFormInputFilter');
+                    $apiAuthTokenForm = $sm->get('User\Form\ApiAuthTokenForm');
 
                     return new Controller\UserController(
                         $userDAO,
@@ -155,7 +162,8 @@ class Module
                         $passwordResetForm,
                         $passwordResetFormInputFilter,
                         $uploadForm,
-                        $uploadFormInputFilter
+                        $uploadFormInputFilter,
+                        $apiAuthTokenForm
                     );
                 }
             )
