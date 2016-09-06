@@ -12,6 +12,8 @@ Module Description
 
     -   New password
 
+    -   Generate API access token
+
 -   Admin
 
     -   Confirm registrations
@@ -289,7 +291,7 @@ Submit a job to the server. The `citationStyleHash` is an internal identifier fo
 
 -   `email`
 
--   `password`
+-   `accessToken`
 
 -   `fileName`
 
@@ -303,7 +305,7 @@ Submit a job to the server. The `citationStyleHash` is an internal identifier fo
 http://example.com/api/job/submit
 POST parameters:
     'email' => 'user@example.com'
-    'password' => 'passowrd'
+    'accessToken' => 'accessToken'
     'fileName' => 'document.docx'
     'citationStyleHash' => 'c6de5efe3294b26391ea343053c19a84',
     'fileContent' => '...'
@@ -327,14 +329,14 @@ Returns the current status for a job. Only completed jobs can be retrieved from 
 
 -   `email`
 
--   `password`
+-   `accessToken`
 
 -   `id`
 
 *E.g.*:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-http://example.com/api/job/status?email=user@example.com&password=password&id=123
+http://example.com/api/job/status?email=user@example.com&accessToken=accessToken&id=123
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Example response:
@@ -375,7 +377,7 @@ Retrieve a converted document. The jobConversionStage parameter specifys which t
 
 -   `email`
 
--   `password`
+-   `accessToken`
 
 -   `id`
 
@@ -384,7 +386,7 @@ Retrieve a converted document. The jobConversionStage parameter specifys which t
 *E.g.*:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-http://example.com/api/job/retrieve?email=user@example.com&password=password&id=123&conversionStage=10
+http://example.com/api/job/retrieve?email=user@example.com&accessToken=accessToken&id=123&conversionStage=10
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Example response:
