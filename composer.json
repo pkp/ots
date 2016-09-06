@@ -37,12 +37,12 @@
         {
             "type": "package",
             "package": {
-                "name": "knmnyn/ParsCit",
+                "name": "pkp/ParsCit",
                 "version": "dev-master",
                 "source": {
-                    "url": "https://github.com/knmnyn/ParsCit.git",
+                    "url": "https://github.com/pkp/ParsCit.git",
                     "type": "git",
-                    "reference": "4872c93c2272e221c3588e4524925a284fde368c"
+                    "reference": "master"
                 }
             }
         },

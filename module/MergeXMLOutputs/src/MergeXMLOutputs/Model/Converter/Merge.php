@@ -185,13 +185,6 @@ class Merge extends AbstractConverter
         $frontTitleQuery = '//article-meta/title-group';
         $frontTitleElements = $frontXPath->query($frontTitleQuery);
         if ($frontTitleElements->length == 0) {
-          #$frontStubDom = new DOMDocument;
-          #$frontStubDom->LoadXML("<title>Article Title</title>");
-          #$frontNode = $meTypesetDom->getElementsByTagName('front')->item(0);
-          #$frontNode = $frontStubDom->importNode($frontNode, true);
-          #$frontStubDom->documentElement->appendChild($frontNode);
-          # the above doesn't work, so
-          # I'm parsing XML with regex again because I hate PHP
           $newXml = preg_replace('/<article-meta>/', '<article-meta><title-group><article-title>Article Title</article-title></title-group>', $newXml);
         }
 
@@ -251,11 +244,12 @@ class Merge extends AbstractConverter
                 return false;
             }
 
+            /*
             // create new element
             $newAbstract = $newXmlDom->createElement('abstract');
             $newAbstract->nodeValue = $grobidAbstractRaw;
 
-            if ($OldAbstract = $newXmlDom->getElementsByTagName('abstract')) {
+            if (($OldAbstract = $newXmlDom->getElementsByTagName('abstract')) && $OldAbstract->length) {
                 $OldAbstract = $OldAbstract->item(0);
 
                 $OldAbstract->parentNode->replaceChild($newAbstract, $OldAbstract);
@@ -267,11 +261,12 @@ class Merge extends AbstractConverter
                 $parent->appendChild($newAbstract);
                 $newXml = $newXmlDom->saveXML();
             }
+            */
 
             // add grobid ref list if there isn't one
             $grobidReflist = $grobidDom->getElementsByTagName('ref-list')->item(0);
             $oldBack = $newXmlDom->getElementsByTagName('back')->item(0);
-            if ($grobidReflist->childNodes->length !== 0 && $oldBack->childNodes->length === 0){
+            if (!is_null($grobidReflist) && ($grobidReflist->childNodes->length !== 0) && ($oldBack->childNodes->length === 0)){
               $newReflist = $newXmlDom->importNode($grobidReflist, true);
               $oldBack->appendChild($newReflist);
               $newXml = $newXmlDom->saveXML();

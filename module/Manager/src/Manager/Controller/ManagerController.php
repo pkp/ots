@@ -235,7 +235,7 @@ class ManagerController extends AbstractActionController {
             return;
         }
         
-        $document = $job->getStageDocument(JOB_CONVERSION_STAGE_XML_MERGE);
+        $document = $job->getStageDocument(JOB_CONVERSION_STAGE_BIBTEXREFERENCES);
     
         $user = $this->identity();
         if (

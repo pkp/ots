@@ -162,8 +162,11 @@ class Manager {
             // versions together.
             // After merging, carry on to epub and HTML generation.
             case JOB_CONVERSION_STAGE_GROBID:
-                $this->queueJob($job, 'references');
+                $this->queueJob($job, 'merge');
                 break;
+            case JOB_CONVERSION_STAGE_XML_MERGE:
+                $this->queueJob($job, 'references');
+                break;                
             case JOB_CONVERSION_STAGE_REFERENCES:
                 $this->queueJob($job, 'parsCit');
                 break;
@@ -171,17 +174,14 @@ class Manager {
                 if ($job->referenceParsingSuccess) {
                     $this->queueJob($job, 'bibtex');
                 } else {
-                    $this->queueJob($job, 'merge');
+                    $this->queueJob($job, 'ner');
                 }
                 break;
             case JOB_CONVERSION_STAGE_BIBTEX:
                 $this->queueJob($job, 'bibtexreferences');
                 break;
             case JOB_CONVERSION_STAGE_BIBTEXREFERENCES:
-                $this->queueJob($job, 'merge');
-                break;
-            case JOB_CONVERSION_STAGE_XML_MERGE:
-                $this->queueJob($job, 'ner');
+                $this->queueJob($job, 'epub');
                 break;
             case JOB_CONVERSION_STAGE_NER_EXTRACT:
                 $this->queueJob($job, 'epub');
