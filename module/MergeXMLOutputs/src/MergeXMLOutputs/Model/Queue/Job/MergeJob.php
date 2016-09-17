@@ -40,6 +40,9 @@ class MergeJob extends AbstractQueueJob
         if (!$cermineDocument) {
             throw new \Exception('Couldn\'t find the CERMINE output');
         }
+        
+        $metadataFile = $job->getUploadPath() . '/metadata.json';
+        $mergedXML->setMetadataFile($metadataFile);
 
         $outputFile = $job->getDocumentPath() . '/document.xml';
         $job->conversionStage = JOB_CONVERSION_STAGE_XML_MERGE;
