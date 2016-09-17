@@ -45,11 +45,11 @@ class MergeJobTest extends ModelTest
     {
         $this->assertSame(
             $this->job->conversionStage,
-            JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+            JOB_CONVERSION_STAGE_NLMXML
             );
         $this->assertSame(
             $this->documentNlmxml->conversionStage,
-            JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+            JOB_CONVERSION_STAGE_NLMXML
             );
         $this->assertSame(
             $this->documentCermine->conversionStage,
@@ -88,7 +88,7 @@ class MergeJobTest extends ModelTest
         $this->job = $this->createTestJob(
             array(
                 'user' => $this->user,
-                'conversionStage' => JOB_CONVERSION_STAGE_BIBTEXREFERENCES
+                'conversionStage' => JOB_CONVERSION_STAGE_NLMXML
             )
         );
 
