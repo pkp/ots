@@ -59,6 +59,7 @@ class JobController extends AbstractActionController
      */
     protected function _metadataContainsInvalidFields($metadata)
     {
+        $metadata = (array) $metadata;
         $submittedFields = array_keys($metadata);
         $diff = array_diff($submittedFields, $this->validMetadataFields);
         if (!empty($diff)) {
@@ -66,7 +67,7 @@ class JobController extends AbstractActionController
         }
         
         if (isset($metadata['contributors'])) {
-            $contributors = $metadata['contributors']; 
+            $contributors = (array) $metadata['contributors']; 
             if (!is_array($contributors)) {
                 return true;
             }
@@ -77,6 +78,7 @@ class JobController extends AbstractActionController
             //          ['name' => 'bar', 'email' => 'bar@example.com']
             //      ]
             foreach($contributors as $contributor) {
+                $contributor = (array) $contributor;
                 if (!is_array($contributor) || (count($contributor) != 2) 
                         || !empty(array_diff(array_keys($contributor), $this->validMetadataContributorsFields))) {
                     return true;
@@ -149,7 +151,7 @@ class JobController extends AbstractActionController
         file_put_contents($fileName, $fileContent);
         
         // Create metadata file if metadata submit
-        $metadataFile = $job->getUploadPath() . '/metadata.json';
+        $metaFileName = $job->getUploadPath() . '/metadata.json';
         file_put_contents($metaFileName, $fileMetadata);
 
         // Create new document

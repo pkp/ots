@@ -208,6 +208,7 @@ class Merge extends AbstractConverter
         // check if user provided additional metadata via api
         if (file_exists($this->metadataFile)) {
             
+            $fileMetadata = file_get_contents($this->metadataFile);
             $metadata = json_decode($fileMetadata);
             $articleMetaStr = $this->_buildArticleMetaNode($metadata);
             
@@ -229,6 +230,8 @@ class Merge extends AbstractConverter
                             $this->libxmlErrors()
                         );
                     }
+                    
+                    $newXml = $newXmlDom->saveXML();
                 }
                 else {
                     $this->logger->debugTranslate(
@@ -253,6 +256,8 @@ class Merge extends AbstractConverter
     
     protected function _buildArticleMetaNode($metadata)
     {
+        $metadata = (array) $metadata;
+        
         $abstract = isset($metadata['abstract']) ? $metadata['abstract'] : '';
         $articleTitle = isset($metadata['article-title']) ? $metadata['article-title'] : '';
         $institution = isset($metadata['institution']) ? $metadata['institution'] : '';
@@ -263,10 +268,12 @@ class Merge extends AbstractConverter
         $contributorsStr = '';
         foreach ($contributors as $c) {
             $count++;
+            $c = (array) $c;
+            
             $contributorsStr .= '<contrib id="A'.$count.'" contrib-type="author">';
-            $contributorsStr .= '<name>';
+            $contributorsStr .= '<name-alternatives>';
             $contributorsStr .= '<string-name>'.$c['name'].'</string-name>';
-            $contributorsStr .= '</name>';
+            $contributorsStr .= '</name-alternatives>';
             $contributorsStr .= '<email>'.$c['email'].'</email>';
             $contributorsStr .= "</contrib>\n";
         }
