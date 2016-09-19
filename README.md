@@ -291,7 +291,7 @@ Submit a job to the server. The `citationStyleHash` is an internal identifier fo
 
 -   `email`
 
--   `accessToken`
+-   `access_token`
 
 -   `fileName`
 
@@ -299,16 +299,19 @@ Submit a job to the server. The `citationStyleHash` is an internal identifier fo
 
 -   `citationStyleHash`
 
+-   `fileMetadata`
+
 *E.g.*:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 http://example.com/api/job/submit
 POST parameters:
     'email' => 'user@example.com'
-    'accessToken' => 'accessToken'
+    'access_token' => 'access_token'
     'fileName' => 'document.docx'
     'citationStyleHash' => 'c6de5efe3294b26391ea343053c19a84',
     'fileContent' => '...'
+    'fileMetadata' => *OPTIONAL* known good metadata like https://raw.githubusercontent.com/pkp/xmlps/master/module/MergeXMLOutputs/test/assets/metadata.json 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Example response:
@@ -329,14 +332,14 @@ Returns the current status for a job. Only completed jobs can be retrieved from 
 
 -   `email`
 
--   `accessToken`
+-   `access_token`
 
 -   `id`
 
 *E.g.*:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-http://example.com/api/job/status?email=user@example.com&accessToken=accessToken&id=123
+http://example.com/api/job/status?email=user@example.com&access_token=access_token&id=123
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Example response:
@@ -377,7 +380,7 @@ Retrieve a converted document. The jobConversionStage parameter specifys which t
 
 -   `email`
 
--   `accessToken`
+-   `access_token`
 
 -   `id`
 
@@ -386,7 +389,7 @@ Retrieve a converted document. The jobConversionStage parameter specifys which t
 *E.g.*:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-http://example.com/api/job/retrieve?email=user@example.com&accessToken=accessToken&id=123&conversionStage=10
+http://example.com/api/job/retrieve?email=user@example.com&access_token=access_token&id=123&conversionStage=10
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Example response:
