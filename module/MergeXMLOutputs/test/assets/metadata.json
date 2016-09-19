@@ -1,0 +1,16 @@
+{
+    "abstract": "Phasellus vitae ante sit amet metus pharetra congue.",
+    "article-title": "XMLPS METADATA TESTING 101",
+    "institution": "PKP",
+    "journal-title": "Awesome Magazine",
+    "contributors": [
+        {
+            "name": "Kassim M.",
+            "email": "kassim@example.com"
+        },
+        {
+            "name": "Alex G.",
+            "email": "alex@example.com"
+        }
+    ]
+}

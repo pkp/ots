@@ -15,6 +15,7 @@ class MergeTest extends ModelTest
     protected $testInputFileCermine = 'module/MergeXMLOutputs/test/assets/document_cermine_out.xml';
     protected $testInputFileNlmxml = 'module/MergeXMLOutputs/test/assets/document_nlm_out.xml';
     protected $testInputFileGrobid = 'module/MergeXMLOutputs/test/assets/document_grobid_out.xml';
+    protected $testInputMetadata = 'module/MergeXMLOutputs/test/assets/metadata.json';
     protected $testOutputFile = '/tmp/UNITTEST_merge.xml';
 
     /**
@@ -94,15 +95,47 @@ class MergeTest extends ModelTest
         $grobidDom = new DOMDocument();
         $this->assertTrue($grobidDom->loadXML($rawxml));
 
-        $abstractNode = $grobidDom->getElementsByTagName('abstract');
-        $abstractNode = $abstractNode->item(0);
-        $abstractText = trim(utf8_encode($abstractNode->nodeValue));
-        $this->assertSame($abstractText, 'This is a sample abstract from GROBID.');
+//         $abstractNode = $grobidDom->getElementsByTagName('abstract');
+//         $abstractNode = $abstractNode->item(0);
+//         $abstractText = trim(utf8_encode($abstractNode->nodeValue));
+//         $this->assertSame($abstractText, 'This is a sample abstract from GROBID.');
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $this->testOutputFile);
 
         $this->assertSame($mimeType, 'application/xml');
+    }
+    
+    /**
+     * Test merge with metadata submission
+     *
+     * @return void
+     */
+    public function testConversionWithMetadataSubmission()
+    {
+        $this->merge->setInputFileNlmxml($this->testInputFileNlmxml);
+        $this->merge->setInputFileCermine($this->testInputFileCermine);
+        $this->merge->setInputFileGrobid($this->testInputFileGrobid);
+        $this->merge->setOutputFile($this->testOutputFile);
+        $this->merge->setMetadataFile($this->testInputMetadata);
+        
+        $this->merge->convert();
+        
+        $rawxml = file_get_contents($this->testOutputFile);
+        $documentDom = new DOMDocument();
+        $this->assertTrue($documentDom->loadXML($rawxml));
+        
+        // check abstract
+        $abstractNode = $documentDom->getElementsByTagName('abstract');
+        $abstractNode = $abstractNode->item(0);
+        $abstractText = trim(utf8_encode($abstractNode->nodeValue));
+        $this->assertSame($abstractText, 'Phasellus vitae ante sit amet metus pharetra congue.');
+        
+        // check journal title
+        $journalTitleNode = $documentDom->getElementsByTagName('journal-title');
+        $journalTitleNode = $journalTitleNode->item(0);
+        $journalTitleText = trim(utf8_encode($journalTitleNode->nodeValue));
+        $this->assertSame($journalTitleText, 'Awesome Magazine');
     }
 
     /**

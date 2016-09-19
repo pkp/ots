@@ -19,6 +19,8 @@ class JobController extends AbstractActionController
     protected $documentDAO;
     protected $queueManager;
     protected $citationStyles;
+    protected $validMetadataFields = array('abstract', 'article-title', 'institution', 'contributors', 'journal-title');
+    protected $validMetadataContributorsFields = array('name','email');
 
     /**
      * Constructor
@@ -47,6 +49,44 @@ class JobController extends AbstractActionController
         $this->documentDAO = $documentDAO;
         $this->queueManager = $queueManager;
         $this->citationStyles = $citationStyles;
+    }
+    
+    /**
+     * Determines if submitted metadata fields contain invalid fields
+     *
+     * @param $metadata key/value array of metadata
+     * @return boolean
+     */
+    protected function _metadataContainsInvalidFields($metadata)
+    {
+        $metadata = (array) $metadata;
+        $submittedFields = array_keys($metadata);
+        $diff = array_diff($submittedFields, $this->validMetadataFields);
+        if (!empty($diff)) {
+            return true;
+        }
+        
+        if (isset($metadata['contributors'])) {
+            $contributors = (array) $metadata['contributors']; 
+            if (!is_array($contributors)) {
+                return true;
+            }
+            
+            // contributors contains arrays with name and email keys
+            // e.g: [
+            //          ['name' => 'foo', 'email' => 'foo@example.com'], 
+            //          ['name' => 'bar', 'email' => 'bar@example.com']
+            //      ]
+            foreach($contributors as $contributor) {
+                $contributor = (array) $contributor;
+                if (!is_array($contributor) || (count($contributor) != 2) 
+                        || !empty(array_diff(array_keys($contributor), $this->validMetadataContributorsFields))) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 
     /**
@@ -87,6 +127,17 @@ class JobController extends AbstractActionController
                 'status' => 'error',
             ));
         }
+        
+        // Make sure metadata content is valid if submitted
+        if (($fileMetadata = $this->params()->fromPost('fileMetadata'))) {
+            $metadata = json_decode($fileMetadata);
+            if (is_null($metadata) || $this->_metadataContainsInvalidFields($metadata)) {
+                return new JsonModel(array(
+                        'error' => $this->translator->translate('job.api.error.fileMetadataNotValid'),
+                        'status' => 'error',
+                ));
+            }
+        }
 
         // Create a new job instance
         $job = $this->jobDAO->getInstance();
@@ -98,6 +149,12 @@ class JobController extends AbstractActionController
         $fileName = str_replace('/', '', $fileName);
         $fileName = $job->getUploadPath() . '/' . $fileName;
         file_put_contents($fileName, $fileContent);
+        
+        // Create metadata file if metadata submit
+        $metaFileName = $job->getUploadPath() . '/metadata.json';
+        if ($fileMetadata) {
+            file_put_contents($metaFileName, $fileMetadata);
+        }
 
         // Create new document
         $document = $this->documentDAO->getInstance();

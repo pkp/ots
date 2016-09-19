@@ -23,6 +23,7 @@ class Merge extends AbstractConverter
     protected $inputFileCermine;
     protected $inputFileGrobid;
     protected $outputFile;
+    protected $metadataFile;
 
     /**
      * Constructor
@@ -98,6 +99,18 @@ class Merge extends AbstractConverter
     public function setOutputFile($outputFile)
     {
         $this->outputFile = $outputFile;
+    }
+    
+    /**
+     * Set the metadata file
+     *
+     * @param mixed $metadataFile
+     *
+     * @return void
+     */
+    public function setMetadataFile($metadataFile)
+    {
+        $this->metadataFile = $metadataFile;
     }
 
     /**
@@ -189,11 +202,105 @@ class Merge extends AbstractConverter
         }
 
         $newXml = $this->process_grobid_xml($this->inputFileGrobid, $newXml);
+        
+        // @TODO create noNewXmlDomLog, noMetadataDomLog and metadataFrontSwapFail entries
+        
+        // check if user provided additional metadata via api
+        if (file_exists($this->metadataFile)) {
+            
+            $fileMetadata = file_get_contents($this->metadataFile);
+            $metadata = json_decode($fileMetadata);
+            $articleMetaStr = $this->_buildArticleMetaNode($metadata);
+            
+            $metadataDom = new DOMDocument();
+            if ($metadataDom->loadXML($articleMetaStr)) {
+                $metaFront = $metadataDom->getElementsByTagName('front');
+                $metaFront = $metaFront->item(0);
+                
+                $newXmlDom = new DOMDocument();
+                if ($newXmlDom->loadXML($newXml)) {
+                    $newXmlFront = $newXmlDom->getElementsByTagName('front');
+                    $newXmlFront = $newXmlFront->item(0);
+                    
+                    // swap
+                    $metaFrontNode = $newXmlDom->importNode($metaFront, true);
+                    if (!$newXmlFront->parentNode->replaceChild($metaFrontNode, $newXmlFront)) {
+                        $this->logger->debugTranslate(
+                            'mergexmloutputs.converter.merge.metadataFrontSwapFail',
+                            $this->libxmlErrors()
+                        );
+                    }
+                    
+                    $newXml = $newXmlDom->saveXML();
+                }
+                else {
+                    $this->logger->debugTranslate(
+                        'mergexmloutputs.converter.merge.noNewXmlDomLog',
+                        $this->libxmlErrors()
+                    );
+                }
+            }
+            else {
+                $this->logger->debugTranslate(
+                    'mergexmloutputs.converter.merge.noMetadataDomLog',
+                    $this->libxmlErrors()
+                );
+            }
+        }
 
         // Write out the updated document.
         file_put_contents($this->outputFile, $newXml);
 
         return true;
+    }
+    
+    protected function _buildArticleMetaNode($metadata)
+    {
+        $metadata = (array) $metadata;
+        
+        $abstract = isset($metadata['abstract']) ? $metadata['abstract'] : '';
+        $articleTitle = isset($metadata['article-title']) ? $metadata['article-title'] : '';
+        $institution = isset($metadata['institution']) ? $metadata['institution'] : '';
+        $contributors = isset($metadata['contributors']) ? $metadata['contributors'] : array();
+        $journalTitle = isset($metadata['journal-title']) ? $metadata['journal-title'] : '';
+        
+        $count = 0;
+        $contributorsStr = '';
+        foreach ($contributors as $c) {
+            $count++;
+            $c = (array) $c;
+            
+            $contributorsStr .= '<contrib id="A'.$count.'" contrib-type="author">';
+            $contributorsStr .= '<name-alternatives>';
+            $contributorsStr .= '<string-name>'.$c['name'].'</string-name>';
+            $contributorsStr .= '</name-alternatives>';
+            $contributorsStr .= '<email>'.$c['email'].'</email>';
+            $contributorsStr .= "</contrib>\n";
+        }
+        
+        $xml = <<< EOF
+        
+<front>
+    <journal-meta>
+        <journal-title>$journalTitle</journal-title>
+        <publisher>
+            <publisher-name>$institution</publisher-name>
+        </publisher>
+    </journal-meta>
+    <article-meta>
+        <title-group>
+            <article-title>$articleTitle</article-title>
+        </title-group>
+        <contrib-group>
+            $contributorsStr
+        </contrib-group>
+    </article-meta>
+    <abstract>$abstract</abstract>
+</front>
+        
+EOF;
+
+        return $xml;
     }
 
     /*

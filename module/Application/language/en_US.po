@@ -1226,3 +1226,15 @@ msgid "grobid.converter.transformsSuccessLog"
 msgstr ""
 "Sucessfully converted TEIXML to JATS. JATS document:\n"
 "%s"
+
+#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php
+msgid "mergexmloutputs.converter.merge.noNewXmlDomLog"
+msgstr "Unable to load generated Merge xml output."
+
+#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php
+msgid "mergexmloutputs.converter.merge.noMetadataDomLog"
+msgstr "Unable to load produced metadata xml string."
+
+#: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php
+msgid "mergexmloutputs.converter.merge.metadataFrontSwapFail"
+msgstr "Failed to replace merge module front element with front element produced with user submitted metadata."
