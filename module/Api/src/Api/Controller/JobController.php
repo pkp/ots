@@ -152,7 +152,9 @@ class JobController extends AbstractActionController
         
         // Create metadata file if metadata submit
         $metaFileName = $job->getUploadPath() . '/metadata.json';
-        file_put_contents($metaFileName, $fileMetadata);
+        if ($fileMetadata) {
+            file_put_contents($metaFileName, $fileMetadata);
+        }
 
         // Create new document
         $document = $this->documentDAO->getInstance();
