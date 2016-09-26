@@ -11,6 +11,7 @@ use Manager\Form\UploadFormInputFilter;
 use Manager\Model\DAO\DocumentDAO;
 use Manager\Model\DAO\JobDAO;
 use Manager\Entity\Job;
+use Zend\Http\Response;
 
 class ManagerController extends AbstractActionController {
     protected $logger;
@@ -236,29 +237,64 @@ class ManagerController extends AbstractActionController {
         }
         
         $document = $job->getStageDocument(JOB_CONVERSION_STAGE_BIBTEXREFERENCES);
-    
         $user = $this->identity();
+        
         if (
                 $document->job->user->id != $user->id and !$user->isAdministrator()
                 ) {
             $this->getResponse()->setStatusCode(404);
             return;
         }
-
-        $path = $job->getDocumentPath() . '/document.xml';
-        $docpath = dirname($_SERVER['SCRIPT_FILENAME']) . '/../' . $path;
         
-        if (!file_exists($docpath)) {
-            $this->getResponse()->setStatusCode(404);
-            return;
+        if ($this->request->isPost()) {
+            $response = $this->getEvent()->getResponse();
+            $response->setHeaders(Headers::fromString(
+                "Content-Type: application/json\r\n"
+            ));
+            
+            $body = $this->getRequest()->getContent();
+            $data = (array) json_decode($body);
+            file_put_contents("/tmp/texture-submission-{$jobId}.xml", $body);
+            
+            // content is required
+            if (empty($data['content'])) {
+                $response->setStatusCode(Response::STATUS_CODE_400);
+                $response->setContent(json_encode(array('success' => false)));
+                return $response;
+            }
+            // Create a new job and set the citation style file based on
+            // the submitted citation style
+            $newJob = $this->jobDAO->getInstance();
+            $newJob->user = $this->identity();
+            $newJob->setCitationStyleFile($job->getCitationStyleFile());
+            $this->jobDAO->save($newJob);
+            
+            // jats xml declaration
+            $xmlheader = '<?xml version="1.0"?>'. PHP_EOL .'<!DOCTYPE article PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">' . PHP_EOL;
+            
+            // create xml document inside job directory
+            $xmlFilePath = $newJob->getUploadPath() . '/document.xml';
+            file_put_contents($xmlFilePath, $xmlheader . $data['content']);
+            
+            // Create new document
+            $document = $this->documentDAO->getInstance();
+            $document->job = $newJob;
+            $document->conversionStage = $newJob->conversionStage;
+            $document->path = $xmlFilePath;
+            $this->documentDAO->save($document);
+            $this->logger->infoTranslate('manager.job.createLog', $newJob->id);
+            // Send the job to the queue manager
+            $this->queueManager->addJob($newJob->id);
+            $response->setContent(json_encode(array('success' => true, 'jobId' => $newJob->id)));
+            return $response;
         }
-
-        $response = $this->getEvent()->getResponse();
-        $response->setHeaders(Headers::fromString(
-            "Content-Type: {$document->mimeType}\r\n"
-        ));
-        $response->setContent(file_get_contents($docpath));
-
-        return $response;
+        else {
+            $response = $this->getEvent()->getResponse();
+            $response->setHeaders(Headers::fromString(
+                "Content-Type: {$document->mimeType}\r\n"
+            ));
+            $response->setContent(file_get_contents($document->path));
+            return $response;
+        }
     }
 }
