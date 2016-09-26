@@ -254,7 +254,6 @@ class ManagerController extends AbstractActionController {
             
             $body = $this->getRequest()->getContent();
             $data = (array) json_decode($body);
-            file_put_contents("/tmp/texture-submission-{$jobId}.xml", $body);
             
             // content is required
             if (empty($data['content'])) {
