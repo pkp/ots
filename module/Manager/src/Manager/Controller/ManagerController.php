@@ -236,7 +236,11 @@ class ManagerController extends AbstractActionController {
             return;
         }
         
-        $document = $job->getStageDocument(JOB_CONVERSION_STAGE_BIBTEXREFERENCES);
+        $document = null;
+        if (!($document = $job->getStageDocument(JOB_CONVERSION_STAGE_BIBTEXREFERENCES))) {
+        	// pdf uploads
+        	$document = $job->getStageDocument(JOB_CONVERSION_STAGE_XML_MERGE); 
+        }
         $user = $this->identity();
         
         if (
@@ -292,8 +296,86 @@ class ManagerController extends AbstractActionController {
             $response->setHeaders(Headers::fromString(
                 "Content-Type: {$document->mimeType}\r\n"
             ));
-            $response->setContent(file_get_contents($document->path));
+
+            $content = file_get_contents($document->path);
+            $transformedContent = $this->_ontheFlyGraphicUpdate($content);
+            $response->setContent($transformedContent);
             return $response;
         }
+    }
+
+    /**
+     * Proceed on the fly graphic path replacement
+     * 
+     *  @param string $xmlString XML String
+     *  @return string
+     */
+    protected function _ontheFlyGraphicUpdate($xmlString)
+    {
+        $dom = new \DOMDocument();
+        if (!$dom->loadXML($xmlString)) {
+            return $xmlString;
+        }
+
+        $graphics = $dom->getElementsByTagName('graphic');
+        if (!$graphics->length) {
+            return $xmlString;
+        }
+
+        $requestPath = $this->getRequest()->getUri()->getPath();
+
+        foreach ($graphics as $graphic) {
+            $href = $requestPath . '/' . $graphic->getAttribute('xlink:href');
+            $graphic->setAttribute('xlink:href', $href);
+        }
+
+        return $dom->saveXML();
+    }
+
+    /**
+     * get image file
+     */
+    public function mediaAction()
+    {
+        $jobId = (int) $this->params()->fromRoute('id');
+        $imageFilename = strval($this->params()->fromRoute('file'));
+
+        $user = $this->identity();
+        if (
+            !($job = $this->jobDAO->find($jobId)) or
+            ($job->user->id != $user->id and !$user->isAdministrator())
+        ) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        class_exists('Manager\Entity\Job');
+
+        $jobParams = array(
+            'id' => $jobId,
+            'status' => JOB_STATUS_COMPLETED,
+            'user' => $user,
+        );
+
+        if (!($job = $this->jobDAO->findOneBy($jobParams))) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $meTypesetDir = $job->getDocumentPath() . '/metypeset';
+        $imageFilepath = $meTypesetDir . '/media/' . $imageFilename;
+        if (!file_exists($imageFilepath)) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $response = $this->getEvent()->getResponse();
+        $response->setHeaders(Headers::fromString(
+            "Content-Type: image/png\r\n" .
+            "Content-Length: " . filesize($imageFilepath) . "\r\n"
+        ));
+        $response->setContent(file_get_contents($imageFilepath));
+
+        return $response;
     }
 }
