@@ -45,6 +45,20 @@ return array(
                     ),
                 ),
             ),
+            'media' => array(
+                'type' => 'segment',
+                'options' => array(
+                        'route' => '/manager/xml/id/:id/media/:file',
+                        'constraints' => array(
+                                'id' => '[0-9]+',
+                                'file' => '[a-zA-Z0-9]+\.[a-zA-Z]{3,4}',
+                        ),
+                        'defaults' => array(
+                                'controller' => 'Manager\Controller\Manager',
+                                'action' => 'media',
+                        ),
+                ),
+            ),
             'xml' => array(
                 'type' => 'segment',
                 'options' => array(
@@ -89,6 +103,7 @@ return array(
             'controller:Manager\Controller\Manager:upload',
             'controller:Manager\Controller\Manager:editor',
             'controller:Manager\Controller\Manager:xml',
+            'controller:Manager\Controller\Manager:media',
         ),
         'rules' => array(
             array('allow', 'member', 'controller:Manager\Controller\Manager:details'),
@@ -97,6 +112,7 @@ return array(
             array('allow', 'member', 'controller:Manager\Controller\Manager:upload'),
             array('allow', 'member', 'controller:Manager\Controller\Manager:editor'),
             array('allow', 'member', 'controller:Manager\Controller\Manager:xml'),
+            array('allow', 'member', 'controller:Manager\Controller\Manager:media'),
         ),
     ),
 );
