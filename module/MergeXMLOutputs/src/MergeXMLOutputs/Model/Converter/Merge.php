@@ -201,6 +201,15 @@ class Merge extends AbstractConverter
           $newXml = preg_replace('/<article-meta>/', '<article-meta><title-group><article-title>Article Title</article-title></title-group>', $newXml);
         }
 
+        // Populate //publisher/publisher-name if it's empty for compatibility
+        $frontXPath = new DOMXPath($meTypesetDom);
+        $frontPublisherQuery = '//journal-meta/publisher';
+        $frontPublisherElements = $frontXPath->query($frontPubilsherQuery);
+        if ($frontPublisherElements->length == 0) {
+          $newXml = preg_replace('/<journal-meta>/', '<journal-meta><publisher><publisher-name>Academic Publisher</publisher-name></publisher>', $newXml);
+        }
+
+
         $newXml = $this->process_grobid_xml($this->inputFileGrobid, $newXml);
         
         // @TODO create noNewXmlDomLog, noMetadataDomLog and metadataFrontSwapFail entries
