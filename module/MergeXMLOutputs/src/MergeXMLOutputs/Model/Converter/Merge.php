@@ -204,7 +204,7 @@ class Merge extends AbstractConverter
         // Populate //publisher/publisher-name if it's empty for compatibility
         $frontXPath = new DOMXPath($meTypesetDom);
         $frontPublisherQuery = '//journal-meta/publisher';
-        $frontPublisherElements = $frontXPath->query($frontPubilsherQuery);
+        $frontPublisherElements = $frontXPath->query($frontPublisherQuery);
         if ($frontPublisherElements->length == 0) {
           $newXml = preg_replace('/<journal-meta>/', '<journal-meta><publisher><publisher-name>Academic Publisher</publisher-name></publisher>', $newXml);
         }
