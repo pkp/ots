@@ -93,7 +93,7 @@
         "slm/queue": "0.3.0-beta1",
         "MartinPaulEve/meTypeset": "dev-master",
         "citation-style-language/styles": "dev-master",
-        "knmnyn/ParsCit": "dev-master",
+        "pkp/ParsCit": "master",
         "dyve/jquery-autocomplete": "dev-master",
         "pkp/jats2epub": "dev-master",
         "CeON/CERMINE": "1.8"
