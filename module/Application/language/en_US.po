@@ -678,7 +678,7 @@ msgstr "Select Document To Convert"
 
 #: module/Manager/src/Manager/Form/UploadForm.php:43
 msgid "manager.uploadForm.citationStyles"
-msgstr "Select Citation Style"
+msgstr "Select Output Citation Style"
 
 #: module/Manager/src/Manager/Form/UploadForm.php:46
 msgid "manager.uploadForm.citationStyleAutocomplete"
