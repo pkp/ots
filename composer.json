@@ -5,6 +5,8 @@
         "framework",
         "zf2"
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true, 
     "repositories": [
         {
             "type": "composer",
@@ -74,9 +76,9 @@
             "type": "package",
             "package": {
                 "name": "CeON/CERMINE",
-                "version": "1.8",
+                "version": "1.11",
                 "dist": {
-                    "url": "http://maven.ceon.pl/artifactory/simple/kdd-releases/pl/edu/icm/cermine/cermine-impl/1.8/cermine-impl-1.8-jar-with-dependencies.jar",
+                    "url": "http://maven.ceon.pl/artifactory/simple/kdd-releases/pl/edu/icm/cermine/cermine-impl/1.11/cermine-impl-1.11-jar-with-dependencies.jar",
                     "type": "file"
                 }
             }
@@ -87,7 +89,7 @@
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.2.*",
         "doctrine/doctrine-orm-module": "0.*",
-        "zendframework/zend-developer-tools": "dev-master",
+        "zendframework/zend-developer-tools": "1.*",
         "phpunit/phpunit": "3.7.*",
         "slm/queue-doctrine": "0.3.0-beta1",
         "slm/queue": "0.3.0-beta1",
@@ -96,7 +98,7 @@
         "pkp/ParsCit": "master",
         "dyve/jquery-autocomplete": "dev-master",
         "pkp/jats2epub": "dev-master",
-        "CeON/CERMINE": "1.8"
+        "CeON/CERMINE": "1.11"
     },
     "config": {
         "process-timeout": 1800,
