@@ -292,7 +292,9 @@ class Merge extends AbstractConverter
         
 <front>
     <journal-meta>
-        <journal-title>$journalTitle</journal-title>
+        <journal-title-group>
+            <journal-title>$journalTitle</journal-title>
+        </journal-title-group>
         <publisher>
             <publisher-name>$institution</publisher-name>
         </publisher>
@@ -304,8 +306,8 @@ class Merge extends AbstractConverter
         <contrib-group>
             $contributorsStr
         </contrib-group>
+        <abstract>$abstract</abstract>
     </article-meta>
-    <abstract>$abstract</abstract>
 </front>
         
 EOF;
