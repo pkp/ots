@@ -273,6 +273,9 @@ class Merge extends AbstractConverter
         $institution = isset($metadata['institution']) ? $metadata['institution'] : '';
         $contributors = isset($metadata['contributors']) ? $metadata['contributors'] : array();
         $journalTitle = isset($metadata['journal-title']) ? $metadata['journal-title'] : '';
+        $journalID = isset($metadata['journal-id']) ? $metadata['journal-id'] : '';
+        $ISSN = isset($metadata['ISSN']) ? $metadata['ISSN'] : '';
+        $year = isset($metadata['year']) ? $metadata['year'] : '';
         
         $count = 0;
         $contributorsStr = '';
@@ -292,11 +295,11 @@ class Merge extends AbstractConverter
         
 <front>
     <journal-meta>
-        <journal-id>journal-id-unknown</journal-id>
+        <journal-id>$journalID</journal-id>
         <journal-title-group>
             <journal-title>$journalTitle</journal-title>
         </journal-title-group>
-        <issn>issn-unknown</issn>
+        <issn>$ISSN</issn>
         <publisher>
             <publisher-name>$institution</publisher-name>
         </publisher>
@@ -308,7 +311,7 @@ class Merge extends AbstractConverter
         <contrib-group>
             $contributorsStr
         </contrib-group>
-        <pub-date><year>12-12-12</year></pub-date>
+        <pub-date><year>$issn</year></pub-date>
         <abstract>$abstract</abstract>
     </article-meta>
 </front>
