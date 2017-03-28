@@ -76,9 +76,9 @@
             "type": "package",
             "package": {
                 "name": "CeON/CERMINE",
-                "version": "1.11",
+                "version": "1.12",
                 "dist": {
-                    "url": "http://maven.ceon.pl/artifactory/simple/kdd-releases/pl/edu/icm/cermine/cermine-impl/1.11/cermine-impl-1.11-jar-with-dependencies.jar",
+                    "url": "http://maven.ceon.pl/artifactory/simple/kdd-releases/pl/edu/icm/cermine/cermine-impl/1.12/cermine-impl-1.12-jar-with-dependencies.jar",
                     "type": "file"
                 }
             }
@@ -98,7 +98,7 @@
         "pkp/ParsCit": "master",
         "dyve/jquery-autocomplete": "dev-master",
         "pkp/jats2epub": "dev-master",
-        "CeON/CERMINE": "1.11"
+        "CeON/CERMINE": "1.12"
     },
     "config": {
         "process-timeout": 1800,
