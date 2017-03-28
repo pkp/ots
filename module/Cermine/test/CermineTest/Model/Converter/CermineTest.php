@@ -68,5 +68,22 @@ class CermineTest extends ModelTest
     protected function cleanTestData()
     {
         @unlink($this->testOutputFile);
+        
+        $dir = dirname($this->testInputFile);
+        
+        // remove any cermine xml (.cermxml) files
+        $pattern = "{$dir}/*.cermxml";
+        foreach (glob($pattern) as $filepath) {
+        	unlink($filepath);
+        }
+        
+        // remove images folders
+        $pattern = "{$dir}/*.images";
+        foreach (glob($pattern, GLOB_ONLYDIR) as $folder) {
+        	foreach (glob("{$folder}/*") as $img) {
+        		unlink($img);
+        	}
+        	rmdir($folder);
+        }
     }
 }

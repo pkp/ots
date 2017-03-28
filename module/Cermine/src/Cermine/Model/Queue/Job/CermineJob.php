@@ -31,8 +31,15 @@ class CermineJob extends AbstractQueueJob
             throw new \Exception('Couldn\'t find the stage document');
         }
 
+        // setup a folder for cermine
+        $cermine_dir = $job->getDocumentPath() . '/cermine';
+        $newInputFile = "{$cermine_dir}/document.pdf";
+        $inputFileFullPath = getcwd() . "/{$pdfDocument->path}";
+        @mkdir($cermine_dir);
+        @copy($inputFileFullPath, $newInputFile);
+
         // Convert the document
-        $cermine->setInputFile($pdfDocument->path);
+        $cermine->setInputFile($newInputFile);
         $outputPath = $job->getDocumentPath() . '/document_from_pdf.xml';
         $cermine->setOutputFile($outputPath);
         $cermine->convert();

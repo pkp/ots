@@ -93,14 +93,10 @@ class Cermine extends AbstractConverter
         $command->addSwitch('-cp', $this->config['cerminejar']);
 
         // ... the content extraction command, ...
-        $command->addArgument('pl.edu.icm.cermine.PdfNLMContentExtractor');
+        $command->addArgument('pl.edu.icm.cermine.ContentExtractor');
 
         // ... the input file, ...
-        $command->addSwitch('-path', $this->inputFile);
-
-        // Send STDERR to STDOUT, so we can capture it, but send
-        // STDOUT to our destination.
-        $command->addRedirect('2>&1 >' . $this->outputFile);
+        $command->addSwitch('-path', dirname($this->inputFile));
 
         $this->logger->debugTranslate(
             'cermine.cermine.executeCommandLog',
@@ -111,6 +107,11 @@ class Cermine extends AbstractConverter
         $command->execute();
         $this->status = $command->isSuccess();
         $this->output = $command->getOutputString();
+
+        // save cermine xml to outputFile
+        $cermineDocName = basename($this->inputFile, '.pdf');
+        $cermineOutfileFullPath = dirname($this->inputFile) . "/{$cermineDocName}.cermxml";
+        @copy($cermineOutfileFullPath, $this->outputFile);
 
         $this->logger->debugTranslate(
             'cermine.cermine.executeCommandOutputLog',
