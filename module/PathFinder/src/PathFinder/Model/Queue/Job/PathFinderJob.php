@@ -41,16 +41,23 @@ class PathFinderJob extends AbstractQueueJob
             $job->conversionStage = JOB_CONVERSION_STAGE_PDF_IN;
             $unconvertedDocument->conversionStage =
                 JOB_CONVERSION_STAGE_PDF_IN;
-        } elseif ($mimeType == 'text/xml') {
+        } elseif (in_array($mimeType, array('text/xml','application/xml'))) {
             $job->inputFileFormat = JOB_INPUT_TYPE_XML;
             $job->conversionStage = JOB_CONVERSION_STAGE_BIBTEXREFERENCES;
-            $unconvertedDocument->conversionStage =
-                JOB_CONVERSION_STAGE_XML_MERGE;
-        } elseif ($mimeType == 'application/xml') {
-            $job->inputFileFormat = JOB_INPUT_TYPE_XML;
-            $job->conversionStage = JOB_CONVERSION_STAGE_BIBTEXREFERENCES;
-            $unconvertedDocument->conversionStage =
-                JOB_CONVERSION_STAGE_XML_MERGE;
+
+            // create document.xml
+            $xmlDocumentPath = $job->getDocumentPath() . "/document.xml";
+            @copy($unconvertedDocument->path, $xmlDocumentPath);
+
+            // add document.xml to job's documents
+            $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
+            $xmlDocument = $documentDAO->getInstance();
+            $xmlDocument->path = $xmlDocumentPath;
+            $xmlDocument->job = $job;
+            $xmlDocument->conversionStage = JOB_CONVERSION_STAGE_XML_MERGE;
+
+            $job->documents[] = $xmlDocument;
+
         } else {
             $job->inputFileFormat = JOB_INPUT_TYPE_WP;
             $job->conversionStage = JOB_CONVERSION_STAGE_WP_IN;
