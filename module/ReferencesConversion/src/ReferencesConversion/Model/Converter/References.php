@@ -32,6 +32,9 @@ class References extends AbstractConverter
     protected $dom;
     protected $domXpath;
 
+    protected $ridMappings = array();
+    protected $replacedRidInBibtex = array();
+
     /**
      * Constructor
      *
@@ -169,6 +172,26 @@ class References extends AbstractConverter
         // Parse the bibliography
         $this->parseBibliography();
 
+        // In case we replace some rid in the ref-list, update xref with new rids.
+        if (!empty($this->replacedRidInBibtex)) {
+
+			// update rid in xml document
+			$xrefs = $this->domXpath->query('body//xref');
+			foreach ($xrefs as $xref) {
+				if (!$xref->hasAttribute('rid')) {
+					continue;
+				}
+
+				$xrid = $xref->getAttribute('rid');
+				if (!empty($xrid) && in_array($xrid, $this->replacedRidInBibtex)) {
+					$xref->setAttribute('rid', "R{$this->ridMappings[$xrid]}");
+				}
+			}
+
+			// and write changes to disk
+			file_put_contents($this->inputFile, $this->dom->saveXML());
+        }
+
         $this->status = true;
     }
 
@@ -301,6 +324,7 @@ class References extends AbstractConverter
             $references = array('REFERENCES');
             $all_refs = $bibliography->getElementsByTagName('ref');
             $refs_count = $all_refs->length;
+
             foreach ($all_refs as $reference) {
                 // Extract the reference id
                 $rid = '';
@@ -312,7 +336,11 @@ class References extends AbstractConverter
                 // if not numeric, replace by numeric or 
                 // pandoc will fallback to author names and break
                 if (!is_numeric($rid)) {
-                    $rid = ++$refs_count;
+					$old_rid = $rid;
+					$rid = ++$refs_count;
+
+                    // remember previous rid
+                    $this->ridMappings[$old_rid] = $rid;
                 }
 
                 $rid  .= '. ';
@@ -385,12 +413,16 @@ class References extends AbstractConverter
             return $bibtex;
         }
 
-        $initialID = "R{$matches[1]}";
+        $number = $matches[1];
+        $initialID = "R{$number}";
 
         $matches = preg_split("/@(.*)[{(](.*),/U", $bibtex, 2, PREG_SPLIT_DELIM_CAPTURE);
         if (count($matches) == 1) {
             return $bibtex;
         }
+
+        // keep track of ids which were replaced in bibtex
+        $this->replacedRidInBibtex[] = array_search($number, $this->ridMappings);
 
         return '@' . $matches[1] . '{' . $initialID . ',' . $matches[3] . PHP_EOL . PHP_EOL;
     }
