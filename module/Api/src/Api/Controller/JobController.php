@@ -19,7 +19,7 @@ class JobController extends AbstractActionController
     protected $documentDAO;
     protected $queueManager;
     protected $citationStyles;
-    protected $validMetadataFields = array('abstract', 'article-title', 'institution', 'contributors', 'journal-title');
+    protected $validMetadataFields = array('abstract', 'article-title', 'institution', 'contributors', 'journal-title', 'journal-id', 'ISSN', 'year');
     protected $validMetadataContributorsFields = array('name','email');
 
     /**
