@@ -268,54 +268,74 @@ class Merge extends AbstractConverter
     {
         $metadata = (array) $metadata;
         
+		$contributors = isset($metadata['contributors']) ? $metadata['contributors'] : array();
+		
         $abstract = isset($metadata['abstract']) ? $metadata['abstract'] : '';
         $articleTitle = isset($metadata['article-title']) ? $metadata['article-title'] : '';
         $institution = isset($metadata['institution']) ? $metadata['institution'] : '';
-        $contributors = isset($metadata['contributors']) ? $metadata['contributors'] : array();
         $journalTitle = isset($metadata['journal-title']) ? $metadata['journal-title'] : '';
-        $journalID = isset($metadata['journal-id']) ? $metadata['journal-id'] : '';
-        $ISSN = isset($metadata['ISSN']) ? $metadata['ISSN'] : '';
-        $year = isset($metadata['year']) ? $metadata['year'] : '';
-        
+        $onlineIssn = isset($metadata['online-ISSN']) ? $metadata['online-ISSN'] : '';
+        $printIssn = isset($metadata['print-ISSN']) ? $metadata['print-ISSN'] : '';
+		$doi = isset($metadata['doi']) ? $metadata['doi'] : '';
+		
+		$issueStr = '';
+		if (isset($metadata['issue-details']){
+			$issueDetails = $metadata['issue-details'];
+			if (isset($issueDetails['issue-year'])) $issueStr .= "<pub-date pub-type=\"collection\"><year>" . $issueDetails['issue-year'] . "</year></pub-date>";
+			if (isset($issueDetails['issue-volume'])) $issueStr .= "<volume>" . $issueDetails['issue-volume'] . "</volume>";
+			if (isset($issueDetails['issue-number'])) $issueStr .= "<issue>" . $issueDetails['issue-year'] . "</issue>";
+			if (isset($issueDetails['issue-title'])) $issueStr .= "<issue-title>" . $issueDetails['issue-year'] . "</issue-title>";
+		}
+		
         $count = 0;
         $contributorsStr = '';
         foreach ($contributors as $c) {
             $count++;
             $c = (array) $c;
             
-            $contributorsStr .= '<contrib id="A'.$count.'" contrib-type="author">';
-            $contributorsStr .= '<name-alternatives>';
-            $contributorsStr .= '<string-name>'.$c['name'].'</string-name>';
-            $contributorsStr .= '</name-alternatives>';
-            $contributorsStr .= '<email>'.$c['email'].'</email>';
+            $contributorsStr .= '<contrib id="A'.$count.'" contrib-type="'.$c['contribType'].'">';
+            $contributorsStr .= '<name>';
+            $contributorsStr .= '<surname>'.$c['lastName'].'</surname>';
+			$contributorsStr .= '<given-names>'.$c['firstName'].'</given-names>';
+            $contributorsStr .= '</name>';
+			$contributorsStr .= '<contrib-id contrib-id-type="orcid">'.$c['orcid'].'</contrib-id>';
+			$contributorsStr .= '<email>'.$c['email'].'</email>';
+			$contributorsStr .= '<aff>'.$c['affiliation'].'</aff>';	
+			$contributorsStr .= '<bio>'.$c['bio'].'</bio>';
             $contributorsStr .= "</contrib>\n";
         }
         
-        $xml = <<< EOF
-        
+        $xml = "
 <front>
-    <journal-meta>
+    <journal-meta>";
+		
+		$xml .=	"
+		<journal-id journal-id-type=\"other\">$journalId</journal-id>	
         <journal-title-group>
             <journal-title>$journalTitle</journal-title>
-        </journal-title-group>
-        <issn>$ISSN</issn>
-        <publisher>
+        </journal-title-group>" .
+        
+		(!empty($onlineIssn)?"<issn pub-type=\"epub\">" . $onlineIssn . "</issn>":'') .
+		(!empty($printIssn)?"<issn pub-type=\"ppub\">" . $printIssn . "</issn>":'') .	
+		
+		"<publisher>
             <publisher-name>$institution</publisher-name>
         </publisher>
     </journal-meta>
-    <article-meta>
-        <title-group>
+	
+    <article-meta>" . 
+		(!empty($doi)?"<article-id pub-id-type=\"doi\">" . $doi . "</article-id>":'') . 
+	
+        "<title-group>
             <article-title>$articleTitle</article-title>
         </title-group>
         <contrib-group>
             $contributorsStr
         </contrib-group>
-        <pub-date></pub-date>
+		$issueStr
         <abstract>$abstract</abstract>
     </article-meta>
-</front>
-        
-EOF;
+</front>";
 
         return $xml;
     }
