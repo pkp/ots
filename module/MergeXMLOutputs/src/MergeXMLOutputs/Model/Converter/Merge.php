@@ -323,20 +323,19 @@ class Merge extends AbstractConverter
 		$contributors = isset($metadata['contributors']) ? $metadata['contributors'] : array();
 		$count = 0;
 		foreach ($contributors as $c) {
-            $count++;
-            $c = (array) $c;
-			
-            $xml .= '<contrib id="A'.$count.'" contrib-type="'.$c['contribType'].'">';			
-            $xml .= '<name>';
-            $xml .= '<surname>'.$c['lastName'].'</surname>';
+			$count++;
+			$c = (array) $c;
+			$xml .= '<contrib id="A'.$count.'" contrib-type="'.$c['contribType'].'">';			
+			$xml .= '<name>';
+			$xml .= '<surname>'.$c['lastName'].'</surname>';
 			$xml .= '<given-names>'.$c['firstName'].'</given-names>';
-            $xml .= '</name>';
+			$xml .= '</name>';
 			$xml .= '<contrib-id contrib-id-type="orcid">'.$c['orcid'].'</contrib-id>';
 			$xml .= '<email>'.$c['email'].'</email>';
 			$xml .= '<aff>'.$c['affiliation'].'</aff>';	
 			$xml .= '<bio>'.$c['bio'].'</bio>';
-            $xml .= "</contrib>\n";
-        }	
+			$xml .= "</contrib>\n";
+		}	
 		$xml .= "</contrib-group>";
 
 		/* Issue details */
