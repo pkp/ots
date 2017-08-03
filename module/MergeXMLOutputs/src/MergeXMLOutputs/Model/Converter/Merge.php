@@ -326,16 +326,16 @@ class Merge extends AbstractConverter
             $count++;
             $c = (array) $c;
 			
-            $contributorsStr .= '<contrib id="A'.$count.'" contrib-type="'.$c['contribType'].'">';			
-            $contributorsStr .= '<name>';
-            $contributorsStr .= '<surname>'.$c['lastName'].'</surname>';
-			$contributorsStr .= '<given-names>'.$c['firstName'].'</given-names>';
-            $contributorsStr .= '</name>';
-			$contributorsStr .= '<contrib-id contrib-id-type="orcid">'.$c['orcid'].'</contrib-id>';
-			$contributorsStr .= '<email>'.$c['email'].'</email>';
-			$contributorsStr .= '<aff>'.$c['affiliation'].'</aff>';	
-			$contributorsStr .= '<bio>'.$c['bio'].'</bio>';
-            $contributorsStr .= "</contrib>\n";
+            $xml .= '<contrib id="A'.$count.'" contrib-type="'.$c['contribType'].'">';			
+            $xml .= '<name>';
+            $xml .= '<surname>'.$c['lastName'].'</surname>';
+			$xml .= '<given-names>'.$c['firstName'].'</given-names>';
+            $xml .= '</name>';
+			$xml .= '<contrib-id contrib-id-type="orcid">'.$c['orcid'].'</contrib-id>';
+			$xml .= '<email>'.$c['email'].'</email>';
+			$xml .= '<aff>'.$c['affiliation'].'</aff>';	
+			$xml .= '<bio>'.$c['bio'].'</bio>';
+            $xml .= "</contrib>\n";
         }	
 		$xml .= "</contrib-group>";
 
