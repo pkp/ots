@@ -343,8 +343,8 @@ class Merge extends AbstractConverter
 			$issueDetails = $metadata['issue-details'];
 			if (isset($issueDetails['issue-year'])) $xml .=  "<pub-date pub-type=\"collection\"><year>" . $issueDetails['issue-year'] . "</year></pub-date>";
 			if (isset($issueDetails['issue-volume'])) $xml .=  "<volume>" . $issueDetails['issue-volume'] . "</volume>";
-			if (isset($issueDetails['issue-number'])) $xml .=  "<issue>" . $issueDetails['issue-year'] . "</issue>";
-			if (isset($issueDetails['issue-title'])) $xml .=  "<issue-title>" . $issueDetails['issue-year'] . "</issue-title>";
+			if (isset($issueDetails['issue-number'])) $xml .=  "<issue>" . $issueDetails['issue-number'] . "</issue>";
+			if (isset($issueDetails['issue-title'])) $xml .=  "<issue-title>" . $issueDetails['issue-title'] . "</issue-title>";
 		}		
 	
 		/* Pages */
