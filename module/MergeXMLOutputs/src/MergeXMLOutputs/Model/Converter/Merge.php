@@ -362,13 +362,13 @@ class Merge extends AbstractConverter
 		}
 		
 		/* Abstracts */
-		$xml .= isset($metadata['article-titles'][$locale]) ? "<abstract xml:lang=\"" . $locale . "\">".$metadata['abstracts'][$locale]."</abstract>" : "";
+		$xml .= isset($metadata['abstracts'][$locale]) ? "<abstract xml:lang=\"" . $locale . "\">".$metadata['abstracts'][$locale]."</abstract>" : "";
 		
 			if (count($metadata['abstract']) > 1){
 				
-				foreach ($metadata['article-titles'] as $loc => $abstract) {
+				foreach ($metadata['abstracts'] as $loc => $abstract) {
 					if ($loc == $locale) continue;
-					$xml .= isset($metadata['article-titles'][$locale]) ? "<abstract-trans xml:lang=\"" . $loc . "\">".$abstract."</abstract-trans>" : "";
+					$xml .= isset($metadata['abstracts'][$loc]) ? "<abstract-trans xml:lang=\"" . $loc . "\">".$abstract."</abstract-trans>" : "";
 					
 				}
 				
