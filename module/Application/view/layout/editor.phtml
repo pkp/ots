@@ -1,11 +1,21 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="jobId" content="<?php echo $jobId ?>">
-  <link href='/texture/app.css' rel='stylesheet' type='text/css'/>
+  <meta name="jobId" content="/manager/xml/id/<?php echo $jobId ?>">
+  <link href='/texture/css/texture.css' rel='stylesheet' type='text/css'/>
+  <link href='/texture/css/texture-reset.css' rel='stylesheet' type='text/css'/>
+  <link href='/texture/css/texture-pagestyle.css' rel='stylesheet' type='text/css'/>
+  <link href='/texture/css/font-awesome.min.css' rel='stylesheet' type='text/css'/>
 </head>
 <body>
+
+	<!-- polyfills -->
+	<script type="text/javascript" src="/texture/js/promise.min.js"></script>
+	<script type="text/javascript" src="/texture/js/fetch.min.js"></script>
 	
-	<script type="text/javascript" src="/texture/app.js"></script>
+	<script type="text/javascript" src="/texture/js/substance.js"></script>
+	<script type="text/javascript" src="/texture/js/texture.js"></script>
+	<script type="text/javascript" src="/texture/js/store.js"></script>
+	<script type="text/javascript" src="/texture/js/app.js"></script>
 </body>
 </html>
