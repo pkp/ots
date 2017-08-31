@@ -339,7 +339,7 @@ class Merge extends AbstractConverter
 		$xml .= "</contrib-group>";
 
 		/* Issue details */
-		if (isset($metadata['issue-details']){
+		if (isset($metadata['issue-details'])){
 			$issueDetails = $metadata['issue-details'];
 			if (isset($issueDetails['issue-year'])) $xml .=  "<pub-date pub-type=\"collection\"><year>" . $issueDetails['issue-year'] . "</year></pub-date>";
 			if (isset($issueDetails['issue-volume'])) $xml .=  "<volume>" . $issueDetails['issue-volume'] . "</volume>";
