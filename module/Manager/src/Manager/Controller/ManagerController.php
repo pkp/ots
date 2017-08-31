@@ -273,7 +273,7 @@ class ManagerController extends AbstractActionController {
             $this->jobDAO->save($newJob);
             
             // jats xml declaration
-            $xmlheader = '<?xml version="1.0"?>'. PHP_EOL .'<!DOCTYPE article PUBLIC "-//NLM//DTD Journal Publishing DTD v3.0 20080202//EN" "http://dtd.nlm.nih.gov/publishing/3.0/journalpublishing3.dtd">' . PHP_EOL;
+            $xmlheader = '<?xml version="1.0"?>'. PHP_EOL;
             
             // create xml document inside job directory
             $xmlFilePath = $newJob->getUploadPath() . '/document.xml';
