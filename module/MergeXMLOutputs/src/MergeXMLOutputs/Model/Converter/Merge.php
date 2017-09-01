@@ -294,6 +294,7 @@ class Merge extends AbstractConverter
 		$xml .= isset($metadata['journal-id']) ? "<journal-id journal-id-type=\"other\">".$metadata['journal-id']."</journal-id>" : "";
 		
 		$xml .= "<journal-title-group>";
+                if(isset($metadata['journal-titles']) && is_object($metadata['journal-titles'])) { $metadata['journal-titles'] = (array) $metadata['journal-titles']; }
 		$xml .= isset($metadata['journal-titles'][$locale]) ? "<journal-title>".$metadata['journal-titles'][$locale]."</journal-title>" : "";
 			if (count($metadata['journal-titles']) > 1){
 				$xml .= "<trans-title-group>";
@@ -321,6 +322,7 @@ class Merge extends AbstractConverter
 		$xml .= isset($metadata['doi']) ? "<article-id pub-id-type=\"doi\">".$metadata['doi']."</article-id>" : "";
 
 		$xml .= "<title-group>";
+                if(isset($metadata['article-titles']) && is_object($metadata['article-titles'])) { $metadata['article-titles'] = (array) $metadata['article-titles']; }
 		$xml .= isset($metadata['article-titles'][$locale]) ? "<article-title>".$metadata['article-titles'][$locale]."</article-title>" : "";
 			if (count($metadata['article-titles']) > 1){
 				$xml .= "<trans-title-group>";
@@ -379,9 +381,10 @@ class Merge extends AbstractConverter
 		}
 		
 		/* Abstracts */
+                if(isset($metadata['abstracts']) && is_object($metadata['abstracts'])) { $metadata['abstracts'] = (array) $metadata['abstracts']; }
 		$xml .= isset($metadata['abstracts'][$locale]) ? "<abstract xml:lang=\"" . $locale . "\">".$metadata['abstracts'][$locale]."</abstract>" : "";
 		
-			if (count($metadata['abstract']) > 1){
+			if (count($metadata['abstracts']) > 1){
 				
 				foreach ($metadata['abstracts'] as $loc => $abstract) {
 					if ($loc == $locale) continue;
