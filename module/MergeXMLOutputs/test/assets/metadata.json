@@ -1,16 +1,75 @@
 {
-    "abstract": "Phasellus vitae ante sit amet metus pharetra congue.",
-    "article-title": "XMLPS METADATA TESTING 101",
-    "institution": "PKP",
-    "journal-title": "Awesome Magazine",
-    "contributors": [
-        {
-            "name": "Kassim M.",
-            "email": "kassim@example.com"
-        },
-        {
-            "name": "Alex G.",
-            "email": "alex@example.com"
-        }
-    ]
+  "locale": "en_US",
+  "article-titles": {
+    "EN": "Testing Document"
+  },
+  "abstracts": {
+    "EN": "Testing"
+  },
+  "journal-titles": {
+    "EN": "Journal of Public Knowledge",
+    "FR": "Journal de la connaissance du public"
+  },
+  "journal-id": "PK",
+  "institution": "",
+  "contributors": [
+    {
+      "firstName": "admin",
+      "lastName": "",
+      "email": "pkpadmin@mailinator.com",
+      "orcid": null,
+      "affiliation": null,
+      "country": null,
+      "bio": null,
+      "contribType": "Journal manager"
+    }
+  ],
+  "issue-details": null,
+  "online-ISSN": "",
+  "print-ISSN": "",
+  "doi": null,
+  "article-id": "26",
+  "copyright-year": null,
+  "copyright-statement": "##submission.copyrightStatement##",
+  "license-url": null,
+  "license": null,
+  "fpage": "",
+  "lpage": "",
+  "page-count": "",
+  "date-published": null,
+  "subj-group-heading": {
+    "_data": {
+      "reviewFormId": "0",
+      "editorRestricted": "0",
+      "sequence": "1",
+      "id": "1",
+      "contextId": "1",
+      "metaIndexed": "1",
+      "metaReviewed": "1",
+      "abstractsNotRequired": "0",
+      "hideTitle": "0",
+      "hideAuthor": "0",
+      "abbrev": {
+        "en_US": "ART"
+      },
+      "identifyType": {
+        "en_US": ""
+      },
+      "policy": {
+        "en_US": ""
+      },
+      "title": {
+        "en_US": "Articles"
+      }
+    },
+    "_hasLoadableAdapters": false,
+    "_metadataExtractionAdapters": [
+      
+    ],
+    "_extractionAdaptersLoaded": false,
+    "_metadataInjectionAdapters": [
+      
+    ],
+    "_injectionAdaptersLoaded": false
+  }
 }
