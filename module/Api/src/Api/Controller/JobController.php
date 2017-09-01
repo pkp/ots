@@ -128,6 +128,8 @@ class JobController extends AbstractActionController
             ));
         }
         
+        // Restore this temporarily to fix XMP until validation is rewritten
+        $fileMetadata = $this->params()->fromPost('fileMetadata');
         // Make sure metadata content is valid if submitted
         //if (($fileMetadata = $this->params()->fromPost('fileMetadata'))) {
         //    $metadata = json_decode($fileMetadata);
