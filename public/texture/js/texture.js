@@ -5532,10 +5532,7 @@ class Texture extends substance.Component {
         readXML: this.props.readXML,
         writeXML: this.props.writeXML
       },
-      exporter: this.jatsExporter,
-      // HACK: Find a better way to pass this information to SaveHandler, as
-      // this does not get updated when new props arrive
-      documentId: this.props.documentId
+      exporter: this.jatsExporter
     }
   }
 
@@ -5570,6 +5567,7 @@ class Texture extends substance.Component {
     if (this.state.editorSession) {
       el.append(
         $$(EditorPackage.Editor, {
+          documentId: this.props.documentId,
           editorSession: this.state.editorSession
         })
       );
@@ -5586,9 +5584,9 @@ class Texture extends substance.Component {
   }
 
   _loadDocument() {
-    console.info('Loading document', this.props.documentId);
     const configurator = this.getConfigurator();
     this.props.readXML(this.props.documentId, function(err, xmlStr) {
+      let dom = substance.DefaultDOMElement.parseXML(xmlStr);
       if (err) {
         console.error(err);
         this.setState({
@@ -5596,12 +5594,8 @@ class Texture extends substance.Component {
         });
         return
       }
-      console.info('.. received XML', xmlStr);
-      let dom = substance.DefaultDOMElement.parseXML(xmlStr);
       const doctype = dom.getDoctype();
       if (doctype.publicId !== 'TextureJATS 1.1') {
-        console.info('.. seems to be a JATS file');
-        console.info('Starting importer...');
         dom = this.jatsImporter.import(dom);
         if (this.jatsImporter.hasErrored()) {
           console.error('Could not transform to TextureJATS');
@@ -5610,18 +5604,11 @@ class Texture extends substance.Component {
           });
           return
         }
-      } else {
-        // TODO: we should still validate TextureJATS
-        console.info('.. it is TextureJATS (no conversion will be applied)');
       }
-
-      console.info('.. we should be fine now.');
       const importer = configurator.createImporter('texture-jats');
       const doc = importer.importDocument(dom);
 
       window.doc = doc;
-
-      console.info('Starting Editor session ...');
       // create editor session
       const editorSession = new substance.EditorSession(doc, {
         configurator: configurator
