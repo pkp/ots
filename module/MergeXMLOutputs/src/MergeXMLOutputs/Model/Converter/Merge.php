@@ -210,6 +210,23 @@ class Merge extends AbstractConverter
           $newXml = preg_replace('/<journal-meta\/>/', '<journal-meta><publisher><publisher-name>Academic Publisher</publisher-name></publisher></journal-meta>', $newXml);
         }
 
+        // Populate //journal-meta/journal-id if it's empty for compatibility
+        $frontXPath = new DOMXPath($meTypesetDom);
+        $frontJournalIDQuery = '//journal-meta/journal-id';
+        $frontJournalIDElements = $frontXPath->query($frontJournalIDQuery);
+        if ($frontJournalIDElements->length == 0) {
+          $newXml = preg_replace('/<journal-meta>/', '<journal-meta><journal-id>Journal</journal-id>', $newXml);
+        }
+
+        // Populate //pub-date/year if it's empty for compatibility
+        $frontXPath = new DOMXPath($meTypesetDom);
+        $frontYearQuery = '//pub-date/year';
+        $frontYearElements = $frontXPath->query($frontYearQuery);
+        if ($frontYearElements->length == 0) {
+          $newXml = preg_replace('/<pub-date>/', '<pub-date><year>20XX</year>', $newXml);
+          $newXml = preg_replace('/<pub-date\/>/', '<pub-date><year>20XX</year></pub-date>', $newXml);
+        }
+
 
         $newXml = $this->process_grobid_xml($this->inputFileGrobid, $newXml);
         
