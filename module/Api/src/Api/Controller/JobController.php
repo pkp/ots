@@ -19,7 +19,7 @@ class JobController extends AbstractActionController
     protected $documentDAO;
     protected $queueManager;
     protected $citationStyles;
-    protected $validMetadataFields = array('abstract', 'article-title', 'institution', 'contributors', 'journal-title', 'journal-id', 'ISSN', 'year');
+    protected $validMetadataFields = array('abstracts', 'article-titles', 'institution', 'contributors', 'journal-titles', 'journal-id', 'year', 'locale', 'issue-details', 'online-ISSN', 'print-ISSN', 'doi', 'article-id', 'copyright-year', 'copyright-statement', 'license-url', 'license', 'fpage', 'lpage', 'page-count', 'date-published', 'subj-group-heading');
     protected $validMetadataContributorsFields = array('name','email');
 
     /**
@@ -129,15 +129,15 @@ class JobController extends AbstractActionController
         }
         
         // Make sure metadata content is valid if submitted
-        if (($fileMetadata = $this->params()->fromPost('fileMetadata'))) {
-            $metadata = json_decode($fileMetadata);
-            if (is_null($metadata) || $this->_metadataContainsInvalidFields($metadata)) {
-                return new JsonModel(array(
-                        'error' => $this->translator->translate('job.api.error.fileMetadataNotValid'),
-                        'status' => 'error',
-                ));
-            }
-        }
+        //if (($fileMetadata = $this->params()->fromPost('fileMetadata'))) {
+        //    $metadata = json_decode($fileMetadata);
+        //    if (is_null($metadata) || $this->_metadataContainsInvalidFields($metadata)) {
+        //        return new JsonModel(array(
+        //                'error' => $this->translator->translate('job.api.error.fileMetadataNotValid'),
+        //                'status' => 'error',
+        //        ));
+        //    }
+        //}
 
         // Create a new job instance
         $job = $this->jobDAO->getInstance();
