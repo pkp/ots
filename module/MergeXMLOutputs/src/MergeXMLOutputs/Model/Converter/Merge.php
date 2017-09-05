@@ -284,18 +284,18 @@ class Merge extends AbstractConverter
     protected function _buildArticleMetaNode($metadata)
     {
         $metadata = (array) $metadata;        
-		$locale = isset($metadata['locale']) ? strtoupper(substr($metadata['locale'], 0, 2)) : '';
+		$locale = !empty($metadata['locale']) ? strtoupper(substr($metadata['locale'], 0, 2)) : '';
 		
 		
         $xml = "<front>";
 		
 		/* Journal meta */
 		$xml .= "<journal-meta>";
-		$xml .= isset($metadata['journal-id']) ? "<journal-id journal-id-type=\"other\">".$metadata['journal-id']."</journal-id>" : "";
+		$xml .= !empty($metadata['journal-id']) ? "<journal-id journal-id-type=\"other\">".$metadata['journal-id']."</journal-id>" : "";
 		
 		$xml .= "<journal-title-group>";
-                if(isset($metadata['journal-titles']) && is_object($metadata['journal-titles'])) { $metadata['journal-titles'] = (array) $metadata['journal-titles']; }
-		$xml .= isset($metadata['journal-titles'][$locale]) ? "<journal-title>".$metadata['journal-titles'][$locale]."</journal-title>" : "";
+                if(!empty($metadata['journal-titles']) && is_object($metadata['journal-titles'])) { $metadata['journal-titles'] = (array) $metadata['journal-titles']; }
+		$xml .= !empty($metadata['journal-titles'][$locale]) ? "<journal-title>".$metadata['journal-titles'][$locale]."</journal-title>" : "";
 			if (count($metadata['journal-titles']) > 1){
 				$xml .= "<trans-title-group>";
 				
@@ -309,21 +309,21 @@ class Merge extends AbstractConverter
 			
 		$xml .= "</journal-title-group>";
 		
-		$xml .= isset($metadata['online-ISSN']) ? "<issn pub-type=\"epub\">".$metadata['online-ISSN']."</issn>" : "";
-		$xml .= isset($metadata['print-ISSN']) ? "<issn pub-type=\"ppub\">".$metadata['print-ISSN']."</issn>" : "";
+		$xml .= !empty($metadata['online-ISSN']) ? "<issn pub-type=\"epub\">".$metadata['online-ISSN']."</issn>" : "";
+		$xml .= !empty($metadata['print-ISSN']) ? "<issn pub-type=\"ppub\">".$metadata['print-ISSN']."</issn>" : "";
 	     
-		$xml .= isset($metadata['institution']) ? "<publisher><publisher-name>".$metadata['institution']."</publisher-name></publisher>" : "";
+		$xml .= !empty($metadata['institution']) ? "<publisher><publisher-name>".$metadata['institution']."</publisher-name></publisher>" : "";
 		
 		$xml .= "</journal-meta>";
 		
 		/* Article meta */
 		$xml .= "<article-meta>";
-		$xml .= isset($metadata['article-id']) ? "<article-id pub-id-type=\"other\">".$metadata['article-id']."</article-id>" : "";
-		$xml .= isset($metadata['doi']) ? "<article-id pub-id-type=\"doi\">".$metadata['doi']."</article-id>" : "";
+		$xml .= !empty($metadata['article-id']) ? "<article-id pub-id-type=\"other\">".$metadata['article-id']."</article-id>" : "";
+		$xml .= !empty($metadata['doi']) ? "<article-id pub-id-type=\"doi\">".$metadata['doi']."</article-id>" : "";
 
 		$xml .= "<title-group>";
-                if(isset($metadata['article-titles']) && is_object($metadata['article-titles'])) { $metadata['article-titles'] = (array) $metadata['article-titles']; }
-		$xml .= isset($metadata['article-titles'][$locale]) ? "<article-title>".$metadata['article-titles'][$locale]."</article-title>" : "";
+                if(!empty($metadata['article-titles']) && is_object($metadata['article-titles'])) { $metadata['article-titles'] = (array) $metadata['article-titles']; }
+		$xml .= !empty($metadata['article-titles'][$locale]) ? "<article-title>".$metadata['article-titles'][$locale]."</article-title>" : "";
 			if (count($metadata['article-titles']) > 1){
 				$xml .= "<trans-title-group>";
 				
@@ -339,7 +339,7 @@ class Merge extends AbstractConverter
 
 		/* Contributors */
 		$xml .= "<contrib-group>";		
-		$contributors = isset($metadata['contributors']) ? $metadata['contributors'] : array();
+		$contributors = !empty($metadata['contributors']) ? $metadata['contributors'] : array();
 		$count = 0;
 		foreach ($contributors as $c) {
 			$count++;
@@ -358,43 +358,43 @@ class Merge extends AbstractConverter
 		$xml .= "</contrib-group>";
 
 		/* Issue details */
-		if (isset($metadata['issue-details'])){
+		if (!empty($metadata['issue-details'])){
 			$issueDetails = $metadata['issue-details'];
-			if (isset($issueDetails['issue-year'])) $xml .=  "<pub-date pub-type=\"collection\"><year>" . $issueDetails['issue-year'] . "</year></pub-date>";
-			if (isset($issueDetails['issue-volume'])) $xml .=  "<volume>" . $issueDetails['issue-volume'] . "</volume>";
-			if (isset($issueDetails['issue-number'])) $xml .=  "<issue>" . $issueDetails['issue-number'] . "</issue>";
-			if (isset($issueDetails['issue-title'])) $xml .=  "<issue-title>" . $issueDetails['issue-title'] . "</issue-title>";
+			if (!empty($issueDetails['issue-year'])) $xml .=  "<pub-date pub-type=\"collection\"><year>" . $issueDetails['issue-year'] . "</year></pub-date>";
+			if (!empty($issueDetails['issue-volume'])) $xml .=  "<volume>" . $issueDetails['issue-volume'] . "</volume>";
+			if (!empty($issueDetails['issue-number'])) $xml .=  "<issue>" . $issueDetails['issue-number'] . "</issue>";
+			if (!empty($issueDetails['issue-title'])) $xml .=  "<issue-title>" . $issueDetails['issue-title'] . "</issue-title>";
 		}		
 	
 		/* Pages */
-		$xml .= isset($metadata['fpage']) ? "<fpage>".$metadata['fpage']."</fpage>" : "";
-		$xml .= isset($metadata['lpage']) ? "<lpage>".$metadata['lpage']."</lpage>" : "";
+		$xml .= !empty($metadata['fpage']) ? "<fpage>".$metadata['fpage']."</fpage>" : "";
+		$xml .= !empty($metadata['lpage']) ? "<lpage>".$metadata['lpage']."</lpage>" : "";
 		
-		if (isset($metadata['copyright-statement']) || isset($metadata['copyright-year']) || isset($metadata['license'])){
+		if (!empty($metadata['copyright-statement']) || !empty($metadata['copyright-year']) || !empty($metadata['license'])){
 			$xml .= "<permissions>";
-			$xml .= isset($metadata['copyright-statement']) ? "<copyright-statement>".$metadata['copyright-statement']."</copyright-statement>" : "";
-			$xml .= isset($metadata['copyright-year']) ? "<copyright-year>".$metadata['copyright-year']."</copyright-year>" : "";
+			$xml .= !empty($metadata['copyright-statement']) ? "<copyright-statement>".$metadata['copyright-statement']."</copyright-statement>" : "";
+			$xml .= !empty($metadata['copyright-year']) ? "<copyright-year>".$metadata['copyright-year']."</copyright-year>" : "";
 			
-			$xml .= isset($metadata['licence']) ? "<license xlink:href=\"" . $metadata['licence-url'] . "\"><license-p>". $metadata['licence'] ."</license-p>" : "";
+			$xml .= !empty($metadata['licence']) ? "<license xlink:href=\"" . $metadata['licence-url'] . "\"><license-p>". $metadata['licence'] ."</license-p>" : "";
 			
 			$xml .= "</permissions>";
 		}
 		
 		/* Abstracts */
-                if(isset($metadata['abstracts']) && is_object($metadata['abstracts'])) { $metadata['abstracts'] = (array) $metadata['abstracts']; }
-		$xml .= isset($metadata['abstracts'][$locale]) ? "<abstract xml:lang=\"" . $locale . "\">".$metadata['abstracts'][$locale]."</abstract>" : "";
+                if(!empty($metadata['abstracts']) && is_object($metadata['abstracts'])) { $metadata['abstracts'] = (array) $metadata['abstracts']; }
+		$xml .= !empty($metadata['abstracts'][$locale]) ? "<abstract xml:lang=\"" . $locale . "\">".$metadata['abstracts'][$locale]."</abstract>" : "";
 		
 			if (count($metadata['abstracts']) > 1){
 				
 				foreach ($metadata['abstracts'] as $loc => $abstract) {
 					if ($loc == $locale) continue;
-					$xml .= isset($metadata['abstracts'][$loc]) ? "<abstract-trans xml:lang=\"" . $loc . "\">".$abstract."</abstract-trans>" : "";
+					$xml .= !empty($metadata['abstracts'][$loc]) ? "<abstract-trans xml:lang=\"" . $loc . "\">".$abstract."</abstract-trans>" : "";
 					
 				}
 				
 			}
 		
-		$xml .= isset($metadata['page-count']) ? "<counts><page-count count=\"".$metadata['page-count']."\" /></counts>" : "";
+		$xml .= !empty($metadata['page-count']) ? "<counts><page-count count=\"".$metadata['page-count']."\" /></counts>" : "";
 
 		$xml .= "</article-meta>";
    		
