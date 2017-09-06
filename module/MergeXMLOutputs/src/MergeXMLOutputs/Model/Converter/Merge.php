@@ -308,7 +308,7 @@ class Merge extends AbstractConverter
 			
 		$xml .= "</journal-title-group>";
 		
-		$xml .= !empty($metadata['online-ISSN']) ? "<issn pub-type=\"epub\">".$metadata['online-ISSN']."</issn>" : "";
+		$xml .= !empty($metadata['online-ISSN']) ? "<issn pub-type=\"epub\">".$metadata['online-ISSN']."</issn>" : "<issn pub-type=\"epub\">ISSN</issn>";
 		$xml .= !empty($metadata['print-ISSN']) ? "<issn pub-type=\"ppub\">".$metadata['print-ISSN']."</issn>" : "";
 	     
 		$xml .= !empty($metadata['institution']) ? "<publisher><publisher-name>".$metadata['institution']."</publisher-name></publisher>" : "";
@@ -359,7 +359,7 @@ class Merge extends AbstractConverter
 		/* Issue details */
 		if (!empty($metadata['issue-details'])){
 			$issueDetails = $metadata['issue-details'];
-			if (!empty($issueDetails['issue-year'])) $xml .=  "<pub-date pub-type=\"collection\"><year>" . $issueDetails['issue-year'] . "</year></pub-date>";
+			$xml .=  !empty($issueDetails['issue-year']) ? "<pub-date pub-type=\"collection\"><year>" . $issueDetails['issue-year'] . "</year></pub-date>" : "<pub-date pub-type=\"collection\"><year>" . date("Y") . "</year></pub-date>";
 			if (!empty($issueDetails['issue-volume'])) $xml .=  "<volume>" . $issueDetails['issue-volume'] . "</volume>";
 			if (!empty($issueDetails['issue-number'])) $xml .=  "<issue>" . $issueDetails['issue-number'] . "</issue>";
 			if (!empty($issueDetails['issue-title'])) $xml .=  "<issue-title>" . $issueDetails['issue-title'] . "</issue-title>";
@@ -381,13 +381,13 @@ class Merge extends AbstractConverter
 		
 		/* Abstracts */
                 if(!empty($metadata['abstracts']) && is_object($metadata['abstracts'])) { $metadata['abstracts'] = (array) $metadata['abstracts']; }
-		$xml .= !empty($metadata['abstracts'][$locale]) ? "<abstract xml:lang=\"" . $locale . "\">".$metadata['abstracts'][$locale]."</abstract>" : "";
+		$xml .= !empty($metadata['abstracts'][$locale]) ? "<abstract xml:lang=\"" . $locale . "\"><p>".$metadata['abstracts'][$locale]."</p></abstract>" : "";
 		
 			if (count($metadata['abstracts']) > 1){
 				
 				foreach ($metadata['abstracts'] as $loc => $abstract) {
 					if ($loc == $locale) continue;
-					$xml .= !empty($metadata['abstracts'][$loc]) ? "<abstract-trans xml:lang=\"" . $loc . "\">".$abstract."</abstract-trans>" : "";
+					$xml .= !empty($metadata['abstracts'][$loc]) ? "<abstract-trans xml:lang=\"" . $loc . "\"><p>".$abstract."</p></abstract-trans>" : "";
 					
 				}
 				
