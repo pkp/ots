@@ -210,15 +210,15 @@ class Manager {
             // all the relevant output products.
             case JOB_CONVERSION_STAGE_PDF:
                 if ($job->referenceParsingSuccess) {
-                    $this->queueJob($job, 'zip');
+                    $this->queueJob($job, 'xmp');
                 }
                 else {
                     $this->queueJob($job, 'zip');
                 }
                 break;
-            //case JOB_CONVERSION_STAGE_XMP:
-            //    $this->queueJob($job, 'zip');
-            //    break;
+            case JOB_CONVERSION_STAGE_XMP:
+                $this->queueJob($job, 'zip');
+                break;
 
             default:
                 $this->logger->infoTranslate(
