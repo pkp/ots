@@ -3598,28 +3598,26 @@ function flattenOften(arr, max) {
   return arr
 }
 
-function map(iteratee, func) {
-  if (!iteratee) return []
-  if (!func) func = function(item) { return item };
-  if (Array.isArray(iteratee)) {
-    return iteratee.map(func)
-  } else {
-    return Object.keys(iteratee).map(function(key) {
-      return func(iteratee[key], key)
-    })
-  }
-}
-
 function getRelativeBoundingRect(els, containerEl) {
-  if (els.length === undefined) {
-    els = [els];
+  let nativeCotainerEl;
+  if (containerEl._isDOMElement) {
+    nativeCotainerEl = containerEl.getNativeElement();
+  } else {
+    nativeCotainerEl = containerEl;
   }
-  var elRects = map(els, function(el) {
-    return _getBoundingOffsetsRect(el, containerEl)
+  if (!isArray$1(els)) els = [els];
+  let elRects = els.map((el) => {
+    let nativeEl;
+    if (el._isDOMElement) {
+      nativeEl = el.getNativeElement();
+    } else {
+      nativeEl = el;
+    }
+    return _getBoundingOffsetsRect(nativeEl, nativeCotainerEl)
   });
 
-  var elsRect = _getBoundingRect(elRects);
-  var containerElRect = containerEl.getBoundingClientRect();
+  let elsRect = _getBoundingRect(elRects);
+  let containerElRect = nativeCotainerEl.getBoundingClientRect();
   return {
     left: elsRect.left,
     top: elsRect.top,
@@ -3798,6 +3796,18 @@ function parseKeyEvent(event, onlyModifiers) {
 
 function last$1(arr) {
   return arr[arr.length-1]
+}
+
+function map(iteratee, func) {
+  if (!iteratee) return []
+  if (!func) func = function(item) { return item };
+  if (Array.isArray(iteratee)) {
+    return iteratee.map(func)
+  } else {
+    return Object.keys(iteratee).map(function(key) {
+      return func(iteratee[key], key)
+    })
+  }
 }
 
 function merge$1(a, b, options) {
@@ -7797,6 +7807,10 @@ class DocumentChange {
 
   
   _extractInformation(doc) {
+    
+    
+    if (this._extracted) return
+
     let ops = this.ops;
     let created = {};
     let deleted = {};
@@ -7885,6 +7899,8 @@ class DocumentChange {
     this.created = created;
     this.deleted = deleted;
     this.updated = updated;
+
+    this._extracted = true;
   }
 
   invert() {
@@ -11150,38 +11166,46 @@ var AnnotationMixin = function(DocumentNode) {
   AbstractAnnotation.prototype._isAnnotation = true;
 
   AbstractAnnotation.schema = {
-    start: "coordinate",
-    end: "coordinate"
+    start: { type: "coordinate", default: { path: [], offset: 0 } },
+    end: { type: "coordinate", default: { path: [], offset: 0 } }
   };
 
   return AbstractAnnotation
 };
 
 function _normalizedProps(props) {
+  
+  
   if (!props.hasOwnProperty('start')) {
     
     
-    props = Object.assign({}, props);
-    props.start = {
-      path: props.startPath || props.path,
-      offset: props.startOffset
-    };
-    props.end = {};
-    if (props.hasOwnProperty('endPath')) {
-      props.end.path = props.endPath;
-    } else {
-      props.end.path = props.start.path;
+    
+    let start, end;
+    if (props.hasOwnProperty('startPath') || props.hasOwnProperty('path')) {
+      start = {
+        path: props.startPath || props.path,
+        offset: props.startOffset
+      };
     }
-    if (props.hasOwnProperty('endOffset')) {
-      props.end.offset = props.endOffset;
-    } else {
-      props.end.offset = props.start.offset;
+    if (props.hasOwnProperty('endPath') || props.hasOwnProperty('endOffset')) {
+      end = {
+        path: props.endPath || props.path,
+        offset: props.endOffset
+      };
     }
-    delete props.path;
-    delete props.startPath;
-    delete props.endPath;
-    delete props.startOffset;
-    delete props.endOffset;
+    if (start && !end) {
+      end = cloneDeep(start);
+    }
+    if (start) {
+      props = Object.assign({}, props);
+      delete props.path;
+      delete props.startPath;
+      delete props.endPath;
+      delete props.startOffset;
+      delete props.endOffset;
+      props.start = start;
+      props.end = end;
+    }
   } else if (props.hasOwnProperty('end') && !props.end.path) {
     props.end.path = props.start.path;
   }
@@ -12196,6 +12220,13 @@ class Schema {
 
   
   constructor(name, version) {
+    if (!name) {
+      throw new Error("'name' is mandatory")
+    }
+    if (!version) {
+      throw new Error("'version' is mandatory")
+    }
+
     
     this.name = name;
     
@@ -12282,8 +12313,6 @@ PropertyAnnotation.autoExpandRight = true;
 
 PropertyAnnotation.schema = {
   type: "annotation",
-  start: "coordinate",
-  end: "coordinate",
   
   
   _content: { type: "string", optional: true}
@@ -12291,16 +12320,18 @@ PropertyAnnotation.schema = {
 
 class DocumentSchema extends Schema {
 
-  constructor({ name, DocumentClass, defaultTextType='text', version='0.0.0' }) {
-    super(name, version);
-
+  constructor(schemaSpec) {
+    super(schemaSpec.name, schemaSpec.version);
     
-    if (!DocumentClass) {
+    if (!schemaSpec.DocumentClass) {
       throw new Error('DocumentClass is mandatory')
     }
+    Object.assign(this, schemaSpec);
 
-    this.DocumentClass = DocumentClass;
-    this.defaultTextType = defaultTextType;
+    
+    if (!this.defaultTextType) {
+      this.defaultTextType = 'text';
+    }
   }
 
   getDocumentClass() {
@@ -13276,6 +13307,12 @@ class DOMImporter {
   
   _wrapInlineElementsIntoBlockElement(childIterator) {
     if (!childIterator.hasNext()) return
+
+    const converter = this._defaultBlockConverter;
+    if (!converter) {
+      throw new Error('Wrapping inline elements automatically is not supported in this schema.')
+    }
+
     let dom = childIterator.peek().getOwnerDocument();
     let wrapper = dom.createElement('wrapper');
     while(childIterator.hasNext()) {
@@ -13290,7 +13327,6 @@ class DOMImporter {
     }
     const type = this.schema.getDefaultTextType();
     const id = this._getNextId(dom, type);
-    const converter = this._defaultBlockConverter;
     let nodeData = { type, id };
     this.state.pushContext('wrapper', converter);
     nodeData = converter.import(wrapper, nodeData, this) || nodeData;
@@ -26636,7 +26672,7 @@ class Transaction {
   }
 
   
-  _recordChange(transformation, selection) {
+  _recordChange(transformation, selection, info) {
     if (this._isTransacting) throw new Error('Nested transactions are not supported.')
     if (!isFunction$1(transformation)) throw new Error('Document.transaction() requires a transformation function.')
     let hasFinished = false;
@@ -26653,9 +26689,25 @@ class Transaction {
       let ops = this.ops;
       if (ops.length > 0) {
         change = new DocumentChange(ops, tx._before, tx._after);
+        change.info = info;
         change.before = { selection: selBefore };
         change.after = { selection: tx.getSelection() };
       }
+      
+      
+      if (this.master._isXMLDocument) {
+        if (info && info.action === 'type') {
+          
+          
+        } else {
+          let res = this.stage._validateChange(change);
+          if (!res.ok) {
+            
+            throw new Error('Transaction is violating the schema: \n' + res.errors.map(err=>err.msg).join('\n'))
+          }
+        }
+      }
+
       hasFinished = true;
     } finally {
       if (!hasFinished) {
@@ -26767,6 +26819,12 @@ class XMLImporter extends DOMImporter {
     let dom = DefaultDOMElement.parseXML(xml);
     this.convertDocument(dom);
     return this.state.doc
+  }
+
+  convertDocument(xmlDocument) {
+    let rootNode = xmlDocument.children[0];
+    if (!rootNode) throw new Error('XML Root node could not be found.')
+    this.convertElement(rootNode);
   }
 
 }
@@ -27295,6 +27353,12 @@ class SnapshotEngine {
     let closestVersion;
 
     this.snapshotStore.getVersions(documentId, (err, versions) => {
+      if (err) return cb(err)
+
+      if(versions.length === 0) {
+        return cb(null, undefined)
+      }
+
       if (versions.indexOf(version) >= 0) {
         closestVersion = version;
       } else {
@@ -27308,7 +27372,7 @@ class SnapshotEngine {
       if (!closestVersion) {
         return cb(null, undefined)
       }
-      this.snapshotStore.getSnapshot(documentId, version, cb);
+      this.snapshotStore.getSnapshot(documentId, closestVersion, cb);
     });
   }
 }
@@ -30362,15 +30426,19 @@ class TextPropertyComponent extends AnnotatedTextComponent {
   }
 
   didMount() {
-    if (this.context.surface && this.context.surface.hasNativeSpellcheck()) {
-      this.domObserver = new window.MutationObserver(this._onDomMutations.bind(this));
-      this.domObserver.observe(this.el.getNativeElement(), { subtree: true, characterData: true, characterDataOldValue: true });
-    }
+    
+    
+    
+    
+    
   }
 
   dispose() {
     if (this.context.markersManager) {
       this.context.markersManager.deregister(this);
+    }
+    if (this.domObserver) {
+      this.domObserver.disconnect();
     }
   }
 
@@ -30433,6 +30501,7 @@ class TextPropertyComponent extends AnnotatedTextComponent {
   }
 
   _onDomMutations(mutations) {
+    
     
     if (mutations.length === 2 && mutations[0].target === mutations[1].target) {
       let textEl = DefaultDOMElement.unwrap(mutations[0].target);
@@ -34083,6 +34152,11 @@ class Configurator {
   }
 
   createArticle(seed) {
+    console.warn('DEPRECATED: createArticle is now called createDocument');
+    return this.createDocument(seed)
+  }
+
+  createDocument(seed) {
     const schema = this.getSchema();
     const DocumentClass = schema.getDocumentClass();
     let doc = new DocumentClass(schema);
@@ -34311,6 +34385,9 @@ class UnsupportedNodeComponent extends Component {
   }
 }
 
+const BROWSER_DELAY = platform.isFF ? 1 : 0;
+
+
 class Surface extends Component {
 
   constructor(...args) {
@@ -34409,6 +34486,7 @@ class Surface extends Component {
         
         if (!platform.isIE) {
           el.on('compositionstart', this.onCompositionStart);
+          el.on('compositionend', this.onCompositionEnd);
         }
         
         
@@ -34588,6 +34666,8 @@ class Surface extends Component {
           return this._handleDeleteKey(event)
         case keys$1.ESCAPE:
           return this._handleEscapeKey(event)
+        case keys$1.SPACE:
+          return this._handleSpaceKey(event)
         default:
           break
       }
@@ -34600,7 +34680,6 @@ class Surface extends Component {
     event.preventDefault();
     event.stopPropagation();
     if (!event.data) return
-
     let text = event.data;
     if (!this.editorSession.keyboardManager.onTextInput(text)) {
       this.editorSession.transaction((tx) => {
@@ -34612,6 +34691,42 @@ class Surface extends Component {
   
   onCompositionStart(event) {
     if (!this._shouldConsumeEvent(event)) return
+    
+    
+    
+    
+    
+    
+    
+    if (event.data) {
+      let l = event.data.length;
+      let sel = this.editorSession.getSelection();
+      if (sel.isPropertySelection() && sel.isCollapsed()) {
+        
+        let offset = sel.start.offset;
+        this.editorSession.setSelection(sel.createWithNewRange(offset-l, offset));
+      }
+    }
+  }
+
+  onCompositionEnd(event) {
+    if (!this._shouldConsumeEvent(event)) return
+    
+    
+    
+    if (platform.isFF) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!event.data) return
+      this._delayed(() => {
+        let text = event.data;
+        if (!this.editorSession.keyboardManager.onTextInput(text)) {
+          this.editorSession.transaction((tx) => {
+            tx.insertText(text);
+          }, { action: 'type' });
+        }
+      });
+    }
   }
 
   
@@ -34718,10 +34833,10 @@ class Surface extends Component {
     
     
     
-    setTimeout(function() {
+    this._delayed(() => {
       let sel = this.domSelection.getSelection();
       this._setSelection(sel);
-    }.bind(this));
+    });
   }
 
   
@@ -34840,45 +34955,56 @@ class Surface extends Component {
     let direction = (event.keyCode === keys$1.LEFT) ? 'left' : 'right';
     
     
-    window.setTimeout(function() {
+    this._delayed(() => {
       this._updateModelSelection({direction});
-    }.bind(this));
+    });
   }
 
   _handleUpOrDownArrowKey(event) {
     event.stopPropagation();
     
     
-    window.setTimeout(function() {
+    this._delayed(() => {
       let options = {
         direction: (event.keyCode === keys$1.UP) ? 'left' : 'right'
       };
       this._updateModelSelection(options);
-    }.bind(this));
+    });
   }
 
   _handleHomeOrEndKey(event) {
     event.stopPropagation();
     
     
-    window.setTimeout(function() {
+    this._delayed(() => {
       let options = {
         direction: (event.keyCode === keys$1.HOME) ? 'left' : 'right'
       };
       this._updateModelSelection(options);
-    }.bind(this));
+    });
   }
 
   _handlePageUpOrDownKey(event) {
     event.stopPropagation();
     
     
-    window.setTimeout(function() {
+    this._delayed(() => {
       let options = {
         direction: (event.keyCode === keys$1.PAGEUP) ? 'left' : 'right'
       };
       this._updateModelSelection(options);
-    }.bind(this));
+    });
+  }
+
+  _handleSpaceKey(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    const text = ' ';
+    if (!this.editorSession.keyboardManager.onTextInput(text)) {
+      this.editorSession.transaction((tx) => {
+        tx.insertText(text);
+      }, { action: 'type' });
+    }
   }
 
   _handleTabKey(event) {
@@ -34893,7 +35019,7 @@ class Surface extends Component {
         code: event.code
       });
     } else {
-      window.setTimeout(()=>{
+      this._delayed(()=>{
         this._updateModelSelection();
       });
     }
@@ -35018,6 +35144,10 @@ class Surface extends Component {
 
   get id() {
     return this._surfaceId
+  }
+
+  _delayed(fn) {
+    window.setTimeout(fn, BROWSER_DELAY);
   }
 
 }
@@ -35205,7 +35335,7 @@ class ContainerEditor extends Surface {
       }
     }
 
-    window.setTimeout(() => {
+    this._delayed(() => {
       this._updateModelSelection({ direction });
     });
   }
@@ -35248,7 +35378,7 @@ class ContainerEditor extends Surface {
       }
     }
 
-    window.setTimeout(() => {
+    this._delayed(() => {
       this._updateModelSelection({ direction });
     });
   }
@@ -35825,7 +35955,7 @@ class EditorSession extends EventEmitter {
     const t = this._transaction;
     info = info || {};
     t._sync();
-    let change = t._recordChange(transformation, this.getSelection(), this.getFocusedSurface());
+    let change = t._recordChange(transformation, this.getSelection(), info);
     if (change) {
       this._commit(change, info);
     } else {
@@ -35844,7 +35974,7 @@ class EditorSession extends EventEmitter {
     this._undoRedo('redo');
   }
 
-
+  
 
   on(...args) {
     let name = args[0];
@@ -37031,9 +37161,9 @@ class TextPropertyEditor extends Surface {
   }
 
   _handleEnterKey(event) {
-    event.preventDefault();
     event.stopPropagation();
-    if (this.props.multiLine) {
+    if (!this.props.multiLine) {
+      event.preventDefault();
       super._handleEnterKey(event);
     }
     this.el.emit('enter', {
@@ -37536,7 +37666,7 @@ class Scrollbar extends Component {
           if (!nodeEl) return
 
           
-          let rect = getRelativeBoundingRect(nodeEl.getNativeElement(), contentEl.getNativeElement());
+          let rect = getRelativeBoundingRect(nodeEl, contentEl);
           let top = rect.top / this.factor;
           let height = rect.height / this.factor;
 
@@ -37776,9 +37906,8 @@ class ScrollPane$$1 extends AbstractScrollPane$$1 {
 
   
   getPanelOffsetForElement(el) {
-    let nativeEl = el.getNativeElement();
-    let contentContainerEl = this.refs.content.getNativeElement();
-    let rect = getRelativeBoundingRect(nativeEl, contentContainerEl);
+    let contentContainerEl = this.refs.content.el;
+    let rect = getRelativeBoundingRect(el, contentContainerEl);
     return rect.top
   }
 
@@ -38138,7 +38267,7 @@ class CollabSession extends EditorSession {
   _applyRemoteChange(change) {
     
     if (change.ops.length > 0) {
-      this._transaction._apply(change);
+      this._transaction.__applyChange__(change);
       this.getDocument()._apply(change);
       this._setDirty('document');
       
@@ -38367,16 +38496,44 @@ class XMLDocumentNode extends DocumentNode {
     return (parentNode && parentNode.isContainer())
   }
 
+  get children() {
+    return this.getChildren()
+  }
+
   getChildren() {
     
     return this.getChildNodes()
   }
 
   getChildNodes() {
-    if (this.childNodes) {
-      return documentHelpers.getNodes(this.getDocument(), this.childNodes)
+    if (this._childNodes) {
+      return documentHelpers.getNodes(this.getDocument(), this._childNodes)
     } else {
       return []
+    }
+  }
+
+  getChildCount() {
+    if (this._childNodes) {
+      return this._childNodes.length
+    } else {
+      return 0
+    }
+  }
+
+  getChildNodeIterator() {
+    return new ArrayIterator(this.getChildNodes())
+  }
+
+  getFirstChild() {
+    if (this._childNodes) {
+      return this.getDocument().get(this._childNodes[0])
+    }
+  }
+
+  getLastChild() {
+    if (this._childNodes) {
+      return this.getDocument().get(last$1(this._childNodes))
     }
   }
 
@@ -38467,26 +38624,18 @@ XMLAnnotationNode.prototype._isPropertyAnnotation = true;
 
 XMLAnnotationNode.type = 'annotation';
 
-XMLAnnotationNode.schema = {
-  start: "coordinate",
-  end: "coordinate"
-};
+
+XMLAnnotationNode.schema = {};
 
 class XMLElementNode extends XMLDocumentNode {
 
   appendChild(child) {
-    let schema = this.getElementSchema();
-    let pos = schema.findLastValidPos(this, child.type);
-      
-    if (pos < 0) {
-      throw new Error(`'${child.type}' can not be inserted without violating the schema.`)
-    }
-    this.insertAt(pos, child);
+    this.insertAt(this._childNodes.length, child);
   }
 
   removeChild(child) {
     const childId = child.id;
-    const childPos = this.childNodes.indexOf(childId);
+    const childPos = this._childNodes.indexOf(childId);
     if (childPos >= 0) {
       this.removeAt(childPos);
     } else {
@@ -38496,10 +38645,10 @@ class XMLElementNode extends XMLDocumentNode {
   }
 
   insertAt(pos, child) {
-    const length = this.childNodes.length;
+    const length = this._childNodes.length;
     if (pos >= 0 && pos <= length) {
       const doc = this.getDocument();
-      doc.update([this.id, 'childNodes'], { type: 'insert', pos, value: child.id });
+      doc.update([this.id, '_childNodes'], { type: 'insert', pos, value: child.id });
     } else {
       throw new Error('Index out of bounds.')
     }
@@ -38507,10 +38656,10 @@ class XMLElementNode extends XMLDocumentNode {
   }
 
   removeAt(pos) {
-    const length = this.childNodes.length;
+    const length = this._childNodes.length;
     if (pos >= 0 && pos < length) {
       const doc = this.getDocument();
-      doc.update([this.id, 'childNodes'], { type: 'delete', pos: pos });
+      doc.update([this.id, '_childNodes'], { type: 'delete', pos: pos });
     } else {
       throw new Error('Index out of bounds.')
     }
@@ -38527,6 +38676,8 @@ class XMLElementNode extends XMLDocumentNode {
     return true
   }
 
+  
+
 }
 
 XMLElementNode.prototype.append = DOMElement.prototype.append;
@@ -38536,7 +38687,7 @@ XMLElementNode.prototype._elementType = 'element';
 XMLElementNode.type = 'element';
 
 XMLElementNode.schema = {
-  childNodes: { type: ['array', 'id'], default: [], owned: true}
+  _childNodes: { type: ['array', 'id'], default: [], owned: true}
 };
 
 XMLElementNode.isBlock = true;
@@ -38544,11 +38695,11 @@ XMLElementNode.isBlock = true;
 class XMLContainerNode extends ContainerMixin(XMLElementNode) {
 
   getContentPath() {
-    return [this.id, 'childNodes']
+    return [this.id, '_childNodes']
   }
 
   getContent() {
-    return this.childNodes
+    return this._childNodes
   }
 
   isContainer() {
@@ -38587,7 +38738,7 @@ class ParentNodeHook$2 {
         switch(node._elementType) {
           case 'element':
           case 'container': {
-            _setParent(node, node.childNodes);
+            _setParent(node, node._childNodes);
             _setRegisteredParent(node);
             break
           }
@@ -38601,7 +38752,7 @@ class ParentNodeHook$2 {
         
         
         let update = op.diff;
-        if (op.path[1] === 'childNodes') {
+        if (op.path[1] === '_childNodes') {
           if (update.isInsert()) {
             _setParent(node, update.getValue());
           } else if (update.isDelete()) {
@@ -38611,7 +38762,7 @@ class ParentNodeHook$2 {
         break
       }
       case 'set': {
-        if (op.path[1] === 'childNodes') {
+        if (op.path[1] === '_childNodes') {
           _setParent(null, op.getOldValue());
           _setParent(node, op.getValue());
         }
@@ -38733,7 +38884,44 @@ class XMLDocument extends Document {
     return this.getXMLSchema().getElementSchema(type)
   }
 
+  _validateChange(change) {
+    let changed = {};
+    let deleted = [];
+    change.ops.forEach((op) => {
+      switch (op.type) {
+        case "delete": {
+          deleted.push(op.val.id);
+          break
+        }
+        case "create": {
+          changed[op.val.id] = true;
+          break
+        }
+        default: {
+          changed[op.path[0]] = true;
+        }
+      }
+    });
+    
+    deleted.forEach(id => delete changed[id]);
+
+    const xmlSchema = this.getXMLSchema();
+    let errors = [];
+    Object.keys(changed).forEach((id) => {
+      let node = this.get(id);
+      let res = xmlSchema.validateElement(node);
+      if (!res.ok) {
+        errors = errors.concat(res.errors);
+      }
+    });
+    return {
+      ok: errors.length === 0,
+      errors
+    }
+  }
 }
+
+XMLDocument.prototype._isXMLDocument = true;
 
 class XMLNodeConverter {
 
@@ -38758,23 +38946,22 @@ class ElementNodeConverter extends XMLNodeConverter {
 
   import(el, node, converter) {
     let it = converter.getChildNodeIterator(el);
-    let childNodes = [];
+    let childNodeIds = [];
     while(it.hasNext()) {
       const childEl = it.next();
       if (childEl.isElementNode()) {
         let childNode = converter.convertElement(childEl);
-        childNodes.push(childNode.id);
+        childNodeIds.push(childNode.id);
       }
     }
-    node.childNodes = childNodes;
+    node._childNodes = childNodeIds;
   }
 
   export(node, el, converter) {
     const doc = node.getDocument();
     el.tagName = this.tagNameNS;
     el.setAttributes(node.attributes);
-    el.childNodes.forEach((id) => {
-      let childNode = doc.get(id);
+    el.childNodes.forEach((childNode) => {
       let childEl = converter.convertNode(childNode);
       el.appendChild(childEl);
     });
@@ -39820,6 +40007,10 @@ class XMLSchema {
     });
   }
 
+  getIdAttribute() {
+    return 'id'
+  }
+
   getTagNames() {
     return Object.keys(this._elementSchemas)
   }
@@ -39859,6 +40050,12 @@ class XMLSchema {
       result.push('');
     });
     return result.join('\n')
+  }
+
+  validateElement(el) {
+    let tagName = el.tagName;
+    let elementSchema = this.getElementSchema(tagName);
+    return _validateElement(elementSchema, el)
   }
 }
 
@@ -39921,6 +40118,7 @@ class ElementSchema {
   findLastValidPos(el, newTag) {
     return this.expr._findInsertPos(el, newTag, 'last')
   }
+
 }
 
 ElementSchema.fromJSON = function(data) {
@@ -39931,6 +40129,80 @@ ElementSchema.fromJSON = function(data) {
     Expression.fromJSON(data.elements)
   )
 };
+
+function _validateElement(elementSchema, el) {
+  let errors = [];
+  let valid = true;
+  { 
+    const res = _checkAttributes(elementSchema, el);
+    if (!res.ok) {
+      errors = errors.concat(res.errors);
+      valid = false;
+    }
+  }
+  { 
+    const res = _checkChildren(elementSchema, el);
+    if (!res.ok) {
+      errors = errors.concat(res.errors);
+      valid = false;
+    }
+  }
+  return {
+    errors,
+    ok: valid
+  }
+}
+
+function _checkAttributes(elementSchema, el) { 
+  return { ok: true }
+}
+
+function _checkChildren(elementSchema, el) {
+  
+  
+  if (elementSchema.type === 'external') {
+    return true
+  }
+  const expr = elementSchema.expr;
+  const state = expr.getInitialState();
+  const iterator = el.getChildNodeIterator();
+  let valid = true;
+  while (valid && iterator.hasNext()) {
+    const childEl = iterator.next();
+    let token;
+    if (childEl.isTextNode()) {
+      
+      if (elementSchema.type !== 'text' && _isTextNodeEmpty(childEl)) {
+        continue
+      }
+      token = TEXT$1;
+    } else if (childEl.isElementNode()) {
+      token = childEl.tagName;
+    } else {
+      continue
+    }
+    if (!expr.consume(state, token)) {
+      valid = false;
+    }
+  }
+  
+  if (state.errors.length > 0) {
+    state.errors.forEach((err) => {
+      err.el = el;
+    });
+  }
+  if (valid && !expr.isFinished(state)) {
+    state.errors.push({
+      msg: `<${el.tagName}> is incomplete.\nSchema: ${expr.toString()}`,
+      el
+    });
+    valid = false;
+  }
+  if (valid) {
+    state.ok = true;
+  }
+  return state
+}
 
 class XMLTextNode extends TextNodeMixin(XMLDocumentNode) {
 
@@ -39997,7 +40269,8 @@ class XMLTextNode extends TextNodeMixin(XMLDocumentNode) {
     throw new Error('This is not implemented yet.')
   }
 
-  isTextNode() {
+  
+  isElementNode() {
     return true
   }
 
@@ -40712,6 +40985,166 @@ XMLInlineElementNode.schema = {
   childNodes: { type: ['array', 'id'], default: [], owned: true},
 };
 
+const { TEXT: TEXT$6 } = DFA;
+
+class ValidatingChildNodeIterator {
+
+  constructor(el, it, expr) {
+    this.el = el;
+    this.it = it;
+    this.expr = expr;
+    this.state = expr.getInitialState();
+    this._oldStates = [];
+  }
+
+  hasNext() {
+    return this.it.hasNext()
+  }
+
+  next() {
+    const state = this.state;
+    const expr = this.expr;
+    let next = this.it.next();
+    let oldState = cloneDeep(this.state);
+    let ok;
+    if (next.isTextNode()) {
+      ok = expr.consume(state, TEXT$6);
+    } else if (next.isElementNode()) {
+      ok = expr.consume(state, next.tagName);
+    }
+    if (!ok) {
+      if (next.isTextNode()) {
+        if (!_isTextNodeEmpty(next)) {
+          console.error(`TEXT is invalid within <${expr.name}>. Skipping.`, next.textContent);
+        }
+      } else if (next.isElementNode()) {
+        let error = last$1(state.errors);
+        console.error(error.msg, this.el.getNativeElement());
+      }
+      
+      this.state = oldState;
+      return next.createComment(next.outerHTML)
+    } else {
+      this._oldStates.push(oldState);
+      return next
+    }
+  }
+
+  back() {
+    this.it.back();
+    this.state = this._oldStates.pop();
+    return this
+  }
+
+  peek() {
+    return this.it.peek()
+  }
+
+}
+
+class XMLDocumentImporter extends DOMImporter {
+
+  constructor(config, context) {
+    
+    super({
+      
+      schema: config.schema,
+      
+      converters: config.converters,
+      idAttribute: config.schema.xmlSchema.getIdAttribute(),
+    }, context);
+    this.xmlSchema = config.schema.xmlSchema;
+  }
+
+  importDocument(dom) {
+    this.reset();
+    const doc = this.state.doc;
+    if (isString$1(dom)) {
+      dom = DefaultDOMElement.parseXML(dom);
+    }
+    const startTag = this.xmlSchema.getStartElement();
+    let rootEl = dom.find(startTag);
+    if (!rootEl) throw new Error(`Could not find <${startTag}> element.`)
+    doc.root = this.convertElement(rootEl);
+    return this.state.doc
+  }
+
+  _initialize() {
+    const schema = this.schema;
+    const defaultTextType = schema.getDefaultTextType();
+    const converters = this.converters;
+
+    this._allConverters = [];
+    this._propertyAnnotationConverters = [];
+    this._blockConverters = [];
+
+    for (let i = 0; i < converters.length; i++) {
+      let converter;
+      if (typeof converters[i] === 'function') {
+        const Converter = converters[i];
+        converter = new Converter();
+      } else {
+        converter = converters[i];
+      }
+      if (!converter.type) {
+        throw new Error('Converter must provide the type of the associated node.')
+      }
+      if (!converter.matchElement && !converter.tagName) {
+        throw new Error('Converter must provide a matchElement function or a tagName property.')
+      }
+      if (!converter.matchElement) {
+        converter.matchElement = this._defaultElementMatcher.bind(converter);
+      }
+      const NodeClass = schema.getNodeClass(converter.type);
+      if (!NodeClass) {
+        throw new Error('No node type defined for converter')
+      }
+      if (!this._defaultBlockConverter && defaultTextType === converter.type) {
+        this._defaultBlockConverter = converter;
+      }
+
+      
+      if (NodeClass.prototype._isAnnotation) {
+        this._propertyAnnotationConverters.push(converter);
+      } else {
+        this._blockConverters.push(converter);
+      }
+    }
+    this._allConverters = this._blockConverters.concat(this._propertyAnnotationConverters);
+  }
+
+  _createNodeData(el, type) {
+    let nodeData = super._createNodeData(el, type);
+    let attributes = {};
+    el.getAttributes().forEach((value, key) => {
+      attributes[key] = value;
+    });
+    nodeData.attributes = attributes;
+    return nodeData
+  }
+
+  getChildNodeIterator(el) {
+    
+    let schema = this.xmlSchema.getElementSchema(el.tagName);
+    let it = el.getChildNodeIterator();
+    return new ValidatingChildNodeIterator(el, it, schema.expr)
+  }
+
+  _convertPropertyAnnotation() {
+    throw new Error('stand-alone annotations are not supported.')
+  }
+
+  _convertInlineNode(el, nodeData, converter) {
+    const path = [];
+    if (converter.import) {
+      nodeData = converter.import(el, nodeData, this) || nodeData;
+    }
+    nodeData.start = { path, offset: 0 };
+    nodeData.end = { offset: 0 };
+    return nodeData
+  }
+}
+
 function registerSchema(config, xmlSchema, DocumentClass) {
   const schemaName = xmlSchema.getName();
   
@@ -40721,7 +41154,9 @@ function registerSchema(config, xmlSchema, DocumentClass) {
     DocumentClass: DocumentClass,
     
     
-    defaultTextType: 'p'
+    defaultTextType: 'p',
+  
+    xmlSchema: xmlSchema
   });
   const tagNames = xmlSchema.getTagNames();
   
@@ -40782,10 +41217,12 @@ function registerSchema(config, xmlSchema, DocumentClass) {
     config.addNode(Node);
     let converter = new ConverterClass(name);
     config.addConverter(schemaName, converter);
+
+    config.addImporter(schemaName, XMLDocumentImporter);
   });
 }
 
-const BUILTIN_ATTRS = ['id', 'type', 'attributes', 'childNodes'];
+const BUILTIN_ATTRS = ['id', 'type', 'attributes', '_childNodes'];
 
 function _defineAttribute(Node, attributeName) {
   let name = attributeName.replace(':', '_');
@@ -40947,8 +41384,6 @@ class SchemaDrivenCommandManager extends CommandManager {
   }
 }
 
-const { TEXT: TEXT$6 } = DFA;
-
 function validateXML(xmlSchema, dom) {
   let root = dom.find(xmlSchema.getStartElement());
   if (!root) {
@@ -40969,10 +41404,7 @@ function validateElement(xmlSchema, el) {
   let q = [el];
   while(q.length>0) {
     let next = q.shift();
-    const tagName = next.tagName;
-    const elementSchema = xmlSchema.getElementSchema(tagName);
-    if (!elementSchema) throw new Error(`Unsupported element: ${tagName}`)
-    let res = _validateElement(elementSchema, next);
+    let res = xmlSchema.validateElement(next);
     if (!res.ok) {
       errors = errors.concat(res.errors);
       valid = false;
@@ -40985,137 +41417,6 @@ function validateElement(xmlSchema, el) {
     errors: errors,
     ok: valid
   }
-}
-
-function _validateElement(elementSchema, el) {
-  let errors = [];
-  let valid = true;
-  { 
-    const res = _checkAttributes(elementSchema, el);
-    if (!res.ok) {
-      errors = errors.concat(res.errors);
-      valid = false;
-    }
-  }
-  { 
-    const res = _checkChildren(elementSchema, el);
-    if (!res.ok) {
-      errors = errors.concat(res.errors);
-      valid = false;
-    }
-  }
-  return {
-    errors,
-    ok: valid
-  }
-}
-
-function _checkAttributes(elementSchema, el) { 
-  return { ok: true }
-}
-
-function _checkChildren(elementSchema, el) {
-  
-  
-  if (elementSchema.type === 'external') {
-    return true
-  }
-  const expr = elementSchema.expr;
-  const state = expr.getInitialState();
-  const iterator = el.getChildNodeIterator();
-  let valid = true;
-  while (valid && iterator.hasNext()) {
-    const childEl = iterator.next();
-    let token;
-    if (childEl.isTextNode()) {
-      
-      if (elementSchema.type !== 'text' && _isTextNodeEmpty(childEl)) {
-        continue
-      }
-      token = TEXT$6;
-    } else if (childEl.isElementNode()) {
-      token = childEl.tagName;
-    } else {
-      continue
-    }
-    if (!expr.consume(state, token)) {
-      valid = false;
-    }
-  }
-  
-  if (state.errors.length > 0) {
-    state.errors.forEach((err) => {
-      err.el = el;
-    });
-  }
-  if (valid && !expr.isFinished(state)) {
-    state.errors.push({
-      msg: `<${el.tagName}> is incomplete.\nSchema: ${expr.toString()}`,
-      el
-    });
-    valid = false;
-  }
-  if (valid) {
-    state.ok = true;
-  }
-  return state
-}
-
-const { TEXT: TEXT$7 } = DFA;
-
-class ValidatingChildNodeIterator {
-
-  constructor(el, it, expr) {
-    this.el = el;
-    this.it = it;
-    this.expr = expr;
-    this.state = expr.getInitialState();
-    this._oldStates = [];
-  }
-
-  hasNext() {
-    return this.it.hasNext()
-  }
-
-  next() {
-    const state = this.state;
-    const expr = this.expr;
-    let next = this.it.next();
-    let oldState = cloneDeep(this.state);
-    let ok;
-    if (next.isTextNode()) {
-      ok = expr.consume(state, TEXT$7);
-    } else if (next.isElementNode()) {
-      ok = expr.consume(state, next.tagName);
-    }
-    if (!ok) {
-      if (next.isTextNode()) {
-        if (!_isTextNodeEmpty(next)) {
-          console.error(`TEXT is invalid within <${expr.name}>. Skipping.`, next.textContent);
-        }
-      } else if (next.isElementNode()) {
-        let error = last$1(state.errors);
-        console.error(error.msg, this.el.getNativeElement());
-      }
-      
-      this.state = oldState;
-      return next.createComment(next.outerHTML)
-    } else {
-      this._oldStates.push(oldState);
-      return next
-    }
-  }
-
-  back() {
-    this.it.back();
-    this.state = this._oldStates.pop();
-    return this
-  }
-
-  peek() {
-    return this.it.peek()
-  }
-
 }
 
 function prettyPrintXML(xml) {
@@ -41174,9 +41475,9 @@ var ButtonPackage = {
   name: 'button',
   configure: function(config) {
     config.addComponent('button', Button$$1);
-
     config.addIcon('dropdown', { 'fontawesome': 'fa-angle-down' });
-  }
+  },
+  Button: Button$$1
 };
 
 class ContextMenu extends ToolPanel {
@@ -41279,7 +41580,8 @@ var GridPackage = {
   name: 'grid',
   configure: function(config) {
     config.addComponent('grid', Grid);
-  }
+  },
+  Grid
 };
 
 class Gutter extends ToolPanel {
@@ -41394,14 +41696,16 @@ var InputPackage = {
   name: 'input',
   configure: function(config) {
     config.addComponent('input', Input);
-  }
+  },
+  Input
 };
 
 var LayoutPackage = {
   name: 'layout',
   configure: function(config) {
     config.addComponent('layout', Layout$$1);
-  }
+  },
+  Layout: Layout$$1
 };
 
 class Modal extends Component {
@@ -41438,7 +41742,8 @@ var ModalPackage = {
   name: 'modal',
   configure: function(config) {
     config.addComponent('modal', Modal);
-  }
+  },
+  Modal
 };
 
 var OverlayPackage = {
@@ -41575,8 +41880,8 @@ class Dropzones extends Component {
   
   _getBoundingRect(comp) {
     let scrollPane = comp.context.scrollPane;
-    let contentElement = scrollPane.getContentElement().getNativeElement();
-    let rect = getRelativeBoundingRect(comp.getNativeElement(), contentElement);
+    let contentElement = scrollPane.getContentElement();
+    let rect = getRelativeBoundingRect(comp.el, contentElement);
     return rect
   }
 
@@ -41690,21 +41995,24 @@ var DropzonesPackage = {
   name: 'dropzones',
   configure: function(config) {
     config.addComponent('dropzones', Dropzones);
-  }
+  },
+  Dropzones
 };
 
 var ScrollbarPackage = {
   name: 'scrollbar',
   configure: function(config) {
     config.addComponent('scrollbar', Scrollbar);
-  }
+  },
+  Scrollbar
 };
 
 var ScrollPanePackage = {
   name: 'scroll-pane',
   configure: function(config) {
     config.addComponent('scroll-pane', ScrollPane$$1);
-  }
+  },
+  ScrollPane: ScrollPane$$1
 };
 
 class BodyScrollPane extends AbstractScrollPane$$1 {
@@ -41852,7 +42160,8 @@ var TabbedPanePackage = {
   name: 'tabbed-pane',
   configure: function(config) {
     config.addComponent('tabbed-pane', TabbedPane);
-  }
+  },
+  TabbedPane
 };
 
 var FilePackage = {
@@ -44486,7 +44795,9 @@ var TablePackage = {
       en: 'Cell',
       de: 'Zelle'
     });
-  }
+  },
+  Table,
+  TableCell
 };
 
 class ProseArticle extends Document {
@@ -44634,7 +44945,8 @@ var ProseEditorPackage = {
       }
     ]);
   },
-  ProseEditor
+  ProseEditor,
+  ProseArticle
 };
 
 class CorrectionTool extends ToggleTool {
@@ -44714,6 +45026,102 @@ class SpellCheckCommand extends Command {
   }
 }
 
+const DEFAULT_API_URL = 'http://localhost:4777/api/check';
+
+class SpellCheckManager {
+
+  constructor(editorSession, options) {
+    options = options || {};
+    let wait = options.wait || 750;
+
+    this.editorSession = editorSession;
+    this.apiURL = options.apiURL || DEFAULT_API_URL;
+
+    
+    this.textPropertyManager = editorSession.markersManager;
+    this.markersManager = editorSession.markersManager;
+
+    this._schedule = {};
+    this._scheduleCheck = debounce(this._runSpellCheck.bind(this), wait);
+
+    editorSession.onFinalize('document', this._onDocumentChange, this);
+  }
+
+  dispose() {
+    this.editorSession.off(this);
+  }
+
+  check(path) {
+    this._runSpellCheck(String(path));
+  }
+
+  runGlobalCheck() {
+    let paths = Object.keys(this.textPropertyManager._textProperties);
+    paths.forEach((p) => {
+      this._runSpellCheck(p);
+    });
+  }
+
+  _onDocumentChange(change, info) {
+    if (info.spellcheck) return
+    
+    
+    
+    const textProperties = this.textPropertyManager._textProperties;
+    Object.keys(change.updated).forEach((pathStr) => {
+      if (textProperties[pathStr]) this._scheduleCheck(pathStr);
+    });
+  }
+
+  _runSpellCheck(pathStr) {
+    
+    let path = pathStr.split(',');
+    let text = this.editorSession.getDocument().get(path);
+    let lang = this.editorSession.getLanguage();
+    if (!text || !isString$1(text)) return
+    sendRequest({
+      method: 'POST',
+      url: this.apiURL,
+      header: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      data: {
+        text: text,
+        lang: lang
+      }
+    }).then((data) => {
+      data = JSON.parse(data);
+      this._addSpellErrors(path, data);
+    }).catch(function(err) {
+      console.error(err);
+    });
+  }
+
+  
+  _addSpellErrors(path, data) {
+    const editorSession = this.editorSession;
+    const markersManager = editorSession.markersManager;
+    
+    
+    const key = 'spell-error:'+path.join('.');
+    const markers = data.map((m) => {
+      return {
+        type: 'spell-error',
+        start: {
+          path: path,
+          offset: m.start
+        },
+        end: {
+          offset: m.end
+        },
+        suggestions: m.suggestions
+      }
+    });
+    markersManager.setMarkers(key, markers);
+    editorSession.startFlow();
+  }
+}
+
 var SpellCheckPackage = {
   name: 'spell-check',
   configure: function(config) {
@@ -44721,7 +45129,8 @@ var SpellCheckPackage = {
       commandGroup: 'spell-check'
     });
     config.addTool('correction', CorrectionTool);
-  }
+  },
+  SpellCheckManager
 };
 
 const { UndoCommand: UndoCommand$1, RedoCommand, SelectAllCommand: SelectAllCommand$1 } = BasePackage;
