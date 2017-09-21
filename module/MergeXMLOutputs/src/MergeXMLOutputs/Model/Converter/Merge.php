@@ -118,11 +118,11 @@ class Merge extends AbstractConverter
      *
      * @return void
      */
-    public function convert($job)
+    public function convert()
     {
         $this->logger->debugTranslate('mergexmloutputs.converter.startLog');
 
-        if (!$this->status = $this->merge($job)) {
+        if (!$this->status = $this->merge()) {
             return;
         }
 
@@ -134,7 +134,7 @@ class Merge extends AbstractConverter
      *
      * @return bool Whether or not the transformation was successful
      */
-    protected function merge($job)
+    protected function merge()
     {
         // Get the CERMINE output
         $cermineXml = file_get_contents($this->inputFileCermine);
@@ -157,43 +157,38 @@ class Merge extends AbstractConverter
         }
         $cermineFront = $cermineFronts->item(0);
 
-        // Set meTypesetDom to cermineDom unless it's replaced
-        $meTypesetDom = $cermineDom;
+        // Get the meTypeset output
+        $meTypesetXml = file_get_contents($this->inputFileNlmxml);
+        $meTypesetDom = new DOMDocument();
+        if (!$meTypesetDom->loadXML($meTypesetXml)) {
+            $this->logger->debugTranslate(
+                'mergexmloutputs.converter.merge.noMeTypesetDomLog',
+                $this->libxmlErrors()
+            );
+            return false;
+        }
 
-        if ($job->inputFileFormat == JOB_INPUT_TYPE_WP) {
-          // Get the meTypeset output
-          $meTypesetXml = file_get_contents($this->inputFileNlmxml);
-          $meTypesetDom = new DOMDocument();
-          if (!$meTypesetDom->loadXML($meTypesetXml)) {
-              $this->logger->debugTranslate(
-                  'mergexmloutputs.converter.merge.noMeTypesetDomLog',
-                  $this->libxmlErrors()
-              );
-              return false;
-          }
+        // Find the old front matter.
+        $meTypesetFronts = $meTypesetDom->getElementsByTagName('front');
+        if (!$meTypesetFronts->length) {
+            $this->logger->debugTranslate(
+                 'mergexmloutputs.converter.merge.noMeTypesetFront'
+            );
+            return false;
+        }
+        $meTypesetFront = $meTypesetFronts->item(0);
 
-          // Find the old front matter.
-          $meTypesetFronts = $meTypesetDom->getElementsByTagName('front');
-          if (!$meTypesetFronts->length) {
-              $this->logger->debugTranslate(
-                  'mergexmloutputs.converter.merge.noMeTypesetFront'
-              );
-              return false;
-          }
-          $meTypesetFront = $meTypesetFronts->item(0);
-
-          // Out with the old, in with the new!
-          $cermineFront = $meTypesetDom->importNode($cermineFront, true);
-          if (!$meTypesetFront->parentNode->replaceChild(
-                  $cermineFront,
-                  $meTypesetFront
-                  )) {
-              $this->logger->debugTranslate(
-                  'mergexmloutputs.converter.merge.replacementFail',
-                  $this->libxmlErrors()
-              );
-              return false;
-          }
+        // Out with the old, in with the new!
+        $cermineFront = $meTypesetDom->importNode($cermineFront, true);
+        if (!$meTypesetFront->parentNode->replaceChild(
+                $cermineFront,
+                $meTypesetFront
+                )) {
+            $this->logger->debugTranslate(
+                'mergexmloutputs.converter.merge.replacementFail',
+                $this->libxmlErrors()
+            );
+            return false;
         }
 
         $newXml = $meTypesetDom->saveXML();

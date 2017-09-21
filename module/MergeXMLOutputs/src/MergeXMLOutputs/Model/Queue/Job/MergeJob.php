@@ -50,6 +50,9 @@ class MergeJob extends AbstractQueueJob
         // grobid document
         $grobidDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_GROBID);
 
+        // Set meTypeset XML to cermine XML unless it's replaced
+        $mergedXML->setInputFileNlmxml($cermineDocument->path);
+
         if ($job->inputFileFormat == JOB_INPUT_TYPE_WP) {
             $meTypesetDocument =
                 $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
@@ -63,7 +66,7 @@ class MergeJob extends AbstractQueueJob
 
         $mergedXML->setInputFileCermine($cermineDocument->path);
         $mergedXML->setOutputFile($outputFile);
-        $mergedXML->convert($job);
+        $mergedXML->convert();
 
         if (!$mergedXML->getStatus()) {
             $job->status = JOB_STATUS_FAILED;
