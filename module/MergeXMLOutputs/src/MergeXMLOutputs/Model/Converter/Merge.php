@@ -118,11 +118,11 @@ class Merge extends AbstractConverter
      *
      * @return void
      */
-    public function convert()
+    public function convert($job)
     {
         $this->logger->debugTranslate('mergexmloutputs.converter.startLog');
 
-        if (!$this->status = $this->merge()) {
+        if (!$this->status = $this->merge($job)) {
             return;
         }
 
@@ -134,7 +134,7 @@ class Merge extends AbstractConverter
      *
      * @return bool Whether or not the transformation was successful
      */
-    protected function merge()
+    protected function merge($job)
     {
         // Get the CERMINE output
         $cermineXml = file_get_contents($this->inputFileCermine);

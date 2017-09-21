@@ -63,7 +63,7 @@ class MergeJob extends AbstractQueueJob
 
         $mergedXML->setInputFileCermine($cermineDocument->path);
         $mergedXML->setOutputFile($outputFile);
-        $mergedXML->convert();
+        $mergedXML->convert($job);
 
         if (!$mergedXML->getStatus()) {
             $job->status = JOB_STATUS_FAILED;
