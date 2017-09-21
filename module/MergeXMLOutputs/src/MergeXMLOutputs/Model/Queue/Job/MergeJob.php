@@ -50,10 +50,7 @@ class MergeJob extends AbstractQueueJob
         // grobid document
         $grobidDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_GROBID);
 
-        if ($job->inputFileFormat == JOB_INPUT_TYPE_PDF) {
-            @copy($cermineDocument->path, $outputFile);
-
-        } else {
+        if ($job->inputFileFormat == JOB_INPUT_TYPE_WP) {
             $meTypesetDocument =
                 $job->getStageDocument(JOB_CONVERSION_STAGE_NLMXML);
 
@@ -62,14 +59,15 @@ class MergeJob extends AbstractQueueJob
             }
 
             $mergedXML->setInputFileNlmxml($meTypesetDocument->path);
-            $mergedXML->setInputFileCermine($cermineDocument->path);
-            $mergedXML->setOutputFile($outputFile);
-            $mergedXML->convert();
+        }
 
-            if (!$mergedXML->getStatus()) {
-                $job->status = JOB_STATUS_FAILED;
-                return $job;
-            }
+        $mergedXML->setInputFileCermine($cermineDocument->path);
+        $mergedXML->setOutputFile($outputFile);
+        $mergedXML->convert();
+
+        if (!$mergedXML->getStatus()) {
+            $job->status = JOB_STATUS_FAILED;
+            return $job;
         }
 
         if (!is_null($grobidDocument)) {
