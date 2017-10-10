@@ -361,7 +361,7 @@ class Merge extends AbstractConverter
 
 		/* Issue details */
 		if (!empty($metadata['issue-details'])){
-			$issueDetails = $metadata['issue-details'];
+			$issueDetails = (array) $metadata['issue-details'];
 			$xml .=  !empty($issueDetails['issue-year']) ? "<pub-date pub-type=\"collection\"><year>" . $issueDetails['issue-year'] . "</year></pub-date>" : "<pub-date pub-type=\"collection\"><year>" . date("Y") . "</year></pub-date>";
 			if (!empty($issueDetails['issue-volume'])) $xml .=  "<volume>" . $issueDetails['issue-volume'] . "</volume>";
 			if (!empty($issueDetails['issue-number'])) $xml .=  "<issue>" . $issueDetails['issue-number'] . "</issue>";
