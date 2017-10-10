@@ -427,23 +427,22 @@ class Merge extends AbstractConverter
             }
 
             // Find grobid abstract
-            $grobidAbstract = $grobidDom->getElementsByTagName('abstract');
-            if (!$grobidAbstract->length) {
-                $this->logger->debugTranslate(
-                    'mergexmloutputs.converter.merge.noGrobidAbstract'
-                );
-                return false;
-            }
+            //$grobidAbstract = $grobidDom->getElementsByTagName('abstract');
+            //if (!$grobidAbstract->length) {
+            //    $this->logger->debugTranslate(
+            //        'mergexmloutputs.converter.merge.noGrobidAbstract'
+            //    );
+            //    return false;
+            //}
 
-            $grobidAbstract = $grobidAbstract->item(0);
-            $grobidAbstractRaw = trim(utf8_encode($grobidAbstract->nodeValue));
+            //$grobidAbstract = $grobidAbstract->item(0);
+            //$grobidAbstractRaw = trim(utf8_encode($grobidAbstract->nodeValue));
 
             // cancel if abstract is empty
-            if (empty($grobidAbstractRaw)) {
-                return $newXml;
-            }
+            //if (empty($grobidAbstractRaw)) {
+            //    return $newXml;
+            //}
 
-            // if new xml contains <abstract>, replace
             $newXmlDom = new DOMDocument();
             if (!$newXmlDom->loadXML($newXml)) {
                 $this->logger->debugTranslate(
