@@ -354,7 +354,7 @@ class Merge extends AbstractConverter
 			$xml .= !empty($c['orcid']) ? '<contrib-id contrib-id-type="orcid">'.$c['orcid'].'</contrib-id>' : "";
 			$xml .= '<email>'.$c['email'].'</email>';
 			$xml .= '<aff>'.$c['affiliation'].'</aff>';	
-			$xml .= '<bio>'.$c['bio'].'</bio>';
+			$xml .= '<bio><p>'.$c['bio'].'</p></bio>';
 			$xml .= "</contrib>\n";
 		}	
 		$xml .= "</contrib-group>";
