@@ -749,8 +749,8 @@ msgstr "Open Typesetting Stack"
 #: module/User/view/_sideBar.phtml:4
 msgid "application.index.sidebarDescription"
 msgstr ""
-"This is a new, experimental service being developed by the Public Knowledge Project to provide unsupervised conversion of Word/compatible and PDF input to production-ready JATS XML, HTML, PDF, and ePub."
-"The Open Typesetting Stack (OTS) service and associated PKP plugins are still under active development and have been released in beta mode to enable testing and feedback from interested users. It is made available on an 'as is, where is' basis without guarantees on its suitability for any particular use. With input from users of this beta mode, this open source software system will be subject to further changes, with PKP reserving the right to determine the form that its OTS service will take in the future."
+"This is a new, experimental service being developed by the Public Knowledge Project to provide unsupervised conversion of Word/compatible and PDF input to production-ready JATS XML, HTML, PDF, and ePub. "
+"The Open Typesetting Stack (OTS) service and associated PKP plugins are still under active development and have been released in beta mode to enable testing and feedback from interested users. It is made available on an 'as is, where is' basis without guarantees on its suitability for any particular use. With input from users of this beta mode, this open source software system will be subject to further changes, with PKP reserving the right to determine the form that its OTS service will take in the future. "
 "Contact Alex at garnett@sfu.ca with any questions on usage."
 
 #: module/User/view/_sideBar.phtml:6
