@@ -215,7 +215,7 @@ class Merge extends AbstractConverter
         $frontJournalIDQuery = '//journal-meta/journal-id';
         $frontJournalIDElements = $frontXPath->query($frontJournalIDQuery);
         if ($frontJournalIDElements->length == 0) {
-          $newXml = preg_replace('/<journal-meta>/', '<journal-meta><journal-id journal-id-type=\"other\">Journal</journal-id>', $newXml);
+          $newXml = preg_replace('/<journal-meta>/', '<journal-meta><journal-id journal-id-type="other">Journal</journal-id>', $newXml);
         }
 
         // Populate //pub-date/year if it's empty for compatibility
