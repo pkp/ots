@@ -187,6 +187,8 @@ Installation
 
 `# vendor/doctrine/doctrine-module/bin/doctrine-module orm:schema-tool:update --force`
 
+-   Input an email address for CrossRef's API in https://github.com/pkp/ots/blob/master/config/autoload/global.php#L112
+
 -   Run the shell script that starts the conversion queues
 
 `# ./start_queues.sh`
