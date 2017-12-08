@@ -440,7 +440,12 @@ class References extends AbstractConverter
         }
     
         $uri = $this->config['crossref_api']['endpoint'] . "?q=" . urlencode($reference);
-    
+
+        // comply to crossref's good manners by including mailto parameter in the query
+        if (!empty($mailto = $this->config['crossref_api']['mailto'])) {
+		$uri .= '&mailto=' . urlencode($mailto);
+        }
+
         $this->logger->debugTranslate(
                 'parsCit.converter.apiQueryLog',
                 $uri

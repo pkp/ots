@@ -47,7 +47,7 @@ return array(
         ),
     ),
     'log' => array(
-        'level' => 6,
+        'level' => 7,
     ),
     'notification' => array(
         'adminEmail' => 'axfelix@gmail.com',
@@ -107,8 +107,9 @@ return array(
         ),
         'references' => array(
             'crossref_api' => array(
-                'endpoint' => 'http://search.crossref.org/dois',
-                'score_threshold' => 1
+                'endpoint' => 'https://search.crossref.org/dois',
+                'score_threshold' => 1,
+                'mailto' => '',
              )
         ),
         'bibtex' => array(
