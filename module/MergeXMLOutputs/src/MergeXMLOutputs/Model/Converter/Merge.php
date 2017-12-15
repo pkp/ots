@@ -191,8 +191,6 @@ class Merge extends AbstractConverter
             return false;
         }
 
-        $newXml = $meTypesetDom->saveXML();
-
         // Rearrange label and caption within fig elements
         $figElements = $meTypesetDom->getElementsByTagName('fig');
         foreach ($figElements as $figure) {
@@ -204,6 +202,8 @@ class Merge extends AbstractConverter
             }
           }
         }
+
+        $newXml = $meTypesetDom->saveXML();
 
         // Populate //front/title if it's empty for compatibility
         $frontXPath = new DOMXPath($meTypesetDom);
