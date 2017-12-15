@@ -193,6 +193,18 @@ class Merge extends AbstractConverter
 
         $newXml = $meTypesetDom->saveXML();
 
+        // Rearrange label and caption within fig elements
+        $figElements = $meTypesetDom->getElementsByTagName('fig');
+        foreach ($figElements as $figure) {
+          foreach ($figure->childNodes as $node) {
+            if ($node->nodeName == 'graphic') {
+              foreach ($node->childNodes as $graphicChild) {
+                $figure->appendChild($graphicChild);
+              }
+            }
+          }
+        }
+
         // Populate //front/title if it's empty for compatibility
         $frontXPath = new DOMXPath($meTypesetDom);
         $frontTitleQuery = '//article-meta/title-group';
