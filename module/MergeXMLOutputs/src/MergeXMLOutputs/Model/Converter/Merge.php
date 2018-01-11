@@ -192,15 +192,23 @@ class Merge extends AbstractConverter
         }
 
         // Rearrange label and caption within fig elements
+        $k = 0;
         $figElements = $meTypesetDom->getElementsByTagName('fig');
         foreach ($figElements as $figure) {
-          foreach ($figure->childNodes as $node) {
-            if ($node->nodeName == 'graphic') {
-              foreach ($node->childNodes as $graphicChild) {
-                $figure->appendChild($graphicChild);
+          $figItem = $figElements->item($k);
+          $graphic = $figItem->getElementsByTagName('graphic');
+          foreach ($graphic as $g) {
+            $children = [];
+            foreach ($g->childNodes as $gNode) {
+              if ($gNode->nodeType == XML_ELEMENT_NODE) {
+                $children[] = $gNode;
               }
             }
+            foreach ($children as $child) {
+              $figItem->appendChild($child);
+            }
           }
+          $k++;
         }
 
         $newXml = $meTypesetDom->saveXML();
