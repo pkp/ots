@@ -205,7 +205,7 @@ class Merge extends AbstractConverter
               }
             }
             foreach ($children as $child) {
-              $figItem->appendChild($child);
+              $figItem->insertBefore($child, $g);
             }
           }
           $k++;
