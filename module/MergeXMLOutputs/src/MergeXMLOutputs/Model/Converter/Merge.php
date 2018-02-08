@@ -211,6 +211,26 @@ class Merge extends AbstractConverter
           $k++;
         }
 
+        // Bring aff out of contrib-group to make Texture happy
+        $k = 0;
+        $articleMetaElements = $meTypesetDom->getElementsByTagName('article-meta');
+        // This shouldn't need to be a loop as there's only one articleMeta 
+        // but I copied it from the above block and don't recognize the syntax
+        foreach ($articleMetaElements as $articleMeta) {
+          $articleMetaItem = $articleMetaElements->item($k);
+          $contribGroup = $articleMetaItem->getElementsByTagName('contrib-group');
+          $children = [];
+          foreach ($contribGroup[0]->childNodes as $gNode) {
+            if ($gNode->nodeType == XML_ELEMENT_NODE and $gNode->localName == "aff") {
+              $children[] = $gNode;
+            }
+          }
+          foreach ($children as $child) {
+            $articleMetaItem->appendChild($child);
+          }
+          $k++;
+        }
+
         $newXml = $meTypesetDom->saveXML();
 
         // Populate //front/title if it's empty for compatibility
@@ -245,6 +265,10 @@ class Merge extends AbstractConverter
         if ($frontYearElements->length == 0) {
           $newXml = preg_replace('/<pub-date>/', '<pub-date><year>20XX</year>', $newXml);
           $newXml = preg_replace('/<pub-date\/>/', '<pub-date><year>20XX</year></pub-date>', $newXml);
+        }
+
+        // Change string-names to given-names to make Texture happy
+        $newXml = preg_replace('/<string-name>{.*?}<\/string-name>/', '<name><given-names>\1</given-names></name>', $newXml);
         }
 
         // Use a current JATS DTD
