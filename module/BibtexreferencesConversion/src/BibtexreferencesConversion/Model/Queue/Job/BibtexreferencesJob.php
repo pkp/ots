@@ -35,20 +35,40 @@ class BibtexreferencesJob extends AbstractQueueJob
             throw new \Exception('Couldn\'t find the stage document');
         }
 
+        // backup xml document from previous stage before conversion
+        $stageDocumentName = $xmlDocument->getConversionStageSpecificName();
+        $destDir = dirname($xmlDocument->path);
+        $backupXmlDocumentPath = "{$destDir}/{$stageDocumentName}";
+        copy($xmlDocument->path, $backupXmlDocumentPath);
+
         // Do the reference list replacement
         $bibtexreferences->setInputFileNlmxml($xmlDocument->path);
         $bibtexreferences->setInputFileBibtex($bibtexDocument->path);
         $bibtexreferences->convert();
 
-        $job->conversionStage = JOB_CONVERSION_STAGE_BIBTEXREFERENCES;
-
         if (!$bibtexreferences->getStatus()) {
             $job->status = JOB_STATUS_FAILED;
+            // delete backup xml document in case of failure
+            unlink($backupXmlDocumentPath);
             return $job;
         }
 
-        // We didn't create a new document; just change the conversion stage
-        $xmlDocument->conversionStage = JOB_CONVERSION_STAGE_BIBTEXREFERENCES;
+        // current path to xml document
+        $xmlDocumentCurrentPath = $xmlDocument->path;
+
+        // point existing document to backup document and save change
+        $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
+        $xmlDocument->path = $backupXmlDocumentPath;
+        $documentDAO->save($xmlDocument);
+
+        // create a new document
+        $newXmlDocument = $documentDAO->getInstance();
+        $newXmlDocument->path = $xmlDocumentCurrentPath;
+        $newXmlDocument->job = $job;
+        $newXmlDocument->conversionStage = JOB_CONVERSION_STAGE_BIBTEXREFERENCES;
+        $documentDAO->save($newXmlDocument);
+
+        $job->conversionStage = JOB_CONVERSION_STAGE_BIBTEXREFERENCES;
 
         return $job;
     }

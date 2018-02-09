@@ -41,6 +41,12 @@ class CitationstyleJob extends AbstractQueueJob
             throw new \Exception('Couldn\'t find the HTML stage document');
         }
 
+        // backup xml document from previous stage before conversion
+        $stageDocumentName = $documentHtml->getConversionStageSpecificName();
+        $destDir = dirname($documentHtml->path);
+        $backupHtmlDocumentPath = "{$destDir}/{$stageDocumentName}";
+        copy($documentHtml->path, $backupHtmlDocumentPath);
+
         // Parse the citationstyle
         $citationstyle->setInputFileNlmxml($documentNlmxml->path);
         $citationstyle->setInputFileBibtex($documentBibtex->path);
@@ -52,11 +58,25 @@ class CitationstyleJob extends AbstractQueueJob
 
         if (!$citationstyle->getStatus()) {
             $job->status = JOB_STATUS_FAILED;
+            // delete backup html document in case of failure
+            unlink($backupHtmlDocumentPath);
             return $job;
         }
 
-        // Update the conversion stage of the HTML document
-        $documentHtml->conversionStage = $job->conversionStage;
+        // current path to html document
+        $htmlDocumentCurrentPath = $documentHtml->path;
+
+        // point existing document to backup document and save change
+        $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
+        $documentHtml->path = $backupHtmlDocumentPath;
+        $documentDAO->save($documentHtml);
+
+        // create a new document
+        $newHtmlDocument = $documentDAO->getInstance();
+        $newHtmlDocument->path = $htmlDocumentCurrentPath;
+        $newHtmlDocument->job = $job;
+        $newHtmlDocument->conversionStage = JOB_CONVERSION_STAGE_CITATIONSTYLE;
+        $documentDAO->save($newHtmlDocument);
 
         return $job;
     }
