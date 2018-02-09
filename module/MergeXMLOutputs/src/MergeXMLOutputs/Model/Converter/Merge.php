@@ -216,7 +216,7 @@ class Merge extends AbstractConverter
         $articleMetaItem = $articleMetaElements->item(0);
         $contribGroup = $articleMetaItem->getElementsByTagName('contrib-group');
         $children = [];
-        foreach ($contribGroup[0]->childNodes as $gNode) {
+        foreach ($contribGroup->item(0)->childNodes as $gNode) {
           if ($gNode->nodeType == XML_ELEMENT_NODE and $gNode->localName == "aff") {
             $children[] = $gNode;
           }
