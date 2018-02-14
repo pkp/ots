@@ -372,7 +372,7 @@ Example response:
 
 **Retrieve**
 
-Retrieve a converted document. The jobConversionStage parameter specifies which type of conversion you want to get retrned. A full list of conversion stages can be found [here](<https://github.com/pkp/xmlps/blob/master/module/Manager/src/Manager/Entity/Job.php#L14>).
+Retrieve a converted document. The jobConversionStage parameter specifies which type of conversion you want to get retrned. A full list of conversion stages can be found [here](<https://github.com/pkp/xmlps/blob/master/module/Manager/src/Manager/Entity/Job.php#L14>). The "final" XML produced by our pipeline is stage **5**.
 
 -   URL: `api/job/retrieve`
 
