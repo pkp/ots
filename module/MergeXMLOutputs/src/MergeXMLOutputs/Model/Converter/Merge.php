@@ -262,7 +262,7 @@ class Merge extends AbstractConverter
         }
 
         // Change string-names to given-names to make Texture happy
-        $newXml = preg_replace('/<string-name>{.*?}<\/string-name>/', '<name><given-names>\1</given-names></name>', $newXml);
+        $newXml = preg_replace('/<string-name>(.*?)<\/string-name>/', '<name><given-names>\1</given-names></name>', $newXml);
 
         // Use a current JATS DTD
         $newXml = preg_replace('/<!DOCTYPE article PUBLIC "-\/\/NLM\/\/DTD JATS \(Z39\.96\) Journal Archiving and Interchange DTD v1\.0 20120330\/\/EN" "JATS-archivearticle1\.dtd">/', '<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v1.1 20151215//EN" "http://jats.nlm.nih.gov/archiving/1.1/JATS-archivearticle1.dtd">', $newXml);
