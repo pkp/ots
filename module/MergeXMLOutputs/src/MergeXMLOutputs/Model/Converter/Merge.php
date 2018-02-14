@@ -211,7 +211,7 @@ class Merge extends AbstractConverter
           $k++;
         }
 
-        // Bring aff out of contrib-group to make Texture happy
+        // Bring aff out of contrib-group & remove label to make Texture happy
         $articleMetaElements = $meTypesetDom->getElementsByTagName('article-meta');
         $articleMetaItem = $articleMetaElements->item(0);
         $contribGroup = $articleMetaItem->getElementsByTagName('contrib-group');
@@ -222,6 +222,8 @@ class Merge extends AbstractConverter
           }
         }
         foreach ($children as $child) {
+          $label = $child->getElementsByTagName('label')->item(0);
+          $child->removeChild($label);
           $articleMetaItem->appendChild($child);
         }
 
