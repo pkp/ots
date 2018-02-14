@@ -221,10 +221,11 @@ class Merge extends AbstractConverter
             $children[] = $gNode;
           }
         }
+        $pubDate = $articleMetaItem->getElementsByTagName('pub-date')->item(0);
         foreach ($children as $child) {
           $label = $child->getElementsByTagName('label')->item(0);
           $child->removeChild($label);
-          $articleMetaItem->appendChild($child);
+          $articleMetaItem->insertBefore($child, $pubDate);
         }
 
         $newXml = $meTypesetDom->saveXML();
