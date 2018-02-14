@@ -29,6 +29,17 @@ class BibtexJob extends AbstractQueueJob
         // Parse the bibtex
         $outputFile = $job->getDocumentPath() . '/document.bib';
         $outputFileExisted = file_exists($outputFile);
+
+        $bibtexDocument = null;
+        $backupBibtexDocumentPath = null;
+        if ($outputFileExisted) {
+            $bibtexDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_REFERENCES);
+            $stageDocumentName = $bibtexDocument->getConversionStageSpecificName();
+            $destDir = dirname($bibtexDocument->path);
+            $backupBibtexDocumentPath = "{$destDir}/{$stageDocumentName}";
+            copy($bibtexDocument->path, $backupBibtexDocumentPath);
+        }
+
         $bibtex->setInputFile($referencesDocument->path);
         $bibtex->setOutputFile($outputFile);
         $bibtex->convert();
@@ -37,12 +48,13 @@ class BibtexJob extends AbstractQueueJob
 
         if (!$bibtex->getStatus()) {
             $job->status = JOB_STATUS_FAILED;
+            unlink($backupBibtexDocumentPath);
             return $job;
         }
 
         // add entry only if file didn't previously exist
+        $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
         if (!$outputFileExisted) {
-            $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
             $bibtexDocument = $documentDAO->getInstance();
             $bibtexDocument->path = $outputFile;
             $bibtexDocument->job = $job;
@@ -51,9 +63,18 @@ class BibtexJob extends AbstractQueueJob
             $job->documents[] = $bibtexDocument;
         }
         else {
-            // update bib document size
-            $bibtexDocument = $job->getStageDocument(JOB_CONVERSION_STAGE_REFERENCES);
-            $bibtexDocument->conversionStage = JOB_CONVERSION_STAGE_REFERENCES;
+            // current path to bibtex document
+            $bibtexDocumentCurrentPath = $bibtexDocument->path;
+            // point existing document to backup document and save change
+            $bibtexDocument->path = $backupBibtexDocumentPath;
+            $documentDAO->save($bibtexDocument);
+
+            // add newly created document
+            $newBibtexDocument = $documentDAO->getInstance();
+            $newBibtexDocument->path = $bibtexDocumentCurrentPath;
+            $newBibtexDocument->job = $job;
+            $newBibtexDocument->conversionStage = JOB_CONVERSION_STAGE_BIBTEX;
+            $documentDAO->save($newBibtexDocument);
         }
 
         return $job;

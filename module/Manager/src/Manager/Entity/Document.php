@@ -129,4 +129,16 @@ class Document extends DataObject
             @unlink($this->path);
         }
     }
+
+    /**
+     * Returns document name prefixed with conversion stage (<stage number>__<original name>) 
+     * 
+     * @return string
+     */
+    public function getConversionStageSpecificName() {
+        $filename = $this->getFileName();
+        $newName = "{$this->conversionStage}__{$filename}";
+        return $newName;
+    }
+
 }

@@ -36,6 +36,12 @@ class XmpJob extends AbstractQueueJob
             throw new \Exception('Couldn\'t find the PDF stage document');
         }
 
+        // backup pdf document from previous stage before conversion
+        $stageDocumentName = $documentPdf->getConversionStageSpecificName();
+        $destDir = dirname($documentPdf->path);
+        $backupPdfDocumentPath = "{$destDir}/{$stageDocumentName}";
+        copy($documentPdf->path, $backupPdfDocumentPath);
+
         $pdf->setInputFileNlmxml($documentNlmxml->path);
         $pdf->setInputFilePdf($documentPdf->path);
         $pdf->convert();
@@ -44,12 +50,25 @@ class XmpJob extends AbstractQueueJob
 
         if (!$pdf->getStatus()) {
             $job->status = JOB_STATUS_FAILED;
+            // delete backup pdf document in case of failure
+            unlink($backupPdfDocumentPath);
             return $job;
         }
 
-        // We didn't create a new document; just change the conversion stage of
-        // the PDF document
-        $documentPdf->conversionStage = JOB_CONVERSION_STAGE_XMP;
+        // current path to html document
+        $pdfDocumentCurrentPath = $documentPdf->path;
+
+        // point existing document to backup document and save change
+        $documentDAO = $this->sm->get('Manager\Model\DAO\DocumentDAO');
+        $documentPdf->path = $backupPdfDocumentPath;
+        $documentDAO->save($documentPdf);
+
+        // create a new document
+        $newPdfDocument = $documentDAO->getInstance();
+        $newPdfDocument->path = $pdfDocumentCurrentPath;
+        $newPdfDocument->job = $job;
+        $newPdfDocument->conversionStage = JOB_CONVERSION_STAGE_XMP;
+        $documentDAO->save($newPdfDocument);
 
         return $job;
     }
