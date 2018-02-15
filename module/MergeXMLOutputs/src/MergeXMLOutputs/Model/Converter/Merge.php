@@ -271,7 +271,7 @@ class Merge extends AbstractConverter
         $newXml = preg_replace('/<contrib-group>/', '<contrib-group content-type="author">', $newXml);
 
         // Get rid of TO_LINK if we couldn't link the reference
-        $newXml = preg_replace('/rid="TO_LINK"/', '', $newxml);
+        $newXml = preg_replace('/rid="TO_LINK"/', '', $newXml);
 
         // Use a current JATS DTD
         $newXml = preg_replace('/<!DOCTYPE article PUBLIC "-\/\/NLM\/\/DTD JATS \(Z39\.96\) Journal Archiving and Interchange DTD v1\.0 20120330\/\/EN" "JATS-archivearticle1\.dtd">/', '<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v1.1 20151215//EN" "http://jats.nlm.nih.gov/archiving/1.1/JATS-archivearticle1.dtd">', $newXml);
