@@ -267,6 +267,9 @@ class Merge extends AbstractConverter
         // Change string-names to given-names to make Texture happy
         $newXml = preg_replace('/<string-name>(.*?)<\/string-name>/', '<name><given-names>\1</given-names></name>', $newXml);
 
+        // Tag contrib-group with content-type="author" to make Texture happy
+        $newXml = preg_replace('/<contrib-group>/', '<contrib-group content-type="author">', $newXml);
+
         // Use a current JATS DTD
         $newXml = preg_replace('/<!DOCTYPE article PUBLIC "-\/\/NLM\/\/DTD JATS \(Z39\.96\) Journal Archiving and Interchange DTD v1\.0 20120330\/\/EN" "JATS-archivearticle1\.dtd">/', '<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v1.1 20151215//EN" "http://jats.nlm.nih.gov/archiving/1.1/JATS-archivearticle1.dtd">', $newXml);
         $newXml = preg_replace('/<!DOCTYPE article PUBLIC "-\/\/NLM\/\/DTD Journal Publishing DTD v3\.0 20080202\/\/EN" "http:\/\/dtd\.nlm\.nih\.gov\/publishing\/3\.0\/journalpublishing3\.dtd">/', '<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD v1.1 20151215//EN" "http://jats.nlm.nih.gov/archiving/1.1/JATS-archivearticle1.dtd">', $newXml);
@@ -380,7 +383,7 @@ class Merge extends AbstractConverter
 		$xml .= "</title-group>";		
 
 		/* Contributors */
-		$xml .= "<contrib-group>";		
+		$xml .= "<contrib-group content-type="author">";		
 		$contributors = !empty($metadata['contributors']) ? $metadata['contributors'] : array();
 		$count = 0;
 		foreach ($contributors as $c) {
