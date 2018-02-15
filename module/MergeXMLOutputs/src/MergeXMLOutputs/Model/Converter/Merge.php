@@ -383,7 +383,7 @@ class Merge extends AbstractConverter
 		$xml .= "</title-group>";		
 
 		/* Contributors */
-		$xml .= "<contrib-group content-type="author">";		
+		$xml .= '<contrib-group content-type="author">';		
 		$contributors = !empty($metadata['contributors']) ? $metadata['contributors'] : array();
 		$count = 0;
 		foreach ($contributors as $c) {
