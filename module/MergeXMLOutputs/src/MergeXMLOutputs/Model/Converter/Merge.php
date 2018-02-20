@@ -436,7 +436,7 @@ class Merge extends AbstractConverter
 				
 				foreach ($metadata['abstracts'] as $loc => $abstract) {
 					if ($loc == $locale) continue;
-					$xml .= !empty($metadata['abstracts'][$loc]) ? "<abstract-trans xml:lang=\"" . $loc . "\"><p>".$abstract."</p></abstract-trans>" : "";
+					$xml .= !empty($metadata['abstracts'][$loc]) ? "<trans-abstract xml:lang=\"" . $loc . "\"><p>".$abstract."</p></trans-abstract>" : "";
 					
 				}
 				
