@@ -227,6 +227,10 @@ class Merge extends AbstractConverter
           $child->removeChild($label);
           $articleMetaItem->insertBefore($child, $pubDate);
         }
+        // Remove contrib-group in case it's empty now
+        if (ctype_space($contribGroup->item(0)->childNodes->item(0)->textContent)) {
+          $articleMetaItem->removeChild($contribGroup->item(0));
+        }
 
         $newXml = $meTypesetDom->saveXML();
 
