@@ -44,3 +44,5 @@ php public/index.php queue doctrine parsCit --start &
 echo "Started ParsCit queue [PID $!]"
 php public/index.php queue doctrine grobid --start &
 echo "Started Grobid queue [PID $!]"
+php public/index.php queue doctrine xmlfinal --start &
+echo "Started XML Final queue [PID $!]"
