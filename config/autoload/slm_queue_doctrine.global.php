@@ -33,6 +33,7 @@ return array(
                 'ner' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'parscit' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
                 'grobid' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
+                'xmlfinal' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
             )
         )
     )

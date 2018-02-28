@@ -40,6 +40,7 @@ class Manager {
         'ner' => 'NERExtraction\Model\Queue\Job\NERExtractionJob',
         'parsCit' => 'ParsCitConversion\Model\Queue\Job\ParsCitJob',
         'grobid' => 'GrobidConversion\Model\Queue\Job\GrobidJob',
+        'xmlfinal' => 'XmlFinal\Model\Queue\Job\XmlFinalJob',
     );
 
     /**
@@ -183,11 +184,14 @@ class Manager {
             case JOB_CONVERSION_STAGE_BIBTEXREFERENCES:
                 $this->queueJob($job, 'epub');
                 break;
+            case JOB_CONVERSION_STAGE_XMLFINAL:
+                $this->queueJob($job, 'html');
+                break;
             case JOB_CONVERSION_STAGE_NER_EXTRACT:
                 $this->queueJob($job, 'epub');
                 break;
             case JOB_CONVERSION_STAGE_EPUB:
-                $this->queueJob($job, 'html');
+                $this->queueJob($job, 'xmlfinal');
                 break;
 
             // If reference extraction was successful, clean up the
