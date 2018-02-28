@@ -1236,3 +1236,13 @@ msgstr "Unable to load produced metadata xml string."
 #: module/MergeXMLOutputs/src/MergeXMLOutputs/Model/Converter/Merge.php
 msgid "mergexmloutputs.converter.merge.metadataFrontSwapFail"
 msgstr "Failed to replace merge module front element with front element produced with user submitted metadata."
+
+#: module/XmlFinal/src/XmlFinal/Model/Converter/XmlFinal.php
+msgid "xmlfinal.process.start"
+msgstr "Starting copy of final XML document."
+
+#: module/XmlFinal/src/XmlFinal/Model/Converter/XmlFinal.php
+msgid "xmlfinal.command.log"
+msgstr ""
+"XMLFinal is executing:\n"
+"%s "
