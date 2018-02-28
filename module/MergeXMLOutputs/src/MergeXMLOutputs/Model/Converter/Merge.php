@@ -222,13 +222,21 @@ class Merge extends AbstractConverter
               $children[] = $gNode;
             }
           }
-          $pubDate = $articleMetaItem->getElementsByTagName('pub-date')->item(0);
+          if (!$pubDate = $articleMetaItem->getElementsByTagName('pub-date')->item(0)) {
+            $abstract = $articleMetaItem->getElementsByTagName('abstract')->item(0);
+            $pubDateNode = $meTypesetDom->createElement('pub-date');
+            $articleMetaItem->insertBefore($pubDateNode, $abstract);
+            $pubDate = $articleMetaItem->getElementsByTagName('pub-date')->item(0);
+          }
           foreach ($children as $child) {
             $label = $child->getElementsByTagName('label')->item(0);
-            $child->removeChild($label);
+            if ($label) {
+              $child->removeChild($label);
+            }
             $articleMetaItem->insertBefore($child, $pubDate);
           }
           // Remove contrib-group in case it's empty now
+          $contribGroup = $articleMetaItem->getElementsByTagName('contrib-group');
           if (!$contribGroup->item(0)->childNodes->item(1)) {
             $articleMetaItem->removeChild($contribGroup->item(0));
           }
