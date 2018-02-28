@@ -236,7 +236,6 @@ class Merge extends AbstractConverter
             $articleMetaItem->insertBefore($child, $pubDate);
           }
           // Remove contrib-group in case it's empty now
-          $contribGroup = $articleMetaItem->getElementsByTagName('contrib-group');
           if (!$contribGroup->item(0)->childNodes->item(1)) {
             $articleMetaItem->removeChild($contribGroup->item(0));
           }
