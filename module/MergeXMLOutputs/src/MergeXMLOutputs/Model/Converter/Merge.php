@@ -373,7 +373,7 @@ class Merge extends AbstractConverter
 			
 		$xml .= "</journal-title-group>";
 		
-		$xml .= !empty($metadata['online-ISSN']) ? "<issn pub-type=\"epub\">".$metadata['online-ISSN']."</issn>" : "<issn pub-type=\"epub\">ISSN</issn>";
+		$xml .= !empty($metadata['online-ISSN']) ? "<issn pub-type=\"epub\">".$metadata['online-ISSN']."</issn>" : "";
 		$xml .= !empty($metadata['print-ISSN']) ? "<issn pub-type=\"ppub\">".$metadata['print-ISSN']."</issn>" : "";
 	     
 		$xml .= !empty($metadata['institution']) ? "<publisher><publisher-name>".$metadata['institution']."</publisher-name></publisher>" : "";
