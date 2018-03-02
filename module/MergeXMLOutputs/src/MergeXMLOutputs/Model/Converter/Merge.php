@@ -283,6 +283,9 @@ class Merge extends AbstractConverter
         // Tag contrib-group with content-type="author" to make Texture happy
         $newXml = preg_replace('/<contrib-group>/', '<contrib-group content-type="author">', $newXml);
 
+        // Tag institution with content-type="orgname" to make Texture happy
+        $newXml = preg_replace('/<institution>/', '<institution content-type="orgname">', $newXml);
+
         // Get rid of TO_LINK if we couldn't link the reference
         $newXml = preg_replace('/rid="TO_LINK"/', '', $newXml);
 
