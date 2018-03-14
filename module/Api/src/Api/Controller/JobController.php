@@ -14,6 +14,7 @@ use CitationstyleConversion\Model\Citationstyles;
 class JobController extends AbstractActionController
 {
     protected $logger;
+    protected $config;
     protected $translator;
     protected $jobDAO;
     protected $documentDAO;
@@ -31,6 +32,7 @@ class JobController extends AbstractActionController
      * @param DocumentDAO $documentDAO
      * @param QueueManager $queueManager
      * @param CitationStyles $citationStyles
+     * @param mixed $config 
      *
      * @return void
      */
@@ -40,7 +42,8 @@ class JobController extends AbstractActionController
         JobDAO $jobDAO,
         DocumentDAO $documentDAO,
         QueueManager $queueManager,
-        CitationStyles $citationStyles
+        CitationStyles $citationStyles,
+        $config
     )
     {
         $this->logger = $logger;
@@ -49,6 +52,7 @@ class JobController extends AbstractActionController
         $this->documentDAO = $documentDAO;
         $this->queueManager = $queueManager;
         $this->citationStyles = $citationStyles;
+        $this->config = $config;
     }
     
     /**
@@ -114,10 +118,15 @@ class JobController extends AbstractActionController
 
         // Make sure the citation style parameter is provided
         if (!($citationStyleHash = $this->params()->fromPost('citationStyleHash'))) {
-            return new JsonModel(array(
-                'error' => $this->translator->translate('job.api.error.citationStyleHashParameterMissing'),
-                'status' => 'error',
-            ));
+            if (isset($this->config['citationStyleHash']) && !empty($this->config['citationStyleHash'])) {
+                $citationStyleHash = $this->config['citationStyleHash'];
+            }
+            else {
+                return new JsonModel(array(
+                    'error' => $this->translator->translate('job.api.error.citationStyleHashParameterMissing'),
+                    'status' => 'error',
+                ));
+            }
         }
 
         $citationStyles = $this->citationStyles->getStyleMap();

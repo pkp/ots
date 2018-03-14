@@ -51,13 +51,17 @@ class Module
                     $queueManager = $sm->get('Manager\Model\Queue\Manager');
                     $citationStyles = $sm->get('CitationstyleConversion\Model\Citationstyles');
 
+                    $config = $sm->get ( 'Config' );
+                    $config = $config['api'];
+
                     return new Controller\JobController(
                         $logger,
                         $translator,
                         $jobDAO,
                         $documentDAO,
                         $queueManager,
-                        $citationStyles
+                        $citationStyles,
+                        $config
                     );
                 },
                 'Api\Controller\Site' => function($cm)
