@@ -169,5 +169,8 @@ return array(
             'jarfile' => 'grobid-core-0.4.0.one-jar.jar',   // located in <install_path>/grobid-core/target/
             'xsl' => 'module/GrobidConversion/assets/grobid-jats.xsl',
         ),
-    )
+    ),
+    'api' => array(
+        'citationStyleHash' => '3f0f7fede090f24cc71b7281073996be', // American Psychological Association 6th edition
+    ),
 );
