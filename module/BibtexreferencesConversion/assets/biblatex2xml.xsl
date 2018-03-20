@@ -8,7 +8,7 @@ XSL for converting BIB2MODS output XML to NLM <ref><citation> style.
 
 <xsl:template match="/">
 <ref-list>
-        <xsl:for-each select="/modsCollection/mods">
+    <xsl:for-each select="/modsCollection/mods">
         <ref id="{@ID}">
             <element-citation publication-type="journal">
                 <person-group person-group-type="author">
@@ -66,6 +66,11 @@ XSL for converting BIB2MODS output XML to NLM <ref><citation> style.
                             <xsl:value-of select="string(.)"/>
                         </lpage>
                     </xsl:for-each>
+                </xsl:for-each>
+                <xsl:for-each select="identifier/[@type='doi']">
+                    <pub-id pub-id-type="doi">
+                        <xsl:value-of select="string(.)"/>
+                    </pub-id>
                 </xsl:for-each>
             </element-citation>
         </ref>
