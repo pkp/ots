@@ -67,10 +67,13 @@ XSL for converting BIB2MODS output XML to NLM <ref><citation> style.
                         </lpage>
                     </xsl:for-each>
                 </xsl:for-each>
-                <xsl:for-each select="identifier/[@type='doi']">
-                    <pub-id pub-id-type="doi">
-                        <xsl:value-of select="string(.)"/>
-                    </pub-id>
+                <xsl:for-each select="identifier">
+                    <xsl:variable name="identifierType" select="@type"/>
+                    <xsl:if test="$identifierType = 'doi'">
+                        <pub-id pub-id-type="doi">
+                            <xsl:value-of select="string(.)"/>
+                        </pub-id>
+                    </xsl:if>
                 </xsl:for-each>
             </element-citation>
         </ref>
