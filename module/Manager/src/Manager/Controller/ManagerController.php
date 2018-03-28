@@ -12,6 +12,9 @@ use Manager\Model\DAO\DocumentDAO;
 use Manager\Model\DAO\JobDAO;
 use Manager\Entity\Job;
 use Zend\Http\Response;
+use \DOMDocument;
+use \filesize;
+use \filectime;
 
 class ManagerController extends AbstractActionController {
     protected $logger;
@@ -297,11 +300,246 @@ class ManagerController extends AbstractActionController {
                 "Content-Type: {$document->mimeType}\r\n"
             ));
 
-            $content = file_get_contents($document->path);
-            $transformedContent = $this->_ontheFlyGraphicUpdate($content);
+            $transformedContent = $this->_loadXmlDocumentContent($document);
             $response->setContent($transformedContent);
             return $response;
         }
+    }
+
+    protected function _loadXmlDocumentContent($document) 
+    {
+        return file_get_contents($document->path);
+//         $content = file_get_contents($document->path);
+//         $transformedContent = $this->_ontheFlyGraphicUpdate($content);
+//         return $transformedContent;
+    }
+
+    /**
+     * Helper function to manually parse raw multipart/form-data associated to 
+     * texture PUT request on save 
+     * Source: https://stackoverflow.com/questions/5483851/manually-parse-raw-multipart-form-data-data-with-php
+     */
+    protected function parse_raw_http_request(array &$a_data)
+    {
+        // read incoming data
+        $input = file_get_contents('php://input');
+
+        // grab multipart boundary from content type header
+        preg_match('/boundary=(.*)$/', $_SERVER['CONTENT_TYPE'], $matches);
+        $boundary = $matches[1];
+
+        // split content by boundary and get rid of last -- element
+        $a_blocks = preg_split("/-+$boundary/", $input);
+        array_pop($a_blocks);
+
+        // loop data blocks
+        foreach ($a_blocks as $id => $block)
+        {
+            if (empty($block))
+                continue;
+
+                // you'll have to var_dump $block to understand this and maybe replace \n or \r with a visibile char
+                // parse uploaded files
+                if (strpos($block, 'application/octet-stream') !== FALSE)
+                {
+                    // match "name", then everything after "stream" (optional) except for prepending newlines
+                    preg_match("/name=\"([^\"]*)\".*stream[\n|\r]+([^\n\r].*)?$/s", $block, $matches);
+                }
+                // parse all other fields
+                else
+                {
+                    // match "name" and optional value in between newline sequences
+                    preg_match('/name=\"([^\"]*)\"[\n|\r]+([^\n\r].*)?\r$/s', $block, $matches);
+                }
+                $a_data[$matches[1]] = $matches[2];
+        }
+    }
+
+    /**
+     * get json file  as Texture document archive specs 
+     */
+    public function jsonAction()
+    {
+        $jobId = (int) $this->params()->fromRoute('id');
+        $jobParams = array('id' => $jobId);
+        if (!($job = $this->jobDAO->findOneBy($jobParams))) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        $document = null;
+        if (!($document = $job->getStageDocument(JOB_CONVERSION_STAGE_BIBTEXREFERENCES))) {
+            // pdf uploads
+            $document = $job->getStageDocument(JOB_CONVERSION_STAGE_XML_MERGE);
+        }
+        $user = $this->identity();
+
+        if ($document->job->user->id != $user->id and !$user->isAdministrator()) 
+        {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        if ($this->request->isPut()) {
+            $formData = array();
+            $this->parse_raw_http_request($formData);
+            $archive = json_decode($formData['_archive']);
+            $resources = (array) $archive->resources;
+            if (isset($resources['manuscript.xml']) && is_object($resources['manuscript.xml'])) {
+                $manuscriptXml = $resources['manuscript.xml']->data;
+                // Create a new job and set the citation style file based on
+                // the submitted citation style
+                $newJob = $this->jobDAO->getInstance();
+                $newJob->user = $this->identity();
+                $newJob->setCitationStyleFile($job->getCitationStyleFile());
+                $this->jobDAO->save($newJob);
+
+                // create xml document inside job directory
+                $xmlFilePath = $newJob->getUploadPath() . '/document.xml';
+                file_put_contents($xmlFilePath, $manuscriptXml);
+
+                // Create new document
+                $document = $this->documentDAO->getInstance();
+                $document->job = $newJob;
+                $document->conversionStage = $newJob->conversionStage;
+                $document->path = $xmlFilePath;
+                $this->documentDAO->save($document);
+                $this->logger->infoTranslate('manager.job.createLog', $newJob->id);
+
+                // Send the job to the queue manager
+                $this->queueManager->addJob($newJob->id);
+
+                $response = $this->getEvent()->getResponse();
+                $response->setHeaders(Headers::fromString(
+                    "Content-Type: application/json\r\n"
+                ));
+                $response->setContent(json_encode(array('success' => true, 'jobId' => $newJob->id)));
+                return $response;
+            }
+
+            // bad request
+            $this->getResponse()->setStatusCode(400);
+            return;
+        }
+        else {
+            $assets = array();
+            $manuscriptXml = $this->_loadXmlDocumentContent($document);
+            $manifestXml = $this->_buildManifestXMLFromDocument($manuscriptXml, $assets);
+            // media url
+            $mediaInfos = $this->_buildMediaInfo($job, $assets);
+            $data = array(
+                'version'       => 'AE2F112D',
+                'resources'     => array(
+                    'manifest.xml'      => array(
+                        'encoding'      => "utf8",
+                        'data'          => $manifestXml,
+                        'size'          => strlen($manifestXml),
+                        'createdAt'     => 0,
+                        'updatedAt'     => 0,
+                    ),
+                    'manuscript.xml'  => array(
+                        'encoding'      => "utf8",
+                        'data'          => $manuscriptXml,
+                        'size'          => filesize($document->path),
+                        'createdAt'     => 0,
+                        'updatedAt'     => 0,
+                    ),
+                )
+            );
+            $data = array_merge($data, $mediaInfos);
+
+            $response = $this->getEvent()->getResponse();
+            $response->setHeaders(Headers::fromString(
+                "Content-Type: application/json\r\n"
+            ));
+            $this->getResponse()->setStatusCode(200);
+            $response->setContent(json_encode($data));
+            return $response;
+        }
+    }
+
+    protected function _buildMediaInfo($job, $assets)
+    {
+        $infos = array();
+        $meTypesetDir = $job->getDocumentPath() . '/metypeset';
+        foreach ($assets as $asset) {
+            $path = $asset['path'];
+            $filePath = "{$meTypesetDir}/{$path}";
+            $uri = $this->getRequest()->getUri();
+            $base = sprintf('%s://%s', $uri->getScheme(), $uri->getHost());
+            $reqUri = $this->getRequest()->getUri()->getPath();
+            $url = "{$base}{$reqUri}/{$path}";
+            $infos[$path] = array(
+                'encoding'  => 'url',
+                'data'      => $url,
+                'size'      => filesize($filePath),
+                'createdAt' => filectime($filePath),
+                'updatedAt' => filectime($filePath),
+            );
+        }
+        return $infos;
+    }
+
+    /**
+     * build manifest.xml from xml document
+     * 
+     * @param string $document raw XML
+     * @param array $assets list of figure metadata
+     */
+    protected function _buildManifestXMLFromDocument($manuscriptXml, &$assets)
+    {
+        $dom = new DOMDocument();
+        if (!$dom->loadXML($manuscriptXml)) {
+            $this->logger->debugTranslate(
+                'manager.controller.rawXmlDomLog',
+                $this->libxmlErrors()
+            );
+        }
+
+        $k = 0;
+        $assets = array();
+        $figElements = $dom->getElementsByTagName('fig');
+        foreach ($figElements as $figure) {
+            $pos = $k+1;
+            $figItem = $figElements->item($k);
+            $graphic = $figItem->getElementsByTagName('graphic');
+
+            // figure without graphic?
+            if (!$figItem || !$graphic) {
+                continue;
+            }
+
+            // get fig id
+            $figId = null;
+            if ($figItem->hasAttribute('id')) {
+                $figId = $figItem->getAttribute('id');
+            }
+            else {
+                $figId = "ots-fig-{$pos}";
+            }
+
+            // get path
+            $figGraphPath = $graphic->item(0)->getAttribute('xlink:href');
+
+            // save assets
+            $assets[] = array(
+                'id'    => $figId,
+                'type'  => 'image/jpg',
+                'path'  => $figGraphPath,
+            );
+
+            $k++;
+        }
+
+        $sxml = simplexml_load_string('<dar><documents><document id="manuscript" type="article" path="manuscript.xml" /></documents><assets></assets></dar>');
+        foreach ($assets as $asset) {
+            $assetNode = $sxml->assets->addChild('asset');
+            $assetNode->addAttribute('id', $asset['id']);
+            $assetNode->addAttribute('type', $asset['type']);
+            $assetNode->addAttribute('path', $asset['path']);
+        }
+
+        return $sxml->asXML();
     }
 
     /**

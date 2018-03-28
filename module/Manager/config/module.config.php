@@ -48,7 +48,7 @@ return array(
             'media' => array(
                 'type' => 'segment',
                 'options' => array(
-                        'route' => '/manager/xml/id/:id/media/:file',
+                        'route' => '/manager/json/id/:id/media/:file',
                         'constraints' => array(
                                 'id' => '[0-9]+',
                                 'file' => '[a-zA-Z0-9]+\.[a-zA-Z]{3,4}',
@@ -59,17 +59,17 @@ return array(
                         ),
                 ),
             ),
-            'xml' => array(
+            'json' => array(
                 'type' => 'segment',
                 'options' => array(
-                        'route' => '/manager/xml/id/:id',
-                        'constraints' => array(
-                                'id' => '[0-9]+',
-                        ),
-                        'defaults' => array(
-                                'controller' => 'Manager\Controller\Manager',
-                                'action' => 'xml',
-                        ),
+                    'route' => '/manager/json/id/:id',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Manager\Controller\Manager',
+                        'action' => 'json',
+                    ),
                 ),
             ),
     ),
@@ -102,8 +102,8 @@ return array(
             'controller:Manager\Controller\Manager:list',
             'controller:Manager\Controller\Manager:upload',
             'controller:Manager\Controller\Manager:editor',
-            'controller:Manager\Controller\Manager:xml',
             'controller:Manager\Controller\Manager:media',
+            'controller:Manager\Controller\Manager:json',
         ),
         'rules' => array(
             array('allow', 'member', 'controller:Manager\Controller\Manager:details'),
@@ -111,8 +111,8 @@ return array(
             array('allow', 'member', 'controller:Manager\Controller\Manager:list'),
             array('allow', 'member', 'controller:Manager\Controller\Manager:upload'),
             array('allow', 'member', 'controller:Manager\Controller\Manager:editor'),
-            array('allow', 'member', 'controller:Manager\Controller\Manager:xml'),
             array('allow', 'member', 'controller:Manager\Controller\Manager:media'),
+            array('allow', 'member', 'controller:Manager\Controller\Manager:json'),
         ),
     ),
 );

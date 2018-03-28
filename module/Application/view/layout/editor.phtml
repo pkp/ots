@@ -1,21 +1,23 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="jobId" content="/manager/xml/id/<?php echo $jobId ?>">
+  <meta name="jobId" content="/manager/json/id/<?php echo $jobId ?>">
   <link href='/texture/css/texture.css' rel='stylesheet' type='text/css'/>
   <link href='/texture/css/texture-reset.css' rel='stylesheet' type='text/css'/>
+  <link href='/texture/css/substance.css' rel='stylesheet' type='text/css'/>
   <link href='/texture/css/texture-pagestyle.css' rel='stylesheet' type='text/css'/>
   <link href='/texture/css/font-awesome.min.css' rel='stylesheet' type='text/css'/>
+  <style>
+      body { overflow: hidden; }
+      html, body { height: 100%; }
+      .sc-app {
+        height: 100%;
+      }
+    </style>
+    <script type="text/javascript" src="/texture/js/substance.js"></script>
+	<script type="text/javascript" src="/texture/js/texture.js"></script>
+	<script type="text/javascript" src="/texture/js/editor.js"></script>
 </head>
 <body>
-
-	<!-- polyfills -->
-	<script type="text/javascript" src="/texture/js/promise.min.js"></script>
-	<script type="text/javascript" src="/texture/js/fetch.min.js"></script>
-	
-	<script type="text/javascript" src="/texture/js/substance.js"></script>
-	<script type="text/javascript" src="/texture/js/texture.js"></script>
-	<script type="text/javascript" src="/texture/js/store.js"></script>
-	<script type="text/javascript" src="/texture/js/app.js"></script>
 </body>
 </html>
