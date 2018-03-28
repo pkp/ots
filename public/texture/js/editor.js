@@ -9,25 +9,6 @@
 		OTSTextureEditor.mount({}, window.document.body);
 	});
 	
-	class XmlHttpStorageClient extends substance.HttpStorageClient {
-
-		constructor(apiUrl) {
-			super(apiUrl)
-		}
-
-		read(archiveId) {
-			let url = this.apiUrl;
-			if (archiveId) {
-				url = url + '/' + archiveId;
-			}
-			return fetch(url, {
-				credentials: 'same-origin'
-			}).then(function(response){
-				return response.text();
-			})
-		}
-	}
-	
 	class OTSTextureEditor extends substance.Component {
 		didMount() {
 			this._init();
@@ -47,7 +28,6 @@
 		
 		_init() {
 			let storageUrl = document.querySelector('meta[name=jobId').getAttribute('content');
-//			let storage = new XmlHttpStorageClient(storageUrl);
 			let storage = new substance.HttpStorageClient(storageUrl);
 			let buffer = new substance.InMemoryDarBuffer();
 			let archive = new substanceTexture.TextureArchive(storage, buffer);
