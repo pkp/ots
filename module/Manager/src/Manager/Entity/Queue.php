@@ -63,7 +63,7 @@ class Queue extends DataObject
     protected $message;
 
     /**
-     * @ORM\Column(type="text", nullable=false)
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $trace;
 }
