@@ -1,13 +1,18 @@
-var t = window.texture;
-
-if (typeof window !== 'undefined') {
-	window.onload = function() {
-		var xmlStore = new OTSXMLStore()
-		var app = t.Texture.mount({
-			readXML: xmlStore.readXML,
-			writeXML: xmlStore.writeXML,
-			documentId: document.querySelector('meta[name=jobId').getAttribute('content')
-		}, document.body)
-		window.app = app
-	}
-}
+$(function() {
+	$('input#saveDocument').click(function() {
+		var saving = false;
+		$('div#feedback').text('').show();
+		if (buffer.hasPendingChanges()) {
+			$('div#feedback').text('Saving..');
+			saving = true;
+		}
+		else {
+			$('div#feedback').text('no pending changes to save.').fadeOut('slow');
+		}
+		archive.save().then(() => {
+			if (saving) {
+				$('div#feedback').text('Done!').fadeOut('slow');
+			}
+		});
+	});
+});

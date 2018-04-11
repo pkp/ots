@@ -6,7 +6,7 @@
 
 	window.addEventListener('load', () => {
 		substance.substanceGlobals.DEBUG_RENDERING = substance.platform.devtools;
-		OTSTextureEditor.mount({}, window.document.body);
+		window.texture = OTSTextureEditor.mount({}, document.getElementById("editor"));
 	});
 	
 	class OTSTextureEditor extends substance.Component {
@@ -31,6 +31,8 @@
 			let storage = new substance.HttpStorageClient(storageUrl);
 			let buffer = new substance.InMemoryDarBuffer();
 			let archive = new substanceTexture.TextureArchive(storage, buffer);
+			window.archive = archive;
+			window.buffer = buffer;
 
 			let promise = archive.load('')
 			.then(() => {
