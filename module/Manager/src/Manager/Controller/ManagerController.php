@@ -427,33 +427,33 @@ class ManagerController extends AbstractActionController {
             $manifestXml = $this->_buildManifestXMLFromDocument($manuscriptXml, $assets);
             // media url
             $mediaInfos = $this->_buildMediaInfo($job, $assets);
+            $resources = array(
+                'manifest.xml'      => array(
+                    'encoding'      => "utf8",
+                    'data'          => $manifestXml,
+                    'size'          => strlen($manifestXml),
+                    'createdAt'     => 0,
+                    'updatedAt'     => 0,
+                ),
+                'manuscript.xml'  => array(
+                    'encoding'      => "utf8",
+                    'data'          => $manuscriptXml,
+                    'size'          => filesize($document->path),
+                    'createdAt'     => 0,
+                    'updatedAt'     => 0,
+                ),
+            );
             $data = array(
                 'version'       => 'AE2F112D',
-                'resources'     => array(
-                    'manifest.xml'      => array(
-                        'encoding'      => "utf8",
-                        'data'          => $manifestXml,
-                        'size'          => strlen($manifestXml),
-                        'createdAt'     => 0,
-                        'updatedAt'     => 0,
-                    ),
-                    'manuscript.xml'  => array(
-                        'encoding'      => "utf8",
-                        'data'          => $manuscriptXml,
-                        'size'          => filesize($document->path),
-                        'createdAt'     => 0,
-                        'updatedAt'     => 0,
-                    ),
-                )
+                'resources'     => array_merge($resources, $mediaInfos)
             );
-            $data = array_merge($data, $mediaInfos);
 
             $response = $this->getEvent()->getResponse();
             $response->setHeaders(Headers::fromString(
                 "Content-Type: application/json\r\n"
             ));
             $this->getResponse()->setStatusCode(200);
-            $response->setContent(json_encode($data));
+            $response->setContent(json_encode($data, JSON_UNESCAPED_SLASHES));
             return $response;
         }
     }
