@@ -1,21 +1,52 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="jobId" content="/manager/xml/id/<?php echo $jobId ?>">
+  <meta name="jobId" content="/manager/json/id/<?php echo $jobId ?>">
   <link href='/texture/css/texture.css' rel='stylesheet' type='text/css'/>
   <link href='/texture/css/texture-reset.css' rel='stylesheet' type='text/css'/>
+  <link href='/texture/css/substance.css' rel='stylesheet' type='text/css'/>
   <link href='/texture/css/texture-pagestyle.css' rel='stylesheet' type='text/css'/>
   <link href='/texture/css/font-awesome.min.css' rel='stylesheet' type='text/css'/>
+  <style>
+      body { overflow: hidden; }
+      html, body { height: 100%; }
+      .sc-app {
+        height: 100%;
+      }
+        input.save-btn {
+            color: #fff;
+            background-color: #5a6268;
+            border-color: #545b62;
+            font-weight: 400;
+            text-align: center;
+            border: 1px solid transparent;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            border-radius: .25rem;
+            margin:0 auto;
+        }
+        
+        div#toolbar {
+            margin-top:5px;
+        }
+        
+        div#feedback {
+            background-color:yellow;
+            text-align:center;
+            font-size: smaller;
+        }
+    </style>
+    <script type="text/javascript" src="/texture/js/substance.js"></script>
+    <script type="text/javascript" src="/texture/js/texture.js"></script>
+    <script type="text/javascript" src="/texture/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/texture/js/editor.js"></script>
+    <script type="text/javascript" src="/texture/js/app.js"></script>
 </head>
 <body>
-
-	<!-- polyfills -->
-	<script type="text/javascript" src="/texture/js/promise.min.js"></script>
-	<script type="text/javascript" src="/texture/js/fetch.min.js"></script>
-	
-	<script type="text/javascript" src="/texture/js/substance.js"></script>
-	<script type="text/javascript" src="/texture/js/texture.js"></script>
-	<script type="text/javascript" src="/texture/js/store.js"></script>
-	<script type="text/javascript" src="/texture/js/app.js"></script>
+    <div id="toolbar">
+        <div id="feedback" class="save-feedback"></div>
+        <input class="save-btn" type="button" id="saveDocument" value="Save" />
+    </div>
+<div id="editor"></div>
 </body>
 </html>

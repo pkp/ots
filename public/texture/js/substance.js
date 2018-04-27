@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.substance = global.substance || {})));
+	(factory((global.substance = {})));
 }(this, (function (exports) { 'use strict';
 
 class ChangeStore {
@@ -74,2922 +74,6 @@ class ChangeStore {
   }
 }
 
-function series(tasks, cb, i) {
-  i = i || 0;
-  tasks[i](function(err) {
-    
-    if (err) return cb(err)
-    if (i === tasks.length-1) {
-      cb(...arguments); 
-    } else {
-      series(tasks, cb, i + 1);
-    }
-  });
-}
-
-var async = Object.freeze({
-	series: series
-});
-
-class ArrayIterator {
-
-  constructor(arr) {
-    this.arr = arr;
-    this.pos = -1;
-  }
-
-  get _isArrayIterator() {
-    return true
-  }
-
-  
-  hasNext() {
-    return this.pos < this.arr.length - 1
-  }
-
-  
-  next() {
-    this.pos += 1;
-    var next = this.arr[this.pos];
-    return next
-  }
-
-  
-  back() {
-    if (this.pos >= 0) {
-      this.pos -= 1;
-    }
-    return this
-  }
-
-  peek() {
-    return this.arr[this.pos+1]
-  }
-
-}
-
-function deleteFromArray(array, value) {
-  if (!array) return
-  for (var i = 0; i < array.length; i++) {
-    if (array[i] === value) {
-      array.splice(i, 1);
-      i--;
-    }
-  }
-}
-
-class ArrayTree {
-  add(path, val) {
-    if (!this[path]) {
-      this[path] = [];
-    }
-    this[path].push(val);
-  }
-  remove(path, val) {
-    if (this[path]) {
-      deleteFromArray(this[path], val);
-    }
-  }
-  get(path) {
-    return this[path] || []
-  }
-}
-
-function array2table(keys) {
-  return keys.reduce((obj, key) => {
-    obj[key] = true;
-    return obj
-  }, {})
-}
-
-function checkGlobal(value) {
-  return (value && value.Object === Object) ? value : null;
-}
-
-var freeGlobal = checkGlobal(typeof global == 'object' && global);
-
-
-var freeSelf = checkGlobal(typeof self == 'object' && self);
-
-
-var thisGlobal = checkGlobal(typeof undefined == 'object' && undefined);
-
-
-var root = freeGlobal || freeSelf || thisGlobal || Function('return this')();
-
-var Symbol = root.Symbol;
-
-function isObjectLike(value) {
-  return !!value && typeof value == 'object';
-}
-
-var symbolTag = '[object Symbol]';
-
-
-var objectProto = Object.prototype;
-
-
-var objectToString = objectProto.toString;
-
-
-function isSymbol(value) {
-  return typeof value == 'symbol' ||
-    (isObjectLike(value) && objectToString.call(value) == symbolTag);
-}
-
-var INFINITY = 1 / 0;
-
-
-var symbolProto = Symbol ? Symbol.prototype : undefined;
-var symbolToString = symbolProto ? symbolProto.toString : undefined;
-
-
-function baseToString(value) {
-  
-  if (typeof value == 'string') {
-    return value;
-  }
-  if (isSymbol(value)) {
-    return symbolToString ? symbolToString.call(value) : '';
-  }
-  var result = (value + '');
-  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
-}
-
-function toString(value) {
-  return value == null ? '' : baseToString(value);
-}
-
-function baseSlice(array, start, end) {
-  var index = -1,
-      length = array.length;
-
-  if (start < 0) {
-    start = -start > length ? 0 : (length + start);
-  }
-  end = end > length ? length : end;
-  if (end < 0) {
-    end += length;
-  }
-  length = start > end ? 0 : ((end - start) >>> 0);
-  start >>>= 0;
-
-  var result = Array(length);
-  while (++index < length) {
-    result[index] = array[index + start];
-  }
-  return result;
-}
-
-function castSlice(array, start, end) {
-  var length = array.length;
-  end = end === undefined ? length : end;
-  return (!start && end >= length) ? array : baseSlice(array, start, end);
-}
-
-var rsAstralRange = '\\ud800-\\udfff';
-var rsComboMarksRange = '\\u0300-\\u036f\\ufe20-\\ufe23';
-var rsComboSymbolsRange = '\\u20d0-\\u20f0';
-var rsVarRange = '\\ufe0e\\ufe0f';
-
-
-var rsZWJ = '\\u200d';
-
-
-var reHasComplexSymbol = RegExp('[' + rsZWJ + rsAstralRange  + rsComboMarksRange + rsComboSymbolsRange + rsVarRange + ']');
-
-var rsAstralRange$1 = '\\ud800-\\udfff';
-var rsComboMarksRange$1 = '\\u0300-\\u036f\\ufe20-\\ufe23';
-var rsComboSymbolsRange$1 = '\\u20d0-\\u20f0';
-var rsVarRange$1 = '\\ufe0e\\ufe0f';
-
-
-var rsAstral = '[' + rsAstralRange$1 + ']';
-var rsCombo = '[' + rsComboMarksRange$1 + rsComboSymbolsRange$1 + ']';
-var rsFitz = '\\ud83c[\\udffb-\\udfff]';
-var rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')';
-var rsNonAstral = '[^' + rsAstralRange$1 + ']';
-var rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}';
-var rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]';
-var rsZWJ$1 = '\\u200d';
-
-
-var reOptMod = rsModifier + '?';
-var rsOptVar = '[' + rsVarRange$1 + ']?';
-var rsOptJoin = '(?:' + rsZWJ$1 + '(?:' + [rsNonAstral, rsRegional, rsSurrPair].join('|') + ')' + rsOptVar + reOptMod + ')*';
-var rsSeq = rsOptVar + reOptMod + rsOptJoin;
-var rsSymbol = '(?:' + [rsNonAstral + rsCombo + '?', rsCombo, rsRegional, rsSurrPair, rsAstral].join('|') + ')';
-
-
-var reComplexSymbol = RegExp(rsFitz + '(?=' + rsFitz + ')|' + rsSymbol + rsSeq, 'g');
-
-
-function stringToArray(string) {
-  return string.match(reComplexSymbol);
-}
-
-function createCaseFirst(methodName) {
-  return function(string) {
-    string = toString(string);
-
-    var strSymbols = reHasComplexSymbol.test(string)
-      ? stringToArray(string)
-      : undefined;
-
-    var chr = strSymbols
-      ? strSymbols[0]
-      : string.charAt(0);
-
-    var trailing = strSymbols
-      ? castSlice(strSymbols, 1).join('')
-      : string.slice(1);
-
-    return chr[methodName]() + trailing;
-  };
-}
-
-var upperFirst = createCaseFirst('toUpperCase');
-
-function capitalize(string) {
-  return upperFirst(toString(string).toLowerCase());
-}
-
-function arrayReduce(array, iteratee, accumulator, initAccum) {
-  var index = -1,
-      length = array ? array.length : 0;
-
-  if (initAccum && length) {
-    accumulator = array[++index];
-  }
-  while (++index < length) {
-    accumulator = iteratee(accumulator, array[index], index, array);
-  }
-  return accumulator;
-}
-
-var deburredLetters = {
-  '\xc0': 'A',  '\xc1': 'A', '\xc2': 'A', '\xc3': 'A', '\xc4': 'A', '\xc5': 'A',
-  '\xe0': 'a',  '\xe1': 'a', '\xe2': 'a', '\xe3': 'a', '\xe4': 'a', '\xe5': 'a',
-  '\xc7': 'C',  '\xe7': 'c',
-  '\xd0': 'D',  '\xf0': 'd',
-  '\xc8': 'E',  '\xc9': 'E', '\xca': 'E', '\xcb': 'E',
-  '\xe8': 'e',  '\xe9': 'e', '\xea': 'e', '\xeb': 'e',
-  '\xcC': 'I',  '\xcd': 'I', '\xce': 'I', '\xcf': 'I',
-  '\xeC': 'i',  '\xed': 'i', '\xee': 'i', '\xef': 'i',
-  '\xd1': 'N',  '\xf1': 'n',
-  '\xd2': 'O',  '\xd3': 'O', '\xd4': 'O', '\xd5': 'O', '\xd6': 'O', '\xd8': 'O',
-  '\xf2': 'o',  '\xf3': 'o', '\xf4': 'o', '\xf5': 'o', '\xf6': 'o', '\xf8': 'o',
-  '\xd9': 'U',  '\xda': 'U', '\xdb': 'U', '\xdc': 'U',
-  '\xf9': 'u',  '\xfa': 'u', '\xfb': 'u', '\xfc': 'u',
-  '\xdd': 'Y',  '\xfd': 'y', '\xff': 'y',
-  '\xc6': 'Ae', '\xe6': 'ae',
-  '\xde': 'Th', '\xfe': 'th',
-  '\xdf': 'ss'
-};
-
-
-function deburrLetter(letter) {
-  return deburredLetters[letter];
-}
-
-var reLatin1 = /[\xc0-\xd6\xd8-\xde\xdf-\xf6\xf8-\xff]/g;
-
-
-var rsComboMarksRange$2 = '\\u0300-\\u036f\\ufe20-\\ufe23';
-var rsComboSymbolsRange$2 = '\\u20d0-\\u20f0';
-
-
-var rsCombo$1 = '[' + rsComboMarksRange$2 + rsComboSymbolsRange$2 + ']';
-
-
-var reComboMark = RegExp(rsCombo$1, 'g');
-
-
-function deburr(string) {
-  string = toString(string);
-  return string && string.replace(reLatin1, deburrLetter).replace(reComboMark, '');
-}
-
-var reBasicWord = /[a-zA-Z0-9]+/g;
-
-
-var rsAstralRange$2 = '\\ud800-\\udfff';
-var rsComboMarksRange$3 = '\\u0300-\\u036f\\ufe20-\\ufe23';
-var rsComboSymbolsRange$3 = '\\u20d0-\\u20f0';
-var rsDingbatRange = '\\u2700-\\u27bf';
-var rsLowerRange = 'a-z\\xdf-\\xf6\\xf8-\\xff';
-var rsMathOpRange = '\\xac\\xb1\\xd7\\xf7';
-var rsNonCharRange = '\\x00-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\xbf';
-var rsPunctuationRange = '\\u2000-\\u206f';
-var rsSpaceRange = ' \\t\\x0b\\f\\xa0\\ufeff\\n\\r\\u2028\\u2029\\u1680\\u180e\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\u202f\\u205f\\u3000';
-var rsUpperRange = 'A-Z\\xc0-\\xd6\\xd8-\\xde';
-var rsVarRange$2 = '\\ufe0e\\ufe0f';
-var rsBreakRange = rsMathOpRange + rsNonCharRange + rsPunctuationRange + rsSpaceRange;
-
-
-var rsApos$1 = "['\u2019]";
-var rsBreak = '[' + rsBreakRange + ']';
-var rsCombo$2 = '[' + rsComboMarksRange$3 + rsComboSymbolsRange$3 + ']';
-var rsDigits = '\\d+';
-var rsDingbat = '[' + rsDingbatRange + ']';
-var rsLower = '[' + rsLowerRange + ']';
-var rsMisc = '[^' + rsAstralRange$2 + rsBreakRange + rsDigits + rsDingbatRange + rsLowerRange + rsUpperRange + ']';
-var rsFitz$1 = '\\ud83c[\\udffb-\\udfff]';
-var rsModifier$1 = '(?:' + rsCombo$2 + '|' + rsFitz$1 + ')';
-var rsNonAstral$1 = '[^' + rsAstralRange$2 + ']';
-var rsRegional$1 = '(?:\\ud83c[\\udde6-\\uddff]){2}';
-var rsSurrPair$1 = '[\\ud800-\\udbff][\\udc00-\\udfff]';
-var rsUpper = '[' + rsUpperRange + ']';
-var rsZWJ$2 = '\\u200d';
-
-
-var rsLowerMisc = '(?:' + rsLower + '|' + rsMisc + ')';
-var rsUpperMisc = '(?:' + rsUpper + '|' + rsMisc + ')';
-var rsOptLowerContr = '(?:' + rsApos$1 + '(?:d|ll|m|re|s|t|ve))?';
-var rsOptUpperContr = '(?:' + rsApos$1 + '(?:D|LL|M|RE|S|T|VE))?';
-var reOptMod$1 = rsModifier$1 + '?';
-var rsOptVar$1 = '[' + rsVarRange$2 + ']?';
-var rsOptJoin$1 = '(?:' + rsZWJ$2 + '(?:' + [rsNonAstral$1, rsRegional$1, rsSurrPair$1].join('|') + ')' + rsOptVar$1 + reOptMod$1 + ')*';
-var rsSeq$1 = rsOptVar$1 + reOptMod$1 + rsOptJoin$1;
-var rsEmoji = '(?:' + [rsDingbat, rsRegional$1, rsSurrPair$1].join('|') + ')' + rsSeq$1;
-
-
-var reComplexWord = RegExp([
-  rsUpper + '?' + rsLower + '+' + rsOptLowerContr + '(?=' + [rsBreak, rsUpper, '$'].join('|') + ')',
-  rsUpperMisc + '+' + rsOptUpperContr + '(?=' + [rsBreak, rsUpper + rsLowerMisc, '$'].join('|') + ')',
-  rsUpper + '?' + rsLowerMisc + '+' + rsOptLowerContr,
-  rsUpper + '+' + rsOptUpperContr,
-  rsDigits,
-  rsEmoji
-].join('|'), 'g');
-
-
-var reHasComplexWord = /[a-z][A-Z]|[A-Z]{2,}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/;
-
-
-function words(string, pattern, guard) {
-  string = toString(string);
-  pattern = guard ? undefined : pattern;
-
-  if (pattern === undefined) {
-    pattern = reHasComplexWord.test(string) ? reComplexWord : reBasicWord;
-  }
-  return string.match(pattern) || [];
-}
-
-var rsApos = "['\u2019]";
-
-
-var reApos = RegExp(rsApos, 'g');
-
-
-function createCompounder(callback) {
-  return function(string) {
-    return arrayReduce(words(deburr(string).replace(reApos, '')), callback, '');
-  };
-}
-
-var camelCase = createCompounder(function(result, word, index) {
-  word = word.toLowerCase();
-  return result + (index ? capitalize(word) : word);
-});
-
-function isObject(value) {
-  var type = typeof value;
-  return !!value && (type == 'object' || type == 'function');
-}
-
-function now() {
-  return Date.now();
-}
-
-var funcTag = '[object Function]';
-var genTag = '[object GeneratorFunction]';
-
-
-var objectProto$1 = Object.prototype;
-
-
-var objectToString$1 = objectProto$1.toString;
-
-
-function isFunction(value) {
-  
-  
-  
-  var tag = isObject(value) ? objectToString$1.call(value) : '';
-  return tag == funcTag || tag == genTag;
-}
-
-var NAN = 0 / 0;
-
-
-var reTrim = /^\s+|\s+$/g;
-
-
-var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
-
-
-var reIsBinary = /^0b[01]+$/i;
-
-
-var reIsOctal = /^0o[0-7]+$/i;
-
-
-var freeParseInt = parseInt;
-
-
-function toNumber(value) {
-  if (typeof value == 'number') {
-    return value;
-  }
-  if (isSymbol(value)) {
-    return NAN;
-  }
-  if (isObject(value)) {
-    var other = isFunction(value.valueOf) ? value.valueOf() : value;
-    value = isObject(other) ? (other + '') : other;
-  }
-  if (typeof value != 'string') {
-    return value === 0 ? value : +value;
-  }
-  value = value.replace(reTrim, '');
-  var isBinary = reIsBinary.test(value);
-  return (isBinary || reIsOctal.test(value))
-    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
-    : (reIsBadHex.test(value) ? NAN : +value);
-}
-
-var FUNC_ERROR_TEXT = 'Expected a function';
-
-
-var nativeMax = Math.max;
-var nativeMin = Math.min;
-
-
-function debounce(func, wait, options) {
-  var lastArgs,
-      lastThis,
-      maxWait,
-      result,
-      timerId,
-      lastCallTime,
-      lastInvokeTime = 0,
-      leading = false,
-      maxing = false,
-      trailing = true;
-
-  if (typeof func != 'function') {
-    throw new TypeError(FUNC_ERROR_TEXT);
-  }
-  wait = toNumber(wait) || 0;
-  if (isObject(options)) {
-    leading = !!options.leading;
-    maxing = 'maxWait' in options;
-    maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
-    trailing = 'trailing' in options ? !!options.trailing : trailing;
-  }
-
-  function invokeFunc(time) {
-    var args = lastArgs,
-        thisArg = lastThis;
-
-    lastArgs = lastThis = undefined;
-    lastInvokeTime = time;
-    result = func.apply(thisArg, args);
-    return result;
-  }
-
-  function leadingEdge(time) {
-    
-    lastInvokeTime = time;
-    
-    timerId = setTimeout(timerExpired, wait);
-    
-    return leading ? invokeFunc(time) : result;
-  }
-
-  function remainingWait(time) {
-    var timeSinceLastCall = time - lastCallTime,
-        timeSinceLastInvoke = time - lastInvokeTime,
-        result = wait - timeSinceLastCall;
-
-    return maxing ? nativeMin(result, maxWait - timeSinceLastInvoke) : result;
-  }
-
-  function shouldInvoke(time) {
-    var timeSinceLastCall = time - lastCallTime,
-        timeSinceLastInvoke = time - lastInvokeTime;
-
-    
-    
-    
-    return (lastCallTime === undefined || (timeSinceLastCall >= wait) ||
-      (timeSinceLastCall < 0) || (maxing && timeSinceLastInvoke >= maxWait));
-  }
-
-  function timerExpired() {
-    var time = now();
-    if (shouldInvoke(time)) {
-      return trailingEdge(time);
-    }
-    
-    timerId = setTimeout(timerExpired, remainingWait(time));
-  }
-
-  function trailingEdge(time) {
-    timerId = undefined;
-
-    
-    
-    if (trailing && lastArgs) {
-      return invokeFunc(time);
-    }
-    lastArgs = lastThis = undefined;
-    return result;
-  }
-
-  function cancel() {
-    lastInvokeTime = 0;
-    lastArgs = lastCallTime = lastThis = timerId = undefined;
-  }
-
-  function flush() {
-    return timerId === undefined ? result : trailingEdge(now());
-  }
-
-  function debounced() {
-    var time = now(),
-        isInvoking = shouldInvoke(time);
-
-    lastArgs = arguments;
-    lastThis = this;
-    lastCallTime = time;
-
-    if (isInvoking) {
-      if (timerId === undefined) {
-        return leadingEdge(lastCallTime);
-      }
-      if (maxing) {
-        
-        timerId = setTimeout(timerExpired, wait);
-        return invokeFunc(lastCallTime);
-      }
-    }
-    if (timerId === undefined) {
-      timerId = setTimeout(timerExpired, wait);
-    }
-    return result;
-  }
-  debounced.cancel = cancel;
-  debounced.flush = flush;
-  return debounced;
-}
-
-var isArray = Array.isArray;
-
-function isHostObject(value) {
-  
-  
-  var result = false;
-  if (value != null && typeof value.toString != 'function') {
-    try {
-      result = !!(value + '');
-    } catch (e) {}
-  }
-  return result;
-}
-
-var coreJsData = root['__core-js_shared__'];
-
-var maskSrcKey = (function() {
-  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
-  return uid ? ('Symbol(src)_1.' + uid) : '';
-}());
-
-
-function isMasked(func) {
-  return !!maskSrcKey && (maskSrcKey in func);
-}
-
-var funcToString$1 = Function.prototype.toString;
-
-
-function toSource(func) {
-  if (func != null) {
-    try {
-      return funcToString$1.call(func);
-    } catch (e) {}
-    try {
-      return (func + '');
-    } catch (e) {}
-  }
-  return '';
-}
-
-var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
-
-
-var reIsHostCtor = /^\[object .+?Constructor\]$/;
-
-
-var objectProto$2 = Object.prototype;
-
-
-var funcToString = Function.prototype.toString;
-
-
-var hasOwnProperty = objectProto$2.hasOwnProperty;
-
-
-var reIsNative = RegExp('^' +
-  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
-  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-);
-
-
-function baseIsNative(value) {
-  if (!isObject(value) || isMasked(value)) {
-    return false;
-  }
-  var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
-  return pattern.test(toSource(value));
-}
-
-function getValue(object, key) {
-  return object == null ? undefined : object[key];
-}
-
-function getNative(object, key) {
-  var value = getValue(object, key);
-  return baseIsNative(value) ? value : undefined;
-}
-
-var nativeCreate = getNative(Object, 'create');
-
-function hashClear() {
-  this.__data__ = nativeCreate ? nativeCreate(null) : {};
-}
-
-function hashDelete(key) {
-  return this.has(key) && delete this.__data__[key];
-}
-
-var HASH_UNDEFINED = '__lodash_hash_undefined__';
-
-
-var objectProto$3 = Object.prototype;
-
-
-var hasOwnProperty$1 = objectProto$3.hasOwnProperty;
-
-
-function hashGet(key) {
-  var data = this.__data__;
-  if (nativeCreate) {
-    var result = data[key];
-    return result === HASH_UNDEFINED ? undefined : result;
-  }
-  return hasOwnProperty$1.call(data, key) ? data[key] : undefined;
-}
-
-var objectProto$4 = Object.prototype;
-
-
-var hasOwnProperty$2 = objectProto$4.hasOwnProperty;
-
-
-function hashHas(key) {
-  var data = this.__data__;
-  return nativeCreate ? data[key] !== undefined : hasOwnProperty$2.call(data, key);
-}
-
-var HASH_UNDEFINED$1 = '__lodash_hash_undefined__';
-
-
-function hashSet(key, value) {
-  var data = this.__data__;
-  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED$1 : value;
-  return this;
-}
-
-function Hash(entries) {
-  var index = -1,
-      length = entries ? entries.length : 0;
-
-  this.clear();
-  while (++index < length) {
-    var entry = entries[index];
-    this.set(entry[0], entry[1]);
-  }
-}
-
-
-Hash.prototype.clear = hashClear;
-Hash.prototype['delete'] = hashDelete;
-Hash.prototype.get = hashGet;
-Hash.prototype.has = hashHas;
-Hash.prototype.set = hashSet;
-
-function listCacheClear() {
-  this.__data__ = [];
-}
-
-function eq(value, other) {
-  return value === other || (value !== value && other !== other);
-}
-
-function assocIndexOf(array, key) {
-  var length = array.length;
-  while (length--) {
-    if (eq(array[length][0], key)) {
-      return length;
-    }
-  }
-  return -1;
-}
-
-var arrayProto = Array.prototype;
-
-
-var splice = arrayProto.splice;
-
-
-function listCacheDelete(key) {
-  var data = this.__data__,
-      index = assocIndexOf(data, key);
-
-  if (index < 0) {
-    return false;
-  }
-  var lastIndex = data.length - 1;
-  if (index == lastIndex) {
-    data.pop();
-  } else {
-    splice.call(data, index, 1);
-  }
-  return true;
-}
-
-function listCacheGet(key) {
-  var data = this.__data__,
-      index = assocIndexOf(data, key);
-
-  return index < 0 ? undefined : data[index][1];
-}
-
-function listCacheHas(key) {
-  return assocIndexOf(this.__data__, key) > -1;
-}
-
-function listCacheSet(key, value) {
-  var data = this.__data__,
-      index = assocIndexOf(data, key);
-
-  if (index < 0) {
-    data.push([key, value]);
-  } else {
-    data[index][1] = value;
-  }
-  return this;
-}
-
-function ListCache(entries) {
-  var index = -1,
-      length = entries ? entries.length : 0;
-
-  this.clear();
-  while (++index < length) {
-    var entry = entries[index];
-    this.set(entry[0], entry[1]);
-  }
-}
-
-
-ListCache.prototype.clear = listCacheClear;
-ListCache.prototype['delete'] = listCacheDelete;
-ListCache.prototype.get = listCacheGet;
-ListCache.prototype.has = listCacheHas;
-ListCache.prototype.set = listCacheSet;
-
-var Map$1 = getNative(root, 'Map');
-
-function mapCacheClear() {
-  this.__data__ = {
-    'hash': new Hash,
-    'map': new (Map$1 || ListCache),
-    'string': new Hash
-  };
-}
-
-function isKeyable(value) {
-  var type = typeof value;
-  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
-    ? (value !== '__proto__')
-    : (value === null);
-}
-
-function getMapData(map, key) {
-  var data = map.__data__;
-  return isKeyable(key)
-    ? data[typeof key == 'string' ? 'string' : 'hash']
-    : data.map;
-}
-
-function mapCacheDelete(key) {
-  return getMapData(this, key)['delete'](key);
-}
-
-function mapCacheGet(key) {
-  return getMapData(this, key).get(key);
-}
-
-function mapCacheHas(key) {
-  return getMapData(this, key).has(key);
-}
-
-function mapCacheSet(key, value) {
-  getMapData(this, key).set(key, value);
-  return this;
-}
-
-function MapCache(entries) {
-  var index = -1,
-      length = entries ? entries.length : 0;
-
-  this.clear();
-  while (++index < length) {
-    var entry = entries[index];
-    this.set(entry[0], entry[1]);
-  }
-}
-
-
-MapCache.prototype.clear = mapCacheClear;
-MapCache.prototype['delete'] = mapCacheDelete;
-MapCache.prototype.get = mapCacheGet;
-MapCache.prototype.has = mapCacheHas;
-MapCache.prototype.set = mapCacheSet;
-
-var FUNC_ERROR_TEXT$1 = 'Expected a function';
-
-
-function memoize(func, resolver) {
-  if (typeof func != 'function' || (resolver && typeof resolver != 'function')) {
-    throw new TypeError(FUNC_ERROR_TEXT$1);
-  }
-  var memoized = function() {
-    var args = arguments,
-        key = resolver ? resolver.apply(this, args) : args[0],
-        cache = memoized.cache;
-
-    if (cache.has(key)) {
-      return cache.get(key);
-    }
-    var result = func.apply(this, args);
-    memoized.cache = cache.set(key, result);
-    return result;
-  };
-  memoized.cache = new (memoize.Cache || MapCache);
-  return memoized;
-}
-
-
-memoize.Cache = MapCache;
-
-var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(\.|\[\])(?:\4|$))/g;
-
-
-var reEscapeChar = /\\(\\)?/g;
-
-
-var stringToPath = memoize(function(string) {
-  var result = [];
-  toString(string).replace(rePropName, function(match, number, quote, string) {
-    result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
-  });
-  return result;
-});
-
-function castPath(value) {
-  return isArray(value) ? value : stringToPath(value);
-}
-
-var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/;
-var reIsPlainProp = /^\w*$/;
-
-
-function isKey(value, object) {
-  if (isArray(value)) {
-    return false;
-  }
-  var type = typeof value;
-  if (type == 'number' || type == 'symbol' || type == 'boolean' ||
-      value == null || isSymbol(value)) {
-    return true;
-  }
-  return reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
-    (object != null && value in Object(object));
-}
-
-var INFINITY$1 = 1 / 0;
-
-
-function toKey(value) {
-  if (typeof value == 'string' || isSymbol(value)) {
-    return value;
-  }
-  var result = (value + '');
-  return (result == '0' && (1 / value) == -INFINITY$1) ? '-0' : result;
-}
-
-function baseGet(object, path) {
-  path = isKey(path, object) ? [path] : castPath(path);
-
-  var index = 0,
-      length = path.length;
-
-  while (object != null && index < length) {
-    object = object[toKey(path[index++])];
-  }
-  return (index && index == length) ? object : undefined;
-}
-
-function get(object, path, defaultValue) {
-  var result = object == null ? undefined : baseGet(object, path);
-  return result === undefined ? defaultValue : result;
-}
-
-function stackClear() {
-  this.__data__ = new ListCache;
-}
-
-function stackDelete(key) {
-  return this.__data__['delete'](key);
-}
-
-function stackGet(key) {
-  return this.__data__.get(key);
-}
-
-function stackHas(key) {
-  return this.__data__.has(key);
-}
-
-var LARGE_ARRAY_SIZE = 200;
-
-
-function stackSet(key, value) {
-  var cache = this.__data__;
-  if (cache instanceof ListCache && cache.__data__.length == LARGE_ARRAY_SIZE) {
-    cache = this.__data__ = new MapCache(cache.__data__);
-  }
-  cache.set(key, value);
-  return this;
-}
-
-function Stack(entries) {
-  this.__data__ = new ListCache(entries);
-}
-
-
-Stack.prototype.clear = stackClear;
-Stack.prototype['delete'] = stackDelete;
-Stack.prototype.get = stackGet;
-Stack.prototype.has = stackHas;
-Stack.prototype.set = stackSet;
-
-var HASH_UNDEFINED$2 = '__lodash_hash_undefined__';
-
-
-function setCacheAdd(value) {
-  this.__data__.set(value, HASH_UNDEFINED$2);
-  return this;
-}
-
-function setCacheHas(value) {
-  return this.__data__.has(value);
-}
-
-function SetCache(values) {
-  var index = -1,
-      length = values ? values.length : 0;
-
-  this.__data__ = new MapCache;
-  while (++index < length) {
-    this.add(values[index]);
-  }
-}
-
-
-SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
-SetCache.prototype.has = setCacheHas;
-
-function arraySome(array, predicate) {
-  var index = -1,
-      length = array ? array.length : 0;
-
-  while (++index < length) {
-    if (predicate(array[index], index, array)) {
-      return true;
-    }
-  }
-  return false;
-}
-
-var UNORDERED_COMPARE_FLAG$1 = 1;
-var PARTIAL_COMPARE_FLAG$2 = 2;
-
-
-function equalArrays(array, other, equalFunc, customizer, bitmask, stack) {
-  var isPartial = bitmask & PARTIAL_COMPARE_FLAG$2,
-      arrLength = array.length,
-      othLength = other.length;
-
-  if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
-    return false;
-  }
-  
-  var stacked = stack.get(array);
-  if (stacked) {
-    return stacked == other;
-  }
-  var index = -1,
-      result = true,
-      seen = (bitmask & UNORDERED_COMPARE_FLAG$1) ? new SetCache : undefined;
-
-  stack.set(array, other);
-
-  
-  while (++index < arrLength) {
-    var arrValue = array[index],
-        othValue = other[index];
-
-    if (customizer) {
-      var compared = isPartial
-        ? customizer(othValue, arrValue, index, other, array, stack)
-        : customizer(arrValue, othValue, index, array, other, stack);
-    }
-    if (compared !== undefined) {
-      if (compared) {
-        continue;
-      }
-      result = false;
-      break;
-    }
-    
-    if (seen) {
-      if (!arraySome(other, function(othValue, othIndex) {
-            if (!seen.has(othIndex) &&
-                (arrValue === othValue || equalFunc(arrValue, othValue, customizer, bitmask, stack))) {
-              return seen.add(othIndex);
-            }
-          })) {
-        result = false;
-        break;
-      }
-    } else if (!(
-          arrValue === othValue ||
-            equalFunc(arrValue, othValue, customizer, bitmask, stack)
-        )) {
-      result = false;
-      break;
-    }
-  }
-  stack['delete'](array);
-  return result;
-}
-
-var Uint8Array = root.Uint8Array;
-
-function mapToArray(map) {
-  var index = -1,
-      result = Array(map.size);
-
-  map.forEach(function(value, key) {
-    result[++index] = [key, value];
-  });
-  return result;
-}
-
-function setToArray(set) {
-  var index = -1,
-      result = Array(set.size);
-
-  set.forEach(function(value) {
-    result[++index] = value;
-  });
-  return result;
-}
-
-var UNORDERED_COMPARE_FLAG$2 = 1;
-var PARTIAL_COMPARE_FLAG$3 = 2;
-
-
-var boolTag = '[object Boolean]';
-var dateTag = '[object Date]';
-var errorTag = '[object Error]';
-var mapTag = '[object Map]';
-var numberTag = '[object Number]';
-var regexpTag = '[object RegExp]';
-var setTag = '[object Set]';
-var stringTag = '[object String]';
-var symbolTag$1 = '[object Symbol]';
-
-var arrayBufferTag = '[object ArrayBuffer]';
-var dataViewTag = '[object DataView]';
-
-
-var symbolProto$1 = Symbol ? Symbol.prototype : undefined;
-var symbolValueOf = symbolProto$1 ? symbolProto$1.valueOf : undefined;
-
-
-function equalByTag(object, other, tag, equalFunc, customizer, bitmask, stack) {
-  switch (tag) {
-    case dataViewTag:
-      if ((object.byteLength != other.byteLength) ||
-          (object.byteOffset != other.byteOffset)) {
-        return false;
-      }
-      object = object.buffer;
-      other = other.buffer;
-
-    case arrayBufferTag:
-      if ((object.byteLength != other.byteLength) ||
-          !equalFunc(new Uint8Array(object), new Uint8Array(other))) {
-        return false;
-      }
-      return true;
-
-    case boolTag:
-    case dateTag:
-      
-      
-      
-      return +object == +other;
-
-    case errorTag:
-      return object.name == other.name && object.message == other.message;
-
-    case numberTag:
-      
-      return (object != +object) ? other != +other : object == +other;
-
-    case regexpTag:
-    case stringTag:
-      
-      
-      
-      return object == (other + '');
-
-    case mapTag:
-      var convert = mapToArray;
-
-    case setTag:
-      var isPartial = bitmask & PARTIAL_COMPARE_FLAG$3;
-      convert || (convert = setToArray);
-
-      if (object.size != other.size && !isPartial) {
-        return false;
-      }
-      
-      var stacked = stack.get(object);
-      if (stacked) {
-        return stacked == other;
-      }
-      bitmask |= UNORDERED_COMPARE_FLAG$2;
-      stack.set(object, other);
-
-      
-      return equalArrays(convert(object), convert(other), equalFunc, customizer, bitmask, stack);
-
-    case symbolTag$1:
-      if (symbolValueOf) {
-        return symbolValueOf.call(object) == symbolValueOf.call(other);
-      }
-  }
-  return false;
-}
-
-var nativeGetPrototype = Object.getPrototypeOf;
-
-
-function getPrototype(value) {
-  return nativeGetPrototype(Object(value));
-}
-
-var objectProto$6 = Object.prototype;
-
-
-var hasOwnProperty$4 = objectProto$6.hasOwnProperty;
-
-
-function baseHas(object, key) {
-  
-  
-  
-  return object != null &&
-    (hasOwnProperty$4.call(object, key) ||
-      (typeof object == 'object' && key in object && getPrototype(object) === null));
-}
-
-var nativeKeys = Object.keys;
-
-
-function baseKeys(object) {
-  return nativeKeys(Object(object));
-}
-
-function baseTimes(n, iteratee) {
-  var index = -1,
-      result = Array(n);
-
-  while (++index < n) {
-    result[index] = iteratee(index);
-  }
-  return result;
-}
-
-function baseProperty(key) {
-  return function(object) {
-    return object == null ? undefined : object[key];
-  };
-}
-
-var getLength = baseProperty('length');
-
-var MAX_SAFE_INTEGER = 9007199254740991;
-
-
-function isLength(value) {
-  return typeof value == 'number' &&
-    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
-}
-
-function isArrayLike(value) {
-  return value != null && isLength(getLength(value)) && !isFunction(value);
-}
-
-function isArrayLikeObject(value) {
-  return isObjectLike(value) && isArrayLike(value);
-}
-
-var argsTag$1 = '[object Arguments]';
-
-
-var objectProto$7 = Object.prototype;
-
-
-var hasOwnProperty$5 = objectProto$7.hasOwnProperty;
-
-
-var objectToString$2 = objectProto$7.toString;
-
-
-var propertyIsEnumerable = objectProto$7.propertyIsEnumerable;
-
-
-function isArguments(value) {
-  
-  return isArrayLikeObject(value) && hasOwnProperty$5.call(value, 'callee') &&
-    (!propertyIsEnumerable.call(value, 'callee') || objectToString$2.call(value) == argsTag$1);
-}
-
-var stringTag$1 = '[object String]';
-
-
-var objectProto$8 = Object.prototype;
-
-
-var objectToString$3 = objectProto$8.toString;
-
-
-function isString(value) {
-  return typeof value == 'string' ||
-    (!isArray(value) && isObjectLike(value) && objectToString$3.call(value) == stringTag$1);
-}
-
-function indexKeys(object) {
-  var length = object ? object.length : undefined;
-  if (isLength(length) &&
-      (isArray(object) || isString(object) || isArguments(object))) {
-    return baseTimes(length, String);
-  }
-  return null;
-}
-
-var MAX_SAFE_INTEGER$1 = 9007199254740991;
-
-
-var reIsUint = /^(?:0|[1-9]\d*)$/;
-
-
-function isIndex(value, length) {
-  length = length == null ? MAX_SAFE_INTEGER$1 : length;
-  return !!length &&
-    (typeof value == 'number' || reIsUint.test(value)) &&
-    (value > -1 && value % 1 == 0 && value < length);
-}
-
-var objectProto$9 = Object.prototype;
-
-
-function isPrototype(value) {
-  var Ctor = value && value.constructor,
-      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$9;
-
-  return value === proto;
-}
-
-function keys(object) {
-  var isProto = isPrototype(object);
-  if (!(isProto || isArrayLike(object))) {
-    return baseKeys(object);
-  }
-  var indexes = indexKeys(object),
-      skipIndexes = !!indexes,
-      result = indexes || [],
-      length = result.length;
-
-  for (var key in object) {
-    if (baseHas(object, key) &&
-        !(skipIndexes && (key == 'length' || isIndex(key, length))) &&
-        !(isProto && key == 'constructor')) {
-      result.push(key);
-    }
-  }
-  return result;
-}
-
-var PARTIAL_COMPARE_FLAG$4 = 2;
-
-
-function equalObjects(object, other, equalFunc, customizer, bitmask, stack) {
-  var isPartial = bitmask & PARTIAL_COMPARE_FLAG$4,
-      objProps = keys(object),
-      objLength = objProps.length,
-      othProps = keys(other),
-      othLength = othProps.length;
-
-  if (objLength != othLength && !isPartial) {
-    return false;
-  }
-  var index = objLength;
-  while (index--) {
-    var key = objProps[index];
-    if (!(isPartial ? key in other : baseHas(other, key))) {
-      return false;
-    }
-  }
-  
-  var stacked = stack.get(object);
-  if (stacked) {
-    return stacked == other;
-  }
-  var result = true;
-  stack.set(object, other);
-
-  var skipCtor = isPartial;
-  while (++index < objLength) {
-    key = objProps[index];
-    var objValue = object[key],
-        othValue = other[key];
-
-    if (customizer) {
-      var compared = isPartial
-        ? customizer(othValue, objValue, key, other, object, stack)
-        : customizer(objValue, othValue, key, object, other, stack);
-    }
-    
-    if (!(compared === undefined
-          ? (objValue === othValue || equalFunc(objValue, othValue, customizer, bitmask, stack))
-          : compared
-        )) {
-      result = false;
-      break;
-    }
-    skipCtor || (skipCtor = key == 'constructor');
-  }
-  if (result && !skipCtor) {
-    var objCtor = object.constructor,
-        othCtor = other.constructor;
-
-    
-    if (objCtor != othCtor &&
-        ('constructor' in object && 'constructor' in other) &&
-        !(typeof objCtor == 'function' && objCtor instanceof objCtor &&
-          typeof othCtor == 'function' && othCtor instanceof othCtor)) {
-      result = false;
-    }
-  }
-  stack['delete'](object);
-  return result;
-}
-
-var DataView = getNative(root, 'DataView');
-
-var Promise$1 = getNative(root, 'Promise');
-
-var Set$1 = getNative(root, 'Set');
-
-var WeakMap$1 = getNative(root, 'WeakMap');
-
-var mapTag$1 = '[object Map]';
-var objectTag$1 = '[object Object]';
-var promiseTag = '[object Promise]';
-var setTag$1 = '[object Set]';
-var weakMapTag = '[object WeakMap]';
-
-var dataViewTag$1 = '[object DataView]';
-
-
-var objectProto$10 = Object.prototype;
-
-
-var objectToString$4 = objectProto$10.toString;
-
-
-var dataViewCtorString = toSource(DataView);
-var mapCtorString = toSource(Map$1);
-var promiseCtorString = toSource(Promise$1);
-var setCtorString = toSource(Set$1);
-var weakMapCtorString = toSource(WeakMap$1);
-
-
-function getTag(value) {
-  return objectToString$4.call(value);
-}
-
-
-
-if ((DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag$1) ||
-    (Map$1 && getTag(new Map$1) != mapTag$1) ||
-    (Promise$1 && getTag(Promise$1.resolve()) != promiseTag) ||
-    (Set$1 && getTag(new Set$1) != setTag$1) ||
-    (WeakMap$1 && getTag(new WeakMap$1) != weakMapTag)) {
-  getTag = function(value) {
-    var result = objectToString$4.call(value),
-        Ctor = result == objectTag$1 ? value.constructor : undefined,
-        ctorString = Ctor ? toSource(Ctor) : undefined;
-
-    if (ctorString) {
-      switch (ctorString) {
-        case dataViewCtorString: return dataViewTag$1;
-        case mapCtorString: return mapTag$1;
-        case promiseCtorString: return promiseTag;
-        case setCtorString: return setTag$1;
-        case weakMapCtorString: return weakMapTag;
-      }
-    }
-    return result;
-  };
-}
-
-var getTag$1 = getTag;
-
-var argsTag$2 = '[object Arguments]';
-var arrayTag$1 = '[object Array]';
-var boolTag$1 = '[object Boolean]';
-var dateTag$1 = '[object Date]';
-var errorTag$1 = '[object Error]';
-var funcTag$1 = '[object Function]';
-var mapTag$2 = '[object Map]';
-var numberTag$1 = '[object Number]';
-var objectTag$2 = '[object Object]';
-var regexpTag$1 = '[object RegExp]';
-var setTag$2 = '[object Set]';
-var stringTag$2 = '[object String]';
-var weakMapTag$1 = '[object WeakMap]';
-
-var arrayBufferTag$1 = '[object ArrayBuffer]';
-var dataViewTag$2 = '[object DataView]';
-var float32Tag = '[object Float32Array]';
-var float64Tag = '[object Float64Array]';
-var int8Tag = '[object Int8Array]';
-var int16Tag = '[object Int16Array]';
-var int32Tag = '[object Int32Array]';
-var uint8Tag = '[object Uint8Array]';
-var uint8ClampedTag = '[object Uint8ClampedArray]';
-var uint16Tag = '[object Uint16Array]';
-var uint32Tag = '[object Uint32Array]';
-
-
-var typedArrayTags = {};
-typedArrayTags[float32Tag] = typedArrayTags[float64Tag] =
-typedArrayTags[int8Tag] = typedArrayTags[int16Tag] =
-typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] =
-typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] =
-typedArrayTags[uint32Tag] = true;
-typedArrayTags[argsTag$2] = typedArrayTags[arrayTag$1] =
-typedArrayTags[arrayBufferTag$1] = typedArrayTags[boolTag$1] =
-typedArrayTags[dataViewTag$2] = typedArrayTags[dateTag$1] =
-typedArrayTags[errorTag$1] = typedArrayTags[funcTag$1] =
-typedArrayTags[mapTag$2] = typedArrayTags[numberTag$1] =
-typedArrayTags[objectTag$2] = typedArrayTags[regexpTag$1] =
-typedArrayTags[setTag$2] = typedArrayTags[stringTag$2] =
-typedArrayTags[weakMapTag$1] = false;
-
-
-var objectProto$11 = Object.prototype;
-
-
-var objectToString$5 = objectProto$11.toString;
-
-
-function isTypedArray(value) {
-  return isObjectLike(value) &&
-    isLength(value.length) && !!typedArrayTags[objectToString$5.call(value)];
-}
-
-var PARTIAL_COMPARE_FLAG$1 = 2;
-
-
-var argsTag = '[object Arguments]';
-var arrayTag = '[object Array]';
-var objectTag = '[object Object]';
-
-
-var objectProto$5 = Object.prototype;
-
-
-var hasOwnProperty$3 = objectProto$5.hasOwnProperty;
-
-
-function baseIsEqualDeep(object, other, equalFunc, customizer, bitmask, stack) {
-  var objIsArr = isArray(object),
-      othIsArr = isArray(other),
-      objTag = arrayTag,
-      othTag = arrayTag;
-
-  if (!objIsArr) {
-    objTag = getTag$1(object);
-    objTag = objTag == argsTag ? objectTag : objTag;
-  }
-  if (!othIsArr) {
-    othTag = getTag$1(other);
-    othTag = othTag == argsTag ? objectTag : othTag;
-  }
-  var objIsObj = objTag == objectTag && !isHostObject(object),
-      othIsObj = othTag == objectTag && !isHostObject(other),
-      isSameTag = objTag == othTag;
-
-  if (isSameTag && !objIsObj) {
-    stack || (stack = new Stack);
-    return (objIsArr || isTypedArray(object))
-      ? equalArrays(object, other, equalFunc, customizer, bitmask, stack)
-      : equalByTag(object, other, objTag, equalFunc, customizer, bitmask, stack);
-  }
-  if (!(bitmask & PARTIAL_COMPARE_FLAG$1)) {
-    var objIsWrapped = objIsObj && hasOwnProperty$3.call(object, '__wrapped__'),
-        othIsWrapped = othIsObj && hasOwnProperty$3.call(other, '__wrapped__');
-
-    if (objIsWrapped || othIsWrapped) {
-      var objUnwrapped = objIsWrapped ? object.value() : object,
-          othUnwrapped = othIsWrapped ? other.value() : other;
-
-      stack || (stack = new Stack);
-      return equalFunc(objUnwrapped, othUnwrapped, customizer, bitmask, stack);
-    }
-  }
-  if (!isSameTag) {
-    return false;
-  }
-  stack || (stack = new Stack);
-  return equalObjects(object, other, equalFunc, customizer, bitmask, stack);
-}
-
-function baseIsEqual(value, other, customizer, bitmask, stack) {
-  if (value === other) {
-    return true;
-  }
-  if (value == null || other == null || (!isObject(value) && !isObjectLike(other))) {
-    return value !== value && other !== other;
-  }
-  return baseIsEqualDeep(value, other, baseIsEqual, customizer, bitmask, stack);
-}
-
-var UNORDERED_COMPARE_FLAG = 1;
-var PARTIAL_COMPARE_FLAG = 2;
-
-
-function baseIsMatch(object, source, matchData, customizer) {
-  var index = matchData.length,
-      length = index,
-      noCustomizer = !customizer;
-
-  if (object == null) {
-    return !length;
-  }
-  object = Object(object);
-  while (index--) {
-    var data = matchData[index];
-    if ((noCustomizer && data[2])
-          ? data[1] !== object[data[0]]
-          : !(data[0] in object)
-        ) {
-      return false;
-    }
-  }
-  while (++index < length) {
-    data = matchData[index];
-    var key = data[0],
-        objValue = object[key],
-        srcValue = data[1];
-
-    if (noCustomizer && data[2]) {
-      if (objValue === undefined && !(key in object)) {
-        return false;
-      }
-    } else {
-      var stack = new Stack;
-      if (customizer) {
-        var result = customizer(objValue, srcValue, key, object, source, stack);
-      }
-      if (!(result === undefined
-            ? baseIsEqual(srcValue, objValue, customizer, UNORDERED_COMPARE_FLAG | PARTIAL_COMPARE_FLAG, stack)
-            : result
-          )) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
-function isStrictComparable(value) {
-  return value === value && !isObject(value);
-}
-
-function getMatchData(object) {
-  var result = keys(object),
-      length = result.length;
-
-  while (length--) {
-    var key = result[length],
-        value = object[key];
-
-    result[length] = [key, value, isStrictComparable(value)];
-  }
-  return result;
-}
-
-function matchesStrictComparable(key, srcValue) {
-  return function(object) {
-    if (object == null) {
-      return false;
-    }
-    return object[key] === srcValue &&
-      (srcValue !== undefined || (key in Object(object)));
-  };
-}
-
-function baseMatches(source) {
-  var matchData = getMatchData(source);
-  if (matchData.length == 1 && matchData[0][2]) {
-    return matchesStrictComparable(matchData[0][0], matchData[0][1]);
-  }
-  return function(object) {
-    return object === source || baseIsMatch(object, source, matchData);
-  };
-}
-
-function baseHasIn(object, key) {
-  return object != null && key in Object(object);
-}
-
-function hasPath(object, path, hasFunc) {
-  path = isKey(path, object) ? [path] : castPath(path);
-
-  var result,
-      index = -1,
-      length = path.length;
-
-  while (++index < length) {
-    var key = toKey(path[index]);
-    if (!(result = object != null && hasFunc(object, key))) {
-      break;
-    }
-    object = object[key];
-  }
-  if (result) {
-    return result;
-  }
-  var length = object ? object.length : 0;
-  return !!length && isLength(length) && isIndex(key, length) &&
-    (isArray(object) || isString(object) || isArguments(object));
-}
-
-function hasIn(object, path) {
-  return object != null && hasPath(object, path, baseHasIn);
-}
-
-var UNORDERED_COMPARE_FLAG$3 = 1;
-var PARTIAL_COMPARE_FLAG$5 = 2;
-
-
-function baseMatchesProperty(path, srcValue) {
-  if (isKey(path) && isStrictComparable(srcValue)) {
-    return matchesStrictComparable(toKey(path), srcValue);
-  }
-  return function(object) {
-    var objValue = get(object, path);
-    return (objValue === undefined && objValue === srcValue)
-      ? hasIn(object, path)
-      : baseIsEqual(srcValue, objValue, undefined, UNORDERED_COMPARE_FLAG$3 | PARTIAL_COMPARE_FLAG$5);
-  };
-}
-
-function identity(value) {
-  return value;
-}
-
-function basePropertyDeep(path) {
-  return function(object) {
-    return baseGet(object, path);
-  };
-}
-
-function property(path) {
-  return isKey(path) ? baseProperty(toKey(path)) : basePropertyDeep(path);
-}
-
-function baseIteratee(value) {
-  
-  
-  if (typeof value == 'function') {
-    return value;
-  }
-  if (value == null) {
-    return identity;
-  }
-  if (typeof value == 'object') {
-    return isArray(value)
-      ? baseMatchesProperty(value[0], value[1])
-      : baseMatches(value);
-  }
-  return property(value);
-}
-
-function createFind(findIndexFunc) {
-  return function(collection, predicate, fromIndex) {
-    var iterable = Object(collection);
-    predicate = baseIteratee(predicate, 3);
-    if (!isArrayLike(collection)) {
-      var props = keys(collection);
-    }
-    var index = findIndexFunc(props || collection, function(value, key) {
-      if (props) {
-        key = value;
-        value = iterable[key];
-      }
-      return predicate(value, key, iterable);
-    }, fromIndex);
-    return index > -1 ? collection[props ? props[index] : index] : undefined;
-  };
-}
-
-function baseFindIndex(array, predicate, fromIndex, fromRight) {
-  var length = array.length,
-      index = fromIndex + (fromRight ? 1 : -1);
-
-  while ((fromRight ? index-- : ++index < length)) {
-    if (predicate(array[index], index, array)) {
-      return index;
-    }
-  }
-  return -1;
-}
-
-var INFINITY$2 = 1 / 0;
-var MAX_INTEGER = 1.7976931348623157e+308;
-
-
-function toFinite(value) {
-  if (!value) {
-    return value === 0 ? value : 0;
-  }
-  value = toNumber(value);
-  if (value === INFINITY$2 || value === -INFINITY$2) {
-    var sign = (value < 0 ? -1 : 1);
-    return sign * MAX_INTEGER;
-  }
-  return value === value ? value : 0;
-}
-
-function toInteger(value) {
-  var result = toFinite(value),
-      remainder = result % 1;
-
-  return result === result ? (remainder ? result - remainder : result) : 0;
-}
-
-var nativeMax$1 = Math.max;
-
-
-function findIndex(array, predicate, fromIndex) {
-  var length = array ? array.length : 0;
-  if (!length) {
-    return -1;
-  }
-  var index = fromIndex == null ? 0 : toInteger(fromIndex);
-  if (index < 0) {
-    index = nativeMax$1(length + index, 0);
-  }
-  return baseFindIndex(array, baseIteratee(predicate, 3), index);
-}
-
-var find = createFind(findIndex);
-
-function isMatch(object, source) {
-  return object === source || baseIsMatch(object, source, getMatchData(source));
-}
-
-function arrayEach(array, iteratee) {
-  var index = -1,
-      length = array ? array.length : 0;
-
-  while (++index < length) {
-    if (iteratee(array[index], index, array) === false) {
-      break;
-    }
-  }
-  return array;
-}
-
-function assignMergeValue(object, key, value) {
-  if ((value !== undefined && !eq(object[key], value)) ||
-      (typeof key == 'number' && value === undefined && !(key in object))) {
-    object[key] = value;
-  }
-}
-
-var objectProto$12 = Object.prototype;
-
-
-var hasOwnProperty$6 = objectProto$12.hasOwnProperty;
-
-
-function assignValue(object, key, value) {
-  var objValue = object[key];
-  if (!(hasOwnProperty$6.call(object, key) && eq(objValue, value)) ||
-      (value === undefined && !(key in object))) {
-    object[key] = value;
-  }
-}
-
-function copyObject(source, props, object, customizer) {
-  object || (object = {});
-
-  var index = -1,
-      length = props.length;
-
-  while (++index < length) {
-    var key = props[index];
-
-    var newValue = customizer
-      ? customizer(object[key], source[key], key, object, source)
-      : source[key];
-
-    assignValue(object, key, newValue);
-  }
-  return object;
-}
-
-function baseAssign(object, source) {
-  return object && copyObject(source, keys(source), object);
-}
-
-function cloneBuffer(buffer, isDeep) {
-  if (isDeep) {
-    return buffer.slice();
-  }
-  var result = new buffer.constructor(buffer.length);
-  buffer.copy(result);
-  return result;
-}
-
-function copyArray(source, array) {
-  var index = -1,
-      length = source.length;
-
-  array || (array = Array(length));
-  while (++index < length) {
-    array[index] = source[index];
-  }
-  return array;
-}
-
-function stubArray() {
-  return [];
-}
-
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-
-
-function getSymbols(object) {
-  
-  
-  return getOwnPropertySymbols(Object(object));
-}
-
-
-if (!getOwnPropertySymbols) {
-  getSymbols = stubArray;
-}
-
-var getSymbols$1 = getSymbols;
-
-function copySymbols(source, object) {
-  return copyObject(source, getSymbols$1(source), object);
-}
-
-function arrayPush(array, values) {
-  var index = -1,
-      length = values.length,
-      offset = array.length;
-
-  while (++index < length) {
-    array[offset + index] = values[index];
-  }
-  return array;
-}
-
-function baseGetAllKeys(object, keysFunc, symbolsFunc) {
-  var result = keysFunc(object);
-  return isArray(object) ? result : arrayPush(result, symbolsFunc(object));
-}
-
-function getAllKeys(object) {
-  return baseGetAllKeys(object, keys, getSymbols$1);
-}
-
-var objectProto$13 = Object.prototype;
-
-
-var hasOwnProperty$7 = objectProto$13.hasOwnProperty;
-
-
-function initCloneArray(array) {
-  var length = array.length,
-      result = array.constructor(length);
-
-  
-  if (length && typeof array[0] == 'string' && hasOwnProperty$7.call(array, 'index')) {
-    result.index = array.index;
-    result.input = array.input;
-  }
-  return result;
-}
-
-function cloneArrayBuffer(arrayBuffer) {
-  var result = new arrayBuffer.constructor(arrayBuffer.byteLength);
-  new Uint8Array(result).set(new Uint8Array(arrayBuffer));
-  return result;
-}
-
-function cloneDataView(dataView, isDeep) {
-  var buffer = isDeep ? cloneArrayBuffer(dataView.buffer) : dataView.buffer;
-  return new dataView.constructor(buffer, dataView.byteOffset, dataView.byteLength);
-}
-
-function addMapEntry(map, pair) {
-  
-  map.set(pair[0], pair[1]);
-  return map;
-}
-
-function cloneMap(map, isDeep, cloneFunc) {
-  var array = isDeep ? cloneFunc(mapToArray(map), true) : mapToArray(map);
-  return arrayReduce(array, addMapEntry, new map.constructor);
-}
-
-var reFlags = /\w*$/;
-
-
-function cloneRegExp(regexp) {
-  var result = new regexp.constructor(regexp.source, reFlags.exec(regexp));
-  result.lastIndex = regexp.lastIndex;
-  return result;
-}
-
-function addSetEntry(set, value) {
-  set.add(value);
-  return set;
-}
-
-function cloneSet(set, isDeep, cloneFunc) {
-  var array = isDeep ? cloneFunc(setToArray(set), true) : setToArray(set);
-  return arrayReduce(array, addSetEntry, new set.constructor);
-}
-
-var symbolProto$2 = Symbol ? Symbol.prototype : undefined;
-var symbolValueOf$1 = symbolProto$2 ? symbolProto$2.valueOf : undefined;
-
-
-function cloneSymbol(symbol) {
-  return symbolValueOf$1 ? Object(symbolValueOf$1.call(symbol)) : {};
-}
-
-function cloneTypedArray(typedArray, isDeep) {
-  var buffer = isDeep ? cloneArrayBuffer(typedArray.buffer) : typedArray.buffer;
-  return new typedArray.constructor(buffer, typedArray.byteOffset, typedArray.length);
-}
-
-var boolTag$3 = '[object Boolean]';
-var dateTag$3 = '[object Date]';
-var mapTag$4 = '[object Map]';
-var numberTag$3 = '[object Number]';
-var regexpTag$3 = '[object RegExp]';
-var setTag$4 = '[object Set]';
-var stringTag$4 = '[object String]';
-var symbolTag$3 = '[object Symbol]';
-
-var arrayBufferTag$3 = '[object ArrayBuffer]';
-var dataViewTag$4 = '[object DataView]';
-var float32Tag$2 = '[object Float32Array]';
-var float64Tag$2 = '[object Float64Array]';
-var int8Tag$2 = '[object Int8Array]';
-var int16Tag$2 = '[object Int16Array]';
-var int32Tag$2 = '[object Int32Array]';
-var uint8Tag$2 = '[object Uint8Array]';
-var uint8ClampedTag$2 = '[object Uint8ClampedArray]';
-var uint16Tag$2 = '[object Uint16Array]';
-var uint32Tag$2 = '[object Uint32Array]';
-
-
-function initCloneByTag(object, tag, cloneFunc, isDeep) {
-  var Ctor = object.constructor;
-  switch (tag) {
-    case arrayBufferTag$3:
-      return cloneArrayBuffer(object);
-
-    case boolTag$3:
-    case dateTag$3:
-      return new Ctor(+object);
-
-    case dataViewTag$4:
-      return cloneDataView(object, isDeep);
-
-    case float32Tag$2: case float64Tag$2:
-    case int8Tag$2: case int16Tag$2: case int32Tag$2:
-    case uint8Tag$2: case uint8ClampedTag$2: case uint16Tag$2: case uint32Tag$2:
-      return cloneTypedArray(object, isDeep);
-
-    case mapTag$4:
-      return cloneMap(object, isDeep, cloneFunc);
-
-    case numberTag$3:
-    case stringTag$4:
-      return new Ctor(object);
-
-    case regexpTag$3:
-      return cloneRegExp(object);
-
-    case setTag$4:
-      return cloneSet(object, isDeep, cloneFunc);
-
-    case symbolTag$3:
-      return cloneSymbol(object);
-  }
-}
-
-var objectCreate = Object.create;
-
-
-function baseCreate(proto) {
-  return isObject(proto) ? objectCreate(proto) : {};
-}
-
-function initCloneObject(object) {
-  return (typeof object.constructor == 'function' && !isPrototype(object))
-    ? baseCreate(getPrototype(object))
-    : {};
-}
-
-function stubFalse() {
-  return false;
-}
-
-var freeExports = typeof exports == 'object' && exports;
-
-
-var freeModule = freeExports && typeof module == 'object' && module;
-
-
-var moduleExports = freeModule && freeModule.exports === freeExports;
-
-
-var Buffer = moduleExports ? root.Buffer : undefined;
-
-
-var isBuffer = !Buffer ? stubFalse : function(value) {
-  return value instanceof Buffer;
-};
-
-var argsTag$3 = '[object Arguments]';
-var arrayTag$2 = '[object Array]';
-var boolTag$2 = '[object Boolean]';
-var dateTag$2 = '[object Date]';
-var errorTag$2 = '[object Error]';
-var funcTag$2 = '[object Function]';
-var genTag$1 = '[object GeneratorFunction]';
-var mapTag$3 = '[object Map]';
-var numberTag$2 = '[object Number]';
-var objectTag$3 = '[object Object]';
-var regexpTag$2 = '[object RegExp]';
-var setTag$3 = '[object Set]';
-var stringTag$3 = '[object String]';
-var symbolTag$2 = '[object Symbol]';
-var weakMapTag$2 = '[object WeakMap]';
-
-var arrayBufferTag$2 = '[object ArrayBuffer]';
-var dataViewTag$3 = '[object DataView]';
-var float32Tag$1 = '[object Float32Array]';
-var float64Tag$1 = '[object Float64Array]';
-var int8Tag$1 = '[object Int8Array]';
-var int16Tag$1 = '[object Int16Array]';
-var int32Tag$1 = '[object Int32Array]';
-var uint8Tag$1 = '[object Uint8Array]';
-var uint8ClampedTag$1 = '[object Uint8ClampedArray]';
-var uint16Tag$1 = '[object Uint16Array]';
-var uint32Tag$1 = '[object Uint32Array]';
-
-
-var cloneableTags = {};
-cloneableTags[argsTag$3] = cloneableTags[arrayTag$2] =
-cloneableTags[arrayBufferTag$2] = cloneableTags[dataViewTag$3] =
-cloneableTags[boolTag$2] = cloneableTags[dateTag$2] =
-cloneableTags[float32Tag$1] = cloneableTags[float64Tag$1] =
-cloneableTags[int8Tag$1] = cloneableTags[int16Tag$1] =
-cloneableTags[int32Tag$1] = cloneableTags[mapTag$3] =
-cloneableTags[numberTag$2] = cloneableTags[objectTag$3] =
-cloneableTags[regexpTag$2] = cloneableTags[setTag$3] =
-cloneableTags[stringTag$3] = cloneableTags[symbolTag$2] =
-cloneableTags[uint8Tag$1] = cloneableTags[uint8ClampedTag$1] =
-cloneableTags[uint16Tag$1] = cloneableTags[uint32Tag$1] = true;
-cloneableTags[errorTag$2] = cloneableTags[funcTag$2] =
-cloneableTags[weakMapTag$2] = false;
-
-
-function baseClone(value, isDeep, isFull, customizer, key, object, stack) {
-  var result;
-  if (customizer) {
-    result = object ? customizer(value, key, object, stack) : customizer(value);
-  }
-  if (result !== undefined) {
-    return result;
-  }
-  if (!isObject(value)) {
-    return value;
-  }
-  var isArr = isArray(value);
-  if (isArr) {
-    result = initCloneArray(value);
-    if (!isDeep) {
-      return copyArray(value, result);
-    }
-  } else {
-    var tag = getTag$1(value),
-        isFunc = tag == funcTag$2 || tag == genTag$1;
-
-    if (isBuffer(value)) {
-      return cloneBuffer(value, isDeep);
-    }
-    if (tag == objectTag$3 || tag == argsTag$3 || (isFunc && !object)) {
-      if (isHostObject(value)) {
-        return object ? value : {};
-      }
-      result = initCloneObject(isFunc ? {} : value);
-      if (!isDeep) {
-        return copySymbols(value, baseAssign(result, value));
-      }
-    } else {
-      if (!cloneableTags[tag]) {
-        return object ? value : {};
-      }
-      result = initCloneByTag(value, tag, baseClone, isDeep);
-    }
-  }
-  
-  stack || (stack = new Stack);
-  var stacked = stack.get(value);
-  if (stacked) {
-    return stacked;
-  }
-  stack.set(value, result);
-
-  if (!isArr) {
-    var props = isFull ? getAllKeys(value) : keys(value);
-  }
-  
-  arrayEach(props || value, function(subValue, key) {
-    if (props) {
-      key = subValue;
-      subValue = value[key];
-    }
-    assignValue(result, key, baseClone(subValue, isDeep, isFull, customizer, key, value, stack));
-  });
-  return result;
-}
-
-var objectTag$4 = '[object Object]';
-
-
-var objectProto$14 = Object.prototype;
-
-
-var funcToString$2 = Function.prototype.toString;
-
-
-var hasOwnProperty$8 = objectProto$14.hasOwnProperty;
-
-
-var objectCtorString = funcToString$2.call(Object);
-
-
-var objectToString$6 = objectProto$14.toString;
-
-
-function isPlainObject(value) {
-  if (!isObjectLike(value) ||
-      objectToString$6.call(value) != objectTag$4 || isHostObject(value)) {
-    return false;
-  }
-  var proto = getPrototype(value);
-  if (proto === null) {
-    return true;
-  }
-  var Ctor = hasOwnProperty$8.call(proto, 'constructor') && proto.constructor;
-  return (typeof Ctor == 'function' &&
-    Ctor instanceof Ctor && funcToString$2.call(Ctor) == objectCtorString);
-}
-
-var Reflect = root.Reflect;
-
-function iteratorToArray(iterator) {
-  var data,
-      result = [];
-
-  while (!(data = iterator.next()).done) {
-    result.push(data.value);
-  }
-  return result;
-}
-
-var objectProto$16 = Object.prototype;
-
-
-var enumerate = Reflect ? Reflect.enumerate : undefined;
-var propertyIsEnumerable$1 = objectProto$16.propertyIsEnumerable;
-
-
-function baseKeysIn(object) {
-  object = object == null ? object : Object(object);
-
-  var result = [];
-  for (var key in object) {
-    result.push(key);
-  }
-  return result;
-}
-
-
-if (enumerate && !propertyIsEnumerable$1.call({ 'valueOf': 1 }, 'valueOf')) {
-  baseKeysIn = function(object) {
-    return iteratorToArray(enumerate(object));
-  };
-}
-
-var baseKeysIn$1 = baseKeysIn;
-
-var objectProto$15 = Object.prototype;
-
-
-var hasOwnProperty$9 = objectProto$15.hasOwnProperty;
-
-
-function keysIn(object) {
-  var index = -1,
-      isProto = isPrototype(object),
-      props = baseKeysIn$1(object),
-      propsLength = props.length,
-      indexes = indexKeys(object),
-      skipIndexes = !!indexes,
-      result = indexes || [],
-      length = result.length;
-
-  while (++index < propsLength) {
-    var key = props[index];
-    if (!(skipIndexes && (key == 'length' || isIndex(key, length))) &&
-        !(key == 'constructor' && (isProto || !hasOwnProperty$9.call(object, key)))) {
-      result.push(key);
-    }
-  }
-  return result;
-}
-
-function toPlainObject(value) {
-  return copyObject(value, keysIn(value));
-}
-
-function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, stack) {
-  var objValue = object[key],
-      srcValue = source[key],
-      stacked = stack.get(srcValue);
-
-  if (stacked) {
-    assignMergeValue(object, key, stacked);
-    return;
-  }
-  var newValue = customizer
-    ? customizer(objValue, srcValue, (key + ''), object, source, stack)
-    : undefined;
-
-  var isCommon = newValue === undefined;
-
-  if (isCommon) {
-    newValue = srcValue;
-    if (isArray(srcValue) || isTypedArray(srcValue)) {
-      if (isArray(objValue)) {
-        newValue = objValue;
-      }
-      else if (isArrayLikeObject(objValue)) {
-        newValue = copyArray(objValue);
-      }
-      else {
-        isCommon = false;
-        newValue = baseClone(srcValue, true);
-      }
-    }
-    else if (isPlainObject(srcValue) || isArguments(srcValue)) {
-      if (isArguments(objValue)) {
-        newValue = toPlainObject(objValue);
-      }
-      else if (!isObject(objValue) || (srcIndex && isFunction(objValue))) {
-        isCommon = false;
-        newValue = baseClone(srcValue, true);
-      }
-      else {
-        newValue = objValue;
-      }
-    }
-    else {
-      isCommon = false;
-    }
-  }
-  stack.set(srcValue, newValue);
-
-  if (isCommon) {
-    
-    mergeFunc(newValue, srcValue, srcIndex, customizer, stack);
-  }
-  stack['delete'](srcValue);
-  assignMergeValue(object, key, newValue);
-}
-
-function baseMerge(object, source, srcIndex, customizer, stack) {
-  if (object === source) {
-    return;
-  }
-  if (!(isArray(source) || isTypedArray(source))) {
-    var props = keysIn(source);
-  }
-  arrayEach(props || source, function(srcValue, key) {
-    if (props) {
-      key = srcValue;
-      srcValue = source[key];
-    }
-    if (isObject(srcValue)) {
-      stack || (stack = new Stack);
-      baseMergeDeep(object, source, key, srcIndex, baseMerge, customizer, stack);
-    }
-    else {
-      var newValue = customizer
-        ? customizer(object[key], srcValue, (key + ''), object, source, stack)
-        : undefined;
-
-      if (newValue === undefined) {
-        newValue = srcValue;
-      }
-      assignMergeValue(object, key, newValue);
-    }
-  });
-}
-
-function isIterateeCall(value, index, object) {
-  if (!isObject(object)) {
-    return false;
-  }
-  var type = typeof index;
-  if (type == 'number'
-        ? (isArrayLike(object) && isIndex(index, object.length))
-        : (type == 'string' && index in object)
-      ) {
-    return eq(object[index], value);
-  }
-  return false;
-}
-
-function apply(func, thisArg, args) {
-  var length = args.length;
-  switch (length) {
-    case 0: return func.call(thisArg);
-    case 1: return func.call(thisArg, args[0]);
-    case 2: return func.call(thisArg, args[0], args[1]);
-    case 3: return func.call(thisArg, args[0], args[1], args[2]);
-  }
-  return func.apply(thisArg, args);
-}
-
-var FUNC_ERROR_TEXT$2 = 'Expected a function';
-
-
-var nativeMax$2 = Math.max;
-
-
-function rest(func, start) {
-  if (typeof func != 'function') {
-    throw new TypeError(FUNC_ERROR_TEXT$2);
-  }
-  start = nativeMax$2(start === undefined ? (func.length - 1) : toInteger(start), 0);
-  return function() {
-    var args = arguments,
-        index = -1,
-        length = nativeMax$2(args.length - start, 0),
-        array = Array(length);
-
-    while (++index < length) {
-      array[index] = args[start + index];
-    }
-    switch (start) {
-      case 0: return func.call(this, array);
-      case 1: return func.call(this, args[0], array);
-      case 2: return func.call(this, args[0], args[1], array);
-    }
-    var otherArgs = Array(start + 1);
-    index = -1;
-    while (++index < start) {
-      otherArgs[index] = args[index];
-    }
-    otherArgs[start] = array;
-    return apply(func, this, otherArgs);
-  };
-}
-
-function createAssigner(assigner) {
-  return rest(function(object, sources) {
-    var index = -1,
-        length = sources.length,
-        customizer = length > 1 ? sources[length - 1] : undefined,
-        guard = length > 2 ? sources[2] : undefined;
-
-    customizer = (assigner.length > 3 && typeof customizer == 'function')
-      ? (length--, customizer)
-      : undefined;
-
-    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
-      customizer = length < 3 ? undefined : customizer;
-      length = 1;
-    }
-    object = Object(object);
-    while (++index < length) {
-      var source = sources[index];
-      if (source) {
-        assigner(object, source, index, customizer);
-      }
-    }
-    return object;
-  });
-}
-
-var merge = createAssigner(function(object, source, srcIndex) {
-  baseMerge(object, source, srcIndex);
-});
-
-var mergeWith = createAssigner(function(object, source, srcIndex, customizer) {
-  baseMerge(object, source, srcIndex, customizer);
-});
-
-function baseSet(object, path, value, customizer) {
-  path = isKey(path, object) ? [path] : castPath(path);
-
-  var index = -1,
-      length = path.length,
-      lastIndex = length - 1,
-      nested = object;
-
-  while (nested != null && ++index < length) {
-    var key = toKey(path[index]);
-    if (isObject(nested)) {
-      var newValue = value;
-      if (index != lastIndex) {
-        var objValue = nested[key];
-        newValue = customizer ? customizer(objValue, key, nested) : undefined;
-        if (newValue === undefined) {
-          newValue = objValue == null
-            ? (isIndex(path[index + 1]) ? [] : {})
-            : objValue;
-        }
-      }
-      assignValue(nested, key, newValue);
-    }
-    nested = nested[key];
-  }
-  return object;
-}
-
-function setWith(object, path, value, customizer) {
-  customizer = typeof customizer == 'function' ? customizer : undefined;
-  return object == null ? object : baseSet(object, path, value, customizer);
-}
-
-function indexOfNaN(array, fromIndex, fromRight) {
-  var length = array.length,
-      index = fromIndex + (fromRight ? 1 : -1);
-
-  while ((fromRight ? index-- : ++index < length)) {
-    var other = array[index];
-    if (other !== other) {
-      return index;
-    }
-  }
-  return -1;
-}
-
-function baseIndexOf(array, value, fromIndex) {
-  if (value !== value) {
-    return indexOfNaN(array, fromIndex);
-  }
-  var index = fromIndex - 1,
-      length = array.length;
-
-  while (++index < length) {
-    if (array[index] === value) {
-      return index;
-    }
-  }
-  return -1;
-}
-
-function arrayIncludes(array, value) {
-  var length = array ? array.length : 0;
-  return !!length && baseIndexOf(array, value, 0) > -1;
-}
-
-function arrayIncludesWith(array, value, comparator) {
-  var index = -1,
-      length = array ? array.length : 0;
-
-  while (++index < length) {
-    if (comparator(value, array[index])) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function cacheHas(cache, key) {
-  return cache.has(key);
-}
-
-function noop() {
-  
-}
-
-var INFINITY$3 = 1 / 0;
-
-
-var createSet = !(Set$1 && (1 / setToArray(new Set$1([,-0]))[1]) == INFINITY$3) ? noop : function(values) {
-  return new Set$1(values);
-};
-
-var LARGE_ARRAY_SIZE$1 = 200;
-
-
-function baseUniq(array, iteratee, comparator) {
-  var index = -1,
-      includes = arrayIncludes,
-      length = array.length,
-      isCommon = true,
-      result = [],
-      seen = result;
-
-  if (comparator) {
-    isCommon = false;
-    includes = arrayIncludesWith;
-  }
-  else if (length >= LARGE_ARRAY_SIZE$1) {
-    var set = iteratee ? null : createSet(array);
-    if (set) {
-      return setToArray(set);
-    }
-    isCommon = false;
-    includes = cacheHas;
-    seen = new SetCache;
-  }
-  else {
-    seen = iteratee ? [] : result;
-  }
-  outer:
-  while (++index < length) {
-    var value = array[index],
-        computed = iteratee ? iteratee(value) : value;
-
-    value = (comparator || value !== 0) ? value : 0;
-    if (isCommon && computed === computed) {
-      var seenIndex = seen.length;
-      while (seenIndex--) {
-        if (seen[seenIndex] === computed) {
-          continue outer;
-        }
-      }
-      if (iteratee) {
-        seen.push(computed);
-      }
-      result.push(value);
-    }
-    else if (!includes(seen, computed, comparator)) {
-      if (seen !== result) {
-        seen.push(computed);
-      }
-      result.push(value);
-    }
-  }
-  return result;
-}
-
-function uniq(array) {
-  return (array && array.length)
-    ? baseUniq(array)
-    : [];
-}
-
-function last(array) {
-  var length = array ? array.length : 0;
-  return length ? array[length - 1] : undefined;
-}
-
-function parent(object, path) {
-  return path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
-}
-
-function baseUnset(object, path) {
-  path = isKey(path, object) ? [path] : castPath(path);
-  object = parent(object, path);
-
-  var key = toKey(last(path));
-  return !(object != null && baseHas(object, key)) || delete object[key];
-}
-
-function unset(object, path) {
-  return object == null ? true : baseUnset(object, path);
-}
-
-function arrayMap(array, iteratee) {
-  var index = -1,
-      length = array ? array.length : 0,
-      result = Array(length);
-
-  while (++index < length) {
-    result[index] = iteratee(array[index], index, array);
-  }
-  return result;
-}
-
-function baseUnary(func) {
-  return function(value) {
-    return func(value);
-  };
-}
-
-var LARGE_ARRAY_SIZE$2 = 200;
-
-
-function baseDifference(array, values, iteratee, comparator) {
-  var index = -1,
-      includes = arrayIncludes,
-      isCommon = true,
-      length = array.length,
-      result = [],
-      valuesLength = values.length;
-
-  if (!length) {
-    return result;
-  }
-  if (iteratee) {
-    values = arrayMap(values, baseUnary(iteratee));
-  }
-  if (comparator) {
-    includes = arrayIncludesWith;
-    isCommon = false;
-  }
-  else if (values.length >= LARGE_ARRAY_SIZE$2) {
-    includes = cacheHas;
-    isCommon = false;
-    values = new SetCache(values);
-  }
-  outer:
-  while (++index < length) {
-    var value = array[index],
-        computed = iteratee ? iteratee(value) : value;
-
-    value = (comparator || value !== 0) ? value : 0;
-    if (isCommon && computed === computed) {
-      var valuesIndex = valuesLength;
-      while (valuesIndex--) {
-        if (values[valuesIndex] === computed) {
-          continue outer;
-        }
-      }
-      result.push(value);
-    }
-    else if (!includes(values, computed, comparator)) {
-      result.push(value);
-    }
-  }
-  return result;
-}
-
-var without = rest(function(array, values) {
-  return isArrayLikeObject(array)
-    ? baseDifference(array, values)
-    : [];
-});
-
-function createBaseFor(fromRight) {
-  return function(object, iteratee, keysFunc) {
-    var index = -1,
-        iterable = Object(object),
-        props = keysFunc(object),
-        length = props.length;
-
-    while (length--) {
-      var key = props[fromRight ? length : ++index];
-      if (iteratee(iterable[key], key, iterable) === false) {
-        break;
-      }
-    }
-    return object;
-  };
-}
-
-var baseFor = createBaseFor();
-
-function baseForOwn(object, iteratee) {
-  return object && baseFor(object, iteratee, keys);
-}
-
-function createBaseEach(eachFunc, fromRight) {
-  return function(collection, iteratee) {
-    if (collection == null) {
-      return collection;
-    }
-    if (!isArrayLike(collection)) {
-      return eachFunc(collection, iteratee);
-    }
-    var length = collection.length,
-        index = fromRight ? length : -1,
-        iterable = Object(collection);
-
-    while ((fromRight ? index-- : ++index < length)) {
-      if (iteratee(iterable[index], index, iterable) === false) {
-        break;
-      }
-    }
-    return collection;
-  };
-}
-
-var baseEach = createBaseEach(baseForOwn);
-
-function baseMap(collection, iteratee) {
-  var index = -1,
-      result = isArrayLike(collection) ? Array(collection.length) : [];
-
-  baseEach(collection, function(value, key, collection) {
-    result[++index] = iteratee(value, key, collection);
-  });
-  return result;
-}
-
-function baseSortBy(array, comparer) {
-  var length = array.length;
-
-  array.sort(comparer);
-  while (length--) {
-    array[length] = array[length].value;
-  }
-  return array;
-}
-
-function compareAscending(value, other) {
-  if (value !== other) {
-    var valIsDefined = value !== undefined,
-        valIsNull = value === null,
-        valIsReflexive = value === value,
-        valIsSymbol = isSymbol(value);
-
-    var othIsDefined = other !== undefined,
-        othIsNull = other === null,
-        othIsReflexive = other === other,
-        othIsSymbol = isSymbol(other);
-
-    if ((!othIsNull && !othIsSymbol && !valIsSymbol && value > other) ||
-        (valIsSymbol && othIsDefined && othIsReflexive && !othIsNull && !othIsSymbol) ||
-        (valIsNull && othIsDefined && othIsReflexive) ||
-        (!valIsDefined && othIsReflexive) ||
-        !valIsReflexive) {
-      return 1;
-    }
-    if ((!valIsNull && !valIsSymbol && !othIsSymbol && value < other) ||
-        (othIsSymbol && valIsDefined && valIsReflexive && !valIsNull && !valIsSymbol) ||
-        (othIsNull && valIsDefined && valIsReflexive) ||
-        (!othIsDefined && valIsReflexive) ||
-        !othIsReflexive) {
-      return -1;
-    }
-  }
-  return 0;
-}
-
-function compareMultiple(object, other, orders) {
-  var index = -1,
-      objCriteria = object.criteria,
-      othCriteria = other.criteria,
-      length = objCriteria.length,
-      ordersLength = orders.length;
-
-  while (++index < length) {
-    var result = compareAscending(objCriteria[index], othCriteria[index]);
-    if (result) {
-      if (index >= ordersLength) {
-        return result;
-      }
-      var order = orders[index];
-      return result * (order == 'desc' ? -1 : 1);
-    }
-  }
-  
-  
-  
-  
-  
-  
-  
-  return object.index - other.index;
-}
-
-function baseOrderBy(collection, iteratees, orders) {
-  var index = -1;
-  iteratees = arrayMap(iteratees.length ? iteratees : [identity], baseUnary(baseIteratee));
-
-  var result = baseMap(collection, function(value, key, collection) {
-    var criteria = arrayMap(iteratees, function(iteratee) {
-      return iteratee(value);
-    });
-    return { 'criteria': criteria, 'index': ++index, 'value': value };
-  });
-
-  return baseSortBy(result, function(object, other) {
-    return compareMultiple(object, other, orders);
-  });
-}
-
-function orderBy(collection, iteratees, orders, guard) {
-  if (collection == null) {
-    return [];
-  }
-  if (!isArray(iteratees)) {
-    iteratees = iteratees == null ? [] : [iteratees];
-  }
-  orders = guard ? undefined : orders;
-  if (!isArray(orders)) {
-    orders = orders == null ? [] : [orders];
-  }
-  return baseOrderBy(collection, iteratees, orders);
-}
-
-function isObject$1(val) {
-  const type = typeof val;
-  return Boolean(val) && (type === 'object' || type === 'function')
-}
-
-function isArray$1(a) {
-  return Array.isArray(a)
-}
-
-function clone(val) {
-  if (isArray$1(val)) {
-    return val.slice(0)
-  }
-  if (isObject$1(val)) {
-    return Object.assign({}, val)
-  }
-  
-  
-  return val
-}
-
 function forEach(iteratee, func) {
   if (!iteratee) return
   if (iteratee.constructor.prototype.forEach) {
@@ -3001,269 +85,62 @@ function forEach(iteratee, func) {
   }
 }
 
-const platform = {
+class SubstanceError extends Error {
+  constructor(name, options) {
+    super(name, options);
+    this.name = name;
+    this.message = options.message;
+    this.info = options.info;
+    this.errorCode = options.errorCode;
+    this.cause = options.cause;
 
-  inBrowser: false,
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, (SubstanceError));
+    }
+  }
 
-  inNodeJS: false,
+  inspect() {
+    var parts = [];
 
-  inElectron: false,
+    
+    parts.push(this.stack);
 
-  
-  isIE: false,
-  
+    
+    if (this.info) {
+      parts.push(this.info + '. ');
+    }
 
-  isFF: false,
+    
+    if (this.cause) {
+      parts.push('\nCaused by: ');
 
-  isWebkit: false,
+      if (this.cause.inspect) {
+        
+        parts.push(this.cause.inspect());
+      } else {
+        
+        parts.push(this.cause.toString());
+      }
+    }
+    return parts.join('')
+  }
+}
 
-  
-  version: -1,
 
-  
-
-  isWindows: false,
-
-  isMac: false,
-
-  
-  
-  _reset: detect
+SubstanceError.fromJSON = function(err) {
+  if (!err) return null
+  var error = new SubstanceError(err.name, {
+    message: err.message,
+    info: err.info,
+    errorCode: err.errorCode,
+    cause: SubstanceError.fromJSON(err.cause)
+  });
+  return error
 };
 
-function detect() {
-
-  if (typeof window !== 'undefined') {
-    platform.inBrowser = true;
-
-    
-    const ua = window.navigator.userAgent;
-    const msie = ua.indexOf('MSIE ');
-    const trident = ua.indexOf('Trident/');
-    const edge = ua.indexOf('Edge/');
-
-    if (msie > 0) {
-      
-      platform.isIE = true;
-      platform.version = 10;
-      
-      
-    } else if (trident > 0) {
-      
-      platform.isIE = true;
-      platform.version = 11;
-      platform.isTrident = true;
-      
-      
-      
-    } else if (edge > 0) {
-      
-      platform.isIE = true;
-      platform.isEdge = true;
-      platform.version = 12;
-      
-      parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
-    }
-
-    
-    platform.isFF = window.navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-
-    
-    platform.isWebkit = !platform.isFF && !platform.isIE;
-  } else {
-    platform.inBrowser = false;
-  }
-
-  if (platform.inBrowser) {
-    platform.isWindows = (window.navigator !== undefined && window.navigator.appVersion && window.navigator.appVersion.indexOf("Win") !== -1);
-    platform.isMac = (window.navigator !== undefined && window.navigator.platform.indexOf('Mac') >= 0);
-  }
-
-  
-  if (typeof process !== 'undefined') {
-    if (platform.inBrowser) {
-      platform.inElectron = true;
-    } else {
-      platform.inNodeJS = true;
-    }
-  }
-
-}
-
-detect();
-
-function cloneDeep(val) {
-  if (isArray$1(val)) {
-    return _cloneArrayDeep(val);
-  }
-  
-  
-  
-  if (platform.inBrowser && val instanceof window.File) {
-    return val
-  }
-  if (isObject$1(val)) {
-    return _cloneObjectDeep(val)
-  }
-  
-  
-  return val
-}
-
-function _cloneObjectDeep(obj) {
-  let res = {};
-  forEach(obj, (val, key) => {
-    res[key] = cloneDeep(val);
-  });
-  return res
-}
-
-function _cloneArrayDeep(arr) {
-  return arr.map(cloneDeep)
-}
-
-function createCountingIdGenerator() {
-  var counters = {};
-  return function uuid(prefix) {
-    if (!counters.hasOwnProperty(prefix)) {
-      counters[prefix] = 1;
-    }
-    var result = [prefix, '-', counters[prefix]++].join('');
-    return result
-  }
-}
-
-function isString$1(s) {
-  return typeof s === 'string'
-}
-
-function levenshtein(a, b){
-  let m = [];
-  for(let i = 0; i <= b.length; i++) {
-    m[i] = [i];
-    if(i === 0) continue;
-    let ib = i-1;
-    for(let j = 0; j <= a.length; j++){
-      m[0][j] = j;
-      if(j === 0) continue;
-      let jb = j-1;
-      m[i][j] = b.charAt(ib) === a.charAt(jb) ? m[ib][jb] : Math.min(
-        m[ib][jb]+1,
-        m[i][jb]+1,
-        m[ib][j]+1
-      );
-    }
-  }
-  return m
-}
-
-function diff(a, b, offset) {
-  if (!isString$1(a) || !isString$1(b)) {
-    throw new Error('Illegal arguments.')
-  }
-  offset = offset || 0;
-  let changes = [];
-  if (a || b) {
-    if (!a && b) {
-      changes.push({ type:'insert', start:offset, text:b });
-    } else if (a && !b) {
-      changes.push({ type:'delete', start:offset, end:offset+a.length });
-    } else {
-      let m = levenshtein(a, b);
-      changes = _diff(a, b, m, offset);
-    }
-  }
-  return changes
-}
-
-function _diff(a, b, m, offset) {
-  let i = b.length;
-  let j = a.length;
-  let changes = [];
-  let current;
-  while (i>0 && j>0) {
-    _next();
-  }
-  _commit();
-  return changes
-
-  function _next() {
-    let d = m[i][j];
-    let ib = i-1;
-    let jb = j-1;
-    
-    if (m[ib][jb]<d) {
-      if (current && current.type === 'replace') {
-        current.start--;
-        current.text.unshift(b.charAt(ib));
-      } else {
-        _commit();
-        current = { type:'replace', start:jb, end:j, text:[b.charAt(ib)] };
-      }
-      i--;
-      j--;
-    }
-    
-    else if (m[ib][j]<d) {
-      if (current && current.type === 'insert') {
-        current.start--;
-        current.text.unshift(b.charAt(ib));
-      } else {
-        _commit();
-        current = { type:'insert', start:jb, text:[b.charAt(ib)] };
-      }
-      i--;
-    }
-    
-    else if (m[i][jb]<d) {
-      if (current && current.type === 'delete') {
-        current.start--;
-      } else {
-        _commit();
-        current = { type:'delete', start:jb, end:j };
-      }
-      j--;
-    }
-    
-    else {
-      _commit();
-      i--;
-      j--;
-    }
-  }
-
-  function _commit() {
-    if (current) {
-      switch (current.type) {
-        case 'insert':
-          current.start += offset;
-          current.text = current.text.join('');
-          break
-        case 'delete':
-          current.start += offset;
-          current.end += offset;
-          break
-        case 'replace':
-          current.start += offset;
-          current.end += offset;
-          current.text = current.text.join('');
-          break
-        default:
-          throw new Error('Invalid state')
-      }
-      changes.push(current);
-      current = null;
-    }
-  }
-
-}
-
-function encodeXMLEntities(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
+function isObject(val) {
+  const type = typeof val;
+  return Boolean(val) && (type === 'object' || type === 'function')
 }
 
 const DEBUG = false;
@@ -3298,7 +175,7 @@ class EventEmitter {
 
   
   off(event, method, context) { 
-    if (arguments.length === 1 && isObject$1(arguments[0])) {
+    if (arguments.length === 1 && isObject(arguments[0])) {
       _disconnect.call(this, arguments[0]);
     } else {
       _off.apply(this, arguments);
@@ -3440,809 +317,6 @@ function validateMethod(method, context) {
   }
 }
 
-function extend(...args) {
-  return Object.assign(...args)
-}
-
-const PLAINOBJ = {};
-
-
-class Registry {
-  constructor(entries, validator) {
-    this.entries = {};
-    this.names = [];
-    this.validator = validator;
-
-    if (entries) {
-      forEach(entries, function(entry, name) {
-        this.add(name, entry);
-      }.bind(this));
-    }
-  }
-
-  
-  contains(name) {
-    return this.entries.hasOwnProperty(name)
-  }
-
-  
-  add(name, entry) {
-    if (this.validator) {
-      this.validator(entry);
-    }
-    if (PLAINOBJ[name]) {
-      throw new Error('Illegal key: "'+name+'" is a property of Object which is thus not allowed as a key.')
-    }
-    if (this.contains(name)) {
-      this.remove(name);
-    }
-    this.entries[name] = entry;
-    this.names.push(name);
-  }
-
-  
-  remove(name) {
-    let pos = this.names.indexOf(name);
-    if (pos >= 0) {
-      this.names.splice(pos, 1);
-    }
-    delete this.entries[name];
-  }
-
-  
-  clear() {
-    this.names = [];
-    this.entries = {};
-  }
-
-  
-  get(name, strict) {
-    let result = this.entries[name];
-    if (strict && !result) {
-      throw new Error('No entry registered for name '+name)
-    }
-    return result
-  }
-
-  
-  forEach(callback) {
-    for (let i = 0; i < this.names.length; i++) {
-      let name = this.names[i];
-      let _continue = callback(this.entries[name], name);
-      if (_continue === false) {
-        break
-      }
-    }
-  }
-
-  map(callback) {
-    let result = [];
-    this.forEach((entry, name) => {
-      result.push(callback(entry, name));
-    });
-    return result
-  }
-
-  filter(callback) {
-    let result = [];
-    this.forEach(function(entry, name) {
-      if (callback(entry, name)) {
-        result.push(entry);
-      }
-    });
-    return result
-  }
-
-  values() {
-    return this.filter(() => { return true })
-  }
-}
-
-Registry.prototype._isRegistry = true;
-
-class Factory extends Registry {
-  
-  create(name) {
-    var clazz = this.get(name);
-    if (!clazz) {
-      throw new Error( 'No class registered by that name: ' + name )
-    }
-    
-    var args = Array.prototype.slice.call( arguments, 1 );
-    var obj = Object.create( clazz.prototype );
-    clazz.apply( obj, args );
-    return obj
-  }
-}
-
-function isFunction$1(f) {
-  return typeof f === 'function'
-}
-
-function filter(iteratee, fn) {
-  if (!iteratee) return []
-  if (iteratee.constructor.prototype.filter && isFunction$1(iteratee.constructor.prototype.filter)) {
-    return iteratee.filter(fn)
-  }
-  let result = [];
-  forEach(iteratee, (val, key) => {
-    if (fn(val, key)) {
-      result.push(val);
-    }
-  });
-  return result
-}
-
-function findIndex$1(arr, predicate) {
-  if (!isFunction$1(predicate)) return arr.indexOf(predicate)
-  for (let i = 0; i < arr.length; i++) {
-    if (predicate(arr[i])) return i
-  }
-  return -1
-}
-
-function flatten(arr) {
-  return Array.prototype.concat.apply([], arr)
-}
-
-function flattenOften(arr, max) {
-  if (!(max > 0)) throw new Error("'max' must be a positive number")
-  let l = arr.length;
-  arr = flatten(arr);
-  let round = 1;
-  while (round < max && l < arr.length) {
-    l = arr.length;
-    arr = flatten(arr);
-    round++;
-  }
-  return arr
-}
-
-function getRelativeBoundingRect(els, containerEl) {
-  let nativeCotainerEl;
-  if (containerEl._isDOMElement) {
-    nativeCotainerEl = containerEl.getNativeElement();
-  } else {
-    nativeCotainerEl = containerEl;
-  }
-  if (!isArray$1(els)) els = [els];
-  let elRects = els.map((el) => {
-    let nativeEl;
-    if (el._isDOMElement) {
-      nativeEl = el.getNativeElement();
-    } else {
-      nativeEl = el;
-    }
-    return _getBoundingOffsetsRect(nativeEl, nativeCotainerEl)
-  });
-
-  let elsRect = _getBoundingRect(elRects);
-  let containerElRect = nativeCotainerEl.getBoundingClientRect();
-  return {
-    left: elsRect.left,
-    top: elsRect.top,
-    right: containerElRect.width - elsRect.left - elsRect.width,
-    bottom: containerElRect.height - elsRect.top - elsRect.height,
-    width: elsRect.width,
-    height: elsRect.height
-  }
-}
-
-
-function _getBoundingRect(rects) {
-  var bounds = {
-    left: Number.POSITIVE_INFINITY,
-    top: Number.POSITIVE_INFINITY,
-    right: Number.NEGATIVE_INFINITY,
-    bottom: Number.NEGATIVE_INFINITY,
-    width: Number.NaN,
-    height: Number.NaN
-  };
-
-  forEach(rects, function(rect) {
-    if (rect.left < bounds.left) {
-      bounds.left = rect.left;
-    }
-    if (rect.top < bounds.top) {
-      bounds.top = rect.top;
-    }
-    if (rect.left + rect.width > bounds.right) {
-      bounds.right = rect.left + rect.width;
-    }
-    if (rect.top + rect.height > bounds.bottom) {
-      bounds.bottom = rect.top + rect.height;
-    }
-  });
-  bounds.width = bounds.right - bounds.left;
-  bounds.height = bounds.bottom - bounds.top;
-  return bounds
-}
-
-
-function _getBoundingOffsetsRect(el, relativeParentEl) {
-  var relativeParentElRect = relativeParentEl.getBoundingClientRect();
-  var elRect = _getBoundingRect(el.getClientRects());
-
-  var left = elRect.left - relativeParentElRect.left;
-  var top = elRect.top - relativeParentElRect.top;
-  return {
-    left: left,
-    top: top,
-    right: relativeParentElRect.width - left - elRect.width,
-    bottom: relativeParentElRect.height - top - elRect.height,
-    width: elRect.width,
-    height: elRect.height
-  }
-}
-
-function getRelativeMouseBounds(mouseEvent, containerEl) {
-  let containerElRect = containerEl.getBoundingClientRect();
-  let left = mouseEvent.clientX - containerElRect.left;
-  let top = mouseEvent.clientY - containerElRect.top;
-  let res = {
-    left: left,
-    right: containerElRect.width - left,
-    top: top,
-    bottom: containerElRect.height - top
-  };
-  return res;
-}
-
-var inBrowser = platform.inBrowser;
-
-function includes(arr, val) {
-  if (!arr) return false
-  return (arr.indexOf(val) >= 0)
-}
-
-function isArrayEqual(arr1, arr2) {
-  if (arr1 === arr2) return true
-  if (!isArray$1(arr1) || !isArray$1(arr2)) return false
-  if (arr1.length !== arr2.length) return false
-  let L = arr1.length;
-  for (var i = 0; i < L; i++) {
-    if (arr1[i] !== arr2[i]) return false
-  }
-  return true
-}
-
-function isBoolean(val) {
-  return (val === true || val === false || (val && val.constructor === Boolean) )
-}
-
-function isPlainObject$1(o) {
-  return Boolean(o) && o.constructor === {}.constructor
-}
-
-function isEqual(a, b) {
-  if (a === b) return true
-  if (isArray$1(a) && isArray$1(b)) {
-    if (a.length !== b.length) return false
-    for (let i = 0; i < a.length; i++) {
-      if (!isEqual(a[i], b[i])) return false
-    }
-    return true
-  }
-  if (isPlainObject$1(a) && isPlainObject$1(b)) {
-    let akeys = Object.keys(a).sort();
-    let bkeys = Object.keys(b).sort();
-    if (!isEqual(akeys, bkeys)) return false
-    for (let i = 0; i < akeys.length; i++) {
-      let key = akeys[i];
-      if (!isEqual(a[key], b[key])) return false
-    }
-    return true
-  }
-  return false
-}
-
-function isNil(o) {
-  return o === null || o === undefined
-}
-
-function isNumber(n) {
-  return typeof n === 'number'
-}
-
-let keys$1 = {
-  UNDEFINED: 0,
-  BACKSPACE: 8,
-  DELETE: 46,
-  INSERT: 45,
-  LEFT: 37,
-  RIGHT: 39,
-  UP: 38,
-  DOWN: 40,
-  ENTER: 13,
-  RETURN: 13,
-  END: 35,
-  HOME: 36,
-  TAB: 9,
-  PAGEUP: 33,
-  PAGEDOWN: 34,
-  ESCAPE: 27,
-  ESC: 27,
-  SHIFT: 16,
-  SPACE: 32,
-  PLUS: 171,
-  VOLUMEUP: 183,
-  VOLUMEDOWN: 182,
-  VOLUMEMUTE: 181,
-  PRINTSCREEN: 44
-};
-
-
-for(let i=1;i<=24;i++) {
-  keys$1['F'+i] = 111 + i;
-}
-
-function parseKeyEvent(event, onlyModifiers) {
-  let frags = [];
-  if (event.altKey) {
-    if (event.code === 'AltRight') {
-      frags.push('ALTGR');
-    } else {
-      frags.push('ALT');
-    }
-  }
-  if (event.ctrlKey) frags.push('CTRL');
-  if (event.metaKey) frags.push('META');
-  if (event.shiftKey) frags.push('SHIFT');
-  if (!onlyModifiers) {
-    frags.push(event.keyCode);
-  }
-  return frags.join('+')
-}
-
-function last$1(arr) {
-  return arr[arr.length-1]
-}
-
-function map(iteratee, func) {
-  if (!iteratee) return []
-  if (!func) func = function(item) { return item };
-  if (Array.isArray(iteratee)) {
-    return iteratee.map(func)
-  } else {
-    return Object.keys(iteratee).map(function(key) {
-      return func(iteratee[key], key)
-    })
-  }
-}
-
-function merge$1(a, b, options) {
-  options = options || {};
-  var _with = null;
-  if (options.array === 'replace') {
-    _with = _replaceArrays;
-  } else if (options.array === 'concat') {
-    _with = _concatArrays;
-  }
-  if (_with) {
-    return mergeWith(a, b, _with)
-  } else {
-    return merge(a, b)
-  }
-}
-
-function _concatArrays(objValue, srcValue) {
-  if (isArray$1(objValue)) {
-    return objValue.concat(srcValue)
-  } else {
-    return null
-  }
-}
-
-function _replaceArrays(objValue, srcValue) {
-  if (isArray$1(objValue)) {
-    return srcValue
-  } else {
-    return null
-  }
-}
-
-class PathObject {
-
-  
-  constructor(root) {
-    if (root) {
-      this.__root__ = root;
-    }
-  }
-
-  contains(id) {
-    return Boolean(this.getRoot()[id])
-  }
-
-  getRoot() {
-    if (this.__root__) {
-      return this.__root__
-    } else {
-      return this
-    }
-  }
-
-  
-  get(path) {
-    if (!path) {
-      return undefined
-    }
-    if (isString$1(path)) {
-      return this.getRoot()[path]
-    }
-    if (arguments.length > 1) {
-      path = Array.prototype.slice(arguments, 0);
-    }
-    if (!isArray$1(path)) {
-      throw new Error('Illegal argument for PathObject.get()')
-    }
-    return get(this.getRoot(), path)
-  }
-
-  set(path, value) {
-    if (!path) {
-      throw new Error('Illegal argument: PathObject.set(>path<, value) - path is mandatory.')
-    }
-    if (isString$1(path)) {
-      this.getRoot()[path] = value;
-    } else {
-      setWith(this.getRoot(), path, value);
-    }
-  }
-
-  delete(path) {
-    if (isString$1(path)) {
-      delete this.getRoot()[path];
-    } else if (path.length === 1) {
-      delete this.getRoot()[path[0]];
-    } else {
-      var success = unset(this.getRoot(), path);
-      if (!success) {
-        throw new Error('Could not delete property at path' + path)
-      }
-    }
-  }
-
-  clear() {
-    var root = this.getRoot();
-    for (var key in root) {
-      if (root.hasOwnProperty(key)) {
-        delete root[key];
-      }
-    }
-  }
-
-}
-
-PathObject.prototype._isPathObject = true;
-
-function percentage(ratio) {
-  return String(Math.floor(ratio*100*100)/100) + ' %'
-}
-
-var pluck = function(collection, prop) {
-  return map(collection, function(item) { return item[prop] })
-};
-
-function printStacktrace() {
-  try {
-    throw new Error();
-  } catch (err) {
-    console.error(err.stack);
-  }
-}
-
-function request(method, url, data, cb) {
-  var request = new XMLHttpRequest();
-  request.open(method, url, true);
-  request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-  request.onload = function() {
-    if (request.status >= 200 && request.status < 400) {
-      var res = request.responseText;
-      if(isJson(res)) res = JSON.parse(res);
-      cb(null, res);
-    } else {
-      return cb(new Error('Request failed. Returned status: ' + request.status))
-    }
-  };
-
-  if (data) {
-    request.send(JSON.stringify(data));
-  } else {
-    request.send();
-  }
-}
-
-function isJson(str) {
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    return false
-  }
-  return true
-}
-
-function sendRequest(params, cb) {
-  return new Promise(function(resolve, reject) {
-    var method = (params.method || 'GET').toUpperCase();
-    var url = params.url;
-    if (['GET', 'POST', 'PUT', 'DELETE'].indexOf(method) < 0) {
-      throw new Error("Parameter 'method' must be 'GET', 'POST', 'PUT', or 'DELETE'.")
-    }
-    if (!url) {
-      throw new Error("Parameter 'url' is required.")
-    }
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-      
-      
-      if (xmlhttp.readyState === 4) return _done()
-    };
-    xmlhttp.open(method, url, true);
-    if (params.header) {
-      forEach(params.header, function(val, key) {
-        xmlhttp.setRequestHeader(key, val);
-      });
-    }
-    if (params.data) {
-      xmlhttp.send(JSON.stringify(params.data));
-    } else {
-      xmlhttp.send();
-    }
-
-    function _done() {
-      if (xmlhttp.status === 200) {
-        var response = xmlhttp.responseText;
-        if (cb) cb(null, response);
-        resolve(response);
-      } else {
-        console.error(xmlhttp.statusText);
-        if (cb) cb(xmlhttp.status);
-        reject(xmlhttp.statusText, xmlhttp.status);
-      }
-    }
-  })
-}
-
-function startsWith(str, prefix) {
-  if (!isString$1(str)) return false
-  if (str.startsWith) return str.startsWith(prefix)
-  if (!isString$1(prefix)) prefix = String(prefix);
-  return str.slice(0, prefix.length) === prefix
-}
-
-class SubstanceError extends Error {
-  constructor(name, options) {
-    super(name, options);
-    this.name = name;
-    this.message = options.message;
-    this.info = options.info;
-    this.errorCode = options.errorCode;
-    this.cause = options.cause;
-
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, (SubstanceError));
-    }
-  }
-
-  inspect() {
-    var parts = [];
-
-    
-    parts.push(this.stack);
-
-    
-    if (this.info) {
-      parts.push(this.info + '. ');
-    }
-
-    
-    if (this.cause) {
-      parts.push('\nCaused by: ');
-
-      if (this.cause.inspect) {
-        
-        parts.push(this.cause.inspect());
-      } else {
-        
-        parts.push(this.cause.toString());
-      }
-    }
-    return parts.join('')
-  }
-}
-
-
-SubstanceError.fromJSON = function(err) {
-  if (!err) return null
-  var error = new SubstanceError(err.name, {
-    message: err.message,
-    info: err.info,
-    errorCode: err.errorCode,
-    cause: SubstanceError.fromJSON(err.cause)
-  });
-  return error
-};
-
-const _global = (typeof global !== 'undefined') ? global : window;
-const substanceGlobals = _global.hasOwnProperty('Substance') ? _global.Substance : _global.Substance = {
-  DEBUG_RENDERING: true
-};
-
-function times(num, fn, ctx) {
-  for (let i=0; i<num; i++) {
-    fn.call(ctx);
-  }
-}
-
-class TreeNode {}
-
-
-
-class TreeIndex {
-  
-  get(path) {
-    if (arguments.length > 1) {
-      path = Array.prototype.slice(arguments, 0);
-    }
-    if (isString$1(path)) {
-      path = [path];
-    }
-    return get(this, path);
-  }
-
-  getAll(path) {
-    if (arguments.length > 1) {
-      path = Array.prototype.slice(arguments, 0);
-    }
-    if (isString$1(path)) {
-      path = [path];
-    }
-    if (!isArray$1(path)) {
-      throw new Error('Illegal argument for TreeIndex.get()');
-    }
-    var node = get(this, path);
-    return this._collectValues(node);
-  }
-
-  set(path, value) {
-    if (isString$1(path)) {
-      path = [path];
-    }
-    setWith(this, path, value, function(val) {
-      if (!val) return new TreeNode();
-    });
-  }
-
-  delete(path) {
-    if (isString$1(path)) {
-      delete this[path];
-    } else if(path.length === 1) {
-      delete this[path[0]];
-    } else {
-      var key = path[path.length-1];
-      path = path.slice(0, -1);
-      var parent = get(this, path);
-      if (parent) {
-        delete parent[key];
-      }
-    }
-  }
-
-  clear() {
-    var root = this;
-    for (var key in root) {
-      if (root.hasOwnProperty(key)) {
-        delete root[key];
-      }
-    }
-  }
-
-  traverse(fn) {
-    this._traverse(this, [], fn);
-  }
-
-  forEach(...args) {
-    this.traverse(...args);
-  }
-
-  _traverse(root, path, fn) {
-    var id;
-    for (id in root) {
-      if (!root.hasOwnProperty(id)) continue;
-      var child = root[id];
-      var childPath = path.concat([id]);
-      if (child instanceof TreeNode) {
-        this._traverse(child, childPath, fn);
-      } else {
-        fn(child, childPath);
-      }
-    }
-  }
-
-  _collectValues(root) {
-    
-    
-    var vals = {};
-    this._traverse(root, [], function(val, path) {
-      var key = path[path.length-1];
-      vals[key] = val;
-    });
-    return vals;
-  }
-}
-
-class TreeIndexArrays extends TreeIndex {
-
-  contains(path) {
-    let val = super.get(path);
-    return Boolean(val)
-  }
-
-  get(path) {
-    let val = super.get(path);
-    if (val instanceof TreeNode) {
-      val = val.__values__ || [];
-    }
-    return val;
-  }
-
-  set(path, arr) {
-    let val = super.get(path);
-    val.__values__ = arr;
-  }
-
-  add(path, value) {
-    if (isString$1(path)) {
-      path = [path];
-    }
-    if (!isArray$1(path)) {
-      throw new Error('Illegal arguments.');
-    }
-    var arr;
-
-    
-    
-    
-    
-    
-    
-    setWith(this, path.concat(['__values__','__dummy__']), undefined, function(val, key) {
-      if (key === '__values__') {
-        if (!val) val = [];
-        arr = val;
-      } else if (!val) {
-        val = new TreeNode();
-      }
-      return val;
-    });
-    delete arr.__dummy__;
-    arr.push(value);
-  }
-
-  remove(path, value) {
-    var arr = get(this, path);
-    if (arr instanceof TreeNode) {
-      if (arguments.length === 1) {
-        delete arr.__values__;
-      } else {
-        deleteFromArray(arr.__values__, value);
-      }
-    }
-  }
-
-  _collectValues(root) {
-    var vals = [];
-    this._traverse(root, [], function(val) {
-      vals.push(val);
-    });
-    vals = Array.prototype.concat.apply([], vals);
-    return vals
-  }
-}
-
-TreeIndex.Arrays = TreeIndexArrays;
-
 function uuid(prefix, len) {
   if (prefix && prefix[prefix.length-1] !== "-") {
     prefix = prefix.concat("-");
@@ -4271,96 +345,6 @@ function uuid(prefix, len) {
     }
   }
   return (prefix ? prefix : "") + uuid.join('');
-}
-
-function getDOMRangeFromEvent(evt) {
-  let range, x = evt.clientX, y = evt.clientY;
-  
-  if (document.body.createTextRange) {
-    range = document.body.createTextRange();
-    range.moveToPoint(x, y);
-  }
-  else if (!isNil(document.createRange)) {
-    
-    
-    if (!isNil(evt.rangeParent)) {
-      range = document.createRange();
-      range.setStart(evt.rangeParent, evt.rangeOffset);
-      range.collapse(true);
-    }
-    
-    else if (document.caretPositionFromPoint) {
-      let pos = document.caretPositionFromPoint(x, y);
-      range = document.createRange();
-      range.setStart(pos.offsetNode, pos.offset);
-      range.collapse(true);
-    }
-    
-    else if (document.caretRangeFromPoint) {
-      range = document.caretRangeFromPoint(x, y);
-    }
-  }
-  return range
-}
-
-
-function getSelectionRect(parentRect) {
-  if (platform.inBrowser) {
-    const wsel = window.getSelection();
-    if (wsel.rangeCount === 0) return
-    const wrange = wsel.getRangeAt(0);
-    let contentRect = parentRect;
-    let selectionRect = wrange.getBoundingClientRect();
-    if (selectionRect.top === 0 && selectionRect.bottom === 0) {
-      selectionRect = _fixForCursorRectBug();
-    }
-    return getRelativeRect(contentRect, selectionRect)
-  }
-}
-
-function _fixForCursorRectBug() {
-  let wsel = window.getSelection();
-  let el = wsel.anchorNode;
-  if (!el) return
-  while (el && el.nodeType !== 1) {
-    el = el.parentNode;
-  }
-  let rects = el.getClientRects();
-  let rect = rects[0];
-  return {
-    left: rect.left,
-    top: rect.top,
-    width: 0,
-    height: rect.height,
-    right: rect.width,
-    bottom: rect.bottom
-  }
-}
-
-function getRelativeRect(parentRect, childRect) {
-  var left = childRect.left - parentRect.left;
-  var top = childRect.top - parentRect.top;
-  return {
-    left: left,
-    top: top,
-    right: parentRect.width - left - childRect.width,
-    bottom: parentRect.height - top - childRect.height,
-    width: childRect.width,
-    height: childRect.height
-  }
-}
-
-function isMouseInsideDOMSelection(e) {
-  let wsel = window.getSelection();
-  if (wsel.rangeCount === 0) {
-    return false
-  }
-  let wrange = wsel.getRangeAt(0);
-  let selectionRect = wrange.getBoundingClientRect();
-  return e.clientX >= selectionRect.left &&
-         e.clientX <= selectionRect.right &&
-         e.clientY >= selectionRect.top &&
-         e.clientY <= selectionRect.bottom
 }
 
 class ServerRequest {
@@ -4658,6 +642,2121 @@ class Server extends EventEmitter {
 
 }
 
+function map(iteratee, func) {
+  if (!iteratee) return []
+  if (!func) func = function(item) { return item };
+  if (Array.isArray(iteratee)) {
+    return iteratee.map(func)
+  } else {
+    return Object.keys(iteratee).map(function(key) {
+      return func(iteratee[key], key)
+    })
+  }
+}
+
+function isPlainObject(o) {
+  return Boolean(o) && o.constructor === {}.constructor
+}
+
+function isArray(a) {
+  return Array.isArray(a)
+}
+
+function clone(val) {
+  if (isArray(val)) {
+    return val.slice(0)
+  }
+  if (isObject(val)) {
+    return Object.assign({}, val)
+  }
+  
+  
+  return val
+}
+
+const platform = {
+
+  inBrowser: false,
+
+  inNodeJS: false,
+
+  inElectron: false,
+
+  
+  isIE: false,
+  
+
+  isFF: false,
+
+  isWebkit: false,
+
+  
+  version: -1,
+
+  
+
+  isWindows: false,
+
+  isMac: false,
+
+  devtools: false,
+
+  
+  
+  _reset: detect,
+};
+
+function detect() {
+
+  if (typeof window !== 'undefined') {
+    platform.inBrowser = true;
+
+    
+    const ua = window.navigator.userAgent;
+    const msie = ua.indexOf('MSIE ');
+    const trident = ua.indexOf('Trident/');
+    const edge = ua.indexOf('Edge/');
+
+    if (msie > 0) {
+      
+      platform.isIE = true;
+      platform.version = 10;
+      
+      
+    } else if (trident > 0) {
+      
+      platform.isIE = true;
+      platform.version = 11;
+      platform.isTrident = true;
+      
+      
+      
+    } else if (edge > 0) {
+      
+      platform.isIE = true;
+      platform.isEdge = true;
+      platform.version = 12;
+      
+      parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+    }
+
+    
+    platform.isFF = window.navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+
+    
+    platform.isWebkit = !platform.isFF && !platform.isIE;
+  } else {
+    platform.inBrowser = false;
+  }
+
+  if (platform.inBrowser) {
+    platform.isWindows = (window.navigator !== undefined && window.navigator.appVersion && window.navigator.appVersion.indexOf("Win") !== -1);
+    platform.isMac = (window.navigator !== undefined && window.navigator.platform.indexOf('Mac') >= 0);
+  }
+
+  
+  if (typeof process !== 'undefined') {
+    if (platform.inBrowser) {
+      platform.inElectron = true;
+    } else {
+      platform.inNodeJS = true;
+    }
+  }
+
+  if (platform.inBrowser) {
+    let widthThreshold = window.outerWidth - window.innerWidth > 160;
+    let heightThreshold = window.outerHeight - window.innerHeight > 160;
+    let orientation = widthThreshold ? 'vertical' : 'horizontal';
+    if (!(heightThreshold && widthThreshold) &&
+      ((window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) || widthThreshold || heightThreshold)) {
+      platform.devtools = true;
+      platform.devtoolsOrientation = orientation;
+    }
+  }
+}
+
+detect();
+
+function cloneDeep(val) {
+  if (isArray(val)) {
+    return _cloneArrayDeep(val);
+  }
+  
+  
+  
+  if (platform.inBrowser && val instanceof window.File) {
+    return val
+  }
+  if (isObject(val)) {
+    return _cloneObjectDeep(val)
+  }
+  
+  
+  return val
+}
+
+function _cloneObjectDeep(obj) {
+  let res = {};
+  forEach(obj, (val, key) => {
+    res[key] = cloneDeep(val);
+  });
+  return res
+}
+
+function _cloneArrayDeep(arr) {
+  return arr.map(cloneDeep)
+}
+
+function isNumber(n) {
+  return typeof n === 'number'
+}
+
+function isEqual(a, b) {
+  if (a === b) return true
+  if (isArray(a) && isArray(b)) {
+    if (a.length !== b.length) return false
+    for (let i = 0; i < a.length; i++) {
+      if (!isEqual(a[i], b[i])) return false
+    }
+    return true
+  }
+  if (isPlainObject(a) && isPlainObject(b)) {
+    let akeys = Object.keys(a).sort();
+    let bkeys = Object.keys(b).sort();
+    if (!isEqual(akeys, bkeys)) return false
+    for (let i = 0; i < akeys.length; i++) {
+      let key = akeys[i];
+      if (!isEqual(a[key], b[key])) return false
+    }
+    return true
+  }
+  return false
+}
+
+function isNil(o) {
+  return o === null || o === undefined
+}
+
+function isString(s) {
+  return typeof s === 'string'
+}
+
+var isArray$1 = Array.isArray;
+
+function isObject$1(value) {
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+var funcTag = '[object Function]';
+var genTag = '[object GeneratorFunction]';
+
+
+var objectProto$1 = Object.prototype;
+
+
+var objectToString = objectProto$1.toString;
+
+
+function isFunction(value) {
+  
+  
+  
+  var tag = isObject$1(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
+
+function isHostObject(value) {
+  
+  
+  var result = false;
+  if (value != null && typeof value.toString != 'function') {
+    try {
+      result = !!(value + '');
+    } catch (e) {}
+  }
+  return result;
+}
+
+function checkGlobal(value) {
+  return (value && value.Object === Object) ? value : null;
+}
+
+var freeGlobal = checkGlobal(typeof global == 'object' && global);
+
+
+var freeSelf = checkGlobal(typeof self == 'object' && self);
+
+
+var thisGlobal = checkGlobal(typeof undefined == 'object' && undefined);
+
+
+var root = freeGlobal || freeSelf || thisGlobal || Function('return this')();
+
+var coreJsData = root['__core-js_shared__'];
+
+var maskSrcKey = (function() {
+  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+  return uid ? ('Symbol(src)_1.' + uid) : '';
+}());
+
+
+function isMasked(func) {
+  return !!maskSrcKey && (maskSrcKey in func);
+}
+
+var funcToString$1 = Function.prototype.toString;
+
+
+function toSource(func) {
+  if (func != null) {
+    try {
+      return funcToString$1.call(func);
+    } catch (e) {}
+    try {
+      return (func + '');
+    } catch (e) {}
+  }
+  return '';
+}
+
+var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+
+
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+
+var objectProto = Object.prototype;
+
+
+var funcToString = Function.prototype.toString;
+
+
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+
+var reIsNative = RegExp('^' +
+  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+
+function baseIsNative(value) {
+  if (!isObject$1(value) || isMasked(value)) {
+    return false;
+  }
+  var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
+  return pattern.test(toSource(value));
+}
+
+function getValue(object, key) {
+  return object == null ? undefined : object[key];
+}
+
+function getNative(object, key) {
+  var value = getValue(object, key);
+  return baseIsNative(value) ? value : undefined;
+}
+
+var nativeCreate = getNative(Object, 'create');
+
+function hashClear() {
+  this.__data__ = nativeCreate ? nativeCreate(null) : {};
+}
+
+function hashDelete(key) {
+  return this.has(key) && delete this.__data__[key];
+}
+
+var HASH_UNDEFINED = '__lodash_hash_undefined__';
+
+
+var objectProto$2 = Object.prototype;
+
+
+var hasOwnProperty$1 = objectProto$2.hasOwnProperty;
+
+
+function hashGet(key) {
+  var data = this.__data__;
+  if (nativeCreate) {
+    var result = data[key];
+    return result === HASH_UNDEFINED ? undefined : result;
+  }
+  return hasOwnProperty$1.call(data, key) ? data[key] : undefined;
+}
+
+var objectProto$3 = Object.prototype;
+
+
+var hasOwnProperty$2 = objectProto$3.hasOwnProperty;
+
+
+function hashHas(key) {
+  var data = this.__data__;
+  return nativeCreate ? data[key] !== undefined : hasOwnProperty$2.call(data, key);
+}
+
+var HASH_UNDEFINED$1 = '__lodash_hash_undefined__';
+
+
+function hashSet(key, value) {
+  var data = this.__data__;
+  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED$1 : value;
+  return this;
+}
+
+function Hash(entries) {
+  var index = -1,
+      length = entries ? entries.length : 0;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+
+Hash.prototype.clear = hashClear;
+Hash.prototype['delete'] = hashDelete;
+Hash.prototype.get = hashGet;
+Hash.prototype.has = hashHas;
+Hash.prototype.set = hashSet;
+
+function listCacheClear() {
+  this.__data__ = [];
+}
+
+function eq(value, other) {
+  return value === other || (value !== value && other !== other);
+}
+
+function assocIndexOf(array, key) {
+  var length = array.length;
+  while (length--) {
+    if (eq(array[length][0], key)) {
+      return length;
+    }
+  }
+  return -1;
+}
+
+var arrayProto = Array.prototype;
+
+
+var splice = arrayProto.splice;
+
+
+function listCacheDelete(key) {
+  var data = this.__data__,
+      index = assocIndexOf(data, key);
+
+  if (index < 0) {
+    return false;
+  }
+  var lastIndex = data.length - 1;
+  if (index == lastIndex) {
+    data.pop();
+  } else {
+    splice.call(data, index, 1);
+  }
+  return true;
+}
+
+function listCacheGet(key) {
+  var data = this.__data__,
+      index = assocIndexOf(data, key);
+
+  return index < 0 ? undefined : data[index][1];
+}
+
+function listCacheHas(key) {
+  return assocIndexOf(this.__data__, key) > -1;
+}
+
+function listCacheSet(key, value) {
+  var data = this.__data__,
+      index = assocIndexOf(data, key);
+
+  if (index < 0) {
+    data.push([key, value]);
+  } else {
+    data[index][1] = value;
+  }
+  return this;
+}
+
+function ListCache(entries) {
+  var index = -1,
+      length = entries ? entries.length : 0;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+
+ListCache.prototype.clear = listCacheClear;
+ListCache.prototype['delete'] = listCacheDelete;
+ListCache.prototype.get = listCacheGet;
+ListCache.prototype.has = listCacheHas;
+ListCache.prototype.set = listCacheSet;
+
+var Map$1 = getNative(root, 'Map');
+
+function mapCacheClear() {
+  this.__data__ = {
+    'hash': new Hash,
+    'map': new (Map$1 || ListCache),
+    'string': new Hash
+  };
+}
+
+function isKeyable(value) {
+  var type = typeof value;
+  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
+    ? (value !== '__proto__')
+    : (value === null);
+}
+
+function getMapData(map, key) {
+  var data = map.__data__;
+  return isKeyable(key)
+    ? data[typeof key == 'string' ? 'string' : 'hash']
+    : data.map;
+}
+
+function mapCacheDelete(key) {
+  return getMapData(this, key)['delete'](key);
+}
+
+function mapCacheGet(key) {
+  return getMapData(this, key).get(key);
+}
+
+function mapCacheHas(key) {
+  return getMapData(this, key).has(key);
+}
+
+function mapCacheSet(key, value) {
+  getMapData(this, key).set(key, value);
+  return this;
+}
+
+function MapCache(entries) {
+  var index = -1,
+      length = entries ? entries.length : 0;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+
+MapCache.prototype.clear = mapCacheClear;
+MapCache.prototype['delete'] = mapCacheDelete;
+MapCache.prototype.get = mapCacheGet;
+MapCache.prototype.has = mapCacheHas;
+MapCache.prototype.set = mapCacheSet;
+
+var FUNC_ERROR_TEXT = 'Expected a function';
+
+
+function memoize(func, resolver) {
+  if (typeof func != 'function' || (resolver && typeof resolver != 'function')) {
+    throw new TypeError(FUNC_ERROR_TEXT);
+  }
+  var memoized = function() {
+    var args = arguments,
+        key = resolver ? resolver.apply(this, args) : args[0],
+        cache = memoized.cache;
+
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+    var result = func.apply(this, args);
+    memoized.cache = cache.set(key, result);
+    return result;
+  };
+  memoized.cache = new (memoize.Cache || MapCache);
+  return memoized;
+}
+
+
+memoize.Cache = MapCache;
+
+var Symbol = root.Symbol;
+
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+var symbolTag = '[object Symbol]';
+
+
+var objectProto$4 = Object.prototype;
+
+
+var objectToString$1 = objectProto$4.toString;
+
+
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike(value) && objectToString$1.call(value) == symbolTag);
+}
+
+var INFINITY = 1 / 0;
+
+
+var symbolProto = Symbol ? Symbol.prototype : undefined;
+var symbolToString = symbolProto ? symbolProto.toString : undefined;
+
+
+function baseToString(value) {
+  
+  if (typeof value == 'string') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return symbolToString ? symbolToString.call(value) : '';
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+}
+
+function toString(value) {
+  return value == null ? '' : baseToString(value);
+}
+
+var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(\.|\[\])(?:\4|$))/g;
+
+
+var reEscapeChar = /\\(\\)?/g;
+
+
+var stringToPath = memoize(function(string) {
+  var result = [];
+  toString(string).replace(rePropName, function(match, number, quote, string) {
+    result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
+  });
+  return result;
+});
+
+function castPath(value) {
+  return isArray$1(value) ? value : stringToPath(value);
+}
+
+var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/;
+var reIsPlainProp = /^\w*$/;
+
+
+function isKey(value, object) {
+  if (isArray$1(value)) {
+    return false;
+  }
+  var type = typeof value;
+  if (type == 'number' || type == 'symbol' || type == 'boolean' ||
+      value == null || isSymbol(value)) {
+    return true;
+  }
+  return reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
+    (object != null && value in Object(object));
+}
+
+var INFINITY$1 = 1 / 0;
+
+
+function toKey(value) {
+  if (typeof value == 'string' || isSymbol(value)) {
+    return value;
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY$1) ? '-0' : result;
+}
+
+function baseGet(object, path) {
+  path = isKey(path, object) ? [path] : castPath(path);
+
+  var index = 0,
+      length = path.length;
+
+  while (object != null && index < length) {
+    object = object[toKey(path[index++])];
+  }
+  return (index && index == length) ? object : undefined;
+}
+
+function get(object, path, defaultValue) {
+  var result = object == null ? undefined : baseGet(object, path);
+  return result === undefined ? defaultValue : result;
+}
+
+var objectProto$5 = Object.prototype;
+
+
+var hasOwnProperty$3 = objectProto$5.hasOwnProperty;
+
+
+function assignValue(object, key, value) {
+  var objValue = object[key];
+  if (!(hasOwnProperty$3.call(object, key) && eq(objValue, value)) ||
+      (value === undefined && !(key in object))) {
+    object[key] = value;
+  }
+}
+
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+
+var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+
+function isIndex(value, length) {
+  length = length == null ? MAX_SAFE_INTEGER : length;
+  return !!length &&
+    (typeof value == 'number' || reIsUint.test(value)) &&
+    (value > -1 && value % 1 == 0 && value < length);
+}
+
+function baseSet(object, path, value, customizer) {
+  path = isKey(path, object) ? [path] : castPath(path);
+
+  var index = -1,
+      length = path.length,
+      lastIndex = length - 1,
+      nested = object;
+
+  while (nested != null && ++index < length) {
+    var key = toKey(path[index]);
+    if (isObject$1(nested)) {
+      var newValue = value;
+      if (index != lastIndex) {
+        var objValue = nested[key];
+        newValue = customizer ? customizer(objValue, key, nested) : undefined;
+        if (newValue === undefined) {
+          newValue = objValue == null
+            ? (isIndex(path[index + 1]) ? [] : {})
+            : objValue;
+        }
+      }
+      assignValue(nested, key, newValue);
+    }
+    nested = nested[key];
+  }
+  return object;
+}
+
+function setWith(object, path, value, customizer) {
+  customizer = typeof customizer == 'function' ? customizer : undefined;
+  return object == null ? object : baseSet(object, path, value, customizer);
+}
+
+var nativeGetPrototype = Object.getPrototypeOf;
+
+
+function getPrototype(value) {
+  return nativeGetPrototype(Object(value));
+}
+
+var objectProto$6 = Object.prototype;
+
+
+var hasOwnProperty$4 = objectProto$6.hasOwnProperty;
+
+
+function baseHas(object, key) {
+  
+  
+  
+  return object != null &&
+    (hasOwnProperty$4.call(object, key) ||
+      (typeof object == 'object' && key in object && getPrototype(object) === null));
+}
+
+function last(array) {
+  var length = array ? array.length : 0;
+  return length ? array[length - 1] : undefined;
+}
+
+function baseSlice(array, start, end) {
+  var index = -1,
+      length = array.length;
+
+  if (start < 0) {
+    start = -start > length ? 0 : (length + start);
+  }
+  end = end > length ? length : end;
+  if (end < 0) {
+    end += length;
+  }
+  length = start > end ? 0 : ((end - start) >>> 0);
+  start >>>= 0;
+
+  var result = Array(length);
+  while (++index < length) {
+    result[index] = array[index + start];
+  }
+  return result;
+}
+
+function parent(object, path) {
+  return path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
+}
+
+function baseUnset(object, path) {
+  path = isKey(path, object) ? [path] : castPath(path);
+  object = parent(object, path);
+
+  var key = toKey(last(path));
+  return !(object != null && baseHas(object, key)) || delete object[key];
+}
+
+function unset(object, path) {
+  return object == null ? true : baseUnset(object, path);
+}
+
+class PathObject {
+
+  
+  constructor(root) {
+    if (root) {
+      this.__root__ = root;
+    }
+  }
+
+  contains(id) {
+    return Boolean(this.getRoot()[id])
+  }
+
+  getRoot() {
+    if (this.__root__) {
+      return this.__root__
+    } else {
+      return this
+    }
+  }
+
+  
+  get(path) {
+    if (!path) {
+      return undefined
+    }
+    if (isString(path)) {
+      return this.getRoot()[path]
+    }
+    if (arguments.length > 1) {
+      path = Array.prototype.slice(arguments, 0);
+    }
+    if (!isArray(path)) {
+      throw new Error('Illegal argument for PathObject.get()')
+    }
+    return get(this.getRoot(), path)
+  }
+
+  set(path, value) {
+    if (!path) {
+      throw new Error('Illegal argument: PathObject.set(>path<, value) - path is mandatory.')
+    }
+    if (isString(path)) {
+      this.getRoot()[path] = value;
+    } else {
+      setWith(this.getRoot(), path, value);
+    }
+  }
+
+  delete(path) {
+    if (isString(path)) {
+      delete this.getRoot()[path];
+    } else if (path.length === 1) {
+      delete this.getRoot()[path[0]];
+    } else {
+      var success = unset(this.getRoot(), path);
+      if (!success) {
+        throw new Error('Could not delete property at path' + path)
+      }
+    }
+  }
+
+  clear() {
+    var root = this.getRoot();
+    for (var key in root) {
+      if (root.hasOwnProperty(key)) {
+        delete root[key];
+      }
+    }
+  }
+
+}
+
+PathObject.prototype._isPathObject = true;
+
+class Conflict extends Error {
+  constructor(a, b) {
+    super("Conflict: " + JSON.stringify(a) +" vs " + JSON.stringify(b));
+    this.a = a;
+    this.b = b;
+  }
+}
+
+const INSERT = "insert";
+const DELETE$1 = "delete";
+
+class TextOperation {
+
+  constructor(data) {
+    if (!data || data.type === undefined || data.pos === undefined || data.str === undefined) {
+      throw new Error("Illegal argument: insufficient data.")
+    }
+    
+    this.type = data.type;
+    
+    this.pos = data.pos;
+    
+    this.str = data.str;
+    
+    if(!this.isInsert() && !this.isDelete()) {
+      throw new Error("Illegal type.")
+    }
+    if (!isString(this.str)) {
+      throw new Error("Illegal argument: expecting string.")
+    }
+    if (!isNumber(this.pos) || this.pos < 0) {
+      throw new Error("Illegal argument: expecting positive number as pos.")
+    }
+  }
+
+  apply(str) {
+    if (this.isEmpty()) return str
+    if (this.type === INSERT) {
+      if (str.length < this.pos) {
+        throw new Error("Provided string is too short.")
+      }
+      if (str.splice) {
+        return str.splice(this.pos, 0, this.str)
+      } else {
+        return str.slice(0, this.pos).concat(this.str).concat(str.slice(this.pos))
+      }
+    }
+    else  {
+      if (str.length < this.pos + this.str.length) {
+        throw new Error("Provided string is too short.")
+      }
+      if (str.splice) {
+        return str.splice(this.pos, this.str.length)
+      } else {
+        return str.slice(0, this.pos).concat(str.slice(this.pos + this.str.length))
+      }
+    }
+  }
+
+  clone() {
+    return new TextOperation(this)
+  }
+
+  isNOP() {
+    return this.type === "NOP" || this.str.length === 0
+  }
+
+  isInsert() {
+    return this.type === INSERT
+  }
+
+  isDelete() {
+    return this.type === DELETE$1
+  }
+
+  getLength() {
+    return this.str.length
+  }
+
+  invert() {
+    var data = {
+      type: this.isInsert() ? DELETE$1 : INSERT,
+      pos: this.pos,
+      str: this.str
+    };
+    return new TextOperation(data)
+  }
+
+  hasConflict(other) {
+    return _hasConflict(this, other)
+  }
+
+  isEmpty() {
+    return this.str.length === 0
+  }
+
+  toJSON() {
+    return {
+      type: this.type,
+      pos: this.pos,
+      str: this.str
+    }
+  }
+
+  toString() {
+    return ["(", (this.isInsert() ? INSERT : DELETE$1), ",", this.pos, ",'", this.str, "')"].join('')
+  }
+}
+
+TextOperation.prototype._isOperation = true;
+TextOperation.prototype._isTextOperation = true;
+
+function _hasConflict(a, b) {
+  
+  
+  
+  if (a.type === INSERT && b.type === INSERT) return (a.pos === b.pos)
+  
+  
+  
+  if (a.type === DELETE$1 && b.type === DELETE$1) {
+    
+    return !(a.pos >= b.pos + b.str.length || b.pos >= a.pos + a.str.length)
+  }
+  
+  
+  
+  var del, ins;
+  if (a.type === DELETE$1) {
+    del = a; ins = b;
+  } else {
+    del = b; ins = a;
+  }
+  return (ins.pos >= del.pos && ins.pos < del.pos + del.str.length)
+}
+
+
+
+
+function transform_insert_insert(a, b) {
+  if (a.pos === b.pos) {
+    b.pos += a.str.length;
+  }
+  else if (a.pos < b.pos) {
+    b.pos += a.str.length;
+  }
+  else {
+    a.pos += b.str.length;
+  }
+}
+
+
+
+
+
+function transform_delete_delete$1(a, b, first) {
+  
+  if (a.pos > b.pos) {
+    return transform_delete_delete$1(b, a, !first)
+  }
+  if (a.pos === b.pos && a.str.length > b.str.length) {
+    return transform_delete_delete$1(b, a, !first)
+  }
+  
+  if (b.pos < a.pos + a.str.length) {
+    var s = b.pos - a.pos;
+    var s1 = a.str.length - s;
+    var s2 = s + b.str.length;
+    a.str = a.str.slice(0, s) + a.str.slice(s2);
+    b.str = b.str.slice(s1);
+    b.pos -= s;
+  } else {
+    b.pos -= a.str.length;
+  }
+}
+
+
+
+
+
+function transform_insert_delete(a, b) {
+  if (a.type === DELETE$1) {
+    return transform_insert_delete(b, a)
+  }
+  
+  
+  if (a.pos <= b.pos) {
+    b.pos += a.str.length;
+  }
+  
+  else if (a.pos >= b.pos + b.str.length) {
+    a.pos -= b.str.length;
+  }
+  
+  
+  
+  else {
+    var s = a.pos - b.pos;
+    b.str = b.str.slice(0, s) + a.str + b.str.slice(s);
+    a.str = "";
+  }
+}
+
+function transform$1(a, b, options) {
+  options = options || {};
+  if (options["no-conflict"] && _hasConflict(a, b)) {
+    throw new Conflict(a, b)
+  }
+  if (!options.inplace) {
+    a = a.clone();
+    b = b.clone();
+  }
+  if (a.type === INSERT && b.type === INSERT) {
+    transform_insert_insert(a, b);
+  }
+  else if (a.type === DELETE$1 && b.type === DELETE$1) {
+    transform_delete_delete$1(a, b, true);
+  }
+  else {
+    transform_insert_delete(a,b);
+  }
+  return [a, b]
+}
+
+TextOperation.transform = function() {
+  return transform$1.apply(null, arguments)
+};
+
+
+
+TextOperation.Insert = function(pos, str) {
+  return new TextOperation({ type: INSERT, pos: pos, str: str })
+};
+
+TextOperation.Delete = function(pos, str) {
+  return new TextOperation({ type: DELETE$1, pos: pos, str: str })
+};
+
+TextOperation.INSERT = INSERT;
+TextOperation.DELETE = DELETE$1;
+
+TextOperation.fromJSON = function(data) {
+  return new TextOperation(data)
+};
+
+const NOP$1 = "NOP";
+const DELETE$2 = "delete";
+const INSERT$1 = "insert";
+
+class ArrayOperation {
+
+  constructor(data) {
+    if (!data || !data.type) {
+      throw new Error("Illegal argument: insufficient data.")
+    }
+    this.type = data.type;
+    if (this.type === NOP$1) return
+
+    if (this.type !== INSERT$1 && this.type !== DELETE$2) {
+      throw new Error("Illegal type.")
+    }
+    
+    this.pos = data.pos;
+    
+    this.val = data.val;
+    if (!isNumber(this.pos) || this.pos < 0) {
+      throw new Error("Illegal argument: expecting positive number as pos.")
+    }
+  }
+
+  apply(array) {
+    if (this.type === NOP$1) {
+      return array
+    }
+    if (this.type === INSERT$1) {
+      if (array.length < this.pos) {
+        throw new Error("Provided array is too small.")
+      }
+      array.splice(this.pos, 0, this.val);
+      return array
+    }
+    
+    else  {
+      if (array.length < this.pos) {
+        throw new Error("Provided array is too small.")
+      }
+      if (!isEqual(array[this.pos], this.val)) {
+        throw Error("Unexpected value at position " + this.pos + ". Expected " + this.val + ", found " + array[this.pos])
+      }
+      array.splice(this.pos, 1);
+      return array
+    }
+  }
+
+  clone() {
+    var data = {
+      type: this.type,
+      pos: this.pos,
+      val: cloneDeep(this.val)
+    };
+    return new ArrayOperation(data)
+  }
+
+  invert() {
+    var data = this.toJSON();
+    if (this.type === NOP$1) data.type = NOP$1;
+    else if (this.type === INSERT$1) data.type = DELETE$2;
+    else  data.type = INSERT$1;
+    return new ArrayOperation(data)
+  }
+
+  hasConflict(other) {
+    return ArrayOperation.hasConflict(this, other)
+  }
+
+  toJSON() {
+    var result = {
+      type: this.type,
+    };
+    if (this.type === NOP$1) return result
+    result.pos = this.pos;
+    result.val = cloneDeep(this.val);
+    return result
+  }
+
+  isInsert() {
+    return this.type === INSERT$1
+  }
+
+  isDelete() {
+    return this.type === DELETE$2
+  }
+
+  getOffset() {
+    return this.pos
+  }
+
+  getValue() {
+    return this.val
+  }
+
+  isNOP() {
+    return this.type === NOP$1
+  }
+
+  toString() {
+    return ["(", (this.isInsert() ? INSERT$1 : DELETE$2), ",", this.getOffset(), ",'", this.getValue(), "')"].join('')
+  }
+}
+
+ArrayOperation.prototype._isOperation = true;
+ArrayOperation.prototype._isArrayOperation = true;
+
+function hasConflict$1(a, b) {
+  if (a.type === NOP$1 || b.type === NOP$1) return false
+  if (a.type === INSERT$1 && b.type === INSERT$1) {
+    return a.pos === b.pos
+  } else {
+    return false
+  }
+}
+
+function transform_insert_insert$1(a, b) {
+  if (a.pos === b.pos) {
+    b.pos += 1;
+  }
+  
+  else if (a.pos < b.pos) {
+    b.pos += 1;
+  }
+  
+  else {
+    a.pos += 1;
+  }
+}
+
+function transform_delete_delete$2(a, b) {
+  
+  if (a.pos === b.pos) {
+    b.type = NOP$1;
+    a.type = NOP$1;
+    return
+  }
+  if (a.pos < b.pos) {
+    b.pos -= 1;
+  } else {
+    a.pos -= 1;
+  }
+}
+
+function transform_insert_delete$1(a, b) {
+  
+  if (a.type === DELETE$2) {
+    var tmp = a;
+    a = b;
+    b = tmp;
+  }
+  if (a.pos <= b.pos) {
+    b.pos += 1;
+  } else {
+    a.pos -= 1;
+  }
+}
+
+var transform$2 = function(a, b, options) {
+  options = options || {};
+  
+  
+  if (options['no-conflict'] && hasConflict$1(a, b)) {
+    throw new Conflict(a, b)
+  }
+  
+  if (!options.inplace) {
+    a = a.clone();
+    b = b.clone();
+  }
+  if (a.type === NOP$1 || b.type === NOP$1) {
+    
+  }
+  else if (a.type === INSERT$1 && b.type === INSERT$1) {
+    transform_insert_insert$1(a, b);
+  }
+  else if (a.type === DELETE$2 && b.type === DELETE$2) {
+    transform_delete_delete$2(a, b);
+  }
+  else {
+    transform_insert_delete$1(a, b);
+  }
+  return [a, b]
+};
+
+ArrayOperation.transform = transform$2;
+ArrayOperation.hasConflict = hasConflict$1;
+
+
+
+ArrayOperation.Insert = function(pos, val) {
+  return new ArrayOperation({type:INSERT$1, pos: pos, val: val})
+};
+
+ArrayOperation.Delete = function(pos, val) {
+  return new ArrayOperation({ type:DELETE$2, pos: pos, val: val })
+};
+
+ArrayOperation.fromJSON = function(data) {
+  return new ArrayOperation(data)
+};
+
+ArrayOperation.NOP = NOP$1;
+ArrayOperation.DELETE = DELETE$2;
+ArrayOperation.INSERT = INSERT$1;
+
+const SHIFT = 'shift';
+
+class CoordinateOperation {
+
+  constructor(data) {
+    if (!data || data.type === undefined) {
+      throw new Error("Illegal argument: insufficient data.")
+    }
+    
+    this.type = data.type;
+    
+    this.val = data.val;
+    
+    if(!this.isShift()) {
+      throw new Error("Illegal type.")
+    }
+    if (!isNumber(this.val)) {
+      throw new Error("Illegal argument: expecting number as shift value.")
+    }
+  }
+
+  apply(coor) {
+    coor.offset = coor.offset + this.val;
+  }
+
+  isShift() {
+    return this.type === SHIFT
+  }
+
+  isNOP() {
+    switch (this.type) {
+      case SHIFT: {
+        return this.val === 0
+      }
+      default:
+        return false
+    }
+  }
+
+  clone() {
+    return new CoordinateOperation(this)
+  }
+
+  invert() {
+    let data;
+    switch (this.type) {
+      case SHIFT:
+        data = {
+          type: SHIFT,
+          val: -this.val
+        };
+        break
+      default:
+        throw new Error('Invalid type.')
+    }
+    return new CoordinateOperation(data)
+  }
+
+  hasConflict() {
+    
+    return false
+  }
+
+  toJSON() {
+    return {
+      type: this.type,
+      val: this.val
+    }
+  }
+
+  toString() {
+    return ["(", (this.type), ",", this.val, "')"].join('')
+  }
+
+}
+
+CoordinateOperation.prototype._isOperation = true;
+CoordinateOperation.prototype._isCoordinateOperation = true;
+
+function transform_shift_shift(a, b) {
+  a.val += b.val;
+  b.val += a.val;
+}
+
+function transform$3(a, b, options) {
+  options = options || {};
+  
+  if (!options.inplace) {
+    a = a.clone();
+    b = b.clone();
+  }
+  if (a.type === SHIFT && b.type === SHIFT) {
+    transform_shift_shift(a, b);
+  }
+  else {
+    throw new Error('Illegal type')
+  }
+  return [a, b]
+}
+
+CoordinateOperation.transform = function(...args) {
+  return transform$3(...args)
+};
+
+CoordinateOperation.fromJSON = function(json) {
+  return new CoordinateOperation(json)
+};
+
+CoordinateOperation.Shift = function(val) {
+  return new CoordinateOperation({
+    type: SHIFT,
+    val: val
+  })
+};
+
+const NOP = "NOP";
+const CREATE = "create";
+const DELETE = 'delete';
+const UPDATE = 'update';
+const SET = 'set';
+
+class ObjectOperation {
+
+  constructor(data) {
+    
+    if (!data) {
+      throw new Error('Data of ObjectOperation is missing.')
+    }
+    
+    if (!data.type) {
+      throw new Error('Invalid data: type is mandatory.')
+    }
+    this.type = data.type;
+    if (data.type === NOP) {
+      return
+    }
+    this.path = data.path;
+    if (!data.path) {
+      throw new Error('Invalid data: path is mandatory.')
+    }
+    if (this.type === CREATE || this.type === DELETE) {
+      if (!data.val) {
+        throw new Error('Invalid data: value is missing.')
+      }
+      this.val = data.val;
+    }
+    else if (this.type === UPDATE) {
+      if (data.diff) {
+        this.diff = data.diff;
+        if (data.diff._isTextOperation) {
+          this.propertyType = 'string';
+        } else if (data.diff._isArrayOperation) {
+          this.propertyType = 'array';
+        } else if (data.diff._isCoordinateOperation) {
+          this.propertyType = 'coordinate';
+        } else {
+          throw new Error('Invalid data: diff must be a TextOperation or an ArrayOperation.')
+        }
+      } else {
+        throw new Error("Invalid data: diff is mandatory for update operation.")
+      }
+    }
+    else if (this.type === SET) {
+      this.val = data.val;
+      this.original = data.original;
+    } else {
+      throw new Error('Invalid type: '+ data.type)
+    }
+  }
+
+  apply(obj) {
+    if (this.type === NOP) return obj
+    var adapter;
+    if (obj._isPathObject) {
+      adapter = obj;
+    } else {
+      adapter = new PathObject(obj);
+    }
+    if (this.type === CREATE) {
+      adapter.set(this.path, cloneDeep(this.val));
+      return obj
+    }
+    if (this.type === DELETE) {
+      adapter.delete(this.path, "strict");
+    }
+    else if (this.type === UPDATE) {
+      var diff = this.diff;
+      switch (this.propertyType) {
+        case 'array': {
+          let arr = adapter.get(this.path);
+          diff.apply(arr);
+          break
+        }
+        case 'string': {
+          let str = adapter.get(this.path);
+          if (isNil(str)) str = '';
+          str = diff.apply(str);
+          adapter.set(this.path, str);
+          break
+        }
+        case 'coordinate': {
+          let coor = adapter.get(this.path);
+          if (!coor) throw new Error('No coordinate with path '+this.path)
+          diff.apply(coor);
+          break
+        }
+        default:
+          throw new Error('Invalid state.')
+      }
+    }
+    else if (this.type === SET) {
+      
+      adapter.set(this.path, cloneDeep(this.val));
+    }
+    else {
+      throw new Error('Invalid type.')
+    }
+    return obj
+  }
+
+  clone() {
+    var data = {
+      type: this.type,
+      path: this.path,
+    };
+    if (this.val) {
+      data.val = cloneDeep(this.val);
+    }
+    if (this.diff) {
+      data.diff = this.diff.clone();
+    }
+    return new ObjectOperation(data)
+  }
+
+  isNOP() {
+    if (this.type === NOP) return true
+    else if (this.type === UPDATE) return this.diff.isNOP()
+  }
+
+  isCreate() {
+    return this.type === CREATE
+  }
+
+  isDelete() {
+    return this.type === DELETE
+  }
+
+  isUpdate(propertyType) {
+    if (propertyType) {
+      return (this.type === UPDATE && this.propertyType === propertyType)
+    } else {
+      return this.type === UPDATE
+    }
+  }
+
+  isSet() {
+    return this.type === SET
+  }
+
+  invert() {
+    if (this.type === NOP) {
+      return new ObjectOperation({ type: NOP })
+    }
+    var result = new ObjectOperation(this);
+    if (this.type === CREATE) {
+      result.type = DELETE;
+    }
+    else if (this.type === DELETE) {
+      result.type = CREATE;
+    }
+    else if (this.type === UPDATE) {
+      var invertedDiff;
+      if (this.diff._isTextOperation) {
+        invertedDiff = TextOperation.fromJSON(this.diff.toJSON()).invert();
+      } else if (this.diff._isArrayOperation) {
+        invertedDiff = ArrayOperation.fromJSON(this.diff.toJSON()).invert();
+      } else if (this.diff._isCoordinateOperation) {
+        invertedDiff = CoordinateOperation.fromJSON(this.diff.toJSON()).invert();
+      } else {
+        throw new Error('Illegal type')
+      }
+      result.diff = invertedDiff;
+    }
+    else  {
+      result.val = this.original;
+      result.original = this.val;
+    }
+    return result
+  }
+
+  hasConflict(other) {
+    return ObjectOperation.hasConflict(this, other)
+  }
+
+  toJSON() {
+    if (this.type === NOP) {
+      return { type: NOP }
+    }
+    var data = {
+      type: this.type,
+      path: this.path,
+    };
+    if (this.type === CREATE || this.type === DELETE) {
+      data.val = this.val;
+    }
+    else if (this.type === UPDATE) {
+      if (this.diff._isTextOperation) {
+        data.propertyType = "string";
+      } else if (this.diff._isArrayOperation) {
+        data.propertyType = "array";
+      } else if (this.diff._isCoordinateOperation) {
+        data.propertyType = "coordinate";
+      } else {
+        throw new Error('Invalid property type.')
+      }
+      data.diff = this.diff.toJSON();
+    }
+    else  {
+      data.val = this.val;
+      data.original = this.original;
+    }
+    return data
+  }
+
+  getType() {
+    return this.type
+  }
+
+  getPath() {
+    return this.path
+  }
+
+  getValue() {
+    return this.val
+  }
+
+  getOldValue() {
+    return this.original
+  }
+
+  getValueOp() {
+    return this.diff
+  }
+
+  
+  toString() {
+    switch (this.type) {
+      case CREATE:
+        return ["(+,", JSON.stringify(this.path), JSON.stringify(this.val), ")"].join('')
+      case DELETE:
+        return ["(-,", JSON.stringify(this.path), JSON.stringify(this.val), ")"].join('')
+      case UPDATE:
+        return ["(>>,", JSON.stringify(this.path), this.propertyType, this.diff.toString(), ")"].join('')
+      case SET:
+        return ["(=,", JSON.stringify(this.path), this.val, this.original, ")"].join('')
+      case NOP:
+        return "NOP"
+      default:
+        throw new Error('Invalid type')
+    }
+  }
+}
+
+ObjectOperation.prototype._isOperation = true;
+ObjectOperation.prototype._isObjectOperation = true;
+
+
+
+function hasConflict(a, b) {
+  if (a.type === NOP || b.type === NOP) return false
+  return isEqual(a.path, b.path)
+}
+
+function transform_delete_delete(a, b) {
+  
+  
+  a.type = NOP;
+  b.type = NOP;
+}
+
+function transform_create_create() {
+  throw new Error("Can not transform two concurring creates of the same property")
+}
+
+function transform_delete_create() {
+  throw new Error('Illegal state: can not create and delete a value at the same time.')
+}
+
+function transform_delete_update(a, b, flipped) {
+  if (a.type !== DELETE) {
+    return transform_delete_update(b, a, true)
+  }
+  var op;
+  switch (b.propertyType) {
+    case 'string':
+      op = TextOperation.fromJSON(b.diff);
+      break
+    case 'array':
+      op = ArrayOperation.fromJSON(b.diff);
+      break
+    case 'coordinate':
+      op = CoordinateOperation.fromJSON(b.diff);
+      break
+    default:
+      throw new Error('Illegal type')
+  }
+  
+  if (!flipped) {
+    a.type = NOP;
+    b.type = CREATE;
+    b.val = op.apply(a.val);
+  }
+  
+  else {
+    a.val = op.apply(a.val);
+    b.type = NOP;
+  }
+}
+
+function transform_create_update() {
+  
+  throw new Error("Can not transform a concurring create and update of the same property")
+}
+
+function transform_update_update(a, b) {
+  
+  var op_a, op_b, t;
+  switch(b.propertyType) {
+    case 'string':
+      op_a = TextOperation.fromJSON(a.diff);
+      op_b = TextOperation.fromJSON(b.diff);
+      t = TextOperation.transform(op_a, op_b, {inplace: true});
+      break
+    case 'array':
+      op_a = ArrayOperation.fromJSON(a.diff);
+      op_b = ArrayOperation.fromJSON(b.diff);
+      t = ArrayOperation.transform(op_a, op_b, {inplace: true});
+      break
+    case 'coordinate':
+      op_a = CoordinateOperation.fromJSON(a.diff);
+      op_b = CoordinateOperation.fromJSON(b.diff);
+      t = CoordinateOperation.transform(op_a, op_b, {inplace: true});
+      break
+    default:
+      throw new Error('Illegal type')
+  }
+  a.diff = t[0];
+  b.diff = t[1];
+}
+
+function transform_create_set() {
+  throw new Error('Illegal state: can not create and set a value at the same time.')
+}
+
+function transform_delete_set(a, b, flipped) {
+  if (a.type !== DELETE) return transform_delete_set(b, a, true)
+  if (!flipped) {
+    a.type = NOP;
+    b.type = CREATE;
+    b.original = undefined;
+  } else {
+    a.val = b.val;
+    b.type = NOP;
+  }
+}
+
+function transform_update_set() {
+  throw new Error("Unresolvable conflict: update + set.")
+}
+
+function transform_set_set(a, b) {
+  a.type = NOP;
+  b.original = a.val;
+}
+
+const _NOP = 0;
+const _CREATE = 1;
+const _DELETE = 2;
+const _UPDATE = 4;
+const _SET = 8;
+
+const CODE = (() => {
+  const c = {};
+  c[NOP] =_NOP;
+  c[CREATE] = _CREATE;
+  c[DELETE] = _DELETE;
+  c[UPDATE] = _UPDATE;
+  c[SET] = _SET;
+  return c
+})();
+
+const __transform__ = (() => {
+  
+  const t = {};
+  t[_DELETE | _DELETE] = transform_delete_delete;
+  t[_DELETE | _CREATE] = transform_delete_create;
+  t[_DELETE | _UPDATE] = transform_delete_update;
+  t[_CREATE | _CREATE] = transform_create_create;
+  t[_CREATE | _UPDATE] = transform_create_update;
+  t[_UPDATE | _UPDATE] = transform_update_update;
+  t[_CREATE | _SET   ] = transform_create_set;
+  t[_DELETE | _SET   ] = transform_delete_set;
+  t[_UPDATE | _SET   ] = transform_update_set;
+  t[_SET    | _SET   ] = transform_set_set;
+  
+  return t
+})();
+
+function transform(a, b, options) {
+  options = options || {};
+  if (options['no-conflict'] && hasConflict(a, b)) {
+    throw new Conflict(a, b)
+  }
+  if (!options.inplace) {
+    a = a.clone();
+    b = b.clone();
+  }
+  if (a.isNOP() || b.isNOP()) {
+    return [a, b]
+  }
+  var sameProp = isEqual(a.path, b.path);
+  
+  if (sameProp) {
+    __transform__[CODE[a.type] | CODE[b.type]](a,b);
+  }
+  return [a, b]
+}
+
+ObjectOperation.transform = transform;
+ObjectOperation.hasConflict = hasConflict;
+
+
+
+ObjectOperation.Create = function(idOrPath, val) {
+  var path;
+  if (isString(idOrPath)) {
+    path = [idOrPath];
+  } else {
+    path = idOrPath;
+  }
+  return new ObjectOperation({type: CREATE, path: path, val: val})
+};
+
+ObjectOperation.Delete = function(idOrPath, val) {
+  var path;
+  if (isString(idOrPath)) {
+    path = [idOrPath];
+  } else {
+    path = idOrPath;
+  }
+  return new ObjectOperation({type: DELETE, path: path, val: val})
+};
+
+ObjectOperation.Update = function(path, op) {
+  return new ObjectOperation({
+    type: UPDATE,
+    path: path,
+    diff: op
+  })
+};
+
+ObjectOperation.Set = function(path, oldVal, newVal) {
+  return new ObjectOperation({
+    type: SET,
+    path: path,
+    val: cloneDeep(newVal),
+    original: cloneDeep(oldVal)
+  })
+};
+
+ObjectOperation.fromJSON = function(data) {
+  data = cloneDeep(data);
+  if (data.type === "update") {
+    switch (data.propertyType) {
+      case "string":
+        data.diff = TextOperation.fromJSON(data.diff);
+        break
+      case "array":
+        data.diff = ArrayOperation.fromJSON(data.diff);
+        break
+      case "coordinate":
+        data.diff = CoordinateOperation.fromJSON(data.diff);
+        break
+      default:
+        throw new Error("Unsupported update diff:" + JSON.stringify(data.diff))
+    }
+  }
+  var op = new ObjectOperation(data);
+  return op
+};
+
+ObjectOperation.NOP = NOP;
+ObjectOperation.CREATE = CREATE;
+ObjectOperation.DELETE = DELETE;
+ObjectOperation.UPDATE = UPDATE;
+ObjectOperation.SET = SET;
+
+class OperationSerializer{
+
+  constructor() {
+    this.SEPARATOR = '\t';
+  }
+
+  serialize(op) {
+    var out = [];
+    switch (op.type) {
+      case 'create':
+        out.push('c');
+        out.push(op.val.id);
+        out.push(op.val);
+        break
+      case 'delete':
+        out.push('d');
+        out.push(op.val.id);
+        out.push(op.val);
+        break
+      case 'set':
+        out.push('s');
+        out.push(op.path.join('.'));
+        out.push(op.val);
+        out.push(op.original);
+        break
+      case 'update':
+        out.push('u');
+        out.push(op.path.join('.'));
+        Array.prototype.push.apply(out, this.serializePrimitiveOp(op.diff));
+        break
+      default:
+        throw new Error('Unsupported operation type.')
+    }
+    return out
+  }
+
+  serializePrimitiveOp(op) {
+    var out = [];
+    if (op._isTextOperation) {
+      if (op.isInsert()) {
+        out.push('t+');
+      } else if (op.isDelete()) {
+        out.push('t-');
+      }
+      out.push(op.pos);
+      out.push(op.str);
+    } else if (op._isArrayOperation) {
+      if (op.isInsert()) {
+        out.push('a+');
+      } else if (op.isDelete()) {
+        out.push('a-');
+      }
+      out.push(op.pos);
+      out.push(op.val);
+    } else if (op._isCoordinateOperation) {
+      if (op.isShift()) {
+        out.push('c>>');
+      } else {
+        throw new Error('Unsupported CoordinateOperation type.')
+      }
+      out.push(op.pos);
+      out.push(op.val);
+    } else {
+      throw new Error('Unsupported operation type.')
+    }
+    return out
+  }
+
+  deserialize(str, tokenizer) {
+    if (!tokenizer) {
+      tokenizer = new Tokenizer(str, this.SEPARATOR);
+    }
+    var type = tokenizer.getString();
+    var op, path, val, oldVal, diff;
+    switch (type) {
+      case 'c':
+        path = tokenizer.getPath();
+        val = tokenizer.getObject();
+        op = ObjectOperation.Create(path, val);
+        break
+      case 'd':
+        path = tokenizer.getPath();
+        val = tokenizer.getObject();
+        op = ObjectOperation.Delete(path, val);
+        break
+      case 's':
+        path = tokenizer.getPath();
+        val = tokenizer.getAny();
+        oldVal = tokenizer.getAny();
+        op = ObjectOperation.Set(path, oldVal, val);
+        break
+      case 'u':
+        path = tokenizer.getPath();
+        diff = this.deserializePrimitiveOp(str, tokenizer);
+        op = ObjectOperation.Update(path, diff);
+        break
+      default:
+        throw new Error('Illegal type for ObjectOperation: '+ type)
+    }
+    return op
+  }
+
+  deserializePrimitiveOp(str, tokenizer) {
+    if (!tokenizer) {
+      tokenizer = new Tokenizer(str, this.SEPARATOR);
+    }
+    var type = tokenizer.getString();
+    var op, pos, val;
+    switch (type) {
+      case 't+':
+        pos = tokenizer.getNumber();
+        val = tokenizer.getString();
+        op = TextOperation.Insert(pos, val);
+        break
+      case 't-':
+        pos = tokenizer.getNumber();
+        val = tokenizer.getString();
+        op = TextOperation.Delete(pos, val);
+        break
+      case 'a+':
+        pos = tokenizer.getNumber();
+        val = tokenizer.getAny();
+        op = ArrayOperation.Insert(pos, val);
+        break
+      case 'a-':
+        pos = tokenizer.getNumber();
+        val = tokenizer.getAny();
+        op = ArrayOperation.Delete(pos, val);
+        break
+      case 'c>>':
+        val = tokenizer.getNumber();
+        op = CoordinateOperation.Shift(val);
+        break
+      default:
+        throw new Error('Unsupported operation type: ' + type)
+    }
+    return op
+  }
+}
+
+class Tokenizer {
+  constructor(str, sep) {
+    if (isArray(arguments[0])) {
+      this.tokens = arguments[0];
+    } else {
+      this.tokens = str.split(sep);
+    }
+    this.pos = -1;
+  }
+
+  error(msg) {
+    throw new Error('Parsing error: ' + msg + '\n' + this.tokens[this.pos])
+  }
+
+  getString() {
+    this.pos++;
+    var str = this.tokens[this.pos];
+    if (str[0] === '"') {
+      str = str.slice(1, -1);
+    }
+    return str
+  }
+
+  getNumber() {
+    this.pos++;
+    var number;
+    var token = this.tokens[this.pos];
+    try {
+      if (isNumber(token)) {
+        number = token;
+      } else {
+        number = parseInt(this.tokens[this.pos], 10);
+      }
+      return number
+    } catch (err) {
+      this.error('expected number');
+    }
+  }
+
+  getObject() {
+    this.pos++;
+    var obj;
+    var token = this.tokens[this.pos];
+    try {
+      if (isObject(token)) {
+        obj = token;
+      } else {
+        obj = JSON.parse(this.tokens[this.pos]);
+      }
+      return obj
+    } catch (err) {
+      this.error('expected object');
+    }
+  }
+
+  getAny() {
+    this.pos++;
+    var token = this.tokens[this.pos];
+    return token
+  }
+
+  getPath() {
+    var str = this.getString();
+    return str.split('.')
+  }
+}
+
+OperationSerializer.Tokenizer = Tokenizer;
+
+function last$2(arr) {
+  return arr[arr.length-1]
+}
+
 class Selection {
 
   constructor() {
@@ -4788,6 +2887,17 @@ class NullSelection extends Selection {
 
 Selection.nullSelection = Object.freeze(new NullSelection());
 
+function isArrayEqual(arr1, arr2) {
+  if (arr1 === arr2) return true
+  if (!isArray(arr1) || !isArray(arr2)) return false
+  if (arr1.length !== arr2.length) return false
+  let L = arr1.length;
+  for (var i = 0; i < L; i++) {
+    if (arr1[i] !== arr2[i]) return false
+  }
+  return true
+}
+
 class Coordinate {
 
   
@@ -4802,7 +2912,7 @@ class Coordinate {
       this.path = path;
       this.offset = offset;
     }
-    if (!isArray$1(this.path)) {
+    if (!isArray(this.path)) {
       throw new Error('Invalid arguments: path should be an array.')
     }
     if (!isNumber(this.offset) || this.offset < 0) {
@@ -5487,10 +3597,10 @@ class NodeSelection extends Selection {
       surfaceId = data.surfaceId;
     }
 
-    if (!isString$1(containerId)) {
+    if (!isString(containerId)) {
       throw new Error("'containerId' is mandatory.");
     }
-    if (!isString$1(nodeId)) {
+    if (!isString(nodeId)) {
       throw new Error("'nodeId' is mandatory.");
     }
     mode = mode || "full";
@@ -5713,7 +3823,7 @@ function isLast(doc, coor) {
   if (node.isList()) {
     let itemId = coor.path[0];
     let item = doc.get(itemId);
-    if (last$1(node.items) === itemId && coor.offset === item.getLength()) return true
+    if (last$2(node.items) === itemId && coor.offset === item.getLength()) return true
   }
 }
 
@@ -5754,7 +3864,7 @@ function setCursor(tx, node, containerId, mode) {
     }
     tx.setSelection({
       type: 'property',
-      path: node.getTextPath(),
+      path: node.getPath(),
       startOffset: offset,
       containerId: containerId
     });
@@ -5769,7 +3879,7 @@ function setCursor(tx, node, containerId, mode) {
     }
     tx.setSelection({
       type: 'property',
-      path: item.getTextPath(),
+      path: item.getPath(),
       startOffset: offset,
       containerId: containerId
     });
@@ -5795,7 +3905,7 @@ function createNodeSelection({ doc, nodeId, containerId, mode, reverse, surfaceI
   node = node.getContainerRoot();
   if (node.isText()) {
     return new PropertySelection({
-      path: node.getTextPath(),
+      path: node.getPath(),
       startOffset: mode === 'after' ? node.getLength() : 0,
       endOffset: mode === 'before' ? 0 : node.getLength(),
       reverse: reverse,
@@ -5806,11 +3916,11 @@ function createNodeSelection({ doc, nodeId, containerId, mode, reverse, surfaceI
     let first = node.getFirstItem();
     let last$$1 = node.getLastItem();
     let start = {
-      path: first.getTextPath(),
+      path: first.getPath(),
       offset: 0
     };
     let end = {
-      path: last$$1.getTextPath(),
+      path: last$$1.getPath(),
       offset: last$$1.getLength()
     };
     if (mode === 'after') start = end;
@@ -5884,1054 +3994,247 @@ var selectionHelpers = Object.freeze({
 	augmentSelection: augmentSelection
 });
 
-class Conflict extends Error {
-  constructor(a, b) {
-    super("Conflict: " + JSON.stringify(a) +" vs " + JSON.stringify(b));
-    this.a = a;
-    this.b = b;
-  }
-}
-
-const INSERT = "insert";
-const DELETE$1 = "delete";
-
-class TextOperation {
-
-  constructor(data) {
-    if (!data || data.type === undefined || data.pos === undefined || data.str === undefined) {
-      throw new Error("Illegal argument: insufficient data.")
-    }
-    
-    this.type = data.type;
-    
-    this.pos = data.pos;
-    
-    this.str = data.str;
-    
-    if(!this.isInsert() && !this.isDelete()) {
-      throw new Error("Illegal type.")
-    }
-    if (!isString$1(this.str)) {
-      throw new Error("Illegal argument: expecting string.")
-    }
-    if (!isNumber(this.pos) || this.pos < 0) {
-      throw new Error("Illegal argument: expecting positive number as pos.")
-    }
-  }
-
-  apply(str) {
-    if (this.isEmpty()) return str
-    if (this.type === INSERT) {
-      if (str.length < this.pos) {
-        throw new Error("Provided string is too short.")
-      }
-      if (str.splice) {
-        return str.splice(this.pos, 0, this.str)
-      } else {
-        return str.slice(0, this.pos).concat(this.str).concat(str.slice(this.pos))
-      }
-    }
-    else  {
-      if (str.length < this.pos + this.str.length) {
-        throw new Error("Provided string is too short.")
-      }
-      if (str.splice) {
-        return str.splice(this.pos, this.str.length)
-      } else {
-        return str.slice(0, this.pos).concat(str.slice(this.pos + this.str.length))
-      }
-    }
-  }
-
-  clone() {
-    return new TextOperation(this)
-  }
-
-  isNOP() {
-    return this.type === "NOP" || this.str.length === 0
-  }
-
-  isInsert() {
-    return this.type === INSERT
-  }
-
-  isDelete() {
-    return this.type === DELETE$1
-  }
-
-  getLength() {
-    return this.str.length
-  }
-
-  invert() {
-    var data = {
-      type: this.isInsert() ? DELETE$1 : INSERT,
-      pos: this.pos,
-      str: this.str
-    };
-    return new TextOperation(data)
-  }
-
-  hasConflict(other) {
-    return _hasConflict(this, other)
-  }
-
-  isEmpty() {
-    return this.str.length === 0
-  }
-
-  toJSON() {
-    return {
-      type: this.type,
-      pos: this.pos,
-      str: this.str
-    }
-  }
-
-  toString() {
-    return ["(", (this.isInsert() ? INSERT : DELETE$1), ",", this.pos, ",'", this.str, "')"].join('')
-  }
-}
-
-TextOperation.prototype._isOperation = true;
-TextOperation.prototype._isTextOperation = true;
-
-function _hasConflict(a, b) {
-  
-  
-  
-  if (a.type === INSERT && b.type === INSERT) return (a.pos === b.pos)
-  
-  
-  
-  if (a.type === DELETE$1 && b.type === DELETE$1) {
-    
-    return !(a.pos >= b.pos + b.str.length || b.pos >= a.pos + a.str.length)
-  }
-  
-  
-  
-  var del, ins;
-  if (a.type === DELETE$1) {
-    del = a; ins = b;
-  } else {
-    del = b; ins = a;
-  }
-  return (ins.pos >= del.pos && ins.pos < del.pos + del.str.length)
-}
-
-
-
-
-function transform_insert_insert(a, b) {
-  if (a.pos === b.pos) {
-    b.pos += a.str.length;
-  }
-  else if (a.pos < b.pos) {
-    b.pos += a.str.length;
-  }
-  else {
-    a.pos += b.str.length;
-  }
-}
-
-
-
-
-
-function transform_delete_delete$1(a, b, first) {
-  
-  if (a.pos > b.pos) {
-    return transform_delete_delete$1(b, a, !first)
-  }
-  if (a.pos === b.pos && a.str.length > b.str.length) {
-    return transform_delete_delete$1(b, a, !first)
-  }
-  
-  if (b.pos < a.pos + a.str.length) {
-    var s = b.pos - a.pos;
-    var s1 = a.str.length - s;
-    var s2 = s + b.str.length;
-    a.str = a.str.slice(0, s) + a.str.slice(s2);
-    b.str = b.str.slice(s1);
-    b.pos -= s;
-  } else {
-    b.pos -= a.str.length;
-  }
-}
-
-
-
-
-
-function transform_insert_delete(a, b) {
-  if (a.type === DELETE$1) {
-    return transform_insert_delete(b, a)
-  }
-  
-  
-  if (a.pos <= b.pos) {
-    b.pos += a.str.length;
-  }
-  
-  else if (a.pos >= b.pos + b.str.length) {
-    a.pos -= b.str.length;
-  }
-  
-  
-  
-  else {
-    var s = a.pos - b.pos;
-    b.str = b.str.slice(0, s) + a.str + b.str.slice(s);
-    a.str = "";
-  }
-}
-
-function transform$1(a, b, options) {
-  options = options || {};
-  if (options["no-conflict"] && _hasConflict(a, b)) {
-    throw new Conflict(a, b)
-  }
-  if (!options.inplace) {
-    a = a.clone();
-    b = b.clone();
-  }
-  if (a.type === INSERT && b.type === INSERT) {
-    transform_insert_insert(a, b);
-  }
-  else if (a.type === DELETE$1 && b.type === DELETE$1) {
-    transform_delete_delete$1(a, b, true);
-  }
-  else {
-    transform_insert_delete(a,b);
-  }
-  return [a, b]
-}
-
-TextOperation.transform = function() {
-  return transform$1.apply(null, arguments)
-};
-
-
-
-TextOperation.Insert = function(pos, str) {
-  return new TextOperation({ type: INSERT, pos: pos, str: str })
-};
-
-TextOperation.Delete = function(pos, str) {
-  return new TextOperation({ type: DELETE$1, pos: pos, str: str })
-};
-
-TextOperation.INSERT = INSERT;
-TextOperation.DELETE = DELETE$1;
-
-TextOperation.fromJSON = function(data) {
-  return new TextOperation(data)
-};
-
-const NOP$1 = "NOP";
-const DELETE$2 = "delete";
-const INSERT$1 = "insert";
-
-class ArrayOperation {
-
-  constructor(data) {
-    if (!data || !data.type) {
-      throw new Error("Illegal argument: insufficient data.")
-    }
-    this.type = data.type;
-    if (this.type === NOP$1) return
-
-    if (this.type !== INSERT$1 && this.type !== DELETE$2) {
-      throw new Error("Illegal type.")
-    }
-    
-    this.pos = data.pos;
-    
-    this.val = data.val;
-    if (!isNumber(this.pos) || this.pos < 0) {
-      throw new Error("Illegal argument: expecting positive number as pos.")
-    }
-  }
-
-  apply(array) {
-    if (this.type === NOP$1) {
-      return array
-    }
-    if (this.type === INSERT$1) {
-      if (array.length < this.pos) {
-        throw new Error("Provided array is too small.")
-      }
-      array.splice(this.pos, 0, this.val);
-      return array
-    }
-    
-    else  {
-      if (array.length < this.pos) {
-        throw new Error("Provided array is too small.")
-      }
-      if (!isEqual(array[this.pos], this.val)) {
-        throw Error("Unexpected value at position " + this.pos + ". Expected " + this.val + ", found " + array[this.pos])
-      }
-      array.splice(this.pos, 1);
-      return array
-    }
-  }
-
-  clone() {
-    var data = {
-      type: this.type,
-      pos: this.pos,
-      val: cloneDeep(this.val)
-    };
-    return new ArrayOperation(data)
-  }
-
-  invert() {
-    var data = this.toJSON();
-    if (this.type === NOP$1) data.type = NOP$1;
-    else if (this.type === INSERT$1) data.type = DELETE$2;
-    else  data.type = INSERT$1;
-    return new ArrayOperation(data)
-  }
-
-  hasConflict(other) {
-    return ArrayOperation.hasConflict(this, other)
-  }
-
-  toJSON() {
-    var result = {
-      type: this.type,
-    };
-    if (this.type === NOP$1) return result
-    result.pos = this.pos;
-    result.val = cloneDeep(this.val);
-    return result
-  }
-
-  isInsert() {
-    return this.type === INSERT$1
-  }
-
-  isDelete() {
-    return this.type === DELETE$2
-  }
-
-  getOffset() {
-    return this.pos
-  }
-
-  getValue() {
-    return this.val
-  }
-
-  isNOP() {
-    return this.type === NOP$1
-  }
-
-  toString() {
-    return ["(", (this.isInsert() ? INSERT$1 : DELETE$2), ",", this.getOffset(), ",'", this.getValue(), "')"].join('')
-  }
-}
-
-ArrayOperation.prototype._isOperation = true;
-ArrayOperation.prototype._isArrayOperation = true;
-
-function hasConflict$1(a, b) {
-  if (a.type === NOP$1 || b.type === NOP$1) return false
-  if (a.type === INSERT$1 && b.type === INSERT$1) {
-    return a.pos === b.pos
-  } else {
-    return false
-  }
-}
-
-function transform_insert_insert$1(a, b) {
-  if (a.pos === b.pos) {
-    b.pos += 1;
-  }
-  
-  else if (a.pos < b.pos) {
-    b.pos += 1;
-  }
-  
-  else {
-    a.pos += 1;
-  }
-}
-
-function transform_delete_delete$2(a, b) {
-  
-  if (a.pos === b.pos) {
-    b.type = NOP$1;
-    a.type = NOP$1;
-    return
-  }
-  if (a.pos < b.pos) {
-    b.pos -= 1;
-  } else {
-    a.pos -= 1;
-  }
-}
-
-function transform_insert_delete$1(a, b) {
-  
-  if (a.type === DELETE$2) {
-    var tmp = a;
-    a = b;
-    b = tmp;
-  }
-  if (a.pos <= b.pos) {
-    b.pos += 1;
-  } else {
-    a.pos -= 1;
-  }
-}
-
-var transform$2 = function(a, b, options) {
-  options = options || {};
-  
-  
-  if (options['no-conflict'] && hasConflict$1(a, b)) {
-    throw new Conflict(a, b)
-  }
-  
-  if (!options.inplace) {
-    a = a.clone();
-    b = b.clone();
-  }
-  if (a.type === NOP$1 || b.type === NOP$1) {
-    
-  }
-  else if (a.type === INSERT$1 && b.type === INSERT$1) {
-    transform_insert_insert$1(a, b);
-  }
-  else if (a.type === DELETE$2 && b.type === DELETE$2) {
-    transform_delete_delete$2(a, b);
-  }
-  else {
-    transform_insert_delete$1(a, b);
-  }
-  return [a, b]
-};
-
-ArrayOperation.transform = transform$2;
-ArrayOperation.hasConflict = hasConflict$1;
-
-
-
-ArrayOperation.Insert = function(pos, val) {
-  return new ArrayOperation({type:INSERT$1, pos: pos, val: val})
-};
-
-ArrayOperation.Delete = function(pos, val) {
-  return new ArrayOperation({ type:DELETE$2, pos: pos, val: val })
-};
-
-ArrayOperation.fromJSON = function(data) {
-  return new ArrayOperation(data)
-};
-
-ArrayOperation.NOP = NOP$1;
-ArrayOperation.DELETE = DELETE$2;
-ArrayOperation.INSERT = INSERT$1;
-
-const SHIFT = 'shift';
-
-class CoordinateOperation {
-
-  constructor(data) {
-    if (!data || data.type === undefined) {
-      throw new Error("Illegal argument: insufficient data.")
-    }
-    
-    this.type = data.type;
-    
-    this.val = data.val;
-    
-    if(!this.isShift()) {
-      throw new Error("Illegal type.")
-    }
-    if (!isNumber(this.val)) {
-      throw new Error("Illegal argument: expecting number as shift value.")
-    }
-  }
-
-  apply(coor) {
-    coor.offset = coor.offset + this.val;
-  }
-
-  isShift() {
-    return this.type === SHIFT
-  }
-
-  isNOP() {
-    switch (this.type) {
-      case SHIFT: {
-        return this.val === 0
-      }
-      default:
-        return false
-    }
-  }
-
-  clone() {
-    return new CoordinateOperation(this)
-  }
-
-  invert() {
-    let data;
-    switch (this.type) {
-      case SHIFT:
-        data = {
-          type: SHIFT,
-          val: -this.val
-        };
-        break
-      default:
-        throw new Error('Invalid type.')
-    }
-    return new CoordinateOperation(data)
-  }
-
-  hasConflict() {
-    
-    return false
-  }
-
-  toJSON() {
-    return {
-      type: this.type,
-      val: this.val
-    }
-  }
-
-  toString() {
-    return ["(", (this.type), ",", this.val, "')"].join('')
-  }
-
-}
-
-CoordinateOperation.prototype._isOperation = true;
-CoordinateOperation.prototype._isCoordinateOperation = true;
-
-function transform_shift_shift(a, b) {
-  a.val += b.val;
-  b.val += a.val;
-}
-
-function transform$3(a, b, options) {
-  options = options || {};
-  
-  if (!options.inplace) {
-    a = a.clone();
-    b = b.clone();
-  }
-  if (a.type === SHIFT && b.type === SHIFT) {
-    transform_shift_shift(a, b);
-  }
-  else {
-    throw new Error('Illegal type')
-  }
-  return [a, b]
-}
-
-CoordinateOperation.transform = function(...args) {
-  return transform$3(...args)
-};
-
-CoordinateOperation.fromJSON = function(json) {
-  return new CoordinateOperation(json)
-};
-
-CoordinateOperation.Shift = function(val) {
-  return new CoordinateOperation({
-    type: SHIFT,
-    val: val
-  })
-};
-
-const NOP = "NOP";
-const CREATE = "create";
-const DELETE = 'delete';
-const UPDATE = 'update';
-const SET = 'set';
-
-class ObjectOperation {
-
-  constructor(data) {
-    
-    if (!data) {
-      throw new Error('Data of ObjectOperation is missing.')
-    }
-    
-    if (!data.type) {
-      throw new Error('Invalid data: type is mandatory.')
-    }
-    this.type = data.type;
-    if (data.type === NOP) {
-      return
-    }
-    this.path = data.path;
-    if (!data.path) {
-      throw new Error('Invalid data: path is mandatory.')
-    }
-    if (this.type === CREATE || this.type === DELETE) {
-      if (!data.val) {
-        throw new Error('Invalid data: value is missing.')
-      }
-      this.val = data.val;
-    }
-    else if (this.type === UPDATE) {
-      if (data.diff) {
-        this.diff = data.diff;
-        if (data.diff._isTextOperation) {
-          this.propertyType = 'string';
-        } else if (data.diff._isArrayOperation) {
-          this.propertyType = 'array';
-        } else if (data.diff._isCoordinateOperation) {
-          this.propertyType = 'coordinate';
-        } else {
-          throw new Error('Invalid data: diff must be a TextOperation or an ArrayOperation.')
-        }
-      } else {
-        throw new Error("Invalid data: diff is mandatory for update operation.")
-      }
-    }
-    else if (this.type === SET) {
-      this.val = data.val;
-      this.original = data.original;
+class DocumentChange {
+
+  constructor(ops, before, after) {
+    if (arguments.length === 1 && isPlainObject(arguments[0])) {
+      let data = arguments[0];
+      
+      this.sha = data.sha;
+      
+      this.timestamp = data.timestamp;
+      
+      this.before = data.before || {};
+      
+      this.ops = data.ops;
+      this.info = data.info; 
+      
+      this.after = data.after || {};
+    } else if (arguments.length === 3) {
+      this.sha = uuid();
+      this.info = {};
+      this.timestamp = Date.now();
+      this.ops = ops.slice(0);
+      this.before = before || {};
+      this.after = after || {};
     } else {
-      throw new Error('Invalid type: '+ data.type)
+      throw new Error('Illegal arguments.')
     }
+    
+    this.updated = null;
+    
+    this.created = null;
+    
+    this.deleted = null;
   }
 
-  apply(obj) {
-    if (this.type === NOP) return obj
-    var adapter;
-    if (obj._isPathObject) {
-      adapter = obj;
-    } else {
-      adapter = new PathObject(obj);
-    }
-    if (this.type === CREATE) {
-      adapter.set(this.path, cloneDeep(this.val));
-      return obj
-    }
-    if (this.type === DELETE) {
-      adapter.delete(this.path, "strict");
-    }
-    else if (this.type === UPDATE) {
-      var diff$$1 = this.diff;
-      switch (this.propertyType) {
-        case 'array': {
-          let arr = adapter.get(this.path);
-          diff$$1.apply(arr);
+  
+  _extractInformation(doc) {
+    
+    
+    if (this._extracted) return
+
+    let ops = this.ops;
+    let created = {};
+    let deleted = {};
+    let updated = {};
+    let affectedContainerAnnos = [];
+
+    
+    function _checkAnnotation(op) {
+      switch (op.type) {
+        case "create":
+        case "delete": {
+          let node = op.val;
+          if (node.hasOwnProperty('start')) {
+            updated[node.start.path] = true;
+          }
+          if (node.hasOwnProperty('end')) {
+            updated[node.end.path] = true;
+          }
           break
         }
-        case 'string': {
-          let str = adapter.get(this.path);
-          if (isNil(str)) str = '';
-          str = diff$$1.apply(str);
-          adapter.set(this.path, str);
-          break
-        }
-        case 'coordinate': {
-          let coor = adapter.get(this.path);
-          if (!coor) throw new Error('No coordinate with path '+this.path)
-          diff$$1.apply(coor);
+        case "update":
+        case "set": {
+          
+          let node = doc.get(op.path[0]);
+          if (node) {
+            if (node.isPropertyAnnotation()) {
+              updated[node.start.path] = true;
+            } else if (node.isContainerAnnotation()) {
+              affectedContainerAnnos.push(node);
+            }
+          }
           break
         }
         default:
-          throw new Error('Invalid state.')
+          
+          throw new Error('Illegal state')
       }
     }
-    else if (this.type === SET) {
-      
-      adapter.set(this.path, cloneDeep(this.val));
+
+    for (let i = 0; i < ops.length; i++) {
+      let op = ops[i];
+      if (op.type === "create") {
+        created[op.val.id] = op.val;
+        delete deleted[op.val.id];
+      }
+      if (op.type === "delete") {
+        delete created[op.val.id];
+        deleted[op.val.id] = op.val;
+      }
+      if (op.type === "set" || op.type === "update") {
+        updated[op.path] = true;
+        
+        updated[op.path[0]] = true;
+      }
+      _checkAnnotation(op);
     }
-    else {
-      throw new Error('Invalid type.')
+
+    affectedContainerAnnos.forEach(function(anno) {
+      let container = doc.get(anno.containerId, 'strict');
+      let startPos = container.getPosition(anno.start.path[0]);
+      let endPos = container.getPosition(anno.end.path[0]);
+      for (let pos = startPos; pos <= endPos; pos++) {
+        let node = container.getChildAt(pos);
+        let path;
+        if (node.isText()) {
+          path = node.getPath();
+        } else {
+          path = [node.id];
+        }
+        if (!deleted[node.id]) {
+          updated[path] = true;
+        }
+      }
+    });
+
+    
+    if(Object.keys(deleted).length > 0) {
+      forEach(updated, function(_, key) {
+        let nodeId = key.split(',')[0];
+        if (deleted[nodeId]) {
+          delete updated[key];
+        }
+      });
     }
-    return obj
-  }
 
-  clone() {
-    var data = {
-      type: this.type,
-      path: this.path,
-    };
-    if (this.val) {
-      data.val = cloneDeep(this.val);
-    }
-    if (this.diff) {
-      data.diff = this.diff.clone();
-    }
-    return new ObjectOperation(data)
-  }
+    this.created = created;
+    this.deleted = deleted;
+    this.updated = updated;
 
-  isNOP() {
-    if (this.type === NOP) return true
-    else if (this.type === UPDATE) return this.diff.isNOP()
-  }
-
-  isCreate() {
-    return this.type === CREATE
-  }
-
-  isDelete() {
-    return this.type === DELETE
-  }
-
-  isUpdate(propertyType) {
-    if (propertyType) {
-      return (this.type === UPDATE && this.propertyType === propertyType)
-    } else {
-      return this.type === UPDATE
-    }
-  }
-
-  isSet() {
-    return this.type === SET
+    this._extracted = true;
   }
 
   invert() {
-    if (this.type === NOP) {
-      return new ObjectOperation({ type: NOP })
+    
+    let copy = this.toJSON();
+    copy.ops = [];
+    
+    let tmp = copy.before;
+    copy.before = copy.after;
+    copy.after = tmp;
+    let inverted = DocumentChange.fromJSON(copy);
+    let ops = [];
+    for (let i = this.ops.length - 1; i >= 0; i--) {
+      ops.push(this.ops[i].invert());
     }
-    var result = new ObjectOperation(this);
-    if (this.type === CREATE) {
-      result.type = DELETE;
-    }
-    else if (this.type === DELETE) {
-      result.type = CREATE;
-    }
-    else if (this.type === UPDATE) {
-      var invertedDiff;
-      if (this.diff._isTextOperation) {
-        invertedDiff = TextOperation.fromJSON(this.diff.toJSON()).invert();
-      } else if (this.diff._isArrayOperation) {
-        invertedDiff = ArrayOperation.fromJSON(this.diff.toJSON()).invert();
-      } else if (this.diff._isCoordinateOperation) {
-        invertedDiff = CoordinateOperation.fromJSON(this.diff.toJSON()).invert();
-      } else {
-        throw new Error('Illegal type')
-      }
-      result.diff = invertedDiff;
-    }
-    else  {
-      result.val = this.original;
-      result.original = this.val;
-    }
-    return result
+    inverted.ops = ops;
+    return inverted
   }
 
-  hasConflict(other) {
-    return ObjectOperation.hasConflict(this, other)
+  
+  isAffected(path) {
+    console.error('DEPRECATED: use change.hasUpdated() instead');
+    return this.hasUpdated(path)
+  }
+
+  isUpdated(path) {
+    console.error('DEPRECATED: use change.hasUpdated() instead');
+    return this.hasUpdated(path)
+  }
+  
+
+  hasUpdated(path) {
+    return this.updated[path]
+  }
+
+  hasDeleted(id) {
+    return this.deleted[id]
+  }
+
+  serialize() {
+    
+    
+
+    let opSerializer = new OperationSerializer();
+    let data = this.toJSON();
+    data.ops = this.ops.map(function(op) {
+      return opSerializer.serialize(op)
+    });
+    return JSON.stringify(data)
+  }
+
+  clone() {
+    return DocumentChange.fromJSON(this.toJSON())
   }
 
   toJSON() {
-    if (this.type === NOP) {
-      return { type: NOP }
-    }
-    var data = {
-      type: this.type,
-      path: this.path,
+    let data = {
+      
+      sha: this.sha,
+      
+      before: clone(this.before),
+      ops: map(this.ops, function(op) {
+        return op.toJSON()
+      }),
+      info: this.info,
+      
+      after: clone(this.after),
     };
-    if (this.type === CREATE || this.type === DELETE) {
-      data.val = this.val;
+
+    
+    
+    data.after.selection = undefined;
+    data.before.selection = undefined;
+
+    let sel = this.before.selection;
+    if (sel && sel._isSelection) {
+      data.before.selection = sel.toJSON();
     }
-    else if (this.type === UPDATE) {
-      if (this.diff._isTextOperation) {
-        data.propertyType = "string";
-      } else if (this.diff._isArrayOperation) {
-        data.propertyType = "array";
-      } else if (this.diff._isCoordinateOperation) {
-        data.propertyType = "coordinate";
-      } else {
-        throw new Error('Invalid property type.')
-      }
-      data.diff = this.diff.toJSON();
-    }
-    else  {
-      data.val = this.val;
-      data.original = this.original;
+    sel = this.after.selection;
+    if (sel && sel._isSelection) {
+      data.after.selection = sel.toJSON();
     }
     return data
   }
-
-  getType() {
-    return this.type
-  }
-
-  getPath() {
-    return this.path
-  }
-
-  getValue() {
-    return this.val
-  }
-
-  getOldValue() {
-    return this.original
-  }
-
-  getValueOp() {
-    return this.diff
-  }
-
-  
-  toString() {
-    switch (this.type) {
-      case CREATE:
-        return ["(+,", JSON.stringify(this.path), JSON.stringify(this.val), ")"].join('')
-      case DELETE:
-        return ["(-,", JSON.stringify(this.path), JSON.stringify(this.val), ")"].join('')
-      case UPDATE:
-        return ["(>>,", JSON.stringify(this.path), this.propertyType, this.diff.toString(), ")"].join('')
-      case SET:
-        return ["(=,", JSON.stringify(this.path), this.val, this.original, ")"].join('')
-      case NOP:
-        return "NOP"
-      default:
-        throw new Error('Invalid type')
-    }
-  }
 }
 
-ObjectOperation.prototype._isOperation = true;
-ObjectOperation.prototype._isObjectOperation = true;
-
-
-
-function hasConflict(a, b) {
-  if (a.type === NOP || b.type === NOP) return false
-  return isEqual(a.path, b.path)
-}
-
-function transform_delete_delete(a, b) {
-  
-  
-  a.type = NOP;
-  b.type = NOP;
-}
-
-function transform_create_create() {
-  throw new Error("Can not transform two concurring creates of the same property")
-}
-
-function transform_delete_create() {
-  throw new Error('Illegal state: can not create and delete a value at the same time.')
-}
-
-function transform_delete_update(a, b, flipped) {
-  if (a.type !== DELETE) {
-    return transform_delete_update(b, a, true)
+DocumentChange.deserialize = function(str) {
+  let opSerializer = new OperationSerializer();
+  let data = JSON.parse(str);
+  data.ops = data.ops.map(function(opData) {
+    return opSerializer.deserialize(opData)
+  });
+  if (data.before.selection) {
+    data.before.selection = fromJSON(data.before.selection);
   }
-  var op;
-  switch (b.propertyType) {
-    case 'string':
-      op = TextOperation.fromJSON(b.diff);
-      break
-    case 'array':
-      op = ArrayOperation.fromJSON(b.diff);
-      break
-    case 'coordinate':
-      op = CoordinateOperation.fromJSON(b.diff);
-      break
-    default:
-      throw new Error('Illegal type')
+  if (data.after.selection) {
+    data.after.selection = fromJSON(data.after.selection);
   }
-  
-  if (!flipped) {
-    a.type = NOP;
-    b.type = CREATE;
-    b.val = op.apply(a.val);
-  }
-  
-  else {
-    a.val = op.apply(a.val);
-    b.type = NOP;
-  }
-}
-
-function transform_create_update() {
-  
-  throw new Error("Can not transform a concurring create and update of the same property")
-}
-
-function transform_update_update(a, b) {
-  
-  var op_a, op_b, t;
-  switch(b.propertyType) {
-    case 'string':
-      op_a = TextOperation.fromJSON(a.diff);
-      op_b = TextOperation.fromJSON(b.diff);
-      t = TextOperation.transform(op_a, op_b, {inplace: true});
-      break
-    case 'array':
-      op_a = ArrayOperation.fromJSON(a.diff);
-      op_b = ArrayOperation.fromJSON(b.diff);
-      t = ArrayOperation.transform(op_a, op_b, {inplace: true});
-      break
-    case 'coordinate':
-      op_a = CoordinateOperation.fromJSON(a.diff);
-      op_b = CoordinateOperation.fromJSON(b.diff);
-      t = CoordinateOperation.transform(op_a, op_b, {inplace: true});
-      break
-    default:
-      throw new Error('Illegal type')
-  }
-  a.diff = t[0];
-  b.diff = t[1];
-}
-
-function transform_create_set() {
-  throw new Error('Illegal state: can not create and set a value at the same time.')
-}
-
-function transform_delete_set(a, b, flipped) {
-  if (a.type !== DELETE) return transform_delete_set(b, a, true)
-  if (!flipped) {
-    a.type = NOP;
-    b.type = CREATE;
-    b.original = undefined;
-  } else {
-    a.val = b.val;
-    b.type = NOP;
-  }
-}
-
-function transform_update_set() {
-  throw new Error("Unresolvable conflict: update + set.")
-}
-
-function transform_set_set(a, b) {
-  a.type = NOP;
-  b.original = a.val;
-}
-
-const _NOP = 0;
-const _CREATE = 1;
-const _DELETE = 2;
-const _UPDATE = 4;
-const _SET = 8;
-
-const CODE = (() => {
-  const c = {};
-  c[NOP] =_NOP;
-  c[CREATE] = _CREATE;
-  c[DELETE] = _DELETE;
-  c[UPDATE] = _UPDATE;
-  c[SET] = _SET;
-  return c
-})();
-
-const __transform__ = (() => {
-  
-  const t = {};
-  t[_DELETE | _DELETE] = transform_delete_delete;
-  t[_DELETE | _CREATE] = transform_delete_create;
-  t[_DELETE | _UPDATE] = transform_delete_update;
-  t[_CREATE | _CREATE] = transform_create_create;
-  t[_CREATE | _UPDATE] = transform_create_update;
-  t[_UPDATE | _UPDATE] = transform_update_update;
-  t[_CREATE | _SET   ] = transform_create_set;
-  t[_DELETE | _SET   ] = transform_delete_set;
-  t[_UPDATE | _SET   ] = transform_update_set;
-  t[_SET    | _SET   ] = transform_set_set;
-  
-  return t
-})();
-
-function transform(a, b, options) {
-  options = options || {};
-  if (options['no-conflict'] && hasConflict(a, b)) {
-    throw new Conflict(a, b)
-  }
-  if (!options.inplace) {
-    a = a.clone();
-    b = b.clone();
-  }
-  if (a.isNOP() || b.isNOP()) {
-    return [a, b]
-  }
-  var sameProp = isEqual(a.path, b.path);
-  
-  if (sameProp) {
-    __transform__[CODE[a.type] | CODE[b.type]](a,b);
-  }
-  return [a, b]
-}
-
-ObjectOperation.transform = transform;
-ObjectOperation.hasConflict = hasConflict;
-
-
-
-ObjectOperation.Create = function(idOrPath, val) {
-  var path;
-  if (isString$1(idOrPath)) {
-    path = [idOrPath];
-  } else {
-    path = idOrPath;
-  }
-  return new ObjectOperation({type: CREATE, path: path, val: val})
+  return new DocumentChange(data)
 };
 
-ObjectOperation.Delete = function(idOrPath, val) {
-  var path;
-  if (isString$1(idOrPath)) {
-    path = [idOrPath];
-  } else {
-    path = idOrPath;
-  }
-  return new ObjectOperation({type: DELETE, path: path, val: val})
+DocumentChange.fromJSON = function(data) {
+  
+  let change = cloneDeep(data);
+  change.ops = data.ops.map(function(opData) {
+    return ObjectOperation.fromJSON(opData)
+  });
+  change.before.selection = fromJSON(data.before.selection);
+  change.after.selection = fromJSON(data.after.selection);
+  return new DocumentChange(change)
 };
-
-ObjectOperation.Update = function(path, op) {
-  return new ObjectOperation({
-    type: UPDATE,
-    path: path,
-    diff: op
-  })
-};
-
-ObjectOperation.Set = function(path, oldVal, newVal) {
-  return new ObjectOperation({
-    type: SET,
-    path: path,
-    val: cloneDeep(newVal),
-    original: cloneDeep(oldVal)
-  })
-};
-
-ObjectOperation.fromJSON = function(data) {
-  data = cloneDeep(data);
-  if (data.type === "update") {
-    switch (data.propertyType) {
-      case "string":
-        data.diff = TextOperation.fromJSON(data.diff);
-        break
-      case "array":
-        data.diff = ArrayOperation.fromJSON(data.diff);
-        break
-      case "coordinate":
-        data.diff = CoordinateOperation.fromJSON(data.diff);
-        break
-      default:
-        throw new Error("Unsupported update diff:" + JSON.stringify(data.diff))
-    }
-  }
-  var op = new ObjectOperation(data);
-  return op
-};
-
-ObjectOperation.NOP = NOP;
-ObjectOperation.CREATE = CREATE;
-ObjectOperation.DELETE = DELETE;
-ObjectOperation.UPDATE = UPDATE;
-ObjectOperation.SET = SET;
 
 function transformDocumentChange(A, B) {
   _transformInplaceBatch(A, B);
@@ -6972,10 +4275,10 @@ function _transformInplaceSingle(a, b) {
 }
 
 function _transformInplaceBatch(A, B) {
-  if (!isArray$1(A)) {
+  if (!isArray(A)) {
     A = [A];
   }
-  if (!isArray$1(B)) {
+  if (!isArray(B)) {
     B = [B];
   }
   for (let i = 0; i < A.length; i++) {
@@ -7013,15 +4316,15 @@ function _transformCoordinateInplace(coor, op) {
   if (!isEqual(op.path, coor.path)) return false
   let hasChanged = false;
   if (op.type === 'update' && op.propertyType === 'string') {
-    let diff$$1 = op.diff;
+    let diff = op.diff;
     let newOffset;
-    if (diff$$1.isInsert() && diff$$1.pos <= coor.offset) {
-      newOffset = coor.offset + diff$$1.str.length;
+    if (diff.isInsert() && diff.pos <= coor.offset) {
+      newOffset = coor.offset + diff.str.length;
       
       coor.offset = newOffset;
       hasChanged = true;
-    } else if (diff$$1.isDelete() && diff$$1.pos <= coor.offset) {
-      newOffset = Math.max(diff$$1.pos, coor.offset - diff$$1.str.length);
+    } else if (diff.isDelete() && diff.pos <= coor.offset) {
+      newOffset = Math.max(diff.pos, coor.offset - diff.str.length);
       
       coor.offset = newOffset;
       hasChanged = true;
@@ -7035,6 +4338,1196 @@ var operationHelpers = Object.freeze({
 	transformDocumentChange: transformDocumentChange,
 	transformSelection: transformSelection
 });
+
+class CollabEngine extends EventEmitter {
+
+  constructor(documentEngine) {
+    super();
+    this.documentEngine = documentEngine;
+    
+    this._collaborators = {};
+  }
+
+  
+  _register(collaboratorId, documentId, collaboratorInfo) {
+    let collaborator = this._collaborators[collaboratorId];
+
+    if (!collaborator) {
+      collaborator = this._collaborators[collaboratorId] = {
+        collaboratorId: collaboratorId,
+        documents: {}
+      };
+    }
+
+    
+    collaborator.info = collaboratorInfo;
+
+    
+    collaborator.documents[documentId] = {};
+  }
+
+  
+  _unregister(collaboratorId, documentId) {
+    let collaborator = this._collaborators[collaboratorId];
+    delete collaborator.documents[documentId];
+    let docCount = Object.keys(collaborator.documents).length;
+    
+    if (docCount === 0) {
+      delete this._collaborators[collaboratorId];
+    }
+  }
+
+  
+  getDocumentIds(collaboratorId) {
+    let collaborator = this._collaborators[collaboratorId];
+    if (!collaborator) {
+      
+      
+      return []
+    }
+    return Object.keys(collaborator.documents)
+  }
+
+  
+  getCollaborators(documentId, collaboratorId) {
+    let collaborators = {};
+    forEach(this._collaborators, function(collab) {
+      let doc = collab.documents[documentId];
+      if (doc && collab.collaboratorId !== collaboratorId) {
+        let entry = {
+          
+          collaboratorId: collab.collaboratorId
+        };
+        entry = Object.assign({}, collab.info, entry);
+        collaborators[collab.collaboratorId] = entry;
+      }
+    });
+    return collaborators
+  }
+
+  
+  getCollaboratorIds(documentId, collaboratorId) {
+    let collaborators = this.getCollaborators(documentId, collaboratorId);
+    return map(collaborators, function(c) {
+      return c.collaboratorId
+    })
+  }
+
+  
+  sync({documentId, version, change, collaboratorId}, cb) {
+    this._sync({documentId, version, change}, function(err, result) {
+      if (err) return cb(err)
+      
+      this._register(collaboratorId, documentId);
+      cb(null, result);
+    }.bind(this));
+  }
+
+  
+  _sync({documentId, version, change}, cb) {
+    this.documentEngine.getVersion(documentId, (err, serverVersion) => {
+      if (version > serverVersion) {
+        cb(new SubstanceError('InvalidVersionError', {
+          message: 'Client version greater than server version'
+        }));
+      } else if (change && serverVersion === version) {
+        this._syncFF({documentId, version, change}, cb);
+      } else if (change && serverVersion > version) {
+        this._syncRB({documentId, version, change}, cb);
+      } else if (!change) {
+        
+        this._syncPullOnly({documentId, version, change}, cb);
+      } else {
+        console.warn('Unhandled case');
+      }
+    });
+  }
+
+  _syncPullOnly({documentId, version, change}, cb) {
+    console.warn('This code is not yet tested');
+    this.documentEngine.getChanges(documentId, version, (err, changes) => {
+      let serverChange;
+
+      
+      if (changes.length > 0) {
+        let ops = [];
+        changes.forEach((change) => {
+          ops = ops.concat(change.ops);
+        });
+        serverChange = new DocumentChange(ops, {}, {});
+        serverChange = this.serializeChange(serverChange);
+      }
+      cb(null, {
+        serverChange: serverChange,
+        change: change,
+        version: version
+      });
+    });
+  }
+
+  
+  _syncFF({documentId, change}, cb) {
+    this.documentEngine.addChange(documentId, change, (err, serverVersion) => {
+      if (err) return cb(err)
+      cb(null, {
+        change: change, 
+        serverChange: null,
+        version: serverVersion
+      });
+    });
+  }
+
+  
+  _syncRB({documentId, change, version}, cb) {
+    this._rebaseChange({documentId, change, version}, function(err, rebased) {
+      
+      if (err) return cb(err)
+      
+      this.documentEngine.addChange(
+        documentId,
+        change,
+        function(err, serverVersion) {
+          if (err) return cb(err)
+          cb(null, {
+            change: rebased.change,
+            
+            serverChange: rebased.serverChange,
+            version: serverVersion
+          });
+        }
+      );
+    }.bind(this));
+  }
+
+  
+  _rebaseChange({documentId, change, version}, cb) {
+    this.documentEngine.getChanges(documentId, version, function(err, result, serverVersion) {
+      
+      let B = result.map(this.deserializeChange);
+      let a = this.deserializeChange(change);
+      
+      transformDocumentChange(a, B);
+      let ops = B.reduce(function(ops, change) {
+        return ops.concat(change.ops)
+      }, []);
+      let serverChange = new DocumentChange(ops, {}, {});
+
+      cb(null, {
+        change: this.serializeChange(a),
+        serverChange: this.serializeChange(serverChange),
+        version: serverVersion
+      });
+    }.bind(this));
+  }
+
+  
+  disconnect(args) {
+    this._unregister(args.collaboratorId, args.documentId);
+  }
+
+  
+  serializeChange(change) {
+    return change.toJSON()
+  }
+
+  
+  deserializeChange(serializedChange) {
+    let ch = DocumentChange.fromJSON(serializedChange);
+    return ch
+  }
+
+}
+
+class CollabServer extends Server {
+  constructor(config) {
+    super(config);
+
+    this.scope = 'substance/collab';
+    this.configurator = config.configurator;
+    this.documentEngine = this.configurator.getDocumentEngine();
+    this.collabEngine = new CollabEngine(this.documentEngine);
+  }
+
+  
+  _error(req, res, err) {
+    console.error(err);
+    res.error({
+      scope: this.scope,
+      type: 'error',
+      error: {
+        name: req.message.type+'Error',
+        cause: {
+          name: err.name
+        }
+      },
+      documentId: req.message.documentId
+    });
+    this.next(req, res);
+  }
+
+  
+  authenticate(req, res) {
+    if (this.config.authenticate) {
+      this.config.authenticate(req, (err, session) => {
+        if (err) {
+          console.error(err);
+          
+          this._error(req, res, new SubstanceError('AuthenticationError', {cause: err}));
+          return
+        }
+        req.setAuthenticated(session);
+        this.next(req, res);
+      });
+    } else {
+      super.authenticate.apply(this, arguments);
+    }
+  }
+
+  
+  enhanceRequest(req, res) {
+    if (this.config.enhanceRequest) {
+      this.config.enhanceRequest(req, (err) => {
+        if (err) {
+          console.error('enhanceRequest returned an error', err);
+          this._error(req, res, err);
+          return
+        }
+        req.setEnhanced();
+        this.next(req, res);
+      });
+    } else {
+      super.enhanceRequest.apply(this, arguments);
+    }
+  }
+
+  
+  onDisconnect(collaboratorId) {
+    
+    
+    let documentIds = this.collabEngine.getDocumentIds(collaboratorId);
+    documentIds.forEach(function(documentId) {
+      this._disconnectDocument(collaboratorId, documentId);
+    }.bind(this));
+  }
+
+  
+  execute(req, res) {
+    let msg = req.message;
+    let method = this[msg.type];
+
+    if (method) {
+      method.call(this, req, res);
+    } else {
+      console.error('Method', msg.type, 'not implemented for CollabServer');
+    }
+  }
+
+  
+  sync(req, res) {
+    let args = req.message;
+
+    
+    this.collabEngine.sync(args, (err, result) => {
+      
+      if (err) {
+        this._error(req, res, err);
+        return
+      }
+
+      
+      let collaborators = this.collabEngine.getCollaborators(args.documentId, args.collaboratorId);
+
+      
+      res.send({
+        scope: this.scope,
+        type: 'syncDone',
+        documentId: args.documentId,
+        version: result.version,
+        serverChange: result.serverChange,
+      });
+
+      
+      forEach(collaborators, (collaborator) => {
+        this.send(collaborator.collaboratorId, {
+          scope: this.scope,
+          type: 'update',
+          documentId: args.documentId,
+          version: result.version,
+          change: result.change
+        });
+      });
+      this.next(req, res);
+    });
+  }
+
+  
+  disconnect(req, res) {
+    let args = req.message;
+    let collaboratorId = args.collaboratorId;
+    let documentId = args.documentId;
+    this._disconnectDocument(collaboratorId, documentId);
+    
+    res.send({
+      scope: this.scope,
+      type: 'disconnectDone',
+      documentId: args.documentId
+    });
+    this.next(req, res);
+  }
+
+  _disconnectDocument(collaboratorId, documentId) {
+    
+    this.collabEngine.disconnect({
+      documentId: documentId,
+      collaboratorId: collaboratorId
+    });
+  }
+
+}
+
+function request(method, url, data, cb) {
+  var request = new XMLHttpRequest();
+  request.open(method, url, true);
+  request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      var res = request.responseText;
+      if(isJson(res)) res = JSON.parse(res);
+      cb(null, res);
+    } else {
+      return cb(new Error('Request failed. Returned status: ' + request.status))
+    }
+  };
+
+  if (data) {
+    request.send(JSON.stringify(data));
+  } else {
+    request.send();
+  }
+}
+
+function isJson(str) {
+  try {
+    
+  } catch (e) {
+    return false
+  }
+  return true
+}
+
+class DocumentClient {
+  constructor(config) {
+    this.config = config;
+  }
+
+  
+  createDocument(newDocument, cb) {
+    request('POST', this.config.httpUrl, newDocument, cb);
+  }
+
+  
+
+  getDocument(documentId, cb) {
+    request('GET', this.config.httpUrl+documentId, null, cb);
+  }
+
+  
+
+  deleteDocument(documentId, cb) {
+    request('DELETE', this.config.httpUrl+documentId, null, cb);
+  }
+
+}
+
+class ClientConnection extends EventEmitter {
+  constructor(config) {
+    super();
+
+    this.config = config;
+    this._onMessage = this._onMessage.bind(this);
+    this._onConnectionOpen = this._onConnectionOpen.bind(this);
+    this._onConnectionClose = this._onConnectionClose.bind(this);
+
+    
+    this._connect();
+  }
+
+  _createWebSocket() {
+    throw SubstanceError('AbstractMethodError')
+  }
+
+  
+  _connect() {
+    this.ws = this._createWebSocket();
+    this.ws.addEventListener('open', this._onConnectionOpen);
+    this.ws.addEventListener('close', this._onConnectionClose);
+    this.ws.addEventListener('message', this._onMessage);
+  }
+
+  
+  _disconnect() {
+    this.ws.removeEventListener('message', this._onMessage);
+    this.ws.removeEventListener('open', this._onConnectionOpen);
+    this.ws.removeEventListener('close', this._onConnectionClose);
+    this.ws = null;
+  }
+
+  
+  _onConnectionOpen() {
+    this.emit('open');
+  }
+
+  
+  _onConnectionClose() {
+    this._disconnect();
+    this.emit('close');
+    console.info('websocket connection closed. Attempting to reconnect in 5s.');
+    setTimeout(function() {
+      this._connect();
+    }.bind(this), 5000);
+  }
+
+  
+  _onMessage(msg) {
+    msg = this.deserializeMessage(msg.data);
+    this.emit('message', msg);
+  }
+
+  
+  send(msg) {
+    if (!this.isOpen()) {
+      console.warn('Message could not be sent. Connection is not open.', msg);
+      return
+    }
+    this.ws.send(this.serializeMessage(msg));
+  }
+
+  
+  isOpen() {
+    return this.ws && this.ws.readyState === 1
+  }
+
+  serializeMessage(msg) {
+    return JSON.stringify(msg)
+  }
+
+  deserializeMessage(msg) {
+    return JSON.parse(msg)
+  }
+
+}
+
+class WebSocketConnection extends ClientConnection {
+  _createWebSocket() {
+    return new window.WebSocket(this.config.wsUrl);
+  }
+}
+
+function computeSnapshot(jsonDoc, changeset) {
+  
+  jsonDoc = cloneDeep(jsonDoc);
+  let nodes = jsonDoc.nodes;
+  changeset.forEach((change) => {
+    change.ops.forEach((opData) => {
+      try {
+        let op = ObjectOperation.fromJSON(opData);
+        op.apply(nodes);
+      } catch (err) {
+        console.error(err, opData);
+      }
+    });
+  });
+  return jsonDoc
+}
+
+const EMPTY_DOC = { nodes: {} };
+
+
+class SnapshotEngine {
+  constructor(config) {
+    this.changeStore = config.changeStore;
+    this.snapshotStore = config.snapshotStore;
+  }
+
+  
+  getSnapshot(documentId, version, cb) {
+    let jsonDoc = EMPTY_DOC;
+    this._getClosestSnapshot(documentId, version, (err, snapshot, closestVersion) => {
+      if (err) {
+        return cb(err)
+      }
+      if (snapshot && version === closestVersion) {
+        
+        return cb(null, snapshot, version)
+      }
+      let knownVersion;
+      if (snapshot) {
+        knownVersion = closestVersion;
+      } else {
+        knownVersion = 0; 
+      }
+      if (snapshot) {
+        jsonDoc = snapshot;
+      }
+      
+      this.changeStore.getChanges(documentId, knownVersion, version, (err, changes) => {
+        if (err) return cb(err)
+        if (changes.length < (version - knownVersion)) {
+          return cb('Changes missing for reconstructing version '+ version)
+        }
+        jsonDoc = computeSnapshot(jsonDoc, changes);
+        cb(null, jsonDoc, version);
+      });
+    });
+  }
+
+  
+  createSnapshot(documentId, version, cb) {
+    this.getSnapshot(documentId, version, (err, snapshot) => {
+      if (err) return cb(err)
+      this.snapshotStore.saveSnapshot(documentId, version, snapshot, cb);
+    });
+  }
+
+  _getClosestSnapshot(documentId, version, cb) {
+    let closestVersion;
+
+    this.snapshotStore.getVersions(documentId, (err, versions) => {
+      if (err) return cb(err)
+
+      if(versions.length === 0) {
+        return cb(null, undefined)
+      }
+
+      if (versions.indexOf(version) >= 0) {
+        closestVersion = version;
+      } else {
+        
+        let smallerVersions = versions.filter(function(v) {
+          return parseInt(v, 10) < version
+        });
+        
+        closestVersion = Math.max.apply(null, smallerVersions);
+      }
+      if (!closestVersion) {
+        return cb(null, undefined)
+      }
+      this.snapshotStore.getSnapshot(documentId, closestVersion, cb);
+    });
+  }
+}
+
+class DocumentEngine extends EventEmitter {
+  constructor(config) {
+    super();
+    this.changeStore = config.changeStore;
+    this.snapshotStore = config.snapshotStore;
+    
+    
+    this.snapshotFrequency = config.snapshotFrequency || 1;
+    this.snapshotEngine = new SnapshotEngine({
+      changeStore: this.changeStore,
+      snapshotStore: this.snapshotStore
+    });
+  }
+
+  
+  createDocument(documentId, initialChange, cb) {
+    this.addChange(documentId, initialChange, cb);
+  }
+
+  
+  getDocument(documentId, version, cb) {
+    if (typeof version === 'function') {
+      cb = version;
+      version = undefined;
+    }
+    if (!documentId) {
+      throw new Error('Invalid Arguments')
+    }
+    if (version === undefined) {
+      this.getVersion(documentId, (err, version) => {
+        if (err) return cb(err)
+        this.snapshotEngine.getSnapshot(documentId, version, cb);
+      });
+    } else {
+      this.snapshotEngine.getSnapshot(documentId, version, cb);
+    }
+  }
+
+  
+  deleteDocument(documentId, cb) {
+    this.changeStore.deleteChanges(documentId, (err) => {
+      if (err) {
+        return cb(new Error('Deleting changes failed'))
+      }
+    });
+  }
+
+  
+  documentExists(documentId, cb) {
+    this.getVersion(documentId, (err, version) => {
+      if (version >= 0) {
+        cb(null, true);
+      } else {
+        cb(null, false);
+      }
+    });
+  }
+
+  
+  getChanges(documentId, sinceVersion, toVersion, cb) {
+    this.changeStore.getChanges(documentId, sinceVersion, toVersion, cb);
+  }
+
+  
+  getVersion(documentId, cb) {
+    this.changeStore.getVersion(documentId, cb);
+  }
+
+  
+  requestSnapshot(documentId, version, cb) {
+    if (version % this.snapshotFrequency === 0) {
+      this.snapshotEngine.createSnapshot(documentId, version, cb);
+    } else {
+      cb(null); 
+    }
+  }
+
+  
+  addChange(documentId, change, cb) {
+    this.changeStore.addChange(documentId, change, (err, newVersion) => {
+      if (err) return cb(err)
+
+      this.requestSnapshot(documentId, newVersion, () => {
+        
+        cb(null, newVersion);
+      });
+    });
+  }
+}
+
+class CollabServerConfigurator {
+  constructor() {
+    this.config = {
+      heartbeat: 30*1000,
+      documentStore: undefined,
+      changeStore: undefined,
+      snapshotStore: undefined
+    };
+  }
+
+  setHost(host) {
+    this.config.host = host;
+  }
+
+  setPort(port) {
+    this.config.port = port;
+  }
+
+  
+  
+
+  setDocumentStore(documentStore) {
+    this.config.documentStore = documentStore;
+  }
+
+  setChangeStore(changeStore) {
+    this.config.changeStore = changeStore;
+  }
+
+  setSnapshotStore(snapshotStore) {
+    this.config.snapshotStore = snapshotStore;
+  }
+
+  
+  
+
+  getHost() {
+    return this.config.host
+  }
+
+  getPort() {
+    return this.config.port
+  }
+
+  getDocumentStore() {
+    return this.config.documentStore
+  }
+
+  getChangeStore() {
+    return this.config.changeStore
+  }
+
+  getSnapshotStore() {
+    return this.config.snapshotStore
+  }
+
+  
+  getDocumentEngine() {
+    if (!this.documentEngine) {
+      this.documentEngine = new DocumentEngine({
+        documentStore: this.config.documentStore,
+        changeStore: this.config.changeStore,
+        snapshotStore: this.config.snapshotStore
+      });
+    }
+    return this.documentEngine
+  }
+
+  
+  import(pkg, options) {
+    pkg.configure(this, options || {});
+    return this
+  }
+
+}
+
+class CollabClient extends EventEmitter {
+  constructor(config) {
+    super();
+
+    this.config = config;
+    this.connection = config.connection;
+
+    
+    this.scope = 'substance/collab';
+
+    
+    this._onMessage = this._onMessage.bind(this);
+    this._onConnectionOpen = this._onConnectionOpen.bind(this);
+    this._onConnectionClose = this._onConnectionClose.bind(this);
+
+    
+    this.connection.on('open', this._onConnectionOpen);
+    this.connection.on('close', this._onConnectionClose);
+    this.connection.on('message', this._onMessage);
+  }
+
+  _onConnectionClose() {
+    this.emit('disconnected');
+  }
+
+  _onConnectionOpen() {
+    this.emit('connected');
+  }
+
+  
+  _onMessage(msg) {
+    if (msg.scope === this.scope) {
+      this.emit('message', msg);
+    } else if (msg.scope !== '_internal') {
+      console.info('Message ignored. Not sent in hub scope', msg);
+    }
+  }
+
+  
+  send(msg) {
+    if (!this.connection.isOpen()) {
+      console.warn('Message could not be sent. Connection not open.', msg);
+      return
+    }
+
+    msg.scope = this.scope;
+    if (this.config.enhanceMessage) {
+      msg = this.config.enhanceMessage(msg);
+    }
+    this.connection.send(msg);
+  }
+
+  
+  isConnected() {
+    return this.connection.isOpen()
+  }
+
+  dispose() {
+    this.connection.off(this);
+  }
+}
+
+class SnapshotStore {
+  constructor(seed) {
+    this._snapshots = seed || {};
+  }
+
+  
+  getVersions(documentId, cb) {
+    let versions = this._getVersions(documentId);
+    cb(null, versions);
+  }
+
+  
+  getSnapshot(documentId, version, cb) {
+    if (!arguments.length === 3) {
+      throw new Error('Invalid Arguments')
+    }
+    let docEntry = this._snapshots[documentId];
+    if (!docEntry) return cb(null, undefined)
+    let snapshot = docEntry[version];
+    if (snapshot) {
+      cb(null, snapshot, version);
+    } else {
+      cb(null, undefined);
+    }
+  }
+
+  
+  saveSnapshot(documentId, version, data, cb) {
+    if (!documentId || !version || !data) {
+      throw new Error('Invalid arguments')
+    }
+    let docEntry = this._snapshots[documentId];
+    if (!docEntry) {
+      docEntry = this._snapshots[documentId] = {};
+    }
+    docEntry[version] = data;
+    cb(null, docEntry[version]);
+  }
+
+  
+  deleteSnapshot(documentId, version, cb) {
+    let docEntry = this._snapshots[documentId];
+    if (!docEntry || !docEntry[version]) {
+      return cb(new Error('Snapshot does not exist and can not be deleted'))
+    }
+    let snapshot = this._snapshots[documentId][version];
+    delete this._snapshots[documentId][version];
+    cb(null, snapshot);
+  }
+
+  
+  _getVersions(documentId) {
+    let docEntry = this._snapshots[documentId];
+    if (!docEntry) return [] 
+    return Object.keys(docEntry)
+  }
+
+}
+
+var CollabServerPackage = {
+  name: 'collab-server',
+  configure: function (config) {
+    config.setChangeStore(new ChangeStore());
+    config.setSnapshotStore(new SnapshotStore());
+  }
+};
+
+class DocumentServer {
+
+  constructor(params) {
+    this.configurator = params.configurator;
+    this.engine = this.configurator.getDocumentEngine();
+    
+    this.path = '/api/documents';
+  }
+
+  
+  bind(app) {
+    app.post(this.path, this._createDocument.bind(this));
+    app.get(this.path + '/:id', this._getDocument.bind(this));
+    app.delete(this.path + '/:id', this._deleteDocument.bind(this));
+  }
+
+  
+  _createDocument(req, res, next) {
+    const { documentId, change } = req.body;
+    this.engine.createDocument(documentId, change, function(err, version) {
+      if (err) return next(err)
+      res.json(version);
+    });
+  }
+
+  
+  _getDocument(req, res, next) {
+    const documentId = req.params.id;
+    this.engine.getDocument(documentId, function(err, jsonDoc, version) {
+      if (err) return next(err)
+      res.json({
+        data: jsonDoc,
+        version: version
+      });
+    });
+  }
+
+  
+  _deleteDocument(req, res, next) {
+    let documentId = req.params.id;
+    this.engine.deleteDocument(documentId, function(err, result) {
+      if (err) return next(err)
+      res.json(result);
+    });
+  }
+}
+
+function isFunction$2(f) {
+  return typeof f === 'function'
+}
+
+function deleteFromArray(array, value) {
+  if (!array) return
+  for (var i = 0; i < array.length; i++) {
+    if (array[i] === value) {
+      array.splice(i, 1);
+      i--;
+    }
+  }
+}
+
+class TreeNode {}
+
+
+
+class TreeIndex {
+  
+  get(path) {
+    if (arguments.length > 1) {
+      path = Array.prototype.slice(arguments, 0);
+    }
+    if (isString(path)) {
+      path = [path];
+    }
+    return get(this, path);
+  }
+
+  getAll(path) {
+    if (arguments.length > 1) {
+      path = Array.prototype.slice(arguments, 0);
+    }
+    if (isString(path)) {
+      path = [path];
+    }
+    if (!isArray(path)) {
+      throw new Error('Illegal argument for TreeIndex.get()');
+    }
+    var node = get(this, path);
+    return this._collectValues(node);
+  }
+
+  set(path, value) {
+    if (isString(path)) {
+      path = [path];
+    }
+    setWith(this, path, value, function(val) {
+      if (!val) return new TreeNode();
+    });
+  }
+
+  delete(path) {
+    if (isString(path)) {
+      delete this[path];
+    } else if(path.length === 1) {
+      delete this[path[0]];
+    } else {
+      var key = path[path.length-1];
+      path = path.slice(0, -1);
+      var parent = get(this, path);
+      if (parent) {
+        delete parent[key];
+      }
+    }
+  }
+
+  clear() {
+    var root = this;
+    for (var key in root) {
+      if (root.hasOwnProperty(key)) {
+        delete root[key];
+      }
+    }
+  }
+
+  traverse(fn) {
+    this._traverse(this, [], fn);
+  }
+
+  forEach(...args) {
+    this.traverse(...args);
+  }
+
+  _traverse(root, path, fn) {
+    var id;
+    for (id in root) {
+      if (!root.hasOwnProperty(id)) continue;
+      var child = root[id];
+      var childPath = path.concat([id]);
+      if (child instanceof TreeNode) {
+        this._traverse(child, childPath, fn);
+      } else {
+        fn(child, childPath);
+      }
+    }
+  }
+
+  _collectValues(root) {
+    
+    
+    var vals = {};
+    this._traverse(root, [], function(val, path) {
+      var key = path[path.length-1];
+      vals[key] = val;
+    });
+    return vals;
+  }
+}
+
+class TreeIndexArrays extends TreeIndex {
+
+  contains(path) {
+    let val = super.get(path);
+    return Boolean(val)
+  }
+
+  get(path) {
+    let val = super.get(path);
+    if (val instanceof TreeNode) {
+      val = val.__values__ || [];
+    }
+    return val;
+  }
+
+  set(path, arr) {
+    let val = super.get(path);
+    val.__values__ = arr;
+  }
+
+  add(path, value) {
+    if (isString(path)) {
+      path = [path];
+    }
+    if (!isArray(path)) {
+      throw new Error('Illegal arguments.');
+    }
+    var arr;
+
+    
+    
+    
+    
+    
+    
+    setWith(this, path.concat(['__values__','__dummy__']), undefined, function(val, key) {
+      if (key === '__values__') {
+        if (!val) val = [];
+        arr = val;
+      } else if (!val) {
+        val = new TreeNode();
+      }
+      return val;
+    });
+    delete arr.__dummy__;
+    arr.push(value);
+  }
+
+  remove(path, value) {
+    var arr = get(this, path);
+    if (arr instanceof TreeNode) {
+      if (arguments.length === 1) {
+        delete arr.__values__;
+      } else {
+        deleteFromArray(arr.__values__, value);
+      }
+    }
+  }
+
+  _collectValues(root) {
+    var vals = [];
+    this._traverse(root, [], function(val) {
+      vals.push(val);
+    });
+    vals = Array.prototype.concat.apply([], vals);
+    return vals
+  }
+}
+
+TreeIndex.Arrays = TreeIndexArrays;
+
+function filter(iteratee, fn) {
+  if (!iteratee) return []
+  if (iteratee.constructor.prototype.filter && isFunction$2(iteratee.constructor.prototype.filter)) {
+    return iteratee.filter(fn)
+  }
+  let result = [];
+  forEach(iteratee, (val, key) => {
+    if (fn(val, key)) {
+      result.push(val);
+    }
+  });
+  return result
+}
+
+function flatten(arr) {
+  return Array.prototype.concat.apply([], arr)
+}
+
+class NodeIndex {
+
+  
+  select(node) { 
+    throw new Error('This method is abstract.')
+  }
+
+  clear() {
+    throw new Error('This method is abstract')
+  }
+
+  
+  create(node) { 
+    throw new Error('This method is abstract.')
+  }
+
+  
+  delete(node) { 
+    throw new Error('This method is abstract.')
+  }
+
+  set(node, path, newValue, oldValue) {
+    this.update(node, path, newValue, oldValue);
+  }
+
+  
+  update(node, path, newValue, oldValue) { 
+    throw new Error('This method is abstract.')
+  }
+
+  
+  reset(data) {
+    this.clear();
+    this._initialize(data);
+  }
+
+  
+  clone() {
+    var NodeIndexClass = this.constructor;
+    var clone = new NodeIndexClass();
+    return clone
+  }
+
+  _initialize(data) {
+    forEach(data.getNodes(), function(node) {
+      if (this.select(node)) {
+        this.create(node);
+      }
+    }.bind(this));
+  }
+}
+
+
+NodeIndex.create = function(prototype) {
+  var index = Object.assign(new NodeIndex(), prototype);
+  index.clone = function() {
+    return NodeIndex.create(prototype)
+  };
+  return index
+};
+
+
+NodeIndex.filterByType = function(type) {
+  return function(node) {
+    return node.isInstanceOf(type)
+  }
+};
+
+class DocumentIndex extends NodeIndex {}
 
 var annotationHelpers = {
   insertedText,
@@ -7273,7 +5766,7 @@ function expandAnnotation(tx, anno, sel) {
 
 
 function fuseAnnotation(tx, annos) {
-  if (!isArray$1(annos) || annos.length < 2) {
+  if (!isArray(annos) || annos.length < 2) {
     throw new Error('fuseAnnotation(): at least two annotations are necessary.')
   }
   let sel, annoType;
@@ -7296,47 +5789,77 @@ function fuseAnnotation(tx, annos) {
   tx.setSelection(sel);
 }
 
-class NodeIndex {
+class PropertyIndex extends NodeIndex {
+
+  constructor(property) {
+    super();
+
+    this._property = property || 'id';
+    this.index = new TreeIndex();
+  }
 
   
-  select(node) { 
-    throw new Error('This method is abstract.')
+  get(path) {
+    return this.index.get(path) || {}
+  }
+
+  
+  getAll(path) {
+    return this.index.getAll(path)
   }
 
   clear() {
-    throw new Error('This method is abstract')
+    this.index.clear();
   }
 
   
-  create(node) { 
-    throw new Error('This method is abstract.')
+  select(node) { 
+    return true
   }
 
   
-  delete(node) { 
-    throw new Error('This method is abstract.')
+  create(node) {
+    var values = node[this._property];
+    if (!isArray(values)) {
+      values = [values];
+    }
+    forEach(values, function(value) {
+      this.index.set([value, node.id], node);
+    }.bind(this));
+  }
+
+  
+  delete(node) {
+    var values = node[this._property];
+    if (!isArray(values)) {
+      values = [values];
+    }
+    forEach(values, function(value) {
+      this.index.delete([value, node.id]);
+    }.bind(this));
+  }
+
+  
+  update(node, path, newValue, oldValue) {
+    if (!this.select(node) || path[1] !== this._property) return
+    var values = oldValue;
+    if (!isArray(values)) {
+      values = [values];
+    }
+    forEach(values, function(value) {
+      this.index.delete([value, node.id]);
+    }.bind(this));
+    values = newValue;
+    if (!isArray(values)) {
+      values = [values];
+    }
+    forEach(values, function(value) {
+      this.index.set([value, node.id], node);
+    }.bind(this));
   }
 
   set(node, path, newValue, oldValue) {
     this.update(node, path, newValue, oldValue);
-  }
-
-  
-  update(node, path, newValue, oldValue) { 
-    throw new Error('This method is abstract.')
-  }
-
-  
-  reset(data) {
-    this.clear();
-    this._initialize(data);
-  }
-
-  
-  clone() {
-    var NodeIndexClass = this.constructor;
-    var clone$$1 = new NodeIndexClass();
-    return clone$$1
   }
 
   _initialize(data) {
@@ -7347,24 +5870,6 @@ class NodeIndex {
     }.bind(this));
   }
 }
-
-
-NodeIndex.create = function(prototype) {
-  var index = Object.assign(new NodeIndex(), prototype);
-  index.clone = function() {
-    return NodeIndex.create(prototype)
-  };
-  return index
-};
-
-
-NodeIndex.filterByType = function(type) {
-  return function(node) {
-    return node.isInstanceOf(type)
-  }
-};
-
-class DocumentIndex extends NodeIndex {}
 
 class AnnotationIndex extends DocumentIndex {
 
@@ -7387,7 +5892,7 @@ class AnnotationIndex extends DocumentIndex {
   
   get(path, start, end, type) {
     var annotations;
-    if (isString$1(path) || path.length === 1) {
+    if (isString(path) || path.length === 1) {
       annotations = this.byPath.getAll(path) || {};
     } else {
       annotations = this.byPath.get(path);
@@ -7443,88 +5948,6 @@ AnnotationIndex.filterByRange = function(start, end) {
   }
 };
 
-class PropertyIndex extends NodeIndex {
-
-  constructor(property) {
-    super();
-
-    this._property = property || 'id';
-    this.index = new TreeIndex();
-  }
-
-  
-  get(path) {
-    return this.index.get(path) || {}
-  }
-
-  
-  getAll(path) {
-    return this.index.getAll(path)
-  }
-
-  clear() {
-    this.index.clear();
-  }
-
-  
-  select(node) { 
-    return true
-  }
-
-  
-  create(node) {
-    var values = node[this._property];
-    if (!isArray$1(values)) {
-      values = [values];
-    }
-    forEach(values, function(value) {
-      this.index.set([value, node.id], node);
-    }.bind(this));
-  }
-
-  
-  delete(node) {
-    var values = node[this._property];
-    if (!isArray$1(values)) {
-      values = [values];
-    }
-    forEach(values, function(value) {
-      this.index.delete([value, node.id]);
-    }.bind(this));
-  }
-
-  
-  update(node, path, newValue, oldValue) {
-    if (!this.select(node) || path[1] !== this._property) return
-    var values = oldValue;
-    if (!isArray$1(values)) {
-      values = [values];
-    }
-    forEach(values, function(value) {
-      this.index.delete([value, node.id]);
-    }.bind(this));
-    values = newValue;
-    if (!isArray$1(values)) {
-      values = [values];
-    }
-    forEach(values, function(value) {
-      this.index.set([value, node.id], node);
-    }.bind(this));
-  }
-
-  set(node, path, newValue, oldValue) {
-    this.update(node, path, newValue, oldValue);
-  }
-
-  _initialize(data) {
-    forEach(data.getNodes(), function(node) {
-      if (this.select(node)) {
-        this.create(node);
-      }
-    }.bind(this));
-  }
-}
-
 class ContainerAnnotationIndex extends DocumentIndex {
 
   constructor() {
@@ -7542,7 +5965,7 @@ class ContainerAnnotationIndex extends DocumentIndex {
 
   get(containerId, type) {
     var annotations = map(this.byId.get(containerId));
-    if (isString$1(type)) {
+    if (isString(type)) {
       annotations = filter(annotations, DocumentIndex.filterByType);
     }
     return annotations
@@ -7561,457 +5984,6 @@ class ContainerAnnotationIndex extends DocumentIndex {
   }
 
 }
-
-class OperationSerializer{
-
-  constructor() {
-    this.SEPARATOR = '\t';
-  }
-
-  serialize(op) {
-    var out = [];
-    switch (op.type) {
-      case 'create':
-        out.push('c');
-        out.push(op.val.id);
-        out.push(op.val);
-        break
-      case 'delete':
-        out.push('d');
-        out.push(op.val.id);
-        out.push(op.val);
-        break
-      case 'set':
-        out.push('s');
-        out.push(op.path.join('.'));
-        out.push(op.val);
-        out.push(op.original);
-        break
-      case 'update':
-        out.push('u');
-        out.push(op.path.join('.'));
-        Array.prototype.push.apply(out, this.serializePrimitiveOp(op.diff));
-        break
-      default:
-        throw new Error('Unsupported operation type.')
-    }
-    return out
-  }
-
-  serializePrimitiveOp(op) {
-    var out = [];
-    if (op._isTextOperation) {
-      if (op.isInsert()) {
-        out.push('t+');
-      } else if (op.isDelete()) {
-        out.push('t-');
-      }
-      out.push(op.pos);
-      out.push(op.str);
-    } else if (op._isArrayOperation) {
-      if (op.isInsert()) {
-        out.push('a+');
-      } else if (op.isDelete()) {
-        out.push('a-');
-      }
-      out.push(op.pos);
-      out.push(op.val);
-    } else if (op._isCoordinateOperation) {
-      if (op.isShift()) {
-        out.push('c>>');
-      } else {
-        throw new Error('Unsupported CoordinateOperation type.')
-      }
-      out.push(op.pos);
-      out.push(op.val);
-    } else {
-      throw new Error('Unsupported operation type.')
-    }
-    return out
-  }
-
-  deserialize(str, tokenizer) {
-    if (!tokenizer) {
-      tokenizer = new Tokenizer(str, this.SEPARATOR);
-    }
-    var type = tokenizer.getString();
-    var op, path, val, oldVal, diff$$1;
-    switch (type) {
-      case 'c':
-        path = tokenizer.getPath();
-        val = tokenizer.getObject();
-        op = ObjectOperation.Create(path, val);
-        break
-      case 'd':
-        path = tokenizer.getPath();
-        val = tokenizer.getObject();
-        op = ObjectOperation.Delete(path, val);
-        break
-      case 's':
-        path = tokenizer.getPath();
-        val = tokenizer.getAny();
-        oldVal = tokenizer.getAny();
-        op = ObjectOperation.Set(path, oldVal, val);
-        break
-      case 'u':
-        path = tokenizer.getPath();
-        diff$$1 = this.deserializePrimitiveOp(str, tokenizer);
-        op = ObjectOperation.Update(path, diff$$1);
-        break
-      default:
-        throw new Error('Illegal type for ObjectOperation: '+ type)
-    }
-    return op
-  }
-
-  deserializePrimitiveOp(str, tokenizer) {
-    if (!tokenizer) {
-      tokenizer = new Tokenizer(str, this.SEPARATOR);
-    }
-    var type = tokenizer.getString();
-    var op, pos, val;
-    switch (type) {
-      case 't+':
-        pos = tokenizer.getNumber();
-        val = tokenizer.getString();
-        op = TextOperation.Insert(pos, val);
-        break
-      case 't-':
-        pos = tokenizer.getNumber();
-        val = tokenizer.getString();
-        op = TextOperation.Delete(pos, val);
-        break
-      case 'a+':
-        pos = tokenizer.getNumber();
-        val = tokenizer.getAny();
-        op = ArrayOperation.Insert(pos, val);
-        break
-      case 'a-':
-        pos = tokenizer.getNumber();
-        val = tokenizer.getAny();
-        op = ArrayOperation.Delete(pos, val);
-        break
-      case 'c>>':
-        val = tokenizer.getNumber();
-        op = CoordinateOperation.Shift(val);
-        break
-      default:
-        throw new Error('Unsupported operation type: ' + type)
-    }
-    return op
-  }
-}
-
-class Tokenizer {
-  constructor(str, sep) {
-    if (isArray$1(arguments[0])) {
-      this.tokens = arguments[0];
-    } else {
-      this.tokens = str.split(sep);
-    }
-    this.pos = -1;
-  }
-
-  error(msg) {
-    throw new Error('Parsing error: ' + msg + '\n' + this.tokens[this.pos])
-  }
-
-  getString() {
-    this.pos++;
-    var str = this.tokens[this.pos];
-    if (str[0] === '"') {
-      str = str.slice(1, -1);
-    }
-    return str
-  }
-
-  getNumber() {
-    this.pos++;
-    var number;
-    var token = this.tokens[this.pos];
-    try {
-      if (isNumber(token)) {
-        number = token;
-      } else {
-        number = parseInt(this.tokens[this.pos], 10);
-      }
-      return number
-    } catch (err) {
-      this.error('expected number');
-    }
-  }
-
-  getObject() {
-    this.pos++;
-    var obj;
-    var token = this.tokens[this.pos];
-    try {
-      if (isObject$1(token)) {
-        obj = token;
-      } else {
-        obj = JSON.parse(this.tokens[this.pos]);
-      }
-      return obj
-    } catch (err) {
-      this.error('expected object');
-    }
-  }
-
-  getAny() {
-    this.pos++;
-    var token = this.tokens[this.pos];
-    return token
-  }
-
-  getPath() {
-    var str = this.getString();
-    return str.split('.')
-  }
-}
-
-OperationSerializer.Tokenizer = Tokenizer;
-
-class DocumentChange {
-
-  constructor(ops, before, after) {
-    if (arguments.length === 1 && isPlainObject$1(arguments[0])) {
-      let data = arguments[0];
-      
-      this.sha = data.sha;
-      
-      this.timestamp = data.timestamp;
-      
-      this.before = data.before || {};
-      
-      this.ops = data.ops;
-      this.info = data.info; 
-      
-      this.after = data.after || {};
-    } else if (arguments.length === 3) {
-      this.sha = uuid();
-      this.info = {};
-      this.timestamp = Date.now();
-      this.ops = ops.slice(0);
-      this.before = before || {};
-      this.after = after || {};
-    } else {
-      throw new Error('Illegal arguments.')
-    }
-    
-    this.updated = null;
-    
-    this.created = null;
-    
-    this.deleted = null;
-  }
-
-  
-  _extractInformation(doc) {
-    
-    
-    if (this._extracted) return
-
-    let ops = this.ops;
-    let created = {};
-    let deleted = {};
-    let updated = {};
-    let affectedContainerAnnos = [];
-
-    
-    function _checkAnnotation(op) {
-      switch (op.type) {
-        case "create":
-        case "delete": {
-          let node = op.val;
-          if (node.hasOwnProperty('start')) {
-            updated[node.start.path] = true;
-          }
-          if (node.hasOwnProperty('end')) {
-            updated[node.end.path] = true;
-          }
-          break
-        }
-        case "update":
-        case "set": {
-          
-          let node = doc.get(op.path[0]);
-          if (node) {
-            if (node.isPropertyAnnotation()) {
-              updated[node.start.path] = true;
-            } else if (node.isContainerAnnotation()) {
-              affectedContainerAnnos.push(node);
-            }
-          }
-          break
-        }
-        default:
-          
-          throw new Error('Illegal state')
-      }
-    }
-
-    for (let i = 0; i < ops.length; i++) {
-      let op = ops[i];
-      if (op.type === "create") {
-        created[op.val.id] = op.val;
-        delete deleted[op.val.id];
-      }
-      if (op.type === "delete") {
-        delete created[op.val.id];
-        deleted[op.val.id] = op.val;
-      }
-      if (op.type === "set" || op.type === "update") {
-        updated[op.path] = true;
-        
-        updated[op.path[0]] = true;
-      }
-      _checkAnnotation(op);
-    }
-
-    affectedContainerAnnos.forEach(function(anno) {
-      let container = doc.get(anno.containerId, 'strict');
-      let startPos = container.getPosition(anno.start.path[0]);
-      let endPos = container.getPosition(anno.end.path[0]);
-      for (let pos = startPos; pos <= endPos; pos++) {
-        let node = container.getChildAt(pos);
-        let path;
-        if (node.isText()) {
-          path = [node.id, 'content'];
-        } else {
-          path = [node.id];
-        }
-        if (!deleted[node.id]) {
-          updated[path] = true;
-        }
-      }
-    });
-
-    
-    if(Object.keys(deleted).length > 0) {
-      forEach(updated, function(_, key) {
-        let nodeId = key.split(',')[0];
-        if (deleted[nodeId]) {
-          delete updated[key];
-        }
-      });
-    }
-
-    this.created = created;
-    this.deleted = deleted;
-    this.updated = updated;
-
-    this._extracted = true;
-  }
-
-  invert() {
-    
-    let copy = this.toJSON();
-    copy.ops = [];
-    
-    let tmp = copy.before;
-    copy.before = copy.after;
-    copy.after = tmp;
-    let inverted = DocumentChange.fromJSON(copy);
-    let ops = [];
-    for (let i = this.ops.length - 1; i >= 0; i--) {
-      ops.push(this.ops[i].invert());
-    }
-    inverted.ops = ops;
-    return inverted
-  }
-
-  
-  isAffected(path) {
-    console.error('DEPRECATED: use change.hasUpdated() instead');
-    return this.hasUpdated(path)
-  }
-
-  isUpdated(path) {
-    console.error('DEPRECATED: use change.hasUpdated() instead');
-    return this.hasUpdated(path)
-  }
-  
-
-  hasUpdated(path) {
-    return this.updated[path]
-  }
-
-  hasDeleted(id) {
-    return this.deleted[id]
-  }
-
-  serialize() {
-    
-    
-
-    let opSerializer = new OperationSerializer();
-    let data = this.toJSON();
-    data.ops = this.ops.map(function(op) {
-      return opSerializer.serialize(op)
-    });
-    return JSON.stringify(data)
-  }
-
-  clone() {
-    return DocumentChange.fromJSON(this.toJSON())
-  }
-
-  toJSON() {
-    let data = {
-      
-      sha: this.sha,
-      
-      before: clone(this.before),
-      ops: map(this.ops, function(op) {
-        return op.toJSON()
-      }),
-      info: this.info,
-      
-      after: clone(this.after),
-    };
-
-    
-    
-    data.after.selection = undefined;
-    data.before.selection = undefined;
-
-    let sel = this.before.selection;
-    if (sel && sel._isSelection) {
-      data.before.selection = sel.toJSON();
-    }
-    sel = this.after.selection;
-    if (sel && sel._isSelection) {
-      data.after.selection = sel.toJSON();
-    }
-    return data
-  }
-}
-
-DocumentChange.deserialize = function(str) {
-  let opSerializer = new OperationSerializer();
-  let data = JSON.parse(str);
-  data.ops = data.ops.map(function(opData) {
-    return opSerializer.deserialize(opData)
-  });
-  if (data.before.selection) {
-    data.before.selection = fromJSON(data.before.selection);
-  }
-  if (data.after.selection) {
-    data.after.selection = fromJSON(data.after.selection);
-  }
-  return new DocumentChange(data)
-};
-
-DocumentChange.fromJSON = function(data) {
-  
-  let change = cloneDeep(data);
-  change.ops = data.ops.map(function(opData) {
-    return ObjectOperation.fromJSON(opData)
-  });
-  change.before.selection = fromJSON(data.before.selection);
-  change.after.selection = fromJSON(data.after.selection);
-  return new DocumentChange(change)
-};
 
 class Data extends EventEmitter {
 
@@ -8048,7 +6020,7 @@ class Data extends EventEmitter {
   get(path, strict) {
     let result = this._get(path);
     if (strict && result === undefined) {
-      if (isString$1(path)) {
+      if (isString(path)) {
         throw new Error("Could not find node with id '"+path+"'.")
       } else if (!this.contains(path[0])) {
         throw new Error("Could not find node with id '"+path[0]+"'.")
@@ -8062,7 +6034,7 @@ class Data extends EventEmitter {
   _get(path) {
     if (!path) return undefined
     let result;
-    if (isString$1(path)) {
+    if (isString(path)) {
       result = this.nodes[path];
     } else if (path.length === 1) {
       result = this.nodes[path[0]];
@@ -8157,7 +6129,7 @@ class Data extends EventEmitter {
   }
 
   
-  update(path, diff$$1) {
+  update(path, diff) {
     var realPath = this.getRealPath(path);
     if (!realPath) {
       console.error('Could not resolve path', path);
@@ -8166,51 +6138,51 @@ class Data extends EventEmitter {
     let node = this.get(realPath[0]);
     let oldValue = this._get(realPath);
     let newValue;
-    if (diff$$1.isOperation) {
-      newValue = diff$$1.apply(oldValue);
+    if (diff.isOperation) {
+      newValue = diff.apply(oldValue);
     } else {
-      diff$$1 = this._normalizeDiff(oldValue, diff$$1);
-      if (isString$1(oldValue)) {
-        switch (diff$$1.type) {
+      diff = this._normalizeDiff(oldValue, diff);
+      if (isString(oldValue)) {
+        switch (diff.type) {
           case 'delete': {
-            newValue = oldValue.split('').splice(diff$$1.start, diff$$1.end-diff$$1.start).join('');
+            newValue = oldValue.split('').splice(diff.start, diff.end-diff.start).join('');
             break
           }
           case 'insert': {
-            newValue = [oldValue.substring(0, diff$$1.start), diff$$1.text, oldValue.substring(diff$$1.start)].join('');
+            newValue = [oldValue.substring(0, diff.start), diff.text, oldValue.substring(diff.start)].join('');
             break
           }
           default:
             throw new Error('Unknown diff type')
         }
-      } else if (isArray$1(oldValue)) {
+      } else if (isArray(oldValue)) {
         newValue = oldValue.slice(0);
-        switch (diff$$1.type) {
+        switch (diff.type) {
           case 'delete': {
-            newValue.splice(diff$$1.pos, 1);
+            newValue.splice(diff.pos, 1);
             break
           }
           case 'insert': {
-            newValue.splice(diff$$1.pos, 0, diff$$1.value);
+            newValue.splice(diff.pos, 0, diff.value);
             break
           }
           default:
             throw new Error('Unknown diff type')
         }
       } else if (oldValue._isCoordinate) {
-        switch (diff$$1.type) {
+        switch (diff.type) {
           case 'shift': {
             
             oldValue = { path: oldValue.path, offset: oldValue.offset };
             newValue = oldValue;
-            newValue.offset += diff$$1.value;
+            newValue.offset += diff.value;
             break
           }
           default:
             throw new Error('Unknown diff type')
         }
       } else {
-        throw new Error('Diff is not supported:', JSON.stringify(diff$$1))
+        throw new Error('Diff is not supported:', JSON.stringify(diff))
       }
     }
     this._set(realPath, newValue);
@@ -8233,50 +6205,50 @@ class Data extends EventEmitter {
   }
 
   
-  _normalizeDiff(value, diff$$1) {
-    if (isString$1(value)) {
+  _normalizeDiff(value, diff) {
+    if (isString(value)) {
       
-      if (diff$$1['delete']) {
+      if (diff['delete']) {
         console.warn('DEPRECATED: use doc.update(path, {type:"delete", start:s, end: e}) instead');
-        diff$$1 = {
+        diff = {
           type: 'delete',
-          start: diff$$1['delete'].start,
-          end: diff$$1['delete'].end
+          start: diff['delete'].start,
+          end: diff['delete'].end
         };
-      } else if (diff$$1['insert']) {
+      } else if (diff['insert']) {
         console.warn('DEPRECATED: use doc.update(path, {type:"insert", start:s, text: t}) instead');
-        diff$$1 = {
+        diff = {
           type: 'insert',
-          start: diff$$1['insert'].offset,
-          text: diff$$1['insert'].value
+          start: diff['insert'].offset,
+          text: diff['insert'].value
         };
       }
-    } else if (isArray$1(value)) {
+    } else if (isArray(value)) {
       
-      if (diff$$1['delete']) {
+      if (diff['delete']) {
         console.warn('DEPRECATED: use doc.update(path, {type:"delete", pos:1}) instead');
-        diff$$1 = {
+        diff = {
           type: 'delete',
-          pos: diff$$1['delete'].offset
+          pos: diff['delete'].offset
         };
-      } else if (diff$$1['insert']) {
+      } else if (diff['insert']) {
         console.warn('DEPRECATED: use doc.update(path, {type:"insert", pos:1, value: "foo"}) instead');
-        diff$$1 = {
+        diff = {
           type: 'insert',
-          pos: diff$$1['insert'].offset,
-          value: diff$$1['insert'].value
+          pos: diff['insert'].offset,
+          value: diff['insert'].value
         };
       }
     } else if (value._isCoordinate) {
-      if (diff$$1.hasOwnProperty('shift')) {
+      if (diff.hasOwnProperty('shift')) {
         console.warn('DEPRECATED: use doc.update(path, {type:"shift", value:2}) instead');
-        diff$$1 = {
+        diff = {
           type: 'shift',
-          value: diff$$1['shift']
+          value: diff['shift']
         };
       }
     }
-    return diff$$1
+    return diff
   }
 
   
@@ -8382,8 +6354,8 @@ class IncrementalData extends Data {
   }
 
   
-  update(path, diff$$1) {
-    var diffOp = this._getDiffOp(path, diff$$1);
+  update(path, diff) {
+    var diffOp = this._getDiffOp(path, diff);
     var op = ObjectOperation.Update(path, diffOp);
     this.apply(op);
     return op
@@ -8407,24 +6379,24 @@ class IncrementalData extends Data {
       super.delete(op.val.id);
     } else if (op.type === ObjectOperation.UPDATE) {
       var oldVal = this.get(op.path);
-      var diff$$1 = op.diff;
+      var diff = op.diff;
       if (op.propertyType === 'array') {
-        if (! (diff$$1._isArrayOperation) ) {
-          diff$$1 = ArrayOperation.fromJSON(diff$$1);
+        if (! (diff._isArrayOperation) ) {
+          diff = ArrayOperation.fromJSON(diff);
         }
         
-        diff$$1.apply(oldVal);
+        diff.apply(oldVal);
       } else if (op.propertyType === 'string') {
-        if (!(diff$$1._isTextOperation) ) {
-          diff$$1 = TextOperation.fromJSON(diff$$1);
+        if (!(diff._isTextOperation) ) {
+          diff = TextOperation.fromJSON(diff);
         }
-        var newVal = diff$$1.apply(oldVal);
+        var newVal = diff.apply(oldVal);
         super.set(op.path, newVal);
       } else if (op.propertyType === 'coordinate') {
-        if (!(diff$$1._isCoordinateOperation) ) {
-          diff$$1 = CoordinateOperation.fromJSON(diff$$1);
+        if (!(diff._isCoordinateOperation) ) {
+          diff = CoordinateOperation.fromJSON(diff);
         }
-        diff$$1.apply(oldVal);
+        diff.apply(oldVal);
       } else {
         throw new Error("Unsupported type for operational update.")
       }
@@ -8437,45 +6409,45 @@ class IncrementalData extends Data {
   }
 
   
-  _getDiffOp(path, diff$$1) {
+  _getDiffOp(path, diff) {
     var diffOp = null;
-    if (diff$$1.isOperation) {
-      diffOp = diff$$1;
+    if (diff.isOperation) {
+      diffOp = diff;
     } else {
       var value = this.get(path);
-      diff$$1 = this._normalizeDiff(value, diff$$1);
+      diff = this._normalizeDiff(value, diff);
       if (value === null || value === undefined) {
         throw new Error('Property has not been initialized: ' + JSON.stringify(path))
-      } else if (isString$1(value)) {
-        switch (diff$$1.type) {
+      } else if (isString(value)) {
+        switch (diff.type) {
           case 'delete': {
-            diffOp = TextOperation.Delete(diff$$1.start, value.substring(diff$$1.start, diff$$1.end));
+            diffOp = TextOperation.Delete(diff.start, value.substring(diff.start, diff.end));
             break
           }
           case 'insert': {
-            diffOp = TextOperation.Insert(diff$$1.start, diff$$1.text);
+            diffOp = TextOperation.Insert(diff.start, diff.text);
             break
           }
           default:
             throw new Error('Unknown diff type')
         }
-      } else if (isArray$1(value)) {
-        switch (diff$$1.type) {
+      } else if (isArray(value)) {
+        switch (diff.type) {
           case 'delete': {
-            diffOp = ArrayOperation.Delete(diff$$1.pos, value[diff$$1.pos]);
+            diffOp = ArrayOperation.Delete(diff.pos, value[diff.pos]);
             break
           }
           case 'insert': {
-            diffOp = ArrayOperation.Insert(diff$$1.pos, diff$$1.value);
+            diffOp = ArrayOperation.Insert(diff.pos, diff.value);
             break
           }
           default:
             throw new Error('Unknown diff type')
         }
       } else if (value._isCoordinate) {
-        switch (diff$$1.type) {
+        switch (diff.type) {
           case 'shift': {
-            diffOp = CoordinateOperation.Shift(diff$$1.value);
+            diffOp = CoordinateOperation.Shift(diff.value);
             break
           }
           default:
@@ -8484,7 +6456,7 @@ class IncrementalData extends Data {
       }
     }
     if (!diffOp) {
-      throw new Error('Unsupported diff: ' + JSON.stringify(diff$$1))
+      throw new Error('Unsupported diff: ' + JSON.stringify(diff))
     }
     return diffOp
   }
@@ -8634,7 +6606,7 @@ class ParentNodeHook {
 
     function _setParent(parent, ids) {
       if (ids) {
-        if (isArray$1(ids)) {
+        if (isArray(ids)) {
           ids.forEach(_set);
         } else {
           _set(ids);
@@ -8801,8 +6773,8 @@ class Document extends EventEmitter {
   }
 
   
-  update(path, diff$$1) {
-    const op = this._update(path, diff$$1);
+  update(path, diff) {
+    const op = this._update(path, diff);
     if (op) {
       this._ops.push(op);
       if (!this._isTransactionDocument) {
@@ -8810,6 +6782,16 @@ class Document extends EventEmitter {
       }
     }
     return op
+  }
+
+  
+  updateNode(id, newProps) {
+    let node = this.get(id);
+    forEach(newProps, (value, key) => {
+      if (!isEqual(node[key], newProps[key])) {
+        this.set([id, key], value);
+      }
+    });
   }
 
   
@@ -8826,7 +6808,7 @@ class Document extends EventEmitter {
   createSelection(data) {
     let sel;
     if (isNil(data)) return Selection.nullSelection
-    if (arguments.length !== 1 || !isPlainObject$1(data)) {
+    if (arguments.length !== 1 || !isPlainObject(data)) {
       throw new Error('Illegal argument: call createSelection({ type: ... }')
     } else {
       switch (data.type) {
@@ -8986,9 +6968,10 @@ class Document extends EventEmitter {
     return this.data.set(path, value)
   }
 
-  _update(path, diff$$1) {
-    return this.data.update(path, diff$$1)
+  _update(path, diff) {
+    return this.data.update(path, diff)
   }
+
 
   _emitChange(op) {
     const change = new DocumentChange([op], {}, {});
@@ -9041,15 +7024,15 @@ class Document extends EventEmitter {
       let node = this.get(path[0]).getContainerRoot();
       if (node.isText()) {
         
-        return new Coordinate(node.getTextPath(), offset === 0 ? 0 : node.getLength())
+        return new Coordinate(node.getPath(), offset === 0 ? 0 : node.getLength())
       } else if (node.isList()) {
         
         if (offset === 0) {
           let item = node.getItemAt(0);
-          return new Coordinate(item.getTextPath(), 0)
+          return new Coordinate(item.getPath(), 0)
         } else {
-          let item = this.get(last$1(node.items));
-          return new Coordinate(item.getTextPath(), item.getLength())
+          let item = this.get(last$2(node.items));
+          return new Coordinate(item.getPath(), item.getLength())
         }
       }
     }
@@ -9262,10 +7245,12 @@ function _convertPlainTextToDocument(tx, args) {
 
 function _pasteAnnotatedText(tx, copy) {
   let sel = tx.selection;
-  let nodes = copy.get(Document.SNIPPET_ID).nodes;
-  let textPath = [nodes[0], 'content'];
-  let text = copy.get(textPath);
-  let annotations = copy.getIndex('annotations').get(textPath);
+  const nodes = copy.get(Document.SNIPPET_ID).nodes;
+  const firstId = nodes[0];
+  const first = copy.get(firstId);
+  const textPath = first.getPath();
+  const text = copy.get(textPath);
+  const annotations = copy.getIndex('annotations').get(textPath);
   
   let path = sel.start.path;
   let offset = sel.start.offset;
@@ -9333,7 +7318,7 @@ function _pasteDocument(tx, pasteDoc) {
   }
 
   if (insertedNodes.length > 0) {
-    let lastNode = last$1(insertedNodes);
+    let lastNode = last$2(insertedNodes);
     setCursor(tx, lastNode, containerId, 'after');
   }
 }
@@ -9410,7 +7395,7 @@ function _transferArrayOfReferences(sourceDoc, targetDoc, arr, visited) {
   for (let i = 0; i < arr.length; i++) {
     let val = arr[i];
     
-    if (isArray$1(val)) {
+    if (isArray(val)) {
       _transferArrayOfReferences(sourceDoc, targetDoc, val, visited);
     } else {
       let id = val;
@@ -9576,7 +7561,7 @@ class Editing {
       container.showAt(nodePos, newNode.id);
       tx.setSelection({
         type: 'property',
-        path: newNode.getTextPath(),
+        path: newNode.getPath(),
         startOffset: 0,
         containerId: container.id,
       });
@@ -9588,7 +7573,7 @@ class Editing {
           if (previous.isText()) {
             tx.setSelection({
               type: 'property',
-              path: previous.getTextPath(),
+              path: previous.getPath(),
               startOffset: previous.getLength()
             });
             this.delete(tx, direction);
@@ -9608,7 +7593,7 @@ class Editing {
           if (next.isText()) {
             tx.setSelection({
               type: 'property',
-              path: next.getTextPath(),
+              path: next.getPath(),
               startOffset: 0
             });
             this.delete(tx, direction);
@@ -9718,7 +7703,7 @@ class Editing {
       container.showAt(startPos, textNode.id);
       tx.setSelection({
         type: 'property',
-        path: textNode.getTextPath(),
+        path: textNode.getPath(),
         startOffset: 0,
         containerId: containerId
       });
@@ -9899,7 +7884,7 @@ class Editing {
   paste(tx, content) {
     if (!content) return
     
-    if (isString$1(content)) {
+    if (isString(content)) {
       paste(tx, {text: content});
     } else if (content._isDocument) {
       paste(tx, {doc: content});
@@ -9927,15 +7912,21 @@ class Editing {
     if (!(node.isInstanceOf('text'))) {
       throw new Error('Trying to use switchTextType on a non text node.')
     }
+    const newId = uuid(data.type);
     
-    let newNode = Object.assign({
-      id: uuid(data.type),
+    const oldPath = node.getPath();
+    console.assert(oldPath.length === 2, "Currently we assume that TextNodes store the plain-text on the first level");
+    const textProp = oldPath[1];
+    let newPath = [newId, textProp];
+    
+    let newNodeData = Object.assign({
+      id: newId,
       type: data.type,
-      content: node.content,
       direction: node.direction
     }, data);
-    let newPath = [newNode.id, 'content'];
-    newNode = tx.create(newNode);
+    newNodeData[textProp] = node.getText();
+
+    let newNode = tx.create(newNodeData);
     annotationHelpers.transferAnnotations(tx, path, 0, newPath, 0);
 
     
@@ -9976,7 +7967,7 @@ class Editing {
           type: 'list-item',
           content: node.getText(),
         });
-        annotationHelpers.transferAnnotations(tx, node.getTextPath(), 0, newItem.getTextPath(), 0);
+        annotationHelpers.transferAnnotations(tx, node.getPath(), 0, newItem.getPath(), 0);
         let newList = tx.create(Object.assign({
           type: 'list',
           items: [newItem.id]
@@ -9985,7 +7976,7 @@ class Editing {
         container.showAt(nodePos, newList.id);
         tx.setSelection({
           type: 'property',
-          path: newItem.getTextPath(),
+          path: newItem.getPath(),
           startOffset: sel.start.offset,
           containerId: sel.containerId
         });
@@ -9994,7 +7985,7 @@ class Editing {
         let itemPos = node.getItemPosition(itemId);
         let item = node.getItemAt(itemPos);
         let newTextNode = tx.createDefaultTextNode(item.getText());
-        annotationHelpers.transferAnnotations(tx, item.getTextPath(), 0, newTextNode.getTextPath(), 0);
+        annotationHelpers.transferAnnotations(tx, item.getPath(), 0, newTextNode.getPath(), 0);
         
         node.removeItemAt(itemPos);
         if (node.isEmpty()) {
@@ -10024,7 +8015,7 @@ class Editing {
         }
         tx.setSelection({
           type: 'property',
-          path: newTextNode.getTextPath(),
+          path: newTextNode.getPath(),
           startOffset: sel.start.offset,
           containerId: sel.containerId
         });
@@ -10194,18 +8185,21 @@ class Editing {
     }
     
     else {
-      let newNode = node.toJSON();
-      delete newNode.id;
-      newNode.content = text.substring(offset);
+      const textPath = node.getPath();
+      const textProp = textPath[1];
+      const newId = uuid(node.type);
+      let newNodeData = node.toJSON();
+      newNodeData.id = newId;
+      newNodeData[textProp] = text.substring(offset);
       
       if (offset === text.length) {
-        newNode.type = tx.getSchema().getDefaultTextType();
+        newNodeData.type = tx.getSchema().getDefaultTextType();
       }
-      newNode = tx.create(newNode);
+      let newNode = tx.create(newNodeData);
       
       if (offset < text.length) {
         
-        annotationHelpers.transferAnnotations(tx, path, offset, newNode.getTextPath(), 0);
+        annotationHelpers.transferAnnotations(tx, path, offset, newNode.getPath(), 0);
         
         tx.update(path, { type: 'delete', start: offset, end: text.length });
       }
@@ -10214,7 +8208,7 @@ class Editing {
       
       tx.setSelection({
         type: 'property',
-        path: newNode.getTextPath(),
+        path: newNode.getPath(),
         startOffset: 0,
         containerId: container.id
       });
@@ -10229,8 +8223,9 @@ class Editing {
     let L = node.length;
     let itemPos = node.getItemPosition(listItem.id);
     let text = listItem.getText();
-    let newItem = listItem.toJSON();
-    delete newItem.id;
+    let textProp = listItem.getPath()[1];
+    let newItemData = listItem.toJSON();
+    delete newItemData.id;
     if (offset === 0) {
       
       if (!text) {
@@ -10275,37 +8270,37 @@ class Editing {
         }
         tx.setSelection({
           type: 'property',
-          path: newTextNode.getTextPath(),
+          path: newTextNode.getPath(),
           startOffset: 0
         });
       }
       
       else {
-        newItem.content = "";
-        newItem = tx.create(newItem);
+        newItemData[textProp] = "";
+        let newItem = tx.create(newItemData);
         node.insertItemAt(itemPos, newItem.id);
         tx.setSelection({
           type: 'property',
-          path: listItem.getTextPath(),
+          path: listItem.getPath(),
           startOffset: 0
         });
       }
     }
     
     else {
-      newItem.content = text.substring(offset);
-      newItem = tx.create(newItem);
+      newItemData[textProp] = text.substring(offset);
+      let newItem = tx.create(newItemData);
       
       if (offset < text.length) {
         
-        annotationHelpers.transferAnnotations(tx, path, offset, [newItem.id,'content'], 0);
+        annotationHelpers.transferAnnotations(tx, path, offset, newItem.getPath(), 0);
         
         tx.update(path, { type: 'delete', start: offset, end: text.length });
       }
       node.insertItemAt(itemPos+1, newItem.id);
       tx.setSelection({
         type: 'property',
-        path: newItem.getTextPath(),
+        path: newItem.getPath(),
         startOffset: 0
       });
     }
@@ -10329,7 +8324,7 @@ class Editing {
         documentHelpers.mergeListItems(tx, list.id, itemPos);
         tx.setSelection({
           type: 'property',
-          path: target.getTextPath(),
+          path: target.getPath(),
           startOffset: targetLength,
           containerId: container.id
         });
@@ -10359,11 +8354,11 @@ class Editing {
         return
       }
       let target = first;
-      let targetPath = target.getTextPath();
+      let targetPath = target.getPath();
       let targetLength = target.getLength();
       if (second.isText()) {
         let source = second;
-        let sourcePath = source.getTextPath();
+        let sourcePath = source.getPath();
         container.hide(source.id);
         
         tx.update(targetPath, { type: 'insert', start: targetLength, text: source.getText() });
@@ -10380,7 +8375,7 @@ class Editing {
         let list = second;
         if (!second.isEmpty()) {
           let source = list.getFirstItem();
-          let sourcePath = source.getTextPath();
+          let sourcePath = source.getPath();
           
           list.removeItemAt(0);
           
@@ -10406,9 +8401,9 @@ class Editing {
     } else if (first.isList()) {
       if (second.isText()) {
         let source = second;
-        let sourcePath = source.getTextPath();
+        let sourcePath = source.getPath();
         let target = first.getLastItem();
-        let targetPath = target.getTextPath();
+        let targetPath = target.getPath();
         let targetLength = target.getLength();
         
         container.hide(source.id);
@@ -10419,7 +8414,7 @@ class Editing {
         documentHelpers.deleteNode(tx, source);
         tx.setSelection({
           type: 'property',
-          path: target.getTextPath(),
+          path: target.getPath(),
           startOffset: targetLength,
           containerId: container.id
         });
@@ -10438,10 +8433,10 @@ class Editing {
           first.appendItem(secondItems[i]);
         }
         documentHelpers.deleteNode(tx, second);
-        let item = tx.get(last$1(firstItems));
+        let item = tx.get(last$2(firstItems));
         tx.setSelection({
           type: 'property',
-          path: item.getTextPath(),
+          path: item.getPath(),
           startOffset: item.getLength(),
           containerId: container.id
         });
@@ -10506,6 +8501,10 @@ class EditingInterface {
     return this._document.update(path, diffOp)
   }
 
+  updateNode(id, newProps) {
+    return this._document.updateNode(id, newProps)
+  }
+
   
 
   createSelection(selData) {
@@ -10523,7 +8522,7 @@ class EditingInterface {
   setSelection(sel) {
     if (!sel) {
       sel = Selection.nullSelection;
-    } else if (isPlainObject$1(sel)) {
+    } else if (isPlainObject(sel)) {
       sel = this.createSelection(sel);
     } else {
       sel = augmentSelection(sel, this._selection);
@@ -10850,7 +8849,7 @@ function copyNode(node) {
 
   function _copyChildren(val) {
     if (!val) return null
-    if (isArray$1(val)) {
+    if (isArray(val)) {
       return flatten(val.map(_copyChildren))
     } else {
       let id = val;
@@ -10933,14 +8932,14 @@ function deleteListRange(doc, list, start, end) {
   }
   if (!start) {
     start = {
-      path: list.getItemAt(0).getTextPath(),
+      path: list.getItemAt(0).getPath(),
       offset: 0
     };
   }
   if (!end) {
     let item = list.getLastItem();
     end = {
-      path: item.getTextPath(),
+      path: item.getPath(),
       offset: item.getLength()
     };
   }
@@ -10996,10 +8995,10 @@ function mergeListItems(doc, listId, itemPos) {
   
   let list = doc.get(listId);
   let target = list.getItemAt(itemPos);
-  let targetPath = target.getTextPath();
+  let targetPath = target.getPath();
   let targetLength = target.getLength();
   let source = list.getItemAt(itemPos+1);
-  let sourcePath = source.getTextPath();
+  let sourcePath = source.getPath();
   
   list.removeItemAt(itemPos+1);
   
@@ -11014,6 +9013,2399 @@ function getNodes(doc, ids) {
     return doc.get(id, 'strict')
   })
 }
+
+class SelectionState {
+
+  constructor(doc) {
+    this.document = doc;
+
+    this.selection = Selection.nullSelection;
+    this._state = {};
+    this._resetState();
+  }
+
+  setSelection(sel) {
+    
+    if (!sel) {
+      sel = Selection.nullSelection;
+    } else {
+      sel.attach(this.document);
+    }
+    
+    
+    this._deriveState(sel);
+    this.selection = sel;
+    return true
+  }
+
+  getSelection() {
+    return this.selection
+  }
+
+  getAnnotationsForType(type) {
+    const state = this._state;
+    if (state.annosByType) {
+      return state.annosByType.get(type) || []
+    }
+    return []
+  }
+
+  getMarkers() {
+    
+    return this._state.markers || []
+  }
+
+  isInlineNodeSelection() {
+    return this._state.isInlineNodeSelection
+  }
+
+  getContainer() {
+    return this._state.container
+  }
+
+  getPreviousNode() {
+    return this._state.previousNode
+  }
+
+  getNextNode() {
+    return this._state.nextNode
+  }
+
+  
+  isFirst() {
+    return Boolean(this._state.isFirst)
+  }
+
+  
+  isLast() {
+    return Boolean(this._state.isLast)
+  }
+
+  get(key) {
+    return this._state[key]
+  }
+
+  
+  set(key, value) {
+    if (this._state[key]) {
+      throw new Error(`State ${key} is already set`)
+    }
+    this._state[key] = value;
+  }
+
+  _deriveState(sel) {
+    this._resetState();
+    this._deriveContainerSelectionState(sel);
+    this._deriveAnnoState(sel);
+    if (this.document.getIndex('markers')) {
+      this._deriveMarkerState(sel);
+    }
+    
+  }
+
+  _deriveContainerSelectionState(sel) {
+    let state = this._state;
+    let doc = this.document;
+    if (sel.containerId) {
+      let container = doc.get(sel.containerId);
+      state.container = container;
+      let startId = sel.start.getNodeId();
+      let endId = sel.end.getNodeId();
+      let startNode = doc.get(startId).getContainerRoot();
+      let startPos = container.getPosition(startNode);
+      if (startPos > 0) {
+        state.previousNode = container.getNodeAt(startPos-1);
+      }
+      state.isFirst = isFirst(doc, sel.start);
+      let endNode, endPos;
+      if (endId === startId) {
+        endNode = startNode;
+        endPos = startPos;
+      } else {
+        endNode = doc.get(endId).getContainerRoot();
+        endPos = container.getPosition(endNode);
+      }
+      if (endPos < container.getLength()-1) {
+        state.nextNode = container.getNodeAt(endPos+1);
+      }
+      state.isLast = isLast(doc, sel.end);
+    }
+  }
+
+  _deriveAnnoState(sel) {
+    const doc = this.document;
+    const state = this._state;
+
+    
+    let annosByType = new TreeIndex.Arrays();
+    const propAnnos = documentHelpers.getPropertyAnnotationsForSelection(doc, sel);
+    propAnnos.forEach(function(anno) {
+      annosByType.add(anno.type, anno);
+    });
+
+    if (propAnnos.length === 1 && propAnnos[0].isInline()) {
+      state.isInlineNodeSelection = propAnnos[0].getSelection().equals(sel);
+    }
+
+    const containerId = sel.containerId;
+    if (containerId) {
+      const containerAnnos = documentHelpers.getContainerAnnotationsForSelection(doc, sel, containerId);
+      containerAnnos.forEach(function(anno) {
+        annosByType.add(anno.type, anno);
+      });
+    }
+    state.annosByType = annosByType;
+  }
+
+  _deriveMarkerState(sel) {
+    const doc = this.document;
+    let state = this._state;
+    let markers = documentHelpers.getMarkersForSelection(doc, sel);
+    state.markers = markers;
+  }
+
+  _resetState() {
+    this._state = {
+      
+      annosByType: null,
+      
+      markers: null,
+      
+      isInlineNodeSelection: false,
+      
+      container: null,
+      previousNode: null,
+      nextNode: null,
+      
+      isFirst: false,
+      
+      isLast: false
+    };
+    return this._state
+  }
+}
+
+class ChangeHistory {
+
+  constructor() {
+    this.reset();
+  }
+
+  reset() {
+    
+    this.doneChanges = [];
+    
+    this.undoneChanges = [];
+    
+    this.lastChange = null;
+  }
+
+  canUndo() {
+    return this.doneChanges.length > 0
+  }
+
+  canRedo() {
+    return this.undoneChanges.length > 0
+  }
+
+  push(change) {
+    this.doneChanges.push(change);
+    this.undoneChanges = [];
+  }
+
+}
+
+class Transaction {
+
+  
+  constructor(master) {
+    
+    this.master = master;
+    this.stage = master.newInstance().createFromDocument(master);
+    
+    this.stage._isTransactionDocument = true;
+
+    this.tx = this.stage.createEditingInterface();
+    
+    this._isTransacting = false;
+    this._surface = null;
+
+    
+    
+    master._ops.length = 0;
+  }
+
+  dispose() {
+    this.stage.dispose();
+  }
+
+  
+
+  get ops() {
+    return this.stage._ops
+  }
+
+  set ops(ops) {
+    this.stage._ops = ops;
+  }
+
+  getSelection() {
+    return this.tx.getSelection()
+  }
+
+  setSelection(sel) {
+    this.tx.setSelection(sel);
+  }
+
+  _reset() {
+    this._before = {};
+    this._after = {};
+    this.stage._ops.length = 0;
+    this._info = {};
+    this.setSelection(null);
+  }
+
+  
+  _recordChange(transformation, selection, info) {
+    if (this._isTransacting) throw new Error('Nested transactions are not supported.')
+    if (!isFunction$2(transformation)) throw new Error('Document.transaction() requires a transformation function.')
+    let hasFinished = false;
+    this._isTransacting = true;
+    this._reset();
+    let change;
+    try {
+      const tx = this.tx;
+      tx.setSelection(selection);
+      let selBefore = tx.getSelection();
+      transformation(tx, {
+        selection: selBefore
+      });
+      let ops = this.ops;
+      if (ops.length > 0) {
+        change = new DocumentChange(ops, tx._before, tx._after);
+        change.info = info;
+        change.before = { selection: selBefore };
+        change.after = { selection: tx.getSelection() };
+        
+        
+        if (this.master._isXMLDocument) {
+          if (info && info.action === 'type') {
+            
+            
+          } else {
+            let res = this.stage._validateChange(change);
+            if (!res.ok) {
+              
+              throw new Error('Transaction is violating the schema: \n' + res.errors.map(err=>err.msg).join('\n'))
+            }
+          }
+        }
+      }
+      hasFinished = true;
+    } finally {
+      if (!hasFinished) {
+        this._rollback();
+      }
+      this._isTransacting = false;
+    }
+    return change
+  }
+
+  _sync() {
+    const master = this.master;
+    const stage = this.stage;
+    let ops = master._ops;
+    for (let i = 0; i < ops.length; i++) {
+      stage._applyOp(ops[i]);
+    }
+    ops.length = 0;
+  }
+
+  
+  __applyChange__(change) {
+    const stage = this.stage;
+    const ops = change.ops;
+    for (let i = 0; i < ops.length; i++) {
+      stage._applyOp(ops[i]);
+    }
+  }
+
+  _rollback() {
+    const stage = this.stage;
+    let ops = stage._ops;
+    for (let i = ops.length - 1; i >= 0; i--) {
+      stage._applyOp(ops[i].invert());
+    }
+    ops.length = 0;
+  }
+
+}
+
+class EditorSession extends EventEmitter {
+
+  constructor(doc, options) {
+    super();
+    options = options || {};
+
+    this.__id__ = uuid();
+    this.document = doc;
+    const configurator = options.configurator;
+    if (!configurator) {
+      throw new Error('No configurator provided.')
+    }
+    this.configurator = configurator;
+
+    this._transaction = new Transaction(doc);
+    
+    
+    _patchTxSetSelection(this._transaction, this);
+
+    this._history = new ChangeHistory();
+    
+    this._currentChange = null;
+
+    
+    
+    
+    
+    this._selectionState = new SelectionState(doc);
+
+    this._commandStates = [];
+
+    
+    this._resources = ['document', 'selection', 'commandStates'];
+    
+    this._dirtyFlags = {};
+    
+    this._change = null;
+    this._info = null;
+
+    this._flowStages = ['update', 'pre-render', 'render', 'post-render', 'position', 'finalize'];
+    
+    this._postponed = [];
+    this._observers = {};
+
+    this._lang = options.lang || this.configurator.getDefaultLanguage();
+    this._dir = options.dir || 'ltr';
+
+    
+    
+    const CommandManager = configurator.getCommandManagerClass();
+    const DragManager = configurator.getDragManagerClass();
+    const FileManager = configurator.getFileManagerClass();
+    const GlobalEventHandler = configurator.getGlobalEventHandlerClass();
+    const KeyboardManager = configurator.getKeyboardManagerClass();
+    const MacroManager = configurator.getMacroManagerClass();
+    const MarkersManager = configurator.getMarkersManagerClass();
+    const SurfaceManager = configurator.getSurfaceManagerClass();
+
+
+    
+    
+    this.surfaceManager = new SurfaceManager(this);
+    
+    this._context = {
+      editorSession: this,
+      
+      surfaceManager: this.surfaceManager,
+    };
+    
+    if (options.context) {
+      Object.assign(this._context, options.context);
+    }
+
+    let commands = configurator.getCommands();
+    let dropHandlers = configurator.getDropHandlers();
+    let macros = configurator.getMacros();
+    let converterRegistry = configurator.getConverterRegistry();
+    let editingBehavior = configurator.getEditingBehavior();
+
+    this.fileManager = options.fileManager || new FileManager(this, configurator.getFileAdapters(), this._context);
+
+    
+    this._hasUnsavedChanges = false;
+    this._isSaving = false;
+
+    if (options.saveHandler) {
+      this.saveHandler = options.saveHandler;
+    } else {
+      this.saveHandler = configurator.getSaveHandler();
+    }
+
+    
+    this._managers = {};
+    forEach(configurator.getManagers(), (ManagerClass, name) => {
+      this._managers[name] = new ManagerClass(this._context);
+    });
+
+    
+    
+    this.commandManager = options.commandManager || new CommandManager(this._context, commands);
+
+    
+    
+    this.dragManager = new DragManager(dropHandlers, Object.assign({}, this._context, {
+      commandManager: this.commandManager
+    }));
+    
+    this.macroManager = new MacroManager(this._context, macros);
+    this.globalEventHandler = new GlobalEventHandler(this, this.surfaceManager);
+    this.markersManager = new MarkersManager(this);
+    this.keyboardManager = new KeyboardManager(this, configurator.getKeyboardShortcuts(), {
+      context: this._context
+    });
+
+    
+    this.converterRegistry = converterRegistry;
+    this.editingBehavior = editingBehavior;
+  }
+
+  dispose() {
+    this._transaction.dispose();
+    this.surfaceManager.dispose();
+    this.fileManager.dispose();
+    this.commandManager.dispose();
+    this.dragManager.dispose();
+    this.macroManager.dispose();
+    this.globalEventHandler.dispose();
+    this.markersManager.dispose();
+
+    forEach(this._managers, (manager) => {
+      if (manager.dispose) {
+        manager.dispose();
+      }
+    });
+  }
+
+
+  hasChanged(resource) {
+    return this._dirtyFlags[resource]
+  }
+
+  hasDocumentChanged() {
+    return this.hasChanged('document')
+  }
+
+  hasSelectionChanged() {
+    return this.hasChanged('selection')
+  }
+
+  hasCommandStatesChanged() {
+    return this.hasChanged('commandStates')
+  }
+
+  hasLanguageChanged() {
+    return this.hasChanged('lang')
+  }
+
+  hasTextDirectionChanged() {
+    return this.hasChanged('dir')
+  }
+
+  get(resourceName) {
+    switch(resourceName) {
+      case 'document':
+        return this.getDocument()
+      case 'selection':
+        return this.getSelection()
+      case 'commandStates':
+        return this.getCommandStates()
+      case 'change':
+        return this.getChange()
+      case 'lang':
+        return this.getLanguage()
+      case 'dir':
+        return this.getTextDirection()
+      default:
+        throw new Error('Unknown resource: ' + resourceName)
+    }
+  }
+
+  getConfigurator() {
+    return this.configurator
+  }
+
+  getContext() {
+    return this._context
+  }
+
+  getDocument() {
+    return this.document
+  }
+
+  getManager(name) {
+    return this._managers[name]
+  }
+
+  getSelection() {
+    return this.getSelectionState().getSelection()
+  }
+
+  getSelectionState() {
+    return this._selectionState
+  }
+
+  getCommandStates() {
+    return this._commandStates
+  }
+
+  getChange() {
+    return this._change
+  }
+
+  getChangeInfo() {
+    return this._info
+  }
+
+  getFocusedSurface() {
+    return this.surfaceManager.getFocusedSurface()
+  }
+
+  getSurface(surfaceId) {
+    return this.surfaceManager.getSurface(surfaceId)
+  }
+
+  getLanguage() {
+    return this._lang
+  }
+
+  getTextDirection() {
+    return this._dir
+  }
+
+  canUndo() {
+    return this._history.canUndo()
+  }
+
+  canRedo() {
+    return this._history.canRedo()
+  }
+
+  
+  resetHistory() {
+    this._history.reset();
+    this._setDirty('commandStates');
+    if (!this._flowing) {
+      this.startFlow();
+    }
+  }
+
+  executeCommand(...args) {
+    this.commandManager.executeCommand(...args);
+  }
+
+  
+  attachEditor(editor) {
+    this.editor = editor;
+  }
+
+  detachEditor() {
+    this.editor = undefined;
+  }
+
+  getEditor() {
+    return this.editor
+  }
+
+  setSelection(sel, skipFlow) {
+    
+    if (sel && isPlainObject(sel)) {
+      sel = this.getDocument().createSelection(sel);
+    }
+    if (sel && !sel.isNull()) {
+      if (!sel.surfaceId) {
+        let fs = this.getFocusedSurface();
+        if (fs) {
+          sel.surfaceId = fs.id;
+        }
+      }
+    }
+
+    _addSurfaceId(sel, this);
+    _addContainerId(sel, this);
+
+    if (this._setSelection(sel) && !skipFlow) {
+      this.startFlow();
+    }
+    return sel
+  }
+
+  selectNode(nodeId) {
+    let surface = this.getFocusedSurface();
+    this.setSelection({
+      type: 'node',
+      nodeId: nodeId,
+      containerId: surface.getContainerId(),
+      surfaceId: surface.id
+    });
+  }
+
+  setCommandStates(commandStates) {
+    this._commandStates = commandStates;
+    this._setDirty('commandStates');
+  }
+
+  setLanguage(lang) {
+    if (this._lang !== lang) {
+      this._lang = lang;
+      this._setDirty('lang');
+      this.startFlow();
+    }
+  }
+
+  setTextDirection(dir) {
+    if (this._dir !== dir) {
+      this._dir = dir;
+      this._setDirty('dir');
+      this.startFlow();
+    }
+  }
+
+  createSelection() {
+    const doc = this.getDocument();
+    return doc.createSelection.apply(doc, arguments)
+  }
+
+  getCollaborators() {
+    return null
+  }
+
+  
+  setSaveHandler(saveHandler) {
+    this.saveHandler = saveHandler;
+  }
+
+  
+  transaction(transformation, info) {
+    const t = this._transaction;
+    info = info || {};
+    t._sync();
+    let change = t._recordChange(transformation, this.getSelection(), info);
+    if (change) {
+      this._commit(change, info);
+    } else {
+      
+      this._setSelection(this._transaction.getSelection());
+      this.startFlow();
+    }
+    return change
+  }
+
+  undo() {
+    this._undoRedo('undo');
+  }
+
+  redo() {
+    this._undoRedo('redo');
+  }
+
+  
+
+  on(...args) {
+    let name = args[0];
+    if (this._flowStages.indexOf(name) >= 0) {
+      
+      args.shift();
+      let options = args[2] || {};
+      let resource = options.resource;
+      if (resource) {
+        delete options.resource;
+        args.unshift(resource);
+      }
+      this._registerObserver(name, args);
+    } else {
+      EventEmitter.prototype.on.apply(this, args);
+    }
+  }
+
+  off(...args) {
+    if (args.length === 1) {
+      let observer = args[0];
+      super.off(...args);
+      
+      
+      if (observer[this.__id__]) {
+        const records = observer[this.__id__];
+        delete observer[this.__id__];
+        records.forEach((record) => {
+          this.__deregisterObserver(record);
+        });
+      }
+    } else {
+      const stage = args[0];
+      const method = args[1];
+      const observer = args[2];
+      this._deregisterObserver(stage, method, observer);
+    }
+  }
+
+  
+  onUpdate(...args) {
+    return this._registerObserver('update', args)
+  }
+
+  onPreRender(...args) {
+    return this._registerObserver('pre-render', args)
+  }
+
+  
+  onRender(...args) {
+    return this._registerObserver('render', args)
+  }
+
+  
+  onPostRender(...args) {
+    return this._registerObserver('post-render', args)
+  }
+
+  
+  onPosition(...args) {
+    return this._registerObserver('position', args)
+  }
+
+  onFinalize(...args) {
+    return this._registerObserver('finalize', args)
+  }
+
+  _setSelection(sel) {
+    let hasChanged = this.getSelectionState().setSelection(sel);
+    if (hasChanged) this._setDirty('selection');
+    return hasChanged
+  }
+
+  _undoRedo(which) {
+    const doc = this.getDocument();
+    var from, to;
+    if (which === 'redo') {
+      from = this._history.undoneChanges;
+      to = this._history.doneChanges;
+    } else {
+      from = this._history.doneChanges;
+      to = this._history.undoneChanges;
+    }
+    var change = from.pop();
+    if (change) {
+      this._applyChange(change, {});
+      this._transaction.__applyChange__(change);
+      
+      to.push(change.invert());
+      
+      let sel = change.after.selection;
+      if (sel) sel.attach(doc);
+      this._setSelection(sel);
+      
+      this.startFlow();
+    } else {
+      console.warn('No change can be %s.', (which === 'undo'? 'undone':'redone'));
+    }
+  }
+
+  _transformLocalChangeHistory(externalChange) {
+    
+    
+    
+    
+    var clone = {
+      ops: externalChange.ops.map(function(op) { return op.clone(); })
+    };
+    transformDocumentChange(clone, this._history.doneChanges);
+    transformDocumentChange(clone, this._history.undoneChanges);
+  }
+
+  _transformSelection(change) {
+    var oldSelection = this.getSelection();
+    var newSelection = transformSelection(oldSelection, change);
+    
+    return newSelection
+  }
+
+  _commit(change, info) {
+    this._commitChange(change, info);
+    
+    this._hasUnsavedChanges = true;
+    this.startFlow();
+  }
+
+  _commitChange(change, info) {
+    change.timestamp = Date.now();
+    this._applyChange(change, info);
+    if (info['history'] !== false && !info['hidden']) {
+      this._history.push(change.invert());
+    }
+    var newSelection = change.after.selection || Selection.nullSelection;
+    
+    
+    if (!newSelection.isNull() && !newSelection.surfaceId) {
+      newSelection.surfaceId = change.after.surfaceId;
+    }
+    this._setSelection(newSelection);
+    this.emit('commit', change);
+  }
+
+  _applyChange(change, info) {
+    if (!change) {
+      console.error('FIXME: change is null.');
+      return
+    }
+    const doc = this.getDocument();
+    doc._apply(change);
+    doc._notifyChangeListeners(change, info);
+    this._setDirty('document');
+    this._change = change;
+    this._info = info;
+  }
+
+  _applyRemoteChange(change) {
+    
+    if (change.ops.length > 0) {
+      this._applyChange(change, { remote: true });
+      
+      this._transaction.__applyChange__(change);
+      this._transformLocalChangeHistory(change);
+      this._setSelection(this._transformSelection(change));
+      this.startFlow();
+    }
+  }
+
+  
+  hasUnsavedChanges() {
+    return this._hasUnsavedChanges
+  }
+
+  
+  save() {
+    var saveHandler = this.saveHandler;
+
+    if (this._hasUnsavedChanges && !this._isSaving) {
+      this._isSaving = true;
+      
+      if (saveHandler) {
+        let saveParams = {
+          editorSession: this,
+          fileManager: this.fileManager
+        };
+        return saveHandler.saveDocument(saveParams)
+        .then(() => {
+          this._hasUnsavedChanges = false;
+          
+          
+          
+          
+          this.setSelection(this.getSelection());
+        })
+        .catch((err) => {
+          console.error('Error during save', err);
+        }).then(() => { 
+          this._isSaving = false;
+        })
+      } else {
+        console.error('Document saving is not handled at the moment. Make sure saveHandler instance provided to editorSession');
+        return Promise.reject()
+      }
+    }
+  }
+
+  
+  startFlow() {
+    if (this._flowing) {
+      throw new Error('Already in a flow. You need to postpone the update.')
+    }
+    this._flowing = true;
+    try {
+      this.performFlow();
+    } finally {
+      this._resetFlow();
+      this._flowing = false;
+    }
+    
+    
+    
+    const postponed = this._postponed;
+    const self = this;
+    this._postponed = [];
+    setTimeout(function() {
+      postponed.forEach(function(fn) {
+        fn(self);
+      });
+    }, 0);
+  }
+
+  
+  performFlow() {
+    this._flowStages.forEach((stage) => {
+      this._notifyObservers(stage);
+    });
+  }
+
+  postpone(fn) {
+    this._postponed.push(fn);
+  }
+
+  _parseObserverArgs(args) {
+    let params = { stage: null, resource: null, handler: null, context: null, options: {} };
+    
+    let idx = 0;
+    let arg = args[idx];
+    if (isString(arg)) {
+      params.resource = arg;
+      idx++;
+      arg = args[idx];
+    }
+    if (!arg) {
+      throw new Error('Provided handler function was nil.')
+    }
+    if (!isFunction$2(arg)) {
+      throw new Error('Expecting a handler Function.')
+    }
+    params.handler = arg;
+    idx++;
+    arg = args[idx];
+    if (arg) {
+      params.context = arg;
+      idx++;
+      arg = args[idx];
+    }
+    if (arg) {
+      params.options = arg;
+    }
+    return params
+  }
+
+  
+
+  _registerObserver(stage, args) {
+    
+    
+    let record = this._parseObserverArgs(args);
+    record.stage = stage;
+    this.__registerObserver(stage, record);
+  }
+
+  __registerObserver(stage, record) {
+    
+    
+    if (record.context) {
+      const observer = record.context;
+      if (!observer[this.__id__]) {
+        observer[this.__id__] = [];
+      }
+      observer[this.__id__].push(record);
+    }
+    let observers = this._observers[stage];
+    if (!observers) {
+      observers = this._observers[stage] = [];
+    }
+    observers.push(record);
+  }
+
+  
+  _deregisterObserver(stage, method, observer) {
+    let self = this; 
+    if (arguments.length === 1) {
+      
+      
+      forEach(self._observers, (observers) => {
+        for (let i = observers.length-1; i >=0 ; i--) {
+          const o = observers[i];
+          if (o.context === observer) {
+            observers.splice(i, 1);
+            o._deregistered = true;
+          }
+        }
+      });
+    } else {
+      let observers = self._observers[stage];
+      
+      
+      if (!observers) {
+        EventEmitter.prototype.off.apply(self, arguments);
+      } else {
+        for (let i = observers.length-1; i >= 0; i--) {
+          let o = observers[i];
+          if (o.handler === method && o.context === observer) {
+            observers.splice(i, 1);
+            o._deregistered = true;
+          }
+        }
+      }
+    }
+  }
+
+  __deregisterObserver(record) {
+    const stage = record.stage;
+    const observers = this._observers[stage];
+    const observer = record.context;
+    const method = record.handler;
+    for (let i = observers.length-1; i >= 0; i--) {
+      let o = observers[i];
+      if (o.handler === method && o.context === observer) {
+        observers.splice(i, 1);
+        o._deregistered = true;
+      }
+    }
+  }
+
+  _notifyObservers(stage) {
+    
+    
+    
+    
+    
+    
+    let _observers = this._observers[stage];
+    if (!_observers) return
+    
+    
+    
+    let observers = _observers.slice();
+    for (let i = 0; i < observers.length; i++) {
+      let o = observers[i];      
+      if (o._deregistered) continue
+      if (!o.resource) {
+        o.handler.call(o.context, this);
+      } else if (o.resource === 'document') {
+        if (!this.hasDocumentChanged()) continue
+        const change = this.getChange();
+        const info = this.getChangeInfo();
+        const path = o.options.path;
+        if (!path) {
+          o.handler.call(o.context, change, info, this);
+        } else if (change.hasUpdated(path)) {
+          o.handler.call(o.context, change, info, this);
+        }
+      } else {
+        if (!this.hasChanged(o.resource)) continue
+        const resource = this.get(o.resource);
+        o.handler.call(o.context, resource, this);
+      }
+    }
+  }
+
+  _setDirty(resource) {
+    this._dirtyFlags[resource] = true;
+  }
+
+  _resetFlow() {
+    Object.keys(this._dirtyFlags).forEach((resource) => {
+      this._dirtyFlags[resource] = false;
+    });
+    this._change = null;
+    this._info = null;
+  }
+
+  
+
+  setBlurred(blurred) {
+    this._blurred = blurred;
+    
+    this.commandManager._updateCommandStates(this);
+    this._setDirty('commandStates');
+  }
+
+  isBlurred() {
+    return Boolean(this._blurred)
+  }
+
+}
+
+function _patchTxSetSelection(tx, editorSession) {
+  tx.setSelection = function(sel) {
+    sel = Transaction.prototype.setSelection.call(tx, sel);
+    _addSurfaceId(sel, editorSession);
+    _addContainerId(sel, editorSession);
+    return sel
+  };
+}
+
+
+function _addSurfaceId(sel, editorSession) {
+  if (sel && !sel.isNull() && !sel.surfaceId) {
+    
+    let surface = editorSession.getFocusedSurface();
+    if (surface) {
+      sel.surfaceId = surface.id;
+    } else {
+      
+      console.warn('No focused surface. Selection will not be rendered.');
+    }
+  }
+}
+
+function _addContainerId(sel, editorSession) {
+  if (sel && !sel.isNull() && sel.surfaceId && !sel.containerId) {
+    let surface = editorSession.getSurface(sel.surfaceId);
+    if (surface) {
+      let containerId = surface.getContainerId();
+      if (containerId) {
+        sel.containerId = containerId;
+      }
+    }
+  }
+}
+
+class CollabSession extends EditorSession {
+
+  constructor(doc, config) {
+    super(doc, config);
+    config = config || {};
+    this.config = config;
+    this.collabClient = config.collabClient;
+    if (config.docVersion) {
+      console.warn('config.docVersion is deprecated: Use config.version instead');
+    }
+    if (config.docVersion) {
+      console.warn('config.docId is deprecated: Use config.documentId instead');
+    }
+    this.version = config.version;
+    this.documentId = config.documentId || config.docId;
+    if (config.autoSync !== undefined) {
+      this.autoSync = config.autoSync;
+    } else {
+      this.autoSync = true;
+    }
+    if (!this.documentId) {
+      throw new SubstanceError('InvalidArgumentsError', {message: 'documentId is mandatory'})
+    }
+    if (typeof this.version === undefined) {
+      throw new SubstanceError('InvalidArgumentsError', {message: 'version is mandatory'})
+    }
+    
+    this._connected = false; 
+    this._nextChange = null; 
+    this._pendingChange = null; 
+    this._pendingSync = false;
+    this._error = null;
+    
+    this.onUpdate('document', this.afterDocumentChange, this);
+    
+    this.collabClient.on('connected', this.onCollabClientConnected, this);
+    this.collabClient.on('disconnected', this.onCollabClientDisconnected, this);
+    this.collabClient.on('message', this._onMessage.bind(this));
+    
+    
+    
+    if (this.collabClient.isConnected() && this.autoSync) {
+      this.sync();
+    }
+  }
+
+  
+  dispose() {
+    this.disconnect();
+    this.collabClient.off(this);
+  }
+
+  
+  disconnect() {
+    
+    let msg = {
+      type: 'disconnect',
+      documentId: this.documentId
+    };
+    
+    this._abortSync();
+    this._send(msg);
+  }
+
+  
+  sync() {
+    
+    if (this.__canSync()) {
+      let nextChange = this._nextChange;
+      let msg = {
+        type: 'sync',
+        documentId: this.documentId,
+        version: this.version,
+        change: nextChange ? this.serializeChange(nextChange) : undefined
+      };
+      this._send(msg);
+      this._pendingSync = true;
+      this._pendingChange = nextChange;
+
+      
+      
+      this.emit('sync');
+      this._nextChange = null;
+      this._error = null;
+    } else {
+      console.error('Can not sync. Either collabClient is not connected or already syncing');
+    }
+  }
+
+  getCollaborators() {
+    return this.collaborators
+  }
+
+  isConnected() {
+    return this._connected
+  }
+
+  serializeChange(change) {
+    return change.toJSON()
+  }
+
+  deserializeChange(serializedChange) {
+    return DocumentChange.fromJSON(serializedChange)
+  }
+
+  
+
+  
+  _onMessage(msg) {
+    
+    if (msg.documentId !== this.documentId) {
+      return false
+    }
+    
+    msg = cloneDeep(msg);
+    switch (msg.type) {
+      case 'syncDone':
+        this.syncDone(msg);
+        break
+      case 'syncError':
+        this.syncError(msg);
+        break
+      case 'update':
+        this.update(msg);
+        break
+      case 'disconnectDone':
+        this.disconnectDone(msg);
+        break
+      case 'error':
+        this.error(msg);
+        break
+      default:
+        console.error('CollabSession: unsupported message', msg.type, msg);
+        return false
+    }
+    return true
+  }
+
+  
+  _send(msg) {
+    if (this.collabClient.isConnected()) {
+      this.collabClient.send(msg);
+      return true
+    } else {
+      console.warn('Try not to call _send when disconnected. Skipping message', msg);
+      return false
+    }
+  }
+
+  
+  update(args) {
+    
+    let serverChange = args.change;
+    let serverVersion = args.version;
+
+    if (!this._nextChange && !this._pendingSync) {
+      if (serverChange) {
+        serverChange = this.deserializeChange(serverChange);
+        this._applyRemoteChange(serverChange);
+      }
+      if (serverVersion) {
+        this.version = serverVersion;
+      }
+      this.startFlow();
+    } else {
+      console.info('skipped remote update. Pending sync or local changes.');
+    }
+  }
+
+  
+  syncDone(args) {
+    
+    let serverChange = args.serverChange;
+    let serverVersion = args.version;
+
+    if (serverChange) {
+      serverChange = this.deserializeChange(serverChange);
+      this._applyRemoteChange(serverChange);
+    }
+    this.version = serverVersion;
+    
+    
+    this._pendingChange = null;
+    this._pendingSync = false;
+    this._error = null;
+    
+    this._connected = true;
+    this.startFlow();
+    this.emit('connected');
+    
+    this._requestSync();
+  }
+
+  
+  syncError(error) {
+    console.info('SyncError occured. Aborting sync', error);
+    this._abortSync();
+  }
+
+  disconnectDone() {
+    
+    
+    this._afterDisconnected();
+  }
+
+  
+  error(message) {
+    let error = message.error;
+    let errorFn = this[error.name];
+    let err = SubstanceError.fromJSON(error);
+
+    if (!errorFn) {
+      error('CollabSession: unsupported error', error.name);
+      return false
+    }
+
+    this.emit('error', err);
+    errorFn = errorFn.bind(this);
+    errorFn(err);
+  }
+
+
+  
+
+  afterDocumentChange(change, info) {
+    
+    if (!info.remote) {
+      this._recordChange(change);
+    }
+  }
+
+  
+  onCollabClientConnected() {
+    
+    if (this.autoSync) {
+      this.sync();
+    }
+  }
+
+  
+  onCollabClientDisconnected() {
+    
+    this._abortSync();
+    if (this._connected) {
+      this._afterDisconnected();
+    }
+  }
+
+  
+
+  _commit(change, info) {
+    this._commitChange(change, info);
+    this.startFlow();
+  }
+
+  
+  _applyRemoteChange(change) {
+    
+    if (change.ops.length > 0) {
+      this._transaction.__applyChange__(change);
+      this.getDocument()._apply(change);
+      this._setDirty('document');
+      
+      this._transformLocalChangeHistory(change);
+      this._setSelection(this._transformSelection(change));
+      this._change = change;
+      this._info = { remote: true };
+      this.startFlow();
+    }
+  }
+
+  
+  _recordChange(change) {
+    if (!this._nextChange) {
+      this._nextChange = change;
+    } else {
+      
+      this._nextChange.ops = this._nextChange.ops.concat(change.ops);
+      this._nextChange.after = change.after;
+    }
+    this._requestSync();
+  }
+
+  __canSync() {
+    return this.collabClient.isConnected() && !this._pendingSync
+  }
+
+  
+  _requestSync() {
+    if (this._nextChange && this.__canSync()) {
+      this.sync();
+    }
+  }
+
+  
+  _abortSync() {
+    let newNextChange = this._nextChange;
+
+    if (this._pendingChange) {
+      newNextChange = this._pendingChange;
+      
+      if (this._nextChange) {
+        newNextChange.ops = newNextChange.ops.concat(this._nextChange.ops);
+        newNextChange.after = this._nextChange.after;
+      }
+      this._pendingChange = null;
+    }
+    this._pendingSync = false;
+    this._error = null;
+    this._nextChange = newNextChange;
+  }
+
+  
+  _afterDisconnected() {
+    this._connected = false;
+    this.emit('disconnected');
+  }
+
+  
+  _hasLocalChanges() {
+    return this._nextChange && this._nextChange.ops.length > 0
+  }
+
+}
+
+class DocumentArchive {
+
+  constructor(sessions, buffer) {
+    this.sessions = sessions;
+    this.buffer = buffer;
+
+    if (!sessions.manifest) throw new Error("'manifest' session is required.")
+
+    this.init();
+  }
+
+  init() {
+    
+
+  }
+
+  getManifest() {
+    return this.sessions.manifest.getDocument()
+  }
+
+  getDocumentEntries() {
+    return this.getEditorSession('manifest').getDocument().getDocumentEntries()
+  }
+
+  getEditorSession(docId) {
+    return this.sessions[docId]
+  }
+
+
+}
+
+const PLAINOBJ = {};
+
+
+class Registry {
+  constructor(entries, validator) {
+    this.entries = {};
+    this.names = [];
+    this.validator = validator;
+
+    if (entries) {
+      forEach(entries, function(entry, name) {
+        this.add(name, entry);
+      }.bind(this));
+    }
+  }
+
+  
+  contains(name) {
+    return this.entries.hasOwnProperty(name)
+  }
+
+  
+  add(name, entry) {
+    if (this.validator) {
+      this.validator(entry);
+    }
+    if (PLAINOBJ[name]) {
+      throw new Error('Illegal key: "'+name+'" is a property of Object which is thus not allowed as a key.')
+    }
+    if (this.contains(name)) {
+      this.remove(name);
+    }
+    this.entries[name] = entry;
+    this.names.push(name);
+  }
+
+  
+  remove(name) {
+    let pos = this.names.indexOf(name);
+    if (pos >= 0) {
+      this.names.splice(pos, 1);
+    }
+    delete this.entries[name];
+  }
+
+  
+  clear() {
+    this.names = [];
+    this.entries = {};
+  }
+
+  
+  get(name, strict) {
+    let result = this.entries[name];
+    if (strict && !result) {
+      throw new Error('No entry registered for name '+name)
+    }
+    return result
+  }
+
+  
+  forEach(callback) {
+    for (let i = 0; i < this.names.length; i++) {
+      let name = this.names[i];
+      let _continue = callback(this.entries[name], name);
+      if (_continue === false) {
+        break
+      }
+    }
+  }
+
+  map(callback) {
+    let result = [];
+    this.forEach((entry, name) => {
+      result.push(callback(entry, name));
+    });
+    return result
+  }
+
+  filter(callback) {
+    let result = [];
+    this.forEach(function(entry, name) {
+      if (callback(entry, name)) {
+        result.push(entry);
+      }
+    });
+    return result
+  }
+
+  values() {
+    return this.filter(() => { return true })
+  }
+}
+
+Registry.prototype._isRegistry = true;
+
+class NodeRegistry extends Registry {
+  
+  register(nodeClazz) {
+    var type = nodeClazz.prototype.type;
+    if ( typeof type !== 'string' || type === '' ) {
+      throw new Error( 'Node names must be strings and must not be empty')
+    }
+    if (!( nodeClazz.prototype._isNode)) {
+      throw new Error( 'Nodes must be subclasses of Substance.Data.Node' )
+    }
+    if (this.contains(type)) {
+      
+      console.info('Overriding node type', type);
+      this.remove(type);
+    }
+    this.add(type, nodeClazz);
+  }
+
+}
+
+function isBoolean(val) {
+  return (val === true || val === false || (val && val.constructor === Boolean) )
+}
+
+class Property {
+
+  constructor(definition) {
+    this.definition = definition;
+  }
+
+  isArray() {
+    return isArray(this.definition.type)
+  }
+
+  isReference() {
+    if (this.isArray()) {
+      return last$2(this.definition.type) === 'id'
+    } else {
+      return this.definition.type === 'id'
+    }
+  }
+
+  isText() {
+    return Boolean(this.definition._isText)
+  }
+
+  isOwned() {
+    return Boolean(this.definition.owned)
+  }
+
+  isOptional() {
+    return Boolean(this.definition.optional)
+  }
+
+  isNotNull() {
+    return Boolean(this.definition.notNull)
+  }
+
+  hasDefault() {
+    return this.definition.hasOwnProperty('default')
+  }
+
+  getDefault() {
+    return this.definition.default
+  }
+
+  createDefaultValue() {
+    if (isArray(this.definition.type)) {
+      return []
+    }
+    switch(this.definition.type) {
+      case 'object':
+        return {}
+      case 'number':
+        return -1
+      case 'coordinate':
+        return new Coordinate([], 0)
+      case 'boolean':
+        return false
+      case 'id':
+        return null
+      case 'string':
+        return ''
+      default:
+        return null
+    }
+  }
+
+  get type() {
+    return this.definition.type
+  }
+
+  get name() {
+    return this.definition.name
+  }
+}
+
+class Node extends EventEmitter {
+
+  
+  constructor() {
+    super();
+
+    
+    
+    this._initialize.apply(this, arguments);
+  }
+
+  _initialize(data) {
+    const NodeClass = this.constructor;
+
+    let schema = NodeClass.schema;
+    for (var name in schema) {
+      if (!schema.hasOwnProperty(name)) continue
+      let prop = schema[name];
+      
+      
+      const propIsGiven = (data[name] !== undefined);
+      const hasDefault = prop.hasDefault();
+      const isOptional = prop.isOptional();
+      if ( (!isOptional && !hasDefault) && !propIsGiven) {
+        throw new Error('Property ' + name + ' is mandatory for node type ' + this.type)
+      }
+      if (propIsGiven) {
+        this[name] = _checked(prop, data[name]);
+      } else if (hasDefault) {
+        this[name] = cloneDeep(_checked(prop, prop.getDefault()));
+      } else {
+        
+      }
+    }
+  }
+
+  dispose() {
+    this._disposed = true;
+  }
+
+  isDisposed() {
+    return Boolean(this._disposed)
+  }
+
+  
+  isInstanceOf(typeName) {
+    return Node.isInstanceOf(this.constructor, typeName)
+  }
+
+  getSchema() {
+    return this.constructor.schema
+  }
+
+  
+  getTypeNames() {
+    var typeNames = [];
+    var NodeClass = this.constructor;
+    while (NodeClass.type !== "node") {
+      typeNames.push(NodeClass.type);
+      NodeClass = Object.getPrototypeOf(NodeClass);
+    }
+    return typeNames
+  }
+
+  
+  getPropertyType(propertyName) {
+    var schema = this.constructor.schema;
+    return schema[propertyName].type
+  }
+
+  
+  toJSON() {
+    var data = {
+      type: this.type
+    };
+    const schema = this.getSchema();
+    forEach(schema, (prop, name) => {
+      let val = this[name];
+      if (prop.isOptional() && val === undefined) return
+      if (isArray(val) || isObject(val)) {
+        val = cloneDeep(val);
+      }
+      data[prop.name] = val;
+    });
+    return data
+  }
+
+  get type() {
+    return this.constructor.type
+  }
+
+}
+
+Node.prototype._isNode = true;
+
+
+Object.defineProperty(Node, 'schema', {
+  get() { return this._schema },
+  set(schema) {
+    let NodeClass = this;
+    
+    
+    if (schema.type) {
+      NodeClass.type = schema.type;
+    }
+    
+    
+    
+    NodeClass._schema = compileSchema(NodeClass, schema);
+  }
+});
+
+Node.define = Node.defineSchema = function define(schema) {
+  this.schema = schema;
+};
+
+Node.schema = {
+  type: "node",
+  id: 'string'
+};
+
+
+Node.isInstanceOf = function(NodeClass, typeName) {
+  var type = NodeClass.type;
+  while (type !== "node") {
+    if (type === typeName) return true
+    var _super = Object.getPrototypeOf(NodeClass.prototype).constructor;
+    if (_super && _super.type) {
+      NodeClass = _super;
+      type = NodeClass.type;
+    } else {
+      break
+    }
+  }
+  return false
+};
+
+
+
+function compileSchema(NodeClass, schema) {
+  let compiledSchema = _compileSchema(schema);
+  let schemas = [compiledSchema];
+  let clazz = NodeClass;
+  while(clazz) {
+    var parentProto = Object.getPrototypeOf(clazz.prototype);
+    if (!parentProto) {
+      break
+    }
+    clazz = parentProto.constructor;
+    if (clazz && clazz._schema) {
+      schemas.unshift(clazz._schema);
+    }
+  }
+  schemas.unshift({});
+  return Object.assign.apply(null, schemas)
+}
+
+function _compileSchema(schema) {
+  let compiledSchema = {};
+  forEach(schema, function(definition, name) {
+    
+    if (name === 'type') {
+      return
+    }
+    if (isString(definition) || isArray(definition)) {
+      definition = { type: definition };
+    }
+    definition = _compileDefintion(definition);
+    definition.name = name;
+    compiledSchema[name] = new Property(definition);
+  });
+  return compiledSchema
+}
+
+function _compileDefintion(definition) {
+  let result = definition;
+  if (isArray(definition.type) && definition.type[0] !== "array") {
+    definition.targetTypes = definition.type;
+    definition.type = [ "array", "id" ];
+  } else if (definition.type === 'text') {
+    result = {
+      type: "string",
+      default: '',
+      _isText: true
+    };
+  }
+  return result
+}
+
+function _checked(prop, value) {
+  let type;
+  let name = prop.name;
+  if (prop.isArray()) {
+    type = "array";
+  } else {
+    type = prop.type;
+  }
+  if (value === null) {
+    if (prop.isNotNull()) {
+      throw new Error('Value for property ' + name + ' is null.')
+    } else {
+      return value
+    }
+  }
+  if (value === undefined) {
+    throw new Error('Value for property ' + name + ' is undefined.')
+  }
+  if (type === "string" && !isString(value) ||
+      type === "boolean" && !isBoolean(value) ||
+      type === "number" && !isNumber(value) ||
+      type === "array" && !isArray(value) ||
+      type === "id" && !isString(value) ||
+      type === "object" && !isObject(value)) {
+    throw new Error('Illegal value type for property ' + name + ': expected ' + type + ', was ' + (typeof value))
+  }
+  return value
+}
+
+class Schema {
+
+  
+  constructor(name, version) {
+    if (!name) {
+      throw new Error("'name' is mandatory")
+    }
+    if (!version) {
+      throw new Error("'version' is mandatory")
+    }
+
+    
+    this.name = name;
+    
+    this.version = version;
+    
+    this.nodeRegistry = new NodeRegistry();
+    
+    this.tocTypes = [];
+
+    
+    this.addNodes(this.getBuiltIns());
+  }
+
+  
+  addNodes(nodes) {
+    if (!nodes) return
+    forEach(nodes, function(NodeClass) {
+      if (!NodeClass.prototype._isNode) {
+        console.error('Illegal node class: ', NodeClass);
+      } else {
+        this.addNode(NodeClass);
+      }
+    }.bind(this));
+  }
+
+  addNode(NodeClass) {
+    this.nodeRegistry.register(NodeClass);
+    if (NodeClass.tocType) {
+      this.tocTypes.push(NodeClass.type);
+    }
+  }
+
+  
+  getNodeClass(name) {
+    return this.nodeRegistry.get(name)
+  }
+
+  
+  getBuiltIns() {
+    return []
+  }
+
+  
+  isInstanceOf(type, parentType) {
+    var NodeClass = this.getNodeClass(type);
+    if (NodeClass) {
+      return Node.isInstanceOf(NodeClass, parentType)
+    }
+    return false
+  }
+
+  
+  each() {
+    this.nodeRegistry.each.apply(this.nodeRegistry, arguments);
+  }
+
+  
+  getTocTypes() {
+    return this.tocTypes
+  }
+
+  
+  getDefaultTextType() {
+    throw new Error('Schmema.prototype.getDefaultTextType() must be overridden.')
+  }
+
+  getNodeSchema(type) {
+    var NodeClass = this.getNodeClass(type);
+    if (!NodeClass) {
+      console.error('Unknown node type ', type);
+      return null
+    }
+    return NodeClass.schema
+  }
+}
+
+class DocumentNode extends Node {
+
+  
+  constructor(doc, props) {
+    super(doc, props);
+  }
+
+  _initialize(doc, props) {
+    this.document = doc;
+    super._initialize(props);
+  }
+
+  
+  getDocument() {
+    return this.document
+  }
+
+  
+  hasParent() {
+    return Boolean(this.parent)
+  }
+
+  
+  getParent() {
+    return this.document.get(this.parent)
+  }
+
+  
+  getRoot() {
+    let node = this;
+    while(node.parent) {
+      node = node.parent;
+    }
+    return node
+  }
+
+  getContainerRoot() {
+    let node = this;
+    while(node.parent) {
+      
+      if (node.parent.isContainer()) return node
+      
+      node = node.parent;
+    }
+    return node
+  }
+
+  
+  hasChildren() {
+    return false
+  }
+
+  
+  getChildIndex(child) { 
+    return -1
+  }
+
+  
+  getChildAt(idx) { 
+    return null
+  }
+
+  
+  getChildCount() {
+    return 0
+  }
+
+  
+  
+
+  
+
+  
+  isBlock() {
+    return Boolean(this.constructor.isBlock)
+  }
+
+  
+  isText() {
+    return Boolean(this.constructor.isText)
+  }
+
+  isList() {
+    return Boolean(this.constructor.isList)
+  }
+
+  isContainer() {
+    return Boolean(this._isContainer)
+  }
+
+  
+
+  isAnnotation() {
+    return Boolean(this._isAnnotation)
+  }
+
+  isPropertyAnnotation() {
+    return Boolean(this._isPropertyAnnotation)
+  }
+
+  isContainerAnnotation() {
+    return Boolean(this._isContainerAnnotation)
+  }
+
+  
+  isInline() {
+    return Boolean(this.constructor.isInline)
+  }
+
+}
+
+DocumentNode.prototype._isDocumentNode = true;
+
+
+DocumentNode.isBlock = false;
+
+
+DocumentNode.isText = false;
+
+
+DocumentNode.isPropertyAnnotation = false;
+
+
+DocumentNode.isContainerAnnotation = false;
+
+
+DocumentNode.isInline = false;
+
+class ContainerAddress {
+
+  constructor(pos, offset) {
+    this.pos = pos;
+    this.offset = offset;
+  }
+
+  isBefore(other, strict) {
+    strict = Boolean(strict);
+    if (this.pos < other.pos) {
+      return true
+    } else if (this.pos > other.pos) {
+      return false
+    } else if (this.offset < other.offset) {
+      return true
+    } else if (this.offset > other.offset) {
+      return false
+    }
+    if (strict) {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  isAfter(other, strict) {
+    return other.isBefore(this, strict)
+  }
+
+  isEqual(other) {
+    return (this.pos === other.pos && this.offset === other.offset)
+  }
+
+  toString() {
+    return [this.pos,'.',this.offset].join('')
+  }
+}
+
+var ContainerMixin = function (DocumentNode) {
+
+  class AbstractContainer extends DocumentNode {
+
+    contains(nodeId) {
+      return this.getPosition(nodeId) >= 0
+    }
+
+    getPosition(node, strict) {
+      if (isString(node)) {
+        node = this.document.get(node);
+      }
+      if (!node) return -1
+      let pos = this._getPosition(node);
+      if (strict && pos < 0) {
+        throw new Error('Node is not within this container: ' + node.id)
+      }
+      return pos
+    }
+
+    getNodeAt(idx) {
+      const nodeId = this.getNodeIdAt(idx);
+      if (nodeId) {
+        return this.getDocument().get(nodeId)
+      }
+    }
+
+    getNodeIdAt(idx) {
+      let content = this.getContent();
+      if (idx < 0 || idx >= content.length) {
+        
+        return undefined
+      } else {
+        return content[idx]
+      }
+    }
+
+    getNodes() {
+      const doc = this.getDocument();
+      return this.getContent().map(id => doc.get(id)).filter(Boolean)
+    }
+
+    show(nodeId, pos) {
+      
+      const arg1 = arguments[0];
+      if (!isString(arg1)) {
+        if (arg1._isNode) {
+          nodeId = arg1.id;
+        }
+      }
+      if (arguments.length > 1) {
+        console.error('DEPRECATED: use container.showAt(pos, nodeId) instead');
+      } else {
+        pos = this.getLength();
+      }
+      return this.showAt(pos, nodeId)
+    }
+
+    showAt(pos, nodeId) {
+      const doc = this.getDocument();
+      const length = this.getLength();
+      if (!isNumber(pos) || pos < 0 || pos > length) {
+        throw new Error('Index out of bounds')
+      }
+      if (!isString(nodeId)) {
+        if (nodeId._isNode) {
+          nodeId = nodeId.id;
+        } else {
+          throw new Error('Invalid argument.')
+        }
+      }
+      doc.update(this.getContentPath(), { type: 'insert', pos: pos, value: nodeId });
+    }
+
+    hide(nodeId) {
+      const pos = this.getPosition(nodeId);
+      this.hideAt(pos);
+    }
+
+    hideAt(pos) {
+      const length = this.getLength();
+      if (pos >= 0 && pos < length) {
+        const doc = this.getDocument();
+        doc.update(this.getContentPath(), { type: 'delete', pos: pos });
+      } else {
+        throw new Error('Index out of bounds.')
+      }
+    }
+
+    getAddress(coor) {
+      if (!coor._isCoordinate) {
+        
+        throw new Error('Illegal argument: Container.getAddress(coor) expects a Coordinate instance.')
+      }
+      var nodeId = coor.path[0];
+      var nodePos = this.getPosition(nodeId);
+      var offset;
+      if (coor.isNodeCoordinate()) {
+        if (coor.offset > 0) {
+          offset = Number.MAX_VALUE;
+        } else {
+          offset = 0;
+        }
+      } else {
+        offset = coor.offset;
+      }
+      return new ContainerAddress(nodePos, offset)
+    }
+
+    getLength() {
+      return this.getContent().length
+    }
+
+    get length() {
+      return this.getLength()
+    }
+
+    _getPosition(node) {
+      if (this._isCaching) {
+        return this._getCachedPosition(node)
+      } else {
+        return this._lookupPosition(node)
+      }
+    }
+
+    _getCachedPosition(node) {
+      let cache = this._cachedPositions || this._fillCache();
+      let nodeId = node.id;
+      let pos = -1;
+      if (cache.hasOwnProperty(nodeId)) {
+        pos = cache[nodeId];
+      } else {
+        pos = this._lookupPosition(node);
+        cache[nodeId] = pos;
+      }
+      return pos
+    }
+
+    _fillCache() {
+      let positions = {};
+      this.nodes.forEach((id, pos) => {
+        positions[id] = pos;
+      });
+      this._cachedPositions = positions;
+      return positions
+    }
+
+    _invalidateCache() {
+      this._cachedPositions = null;
+    }
+
+    _lookupPosition(node) {
+      if (node.hasParent()) {
+        node = node.getContainerRoot();
+      }
+      return this.getContent().indexOf(node.id)
+    }
+
+    _enableCaching() {
+      
+      if (this.document) {
+        this.document.data.on('operation:applied', this._onOperationApplied, this);
+        this._isCaching = true;
+      }
+    }
+
+    _onOperationApplied(op) {
+      if (op.type === 'set' || op.type === 'update') {
+        if (op.path[0] === this.id) {
+          this._invalidateCache();
+        }
+      }
+    }
+
+    _onDocumentChange(change) {
+      if (change.hasUpdated(this.getContentPath())) {
+        this._invalidateCache();
+      }
+    }
+
+    
+    
+
+    hasChildren() {
+      return this.getContent().length > 0
+    }
+
+    getChildIndex(child) {
+      return this.getContent().indexOf(child.id)
+    }
+
+    getChildren() {
+      return documentHelpers.getNodes(this.getDocument(), this.getContent())
+    }
+
+    getChildAt(idx) {
+      var childrenIds = this.getContent();
+      if (idx < 0 || idx >= childrenIds.length) {
+        throw new Error('Array index out of bounds: ' + idx + ", " + childrenIds.length)
+      }
+      return this.getDocument().get(childrenIds[idx], 'strict')
+    }
+
+    getChildCount() {
+      return this.getContent().length
+    }
+
+  }
+  return AbstractContainer
+
+};
+
+class Container extends ContainerMixin(DocumentNode) {
+
+  constructor(...args) {
+    super(...args);
+
+    
+    
+    
+    this._enableCaching();
+  }
+
+  dispose() {
+    this.document.off(this);
+  }
+
+  getContentPath() {
+    return [this.id, 'nodes']
+  }
+
+  getContent() {
+    return this.nodes
+  }
+
+}
+
+Container.prototype._isContainer = true;
+
+Container.schema = {
+  type: 'container',
+  nodes: { type: ['array', 'id'], default: [] }
+};
 
 var AnnotationMixin = function(DocumentNode) {
 
@@ -11212,760 +11604,20 @@ function _normalizedProps(props) {
   return props
 }
 
-class Property {
+class PropertyAnnotation extends AnnotationMixin(DocumentNode) {}
 
-  constructor(definition) {
-    this.definition = definition;
-  }
+PropertyAnnotation.prototype._isAnnotation = true;
+PropertyAnnotation.prototype._isPropertyAnnotation = true;
 
-  isArray() {
-    return isArray$1(this.definition.type)
-  }
+PropertyAnnotation.isPropertyAnnotation = true;
+PropertyAnnotation.autoExpandRight = true;
 
-  isReference() {
-    if (this.isArray()) {
-      return last$1(this.definition.type) === 'id'
-    } else {
-      return this.definition.type === 'id'
-    }
-  }
-
-  isText() {
-    return Boolean(this.definition._isText)
-  }
-
-  isOwned() {
-    return Boolean(this.definition.owned)
-  }
-
-  isOptional() {
-    return Boolean(this.definition.optional)
-  }
-
-  isNotNull() {
-    return Boolean(this.definition.notNull)
-  }
-
-  hasDefault() {
-    return this.definition.hasOwnProperty('default')
-  }
-
-  getDefault() {
-    return this.definition.default
-  }
-
-  createDefaultValue() {
-    if (isArray$1(this.definition.type)) {
-      return []
-    }
-    switch(this.definition.type) {
-      case 'object':
-        return {}
-      case 'number':
-        return -1
-      case 'coordinate':
-        return new Coordinate([], 0)
-      case 'boolean':
-        return false
-      case 'id':
-        return null
-      case 'string':
-        return ''
-      default:
-        return null
-    }
-  }
-
-  get type() {
-    return this.definition.type
-  }
-
-  get name() {
-    return this.definition.name
-  }
-}
-
-class Node extends EventEmitter {
-
+PropertyAnnotation.schema = {
+  type: "annotation",
   
-  constructor() {
-    super();
-
-    
-    
-    this._initialize.apply(this, arguments);
-  }
-
-  _initialize(data) {
-    const NodeClass = this.constructor;
-
-    let schema = NodeClass.schema;
-    for (var name in schema) {
-      if (!schema.hasOwnProperty(name)) continue
-      let prop = schema[name];
-      
-      
-      const propIsGiven = (data[name] !== undefined);
-      const hasDefault = prop.hasDefault();
-      const isOptional = prop.isOptional();
-      if ( (!isOptional && !hasDefault) && !propIsGiven) {
-        throw new Error('Property ' + name + ' is mandatory for node type ' + this.type)
-      }
-      if (propIsGiven) {
-        this[name] = _checked(prop, data[name]);
-      } else if (hasDefault) {
-        this[name] = cloneDeep(_checked(prop, prop.getDefault()));
-      } else {
-        
-      }
-    }
-  }
-
-  dispose() {
-    this._disposed = true;
-  }
-
-  isDisposed() {
-    return Boolean(this._disposed)
-  }
-
   
-  isInstanceOf(typeName) {
-    return Node.isInstanceOf(this.constructor, typeName)
-  }
-
-  getSchema() {
-    return this.constructor.schema
-  }
-
-  
-  getTypeNames() {
-    var typeNames = [];
-    var NodeClass = this.constructor;
-    while (NodeClass.type !== "node") {
-      typeNames.push(NodeClass.type);
-      NodeClass = Object.getPrototypeOf(NodeClass);
-    }
-    return typeNames
-  }
-
-  
-  getPropertyType(propertyName) {
-    var schema = this.constructor.schema;
-    return schema[propertyName].type
-  }
-
-  
-  toJSON() {
-    var data = {
-      type: this.type
-    };
-    const schema = this.getSchema();
-    forEach(schema, (prop, name) => {
-      let val = this[name];
-      if (prop.isOptional() && val === undefined) return
-      if (isArray$1(val) || isObject$1(val)) {
-        val = cloneDeep(val);
-      }
-      data[prop.name] = val;
-    });
-    return data
-  }
-
-  get type() {
-    return this.constructor.type
-  }
-
-}
-
-Node.prototype._isNode = true;
-
-
-Object.defineProperty(Node, 'schema', {
-  get() { return this._schema },
-  set(schema) {
-    let NodeClass = this;
-    
-    
-    if (schema.type) {
-      NodeClass.type = schema.type;
-    }
-    
-    
-    
-    NodeClass._schema = compileSchema(NodeClass, schema);
-  }
-});
-
-Node.define = Node.defineSchema = function define(schema) {
-  this.schema = schema;
+  _content: { type: "string", optional: true}
 };
-
-Node.schema = {
-  type: "node",
-  id: 'string'
-};
-
-
-Node.isInstanceOf = function(NodeClass, typeName) {
-  var type = NodeClass.type;
-  while (type !== "node") {
-    if (type === typeName) return true
-    var _super = Object.getPrototypeOf(NodeClass.prototype).constructor;
-    if (_super && _super.type) {
-      NodeClass = _super;
-      type = NodeClass.type;
-    } else {
-      break
-    }
-  }
-  return false
-};
-
-
-
-function compileSchema(NodeClass, schema) {
-  let compiledSchema = _compileSchema(schema);
-  let schemas = [compiledSchema];
-  let clazz = NodeClass;
-  while(clazz) {
-    var parentProto = Object.getPrototypeOf(clazz.prototype);
-    if (!parentProto) {
-      break
-    }
-    clazz = parentProto.constructor;
-    if (clazz && clazz._schema) {
-      schemas.unshift(clazz._schema);
-    }
-  }
-  schemas.unshift({});
-  return Object.assign.apply(null, schemas)
-}
-
-function _compileSchema(schema) {
-  let compiledSchema = {};
-  forEach(schema, function(definition, name) {
-    
-    if (name === 'type') {
-      return
-    }
-    if (isString$1(definition) || isArray$1(definition)) {
-      definition = { type: definition };
-    }
-    definition = _compileDefintion(definition);
-    definition.name = name;
-    compiledSchema[name] = new Property(definition);
-  });
-  return compiledSchema
-}
-
-function _compileDefintion(definition) {
-  let result = definition;
-  if (isArray$1(definition.type) && definition.type[0] !== "array") {
-    definition.type = [ "array", definition.type[0] ];
-  } else if (definition.type === 'text') {
-    result = {
-      type: "string",
-      default: '',
-      _isText: true
-    };
-  }
-  return result
-}
-
-function _checked(prop, value) {
-  let type;
-  let name = prop.name;
-  if (prop.isArray()) {
-    type = "array";
-  } else {
-    type = prop.type;
-  }
-  if (value === null) {
-    if (prop.isNotNull()) {
-      throw new Error('Value for property ' + name + ' is null.')
-    } else {
-      return value
-    }
-  }
-  if (value === undefined) {
-    throw new Error('Value for property ' + name + ' is undefined.')
-  }
-  if (type === "string" && !isString$1(value) ||
-      type === "boolean" && !isBoolean(value) ||
-      type === "number" && !isNumber(value) ||
-      type === "array" && !isArray$1(value) ||
-      type === "id" && !isString$1(value) ||
-      type === "object" && !isObject$1(value)) {
-    throw new Error('Illegal value type for property ' + name + ': expected ' + type + ', was ' + (typeof value))
-  }
-  return value
-}
-
-class DocumentNode extends Node {
-
-  
-  constructor(doc, props) {
-    super(doc, props);
-  }
-
-  _initialize(doc, props) {
-    this.document = doc;
-    super._initialize(props);
-  }
-
-  
-  getDocument() {
-    return this.document
-  }
-
-  
-  hasParent() {
-    return Boolean(this.parent)
-  }
-
-  
-  getParent() {
-    return this.document.get(this.parent)
-  }
-
-  
-  getRoot() {
-    let node = this;
-    while(node.parent) {
-      node = node.parent;
-    }
-    return node
-  }
-
-  getContainerRoot() {
-    let node = this;
-    while(node.parent) {
-      
-      if (node.parent.isContainer()) return node
-      
-      node = node.parent;
-    }
-    return node
-  }
-
-  
-  hasChildren() {
-    return false
-  }
-
-  
-  getChildIndex(child) { 
-    return -1
-  }
-
-  
-  getChildAt(idx) { 
-    return null
-  }
-
-  
-  getChildCount() {
-    return 0
-  }
-
-  
-  
-
-  
-
-  
-  isBlock() {
-    return Boolean(this.constructor.isBlock)
-  }
-
-  
-  isText() {
-    return Boolean(this.constructor.isText)
-  }
-
-  isList() {
-    return Boolean(this.constructor.isList)
-  }
-
-  isContainer() {
-    return Boolean(this._isContainer)
-  }
-
-  
-
-  isAnnotation() {
-    return Boolean(this._isAnnotation)
-  }
-
-  isPropertyAnnotation() {
-    return Boolean(this._isPropertyAnnotation)
-  }
-
-  isContainerAnnotation() {
-    return Boolean(this._isContainerAnnotation)
-  }
-
-  
-  isInline() {
-    return Boolean(this.constructor.isInline)
-  }
-
-}
-
-DocumentNode.prototype._isDocumentNode = true;
-
-
-DocumentNode.isBlock = false;
-
-
-DocumentNode.isText = false;
-
-
-DocumentNode.isPropertyAnnotation = false;
-
-
-DocumentNode.isContainerAnnotation = false;
-
-
-DocumentNode.isInline = false;
-
-class BlockNode extends DocumentNode {}
-
-BlockNode.isBlock = true;
-
-class ChangeHistory {
-
-  constructor() {
-    
-    this.doneChanges = [];
-    
-    this.undoneChanges = [];
-    
-    this.lastChange = null;
-  }
-
-  canUndo() {
-    return this.doneChanges.length > 0
-  }
-
-  canRedo() {
-    return this.undoneChanges.length > 0
-  }
-
-  push(change) {
-    this.doneChanges.push(change);
-    this.undoneChanges = [];
-  }
-
-}
-
-class ContainerAddress {
-
-  constructor(pos, offset) {
-    this.pos = pos;
-    this.offset = offset;
-  }
-
-  isBefore(other, strict) {
-    strict = Boolean(strict);
-    if (this.pos < other.pos) {
-      return true
-    } else if (this.pos > other.pos) {
-      return false
-    } else if (this.offset < other.offset) {
-      return true
-    } else if (this.offset > other.offset) {
-      return false
-    }
-    if (strict) {
-      return false
-    } else {
-      return true
-    }
-  }
-
-  isAfter(other, strict) {
-    return other.isBefore(this, strict)
-  }
-
-  isEqual(other) {
-    return (this.pos === other.pos && this.offset === other.offset)
-  }
-
-  toString() {
-    return [this.pos,'.',this.offset].join('')
-  }
-}
-
-var ContainerMixin = function (DocumentNode) {
-
-  class AbstractContainer extends DocumentNode {
-
-    contains(nodeId) {
-      return this.getPosition(nodeId) >= 0
-    }
-
-    getPosition(node, strict) {
-      if (isString$1(node)) {
-        node = this.document.get(node);
-      }
-      if (!node) return -1
-      let pos = this._getPosition(node);
-      if (strict && pos < 0) {
-        throw new Error('Node is not within this container: ' + node.id)
-      }
-      return pos
-    }
-
-    getNodeAt(idx) {
-      const nodeId = this.getNodeIdAt(idx);
-      if (nodeId) {
-        return this.getDocument().get(nodeId)
-      }
-    }
-
-    getNodeIdAt(idx) {
-      let content = this.getContent();
-      if (idx < 0 || idx >= content.length) {
-        
-        return undefined
-      } else {
-        return content[idx]
-      }
-    }
-
-    getNodes() {
-      const doc = this.getDocument();
-      return this.getContent().map(id => doc.get(id)).filter(Boolean)
-    }
-
-    show(nodeId, pos) {
-      
-      const arg1 = arguments[0];
-      if (!isString$1(arg1)) {
-        if (arg1._isNode) {
-          nodeId = arg1.id;
-        }
-      }
-      if (arguments.length > 1) {
-        console.error('DEPRECATED: use container.showAt(pos, nodeId) instead');
-      } else {
-        pos = this.getLength();
-      }
-      return this.showAt(pos, nodeId)
-    }
-
-    showAt(pos, nodeId) {
-      const doc = this.getDocument();
-      const length = this.getLength();
-      if (!isNumber(pos) || pos < 0 || pos > length) {
-        throw new Error('Index out of bounds')
-      }
-      if (!isString$1(nodeId)) {
-        if (nodeId._isNode) {
-          nodeId = nodeId.id;
-        } else {
-          throw new Error('Invalid argument.')
-        }
-      }
-      doc.update(this.getContentPath(), { type: 'insert', pos: pos, value: nodeId });
-    }
-
-    hide(nodeId) {
-      const pos = this.getPosition(nodeId);
-      this.hideAt(pos);
-    }
-
-    hideAt(pos) {
-      const length = this.getLength();
-      if (pos >= 0 && pos < length) {
-        const doc = this.getDocument();
-        doc.update(this.getContentPath(), { type: 'delete', pos: pos });
-      } else {
-        throw new Error('Index out of bounds.')
-      }
-    }
-
-    getAddress(coor) {
-      if (!coor._isCoordinate) {
-        
-        throw new Error('Illegal argument: Container.getAddress(coor) expects a Coordinate instance.')
-      }
-      var nodeId = coor.path[0];
-      var nodePos = this.getPosition(nodeId);
-      var offset;
-      if (coor.isNodeCoordinate()) {
-        if (coor.offset > 0) {
-          offset = Number.MAX_VALUE;
-        } else {
-          offset = 0;
-        }
-      } else {
-        offset = coor.offset;
-      }
-      return new ContainerAddress(nodePos, offset)
-    }
-
-    getLength() {
-      return this.getContent().length
-    }
-
-    get length() {
-      return this.getLength()
-    }
-
-    _getPosition(node) {
-      if (this._isCaching) {
-        return this._getCachedPosition(node)
-      } else {
-        return this._lookupPosition(node)
-      }
-    }
-
-    _getCachedPosition(node) {
-      let cache = this._cachedPositions || this._fillCache();
-      let nodeId = node.id;
-      let pos = -1;
-      if (cache.hasOwnProperty(nodeId)) {
-        pos = cache[nodeId];
-      } else {
-        pos = this._lookupPosition(node);
-        cache[nodeId] = pos;
-      }
-      return pos
-    }
-
-    _fillCache() {
-      let positions = {};
-      this.nodes.forEach((id, pos) => {
-        positions[id] = pos;
-      });
-      this._cachedPositions = positions;
-      return positions
-    }
-
-    _invalidateCache() {
-      this._cachedPositions = null;
-    }
-
-    _lookupPosition(node) {
-      if (node.hasParent()) {
-        node = node.getContainerRoot();
-      }
-      return this.getContent().indexOf(node.id)
-    }
-
-    _enableCaching() {
-      
-      if (this.document) {
-        this.document.data.on('operation:applied', this._onOperationApplied, this);
-        this._isCaching = true;
-      }
-    }
-
-    _onOperationApplied(op) {
-      if (op.type === 'set' || op.type === 'update') {
-        if (op.path[0] === this.id) {
-          this._invalidateCache();
-        }
-      }
-    }
-
-    _onDocumentChange(change) {
-      if (change.hasUpdated(this.getContentPath())) {
-        this._invalidateCache();
-      }
-    }
-
-    
-    
-
-    hasChildren() {
-      return this.getContent().length > 0
-    }
-
-    getChildIndex(child) {
-      return this.getContent().indexOf(child.id)
-    }
-
-    getChildren() {
-      return documentHelpers.getNodes(this.getDocument(), this.getContent())
-    }
-
-    getChildAt(idx) {
-      var childrenIds = this.getContent();
-      if (idx < 0 || idx >= childrenIds.length) {
-        throw new Error('Array index out of bounds: ' + idx + ", " + childrenIds.length)
-      }
-      return this.getDocument().get(childrenIds[idx], 'strict')
-    }
-
-    getChildCount() {
-      return this.getContent().length
-    }
-
-  }
-  return AbstractContainer
-
-};
-
-class Container extends ContainerMixin(DocumentNode) {
-
-  constructor(...args) {
-    super(...args);
-
-    
-    
-    
-    this._enableCaching();
-  }
-
-  dispose() {
-    this.document.off(this);
-  }
-
-  getContentPath() {
-    return [this.id, 'nodes']
-  }
-
-  getContent() {
-    return this.nodes
-  }
-
-}
-
-Container.prototype._isContainer = true;
-
-Container.schema = {
-  type: 'container',
-  nodes: { type: ['array', 'id'], default: [] }
-};
-
-class ContainerAdapter extends Container {
-
-  constructor(doc, path) {
-    super(doc, { id: String(path) });
-    this.document = doc;
-    this.path = path;
-
-    
-    
-    doc.data.nodes[this.id] = this;
-  }
-
-  getContentPath() {
-    return this.path
-  }
-
-  get nodes() {
-    return this.document.get(this.path)
-  }
-
-}
-
-ContainerAdapter.prototype._isDocumentNode = false;
-ContainerAdapter.prototype._isContainer = false;
 
 class ContainerAnnotation extends AnnotationMixin(DocumentNode) {
 
@@ -11992,332 +11644,6 @@ ContainerAnnotation.schema = {
 ContainerAnnotation.prototype._isAnnotation = true;
 ContainerAnnotation.prototype._isContainerAnnotation = true;
 
-class CoordinateAdapter extends Coordinate {
-
-  constructor(owner, pathProperty, offsetProperty) {
-    super('SKIP');
-
-    this._owner = owner;
-    this._pathProp = pathProperty;
-    this._offsetProp = offsetProperty;
-    Object.freeze(this);
-  }
-
-  equals(other) {
-    return (other === this ||
-      (isArrayEqual(other.path, this.path) && other.offset === this.offset) )
-  }
-
-  get path() {
-    return this._owner[this._pathProp];
-  }
-
-  set path(path) {
-    this._owner[this._pathProp] = path;
-  }
-
-  get offset() {
-    return this._owner[this._offsetProp];
-  }
-
-  set offset(offset) {
-    this._owner[this._offsetProp] = offset;
-  }
-
-  toJSON() {
-    return {
-      path: this.path,
-      offset: this.offset
-    }
-  }
-
-  toString() {
-    return "(" + this.path.join('.') + ", " + this.offset + ")"
-  }
-}
-
-function createDocumentFactory(ArticleClass, create) {
-  return {
-    ArticleClass: ArticleClass,
-    createEmptyArticle: function() {
-      const doc = new ArticleClass();
-      return doc
-    },
-    createArticle: function() {
-      const doc = new ArticleClass();
-      create(doc);
-      return doc
-    },
-    createChangeset: function() {
-      const doc = new ArticleClass();
-      const tx = new ChangeRecorder(doc);
-      create(tx);
-      const change = tx.generateChange();
-      return [change.toJSON()]
-    }
-  }
-}
-
-class DefaultChangeCompressor {
-
-  shouldMerge(lastChange, newChange) {
-    return false
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-  }
-
-  
-  merge(first, second) {
-    
-    
-    var firstOp = first.ops[0];
-    var secondOp = second.ops[0];
-    var firstDiff = firstOp.diff;
-    var secondDiff = secondOp.diff;
-    var mergedOp = false;
-    if (firstDiff.isInsert()) {
-      if (firstDiff.pos+firstDiff.getLength() === secondDiff.pos) {
-        mergedOp = firstOp.toJSON();
-        mergedOp.diff.str += secondDiff.str;
-      }
-    }
-    else if (firstDiff.isDelete()) {
-      
-      
-      if (firstDiff.pos === secondDiff.pos) {
-        mergedOp = firstOp.toJSON();
-        mergedOp.diff.str += secondDiff.str;
-      } else if (secondDiff.pos+secondDiff.getLength() === firstDiff.pos) {
-        mergedOp = firstOp.toJSON();
-        mergedOp.diff = secondDiff;
-        mergedOp.diff.str += firstDiff.str;
-      }
-    }
-    if (mergedOp) {
-      first.ops[0] = ObjectOperation.fromJSON(mergedOp);
-      if (first.ops.length > 1) {
-        
-        
-        
-        first.ops = first.ops.concat(second.ops.slice(1));
-        first.after = second.after;
-      }
-      return true
-    }
-    return false
-  }
-
-}
-
-class FileProxy {
-  constructor(fileNode, context) {
-    this.fileNode = fileNode;
-    this.context = context;
-    fileNode.setProxy(this);
-  }
-
-  get id() {
-    return this.fileNode.id
-  }
-
-  
-  triggerUpdate() {
-    let fileId = this.fileNode.id;
-    this.context.editorSession.transaction((tx) => {
-      tx.set([fileId, '__changed__'], '');
-    }, { history: false });
-  }
-
-  getUrl() {
-    return ''
-  }
-
-  sync() {
-    return Promise.reject(new Error('sync method not implemented'))
-  }
-}
-
-FileProxy.match = function(fileNode, context) { 
-  return false
-};
-
-class DefaultFileProxy extends FileProxy {
-
-  constructor(fileNode, context) {
-    super(fileNode, context);
-
-    
-    this.file = fileNode.sourceFile;
-    if (this.file) {
-      this._fileUrl = URL.createObjectURL(this.file);
-    }
-    this.url = fileNode.url;
-  }
-
-  getUrl() {
-    
-    if (this.url) {
-      return this.url
-    }
-    
-    if (this._fileUrl) {
-      return this._fileUrl
-    }
-    
-    return ''
-  }
-
-  sync() {
-    if (!this.url) {
-      console.info('Simulating file upload. Creating blob url instead.', this._fileUrl);
-      this.url = this._fileUrl;
-    }
-    return Promise.resolve()
-  }
-}
-
-class NodeRegistry extends Registry {
-  
-  register(nodeClazz) {
-    var type = nodeClazz.prototype.type;
-    if ( typeof type !== 'string' || type === '' ) {
-      throw new Error( 'Node names must be strings and must not be empty')
-    }
-    if (!( nodeClazz.prototype._isNode)) {
-      throw new Error( 'Nodes must be subclasses of Substance.Data.Node' )
-    }
-    if (this.contains(type)) {
-      
-      console.info('Overriding node type', type);
-      this.remove(type);
-    }
-    this.add(type, nodeClazz);
-  }
-
-}
-
-class Schema {
-
-  
-  constructor(name, version) {
-    if (!name) {
-      throw new Error("'name' is mandatory")
-    }
-    if (!version) {
-      throw new Error("'version' is mandatory")
-    }
-
-    
-    this.name = name;
-    
-    this.version = version;
-    
-    this.nodeRegistry = new NodeRegistry();
-    
-    this.tocTypes = [];
-
-    
-    this.addNodes(this.getBuiltIns());
-  }
-
-  
-  addNodes(nodes) {
-    if (!nodes) return
-    forEach(nodes, function(NodeClass) {
-      if (!NodeClass.prototype._isNode) {
-        console.error('Illegal node class: ', NodeClass);
-      } else {
-        this.addNode(NodeClass);
-      }
-    }.bind(this));
-  }
-
-  addNode(NodeClass) {
-    this.nodeRegistry.register(NodeClass);
-    if (NodeClass.tocType) {
-      this.tocTypes.push(NodeClass.type);
-    }
-  }
-
-  
-  getNodeClass(name) {
-    return this.nodeRegistry.get(name)
-  }
-
-  
-  getBuiltIns() {
-    return []
-  }
-
-  
-  isInstanceOf(type, parentType) {
-    var NodeClass = this.getNodeClass(type);
-    if (NodeClass) {
-      return Node.isInstanceOf(NodeClass, parentType)
-    }
-    return false
-  }
-
-  
-  each() {
-    this.nodeRegistry.each.apply(this.nodeRegistry, arguments);
-  }
-
-  
-  getTocTypes() {
-    return this.tocTypes
-  }
-
-  
-  getDefaultTextType() {
-    throw new Error('Schmema.prototype.getDefaultTextType() must be overridden.')
-  }
-
-  getNodeSchema(type) {
-    var NodeClass = this.getNodeClass(type);
-    if (!NodeClass) {
-      console.error('Unknown node type ', type);
-      return null
-    }
-    return NodeClass.schema
-  }
-}
-
-class PropertyAnnotation extends AnnotationMixin(DocumentNode) {}
-
-PropertyAnnotation.prototype._isAnnotation = true;
-PropertyAnnotation.prototype._isPropertyAnnotation = true;
-
-PropertyAnnotation.isPropertyAnnotation = true;
-PropertyAnnotation.autoExpandRight = true;
-
-PropertyAnnotation.schema = {
-  type: "annotation",
-  
-  
-  _content: { type: "string", optional: true}
-};
-
 class DocumentSchema extends Schema {
 
   constructor(schemaSpec) {
@@ -12327,11 +11653,6 @@ class DocumentSchema extends Schema {
       throw new Error('DocumentClass is mandatory')
     }
     Object.assign(this, schemaSpec);
-
-    
-    if (!this.defaultTextType) {
-      this.defaultTextType = 'text';
-    }
   }
 
   getDocumentClass() {
@@ -12349,1106 +11670,6 @@ class DocumentSchema extends Schema {
   }
 
 }
-
-const ENTER = 1;
-const EXIT = -1;
-const ANCHOR = -2;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class Fragmenter {
-
-  constructor(options) {
-    Object.assign(this, options);
-  }
-
-  start(rootContext, text, annotations) {
-    if (!isString$1(text)) {
-      throw new Error("Illegal argument: 'text' must be a String, but was " + text)
-    }
-    this._start(rootContext, text, annotations);
-  }
-
-  onText(context, text, entry) { 
-  }
-
-  
-  onEnter(entry, parentContext) { 
-    return null
-  }
-
-  onExit(entry, context, parentContext) { 
-  }
-
-  _enter(entry, parentContext) {
-    entry.counter++;
-    return this.onEnter(entry, parentContext)
-  }
-
-  _exit(entry, context, parentContext) {
-    this.onExit(entry, context, parentContext);
-  }
-
-  _createText(context, text, entry) {
-    this.onText(context, text, entry);
-  }
-
-  _start(rootContext, text, annotations) {
-    var entries = _extractEntries.call(this, annotations);
-    var stack = [{context: rootContext, entry: null}];
-
-    var pos = 0;
-    for (var i = 0; i < entries.length; i++) {
-      var entry = entries[i];
-      var textFragment = text.substring(pos, entry.pos);
-      if (textFragment) {
-        
-        this._createText(stack[stack.length-1].context, textFragment, entry);
-      }
-
-      pos = entry.pos;
-      var stackLevel, idx, _entry;
-      if (entry.mode === ENTER || entry.mode === ANCHOR) {
-        
-        for (stackLevel = 1; stackLevel < stack.length; stackLevel++) {
-          if (entry.level < stack[stackLevel].entry.level) {
-            break
-          }
-        }
-        
-        
-        for (idx = stack.length-1; idx >= stackLevel; idx--) {
-          _entry = stack[idx].entry;
-          
-          _entry.length = pos - _entry.pos;
-          this._exit(_entry, stack[idx].context, stack[idx-1].context);
-        }
-        stack.splice(stackLevel, 0, {entry: entry});
-        
-        for (idx = stackLevel; idx < stack.length; idx++) {
-          _entry = stack[idx].entry;
-          
-          _entry.pos = pos;
-          stack[idx].context = this._enter(_entry, stack[idx-1].context);
-        }
-      }
-      if (entry.mode === EXIT || entry.mode === ANCHOR) {
-        
-        for (stackLevel = 1; stackLevel < stack.length; stackLevel++) {
-          if (stack[stackLevel].entry.node === entry.node) {
-            break
-          }
-        }
-        for (idx = stack.length-1; idx >= stackLevel; idx--) {
-          _entry = stack[idx].entry;
-          
-          _entry.length = pos - _entry.pos;
-          this._exit(_entry, stack[idx].context, stack[idx-1].context);
-        }
-        stack.splice(stackLevel, 1);
-        
-        for (idx = stackLevel; idx < stack.length; idx++) {
-          _entry = stack[idx].entry;
-          
-          _entry.pos = pos;
-          stack[idx].context = this._enter(_entry, stack[idx-1].context);
-        }
-      }
-    }
-
-    
-    var trailingText = text.substring(pos);
-    if (trailingText) {
-      this._createText(rootContext, trailingText);
-    }
-  }
-
-}
-
-Fragmenter.SHOULD_NOT_SPLIT = 0;
-Fragmenter.NORMAL = 10;
-Fragmenter.ANY = 100;
-Fragmenter.ALWAYS_ON_TOP = Number.MAX_VALUE;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function _extractEntries(annotations) {
-  var openers = [];
-  var closers = [];
-  forEach(annotations, function(a) {
-    var isAnchor = (a.isAnchor ? a.isAnchor() : false);
-    
-    if (isAnchor) {
-      openers.push({
-        mode: ANCHOR,
-        pos: a.offset,
-        id: a.id,
-        level: Fragmenter.ALWAYS_ON_TOP,
-        type: 'anchor',
-        node: a,
-        counter: -1,
-        length: 0
-      });
-    } else {
-      
-      
-      
-      
-      
-      
-      
-
-      
-      var l = Fragmenter.NORMAL;
-      var isInline = (a.isInline ? a.isInline() : false);
-      if (isInline) {
-        l = Number.MAX_VALUE;
-      } else if (a.constructor.hasOwnProperty('fragmentation')) {
-        l = a.constructor.fragmentation;
-      } else if (a.hasOwnProperty('fragmentationHint')) {
-        l = a.fragmentationHint;
-      }
-      var startOffset = Math.min(a.start.offset, a.end.offset);
-      var endOffset = Math.max(a.start.offset, a.end.offset);
-      var opener = {
-        pos: startOffset,
-        mode: ENTER,
-        level: l,
-        id: a.id,
-        type: a.type,
-        node: a,
-        length: 0,
-        counter: -1,
-      };
-      openers.push(opener);
-      closers.push({
-        pos: endOffset,
-        mode: EXIT,
-        level: l,
-        id: a.id,
-        type: a.type,
-        node: a,
-        opener: opener
-      });
-    }
-  });
-
-  
-  openers.sort(_compareOpeners);
-  
-  for (var i = openers.length - 1; i >= 0; i--) {
-    openers[i].idx = i;
-  }
-  closers.sort(_compareClosers);
-  
-  var entries = new Array(openers.length+closers.length);
-  var idx = 0;
-  var idx1 = 0;
-  var idx2 = 0;
-  var opener = openers[idx1];
-  var closer = closers[idx2];
-  while(opener || closer) {
-    if (opener && closer) {
-      
-      if (closer.pos <= opener.pos && closer.opener !== opener) {
-        entries[idx] = closer;
-        idx2++;
-      } else {
-        entries[idx] = opener;
-        idx1++;
-      }
-    } else if (opener) {
-      entries[idx] = opener;
-      idx1++;
-    } else if (closer) {
-      entries[idx] = closer;
-      idx2++;
-    }
-    opener = openers[idx1];
-    closer = closers[idx2];
-    idx++;
-  }
-  return entries
-}
-
-function _compareOpeners(a, b) {
-  if (a.pos < b.pos) return -1
-  if (a.pos > b.pos) return 1
-  if (a.mode < b.mode) return -1
-  if (a.mode > b.mode) return 1
-  if (a.mode === b.mode) {
-    if (a.level < b.level) return -1
-    if (a.level > b.level) return 1
-  }
-  return 0
-}
-
-
-function _compareClosers(a, b) {
-  if (a.pos < b.pos) return -1
-  if (a.pos > b.pos) return 1
-  
-  
-  
-  
-  
-  if (a.pos === a.opener.pos && b.pos === b.opener.pos) {
-    if (a.opener.idx < b.opener.idx) {
-      return -1
-    } else {
-      return 1
-    }
-  }
-  if (a.opener.idx > b.opener.idx) return -1
-  if (a.opener.idx < b.opener.idx) return 1
-  return 0
-}
-
-class DOMExporter {
-
-  constructor(config, context) {
-    this.context = context || {};
-    if (!config.converters) {
-      throw new Error('config.converters is mandatory')
-    }
-    if (!config.converters._isRegistry) {
-      this.converters = new Registry();
-      config.converters.forEach(function(Converter) {
-        let converter = isFunction$1(Converter) ? new Converter() : Converter;
-        if (!converter.type) {
-          console.error('Converter must provide the type of the associated node.', converter);
-          return
-        }
-        this.converters.add(converter.type, converter);
-      }.bind(this));
-    } else {
-      this.converters = config.converters;
-    }
-
-    this.state = {
-      doc: null
-    };
-    this.config = config;
-    
-    
-    this._elementFactory = config.elementFactory;
-    if (!this._elementFactory) {
-      throw new Error("'elementFactory' is mandatory")
-    }
-    this.$$ = this.createElement.bind(this);
-  }
-
-  exportDocument(doc) {
-    
-    
-    
-    
-    return this.convertDocument(doc)
-  }
-
-  
-  convertDocument(doc) { 
-    throw new Error('This method is abstract')
-  }
-
-  convertContainer(container) {
-    if (!container) {
-      throw new Error('Illegal arguments: container is mandatory.')
-    }
-    const doc = container.getDocument();
-    this.state.doc = doc;
-    let elements = [];
-    container.getContent().forEach((id) => {
-      const node = doc.get(id);
-      const nodeEl = this.convertNode(node);
-      elements.push(nodeEl);
-    });
-    return elements
-  }
-
-  convertNode(node) {
-    if (isString$1(node)) {
-      
-      node = this.state.doc.get(node);
-    } else {
-      this.state.doc = node.getDocument();
-    }
-    var converter = this.getNodeConverter(node);
-    
-    
-    if (node.isPropertyAnnotation() && (!converter || !converter.export)) {
-      return this._convertPropertyAnnotation(node)
-    }
-    if (!converter) {
-      converter = this.getDefaultBlockConverter();
-    }
-    var el;
-    if (converter.tagName) {
-      el = this.$$(converter.tagName);
-    } else {
-      el = this.$$('div');
-    }
-    el.attr(this.config.idAttribute, node.id);
-    if (converter.export) {
-      el = converter.export(node, el, this) || el;
-    } else {
-      el = this.getDefaultBlockConverter().export(node, el, this) || el;
-    }
-    return el
-  }
-
-  convertProperty(doc, path, options) {
-    this.initialize(doc, options);
-    var wrapper = this.$$('div')
-      .append(this.annotatedText(path));
-    return wrapper.innerHTML
-  }
-
-  annotatedText(path) {
-    var doc = this.state.doc;
-    var text = doc.get(path);
-    var annotations = doc.getIndex('annotations').get(path);
-    return this._annotatedText(text, annotations)
-  }
-
-  getNodeConverter(node) {
-    return this.converters.get(node.type)
-  }
-
-  getDefaultBlockConverter() {
-    throw new Error('This method is abstract.')
-  }
-
-  getDefaultPropertyAnnotationConverter() {
-    throw new Error('This method is abstract.')
-  }
-
-  getDocument() {
-    return this.state.doc
-  }
-
-  createElement(str) {
-    return this._elementFactory.createElement(str)
-  }
-
-  _annotatedText(text, annotations) {
-    var self = this;
-
-    var annotator = new Fragmenter();
-    annotator.onText = function(context, text) {
-      context.children.push(encodeXMLEntities(text));
-    };
-    annotator.onEnter = function(fragment) {
-      var anno = fragment.node;
-      return {
-        annotation: anno,
-        children: []
-      }
-    };
-    annotator.onExit = function(fragment, context, parentContext) {
-      var anno = context.annotation;
-      var converter = self.getNodeConverter(anno);
-      if (!converter) {
-        converter = self.getDefaultPropertyAnnotationConverter();
-      }
-      var el;
-      if (converter.tagName) {
-        el = this.$$(converter.tagName);
-      } else {
-        el = this.$$('span');
-      }
-      el.attr(this.config.idAttribute, anno.id);
-      el.append(context.children);
-      if (converter.export) {
-        el = converter.export(anno, el, self) || el;
-      }
-      parentContext.children.push(el);
-    }.bind(this);
-    var wrapper = { children: [] };
-    annotator.start(wrapper, text, annotations);
-    return wrapper.children
-  }
-
-  
-  _convertPropertyAnnotation(anno) {
-    
-    var wrapper = this.$$('div').append(this.annotatedText(anno.path));
-    var el = wrapper.find('['+this.config.idAttribute+'="'+anno.id+'"]');
-    return el
-  }
-
-}
-
-const WS_LEFT = /^\s+/g;
-
-
-const WS_RIGHT = /\s+$/g;
-const WS_ALL = /\s+/g;
-
-
-const SPACE = " ";
-const TABS_OR_NL = /[\t\n\r]+/g;
-
-const INVISIBLE_CHARACTER = "\u200B";
-
-
-class DOMImporter {
-
-  constructor(config, context) {
-    this.context = context || {};
-
-    if (!config.schema) {
-      throw new Error('"config.schema" is mandatory')
-    }
-    if (!config.converters) {
-      throw new Error('"config.converters" is mandatory')
-    }
-
-    this.config = Object.assign({ idAttribute: 'id' }, config);
-    this.schema = config.schema;
-    this.converters = config.converters;
-    this.state = null;
-
-    this._defaultBlockConverter = null;
-    this._allConverters = [];
-    this._blockConverters = [];
-    this._propertyAnnotationConverters = [];
-
-    this.state = new DOMImporter.State();
-
-    this._initialize();
-  }
-
-  
-  _initialize() {
-    const schema = this.schema;
-    const defaultTextType = schema.getDefaultTextType();
-    const converters = this.converters;
-    for (let i = 0; i < converters.length; i++) {
-      let converter;
-      if (typeof converters[i] === 'function') {
-        const Converter = converters[i];
-        converter = new Converter();
-      } else {
-        converter = converters[i];
-      }
-      if (!converter.type) {
-        throw new Error('Converter must provide the type of the associated node.')
-      }
-      if (!converter.matchElement && !converter.tagName) {
-        throw new Error('Converter must provide a matchElement function or a tagName property.')
-      }
-      if (!converter.matchElement) {
-        converter.matchElement = this._defaultElementMatcher.bind(converter);
-      }
-      const NodeClass = schema.getNodeClass(converter.type);
-      if (!NodeClass) {
-        throw new Error('No node type defined for converter')
-      }
-      if (!this._defaultBlockConverter && defaultTextType === converter.type) {
-        this._defaultBlockConverter = converter;
-      }
-      this._allConverters.push(converter);
-      
-      if (NodeClass.prototype._isPropertyAnnotation) {
-        this._propertyAnnotationConverters.push(converter);
-      } else {
-        this._blockConverters.push(converter);
-      }
-    }
-    if (!this._defaultBlockConverter) {
-      throw new Error(`No converter for defaultTextType ${defaultTextType}`)
-    }
-  }
-
-  dispose() {
-    if (this.state.doc) {
-      this.state.doc.dispose();
-    }
-  }
-
-  
-  reset() {
-    if (this.state.doc) {
-      this.state.doc.dispose();
-    }
-    this.state.reset();
-    this.state.doc = this._createDocument();
-  }
-
-  getDocument() {
-    return this.state.doc
-  }
-
-  
-  convertContainer(elements, containerId) {
-    if (!this.state.doc) this.reset();
-    const state = this.state;
-    const iterator = new ArrayIterator(elements);
-    const nodeIds = [];
-    while(iterator.hasNext()) {
-      const el = iterator.next();
-      let node;
-      const blockTypeConverter = this._getConverterForElement(el, 'block');
-      if (blockTypeConverter) {
-        state.pushContext(el.tagName, blockTypeConverter);
-        let nodeData = this._createNodeData(el, blockTypeConverter.type);
-        nodeData = blockTypeConverter.import(el, nodeData, this) || nodeData;
-        node = this._createNode(nodeData);
-        let context = state.popContext();
-        context.annos.forEach((a) => {
-          this._createNode(a);
-        });
-      } else if (el.isCommentNode()) {
-        continue
-      } else {
-        
-        if (el.isTextNode() && /^\s*$/.exec(el.textContent)) continue
-        
-        
-        iterator.back();
-        node = this._wrapInlineElementsIntoBlockElement(iterator);
-      }
-      if (node) {
-        nodeIds.push(node.id);
-      }
-    }
-    return this._createNode({
-      type: 'container',
-      id: containerId,
-      nodes: nodeIds
-    })
-  }
-
-  
-  convertElement(el) {
-    if (!this.state.doc) this.reset();
-    let isTopLevel = !this.state.isConverting;
-    if (isTopLevel) {
-      this.state.isConverting = true;
-    }
-
-    let nodeData, annos;
-    const converter = this._getConverterForElement(el);
-    if (converter) {
-      const NodeClass = this.schema.getNodeClass(converter.type);
-      nodeData = this._createNodeData(el, converter.type);
-      this.state.pushContext(el.tagName, converter);
-      
-      
-      
-      
-      
-      if (NodeClass.isInline) {
-        nodeData = this._convertInlineNode(el, nodeData, converter);
-      }
-      else if (NodeClass.prototype._isPropertyAnnotation) {
-        nodeData = this._convertPropertyAnnotation(el, nodeData);
-      } else {
-        nodeData = converter.import(el, nodeData, this) || nodeData;
-      }
-      let context = this.state.popContext();
-      annos = context.annos;
-    } else {
-      throw new Error('No converter found for '+el.tagName)
-    }
-    
-    const node = this._createNode(nodeData);
-    
-    annos.forEach((a) => {
-      this._createNode(a);
-    });
-
-    
-    
-    if (this.config["stand-alone"] && isTopLevel) {
-      this.state.isConverting = false;
-      this.reset();
-    }
-    return node
-  }
-
-  
-  annotatedText(el, path, options={}) {
-    if (!path) {
-      throw new Error('path is mandatory')
-    }
-    const state = this.state;
-    const context = last$1(state.contexts);
-    
-    
-    if (!context) {
-      throw new Error('This should be called from within an element converter.')
-    }
-    
-    const oldPreserveWhitespace = state.preserveWhitespace;
-    if (options.preserveWhitespace) {
-      state.preserveWhitespace = true;
-    }
-    state.stack.push({ path: path, offset: 0, text: "", annos: []});
-    
-    
-    
-    this.state.lastChar = '';
-    const iterator = this.getChildNodeIterator(el);
-    const text = this._annotatedText(iterator);
-    
-    
-    const top = state.stack.pop();
-    context.annos = context.annos.concat(top.annos);
-
-    
-    state.preserveWhitespace = oldPreserveWhitespace;
-
-    return text
-  }
-
-  
-  plainText(el) {
-    var state = this.state;
-    var text = el.textContent;
-    if (state.stack.length > 0) {
-      var context = last$1(state.stack);
-      context.offset += text.length;
-      context.text += context.text.concat(text);
-    }
-    return text
-  }
-
-  
-  _customText(text) {
-    var state = this.state;
-    if (state.stack.length > 0) {
-      var context = last$1(state.stack);
-      context.offset += text.length;
-      context.text += context.text.concat(text);
-    }
-    return text
-  }
-
-  
-  nextId(prefix) {
-    
-    
-    
-    
-    return this.state.uuid(prefix)
-  }
-
-  _getNextId(dom, type) {
-    let id = this.nextId(type);
-    while (this.state.ids[id] || dom.find('#'+id)) {
-      id = this.nextId(type);
-    }
-    return id
-  }
-
-  _getIdForElement(el, type) {
-    let id = el.getAttribute(this.config.idAttribute);
-    if (id && !this.state.ids[id]) return id
-    return this._getNextId(el.getOwnerDocument(), type)
-  }
-
-
-  
-  
-  _createDocument() {
-    
-    const schema = this.config.schema;
-    const DocumentClass = schema.getDocumentClass();
-    return new DocumentClass(schema)
-  }
-
-  _convertPropertyAnnotation(el, nodeData) {
-    const path = [nodeData.id, '_content'];
-    
-    
-    
-    nodeData._content = this.annotatedText(el, path);
-    nodeData.start = { path, offset: 0 };
-    nodeData.end = { offset: nodeData._content.length };
-    return nodeData
-  }
-
-  _convertInlineNode(el, nodeData, converter) {
-    const path = [nodeData.id, '_content'];
-    if (converter.import) {
-      nodeData = converter.import(el, nodeData, this) || nodeData;
-    }
-    nodeData._content = '$';
-    nodeData.start = { path, offset: 0 };
-    nodeData.end = { offset: 1 };
-    return nodeData
-  }
-
-  _createNodeData(el, type) {
-    if (!type) {
-      throw new Error('type is mandatory.')
-    }
-    let nodeData = {
-      type,
-      id: this._getIdForElement(el, type)
-    };
-    this.state.ids[nodeData.id] = true;
-    return nodeData
-  }
-
-  _createNode(nodeData) {
-    let doc = this.state.doc;
-    
-    
-    
-    let node = doc.get(nodeData.id);
-    if (node) {
-      
-      doc.delete(node.id);
-    }
-    return doc.create(nodeData)
-  }
-
-  getChildNodeIterator(el) {
-    return el.getChildNodeIterator()
-  }
-
-  _defaultElementMatcher(el) {
-    return el.is(this.tagName)
-  }
-
-  
-  _annotatedText(iterator) {
-    const state = this.state;
-    const context = last$1(state.stack);
-    
-    if (!context) {
-      throw new Error('Illegal state: context is null.')
-    }
-    while(iterator.hasNext()) {
-      var el = iterator.next();
-      var text = "";
-      
-      
-      if (el.isTextNode()) {
-        text = this._prepareText(el.textContent);
-        if (text.length) {
-          
-          
-          context.text = context.text.concat(text);
-          context.offset += text.length;
-        }
-      } else if (el.isCommentNode()) {
-        
-        continue
-      } else if (el.isElementNode()) {
-        const annoConverter = this._getConverterForElement(el, 'inline');
-        
-        if (!annoConverter) {
-          
-          if (!this.IGNORE_DEFAULT_WARNINGS) {
-            console.warn('Unsupported inline element. We will not create an annotation for it, but process its children to extract annotated text.', el.outerHTML);
-          }
-          
-          
-          const iterator = this.getChildNodeIterator(el);
-          this._annotatedText(iterator);
-          continue
-        }
-        
-        
-        
-        var startOffset = context.offset;
-        const annoType = annoConverter.type;
-        const AnnoClass = this.schema.getNodeClass(annoType);
-        let annoData = this._createNodeData(el, annoType);
-        
-        let stackFrame = {
-          path: context.path,
-          offset: startOffset,
-          text: "",
-          annos: []
-        };
-        state.stack.push(stackFrame);
-        
-        if (annoConverter.import) {
-          state.pushContext(el.tagName, annoConverter);
-          annoData = annoConverter.import(el, annoData, this) || annoData;
-          state.popContext();
-        }
-        
-        
-        
-        
-        if (AnnoClass.isInline) {
-          this._customText(INVISIBLE_CHARACTER);
-          
-          
-          
-          state.lastChar = '';
-        } else {
-          
-          
-          
-          const iterator = this.getChildNodeIterator(el);
-          this._annotatedText(iterator);
-        }
-        
-        state.stack.pop();
-        context.offset = stackFrame.offset;
-        context.text = context.text.concat(stackFrame.text);
-        
-        const endOffset = context.offset;
-        annoData.start = {
-          path: context.path.slice(0),
-          offset: startOffset
-        };
-        annoData.end = {
-          offset: endOffset
-        };
-        
-        let parentFrame = last$1(state.stack);
-        parentFrame.annos = parentFrame.annos.concat(stackFrame.annos, annoData);
-      } else {
-        console.warn('Unknown element type. Taking plain text.', el.outerHTML);
-        text = this._prepareText(el.textContent);
-        context.text = context.text.concat(text);
-        context.offset += text.length;
-      }
-    }
-    
-    return context.text
-  }
-
-  _getConverterForElement(el, mode) {
-    var converters;
-    if (mode === "block") {
-      if (!el.tagName) return null
-      converters = this._blockConverters;
-    } else if (mode === "inline") {
-      converters = this._propertyAnnotationConverters;
-    } else {
-      converters = this._allConverters;
-    }
-    var converter = null;
-    for (var i = 0; i < converters.length; i++) {
-      if (this._converterCanBeApplied(converters[i], el)) {
-        converter = converters[i];
-        break
-      }
-    }
-    return converter
-  }
-
-  _converterCanBeApplied(converter, el) {
-    return converter.matchElement(el, this)
-  }
-
-  
-  _wrapInlineElementsIntoBlockElement(childIterator) {
-    if (!childIterator.hasNext()) return
-
-    const converter = this._defaultBlockConverter;
-    if (!converter) {
-      throw new Error('Wrapping inline elements automatically is not supported in this schema.')
-    }
-
-    let dom = childIterator.peek().getOwnerDocument();
-    let wrapper = dom.createElement('wrapper');
-    while(childIterator.hasNext()) {
-      const el = childIterator.next();
-      
-      const blockTypeConverter = this._getConverterForElement(el, 'block');
-      if (blockTypeConverter) {
-        childIterator.back();
-        break
-      }
-      wrapper.append(el.clone());
-    }
-    const type = this.schema.getDefaultTextType();
-    const id = this._getNextId(dom, type);
-    let nodeData = { type, id };
-    this.state.pushContext('wrapper', converter);
-    nodeData = converter.import(wrapper, nodeData, this) || nodeData;
-    let context = this.state.popContext();
-    let annos = context.annos;
-    
-    const node = this._createNode(nodeData);
-    
-    annos.forEach((a) => {
-      this._createNode(a);
-    });
-    return node
-  }
-
-  
-  
-  
-  
-  _prepareText(text) {
-    const state = this.state;
-    if (state.preserveWhitespace) {
-      return text
-    }
-    var repl = SPACE;
-    
-    text = text.replace(TABS_OR_NL, '');
-    
-    
-    
-    
-    
-    if (state.lastChar === SPACE) {
-      
-      text = text.replace(WS_LEFT, '');
-    } else {
-      text = text.replace(WS_LEFT, repl);
-    }
-    text = text.replace(WS_RIGHT, repl);
-    
-    
-    
-    if (this.config.REMOVE_INNER_WS || state.removeInnerWhitespace) {
-      text = text.replace(WS_ALL, SPACE);
-    }
-    state.lastChar = text[text.length-1] || state.lastChar;
-    return text
-  }
-
-  
-  _trimTextContent(el) {
-    var nodes = el.getChildNodes();
-    var firstNode = nodes[0];
-    var lastNode = last$1(nodes);
-    var text, trimmed;
-      
-    if (firstNode && firstNode.isTextNode()) {
-      text = firstNode.textContent;
-      trimmed = this._trimLeft(text);
-      firstNode.textContent = trimmed;
-    }
-    if (lastNode && lastNode.isTextNode()) {
-      text = lastNode.textContent;
-      trimmed = this._trimRight(text);
-      lastNode.textContent = trimmed;
-    }
-    return el
-  }
-
-  _trimLeft(text) {
-    return text.replace(WS_LEFT, "")
-  }
-
-  _trimRight(text) {
-    return text.replace(WS_RIGHT, "")
-  }
-
-}
-
-class DOMImporterState {
-
-  constructor() {
-    this.reset();
-  }
-
-  reset() {
-    this.preserveWhitespace = false;
-    this.nodes = [];
-    this.annotations = [];
-    this.containerId = null;
-    this.container = [];
-    this.ids = {};
-    
-    this.contexts = [];
-    
-    this.stack = [];
-    this.lastChar = "";
-    this.skipTypes = {};
-    this.ignoreAnnotations = false;
-    this.isConverting = false;
-
-    
-    
-    this.uuid = createCountingIdGenerator();
-  }
-
-  pushContext(tagName, converter) {
-    this.contexts.push({ tagName: tagName, converter: converter, annos: []});
-  }
-
-  popContext() {
-    return this.contexts.pop()
-  }
-
-  getCurrentContext() {
-    return last$1(this.contexts)
-  }
-
-}
-
-DOMImporter.State = DOMImporterState;
-
-DOMImporter.INVISIBLE_CHARACTER = INVISIBLE_CHARACTER;
 
 class EditingBehavior {
 
@@ -13501,44 +11722,70 @@ class EditingBehavior {
 
 }
 
-class FileNode extends DocumentNode {
-
-  constructor(...args) {
-    super(...args);
-  }
-
-  getUrl() {
-    if (this.proxy) {
-      return this.proxy.getUrl()
-    } else {
-      
-      console.warn('No file proxy attached to ', this.id);
-      return ''
-    }
-  }
-
-  setProxy(proxy) {
-    this.proxy = proxy;
+class ComponentRegistry extends Registry {
+  constructor(entries) {
+    super(entries, function(ComponentClass) {
+      if (!ComponentClass.prototype._isComponent) {
+        throw new Error('Component registry: wrong type. Expected a ComponentClass. Was: ' + String(ComponentClass))
+      }
+    });
   }
 }
 
-FileNode.type = 'file';
+function extend(...args) {
+  return Object.assign(...args)
+}
 
-FileNode.schema = {
-  url: { type: 'string', optional: true },
-  fileType: { type: 'string', optional: true },
-  mimeType: { type: 'string', optional: true },
-  sourceFile: { type: 'object', optional: true }
-};
+class ArrayIterator {
 
-FileNode.prototype._isFileNode = true;
-FileNode._isFileNode = true;
+  constructor(arr) {
+    this.arr = arr;
+    this.pos = -1;
+  }
+
+  get _isArrayIterator() {
+    return true
+  }
+
+  
+  hasNext() {
+    return this.pos < this.arr.length - 1
+  }
+
+  
+  next() {
+    this.pos += 1;
+    var next = this.arr[this.pos];
+    return next
+  }
+
+  
+  back() {
+    if (this.pos >= 0) {
+      this.pos -= 1;
+    }
+    return this
+  }
+
+  peek() {
+    return this.arr[this.pos+1]
+  }
+
+}
+
+function findIndex(arr, predicate) {
+  if (!isFunction$2(predicate)) return arr.indexOf(predicate)
+  for (let i = 0; i < arr.length; i++) {
+    if (predicate(arr[i])) return i
+  }
+  return -1
+}
 
 class DOMEventListener {
 
   constructor(eventName, handler, options) {
     
-    if (!isString$1(eventName) || !isFunction$1(handler)) {
+    if (!isString(eventName) || !isFunction$2(handler)) {
       throw new Error("Illegal arguments: 'eventName' must be a String, and 'handler' must be a Function.")
     }
     options = options || {};
@@ -13572,7 +11819,7 @@ DOMEventListener.findIndex = function(eventListeners, eventName, handler) {
   if (arguments[1]._isDOMEventListener) {
     idx = eventListeners.indexOf(arguments[1]);
   } else {
-    idx = findIndex$1(eventListeners,
+    idx = findIndex(eventListeners,
       _matches.bind(null, {
         eventName: eventName,
         originalHandler: handler
@@ -13693,9 +11940,9 @@ class DOMElement {
   
   attr() {
     if (arguments.length === 1) {
-      if (isString$1(arguments[0])) {
+      if (isString(arguments[0])) {
         return this.getAttribute(arguments[0])
-      } else if (isObject$1(arguments[0])) {
+      } else if (isObject(arguments[0])) {
         forEach(arguments[0], function(value, name) {
           this.setAttribute(name, value);
         }.bind(this));
@@ -13744,9 +11991,9 @@ class DOMElement {
   
   htmlProp() {
     if (arguments.length === 1) {
-      if (isString$1(arguments[0])) {
+      if (isString(arguments[0])) {
         return this.getProperty(arguments[0])
-      } else if (isObject$1(arguments[0])) {
+      } else if (isObject(arguments[0])) {
         forEach(arguments[0], function(value, name) {
           this.setProperty(name, value);
         }.bind(this));
@@ -13791,9 +12038,9 @@ class DOMElement {
     
     if (arguments.length === 1) {
       
-      if (isString$1(arguments[0])) {
+      if (isString(arguments[0])) {
         return this.getStyle(arguments[0])
-      } else if (isObject$1(arguments[0])) {
+      } else if (isObject(arguments[0])) {
         forEach(arguments[0], function(value, name) {
           this.setStyle(name, value);
         }.bind(this));
@@ -13871,7 +12118,7 @@ class DOMElement {
   
   on(eventName, handler, context, options) {
     
-    if (!isString$1(eventName)) {
+    if (!isString(eventName)) {
       throw new Error('Illegal argument: "event" must be a String.')
     }
     options = options || {};
@@ -13879,7 +12126,7 @@ class DOMElement {
       options.context = context;
     }
     
-    if (!handler || !isFunction$1(handler)) {
+    if (!handler || !isFunction$2(handler)) {
       throw new Error('Illegal argument: invalid handler function for event ' + eventName)
     }
     this.addEventListener(eventName, handler, options);
@@ -13889,7 +12136,7 @@ class DOMElement {
   
   off(eventName, handler) {
     
-    if (arguments.length === 1 && !isString$1(eventName)) {
+    if (arguments.length === 1 && !isString(eventName)) {
       let context = arguments[0];
       this.getEventListeners().filter(function(l) {
         return l.context === context
@@ -14094,7 +12341,7 @@ class DOMElement {
   append(child) {
     var children;
     if (arguments.length === 1) {
-      if (isArray$1(child)) {
+      if (isArray(child)) {
         children = child;
       } else {
         this.appendChild(child);
@@ -14403,7 +12650,7 @@ class BrowserDOMElement extends DOMElement {
     if (oldDocType) {
       oldDocType.parentNode.replaceChild(newDocType, oldDocType);
     } else {
-      ownerDocument.appendChild(newDocType);
+      ownerDocument.insertBefore(newDocType, ownerDocument.firstChild);
     }
   }
 
@@ -14466,14 +12713,6 @@ class BrowserDOMElement extends DOMElement {
     
     
     if (this._isXML()) throw new Error('setProperty() is only supported for HTML elements.')
-    if (!this._changedProperties) this._changedProperties = new Set();
-    
-    
-    if (value === undefined) {
-      this._changedProperties.delete(name);
-    } else {
-      this._changedProperties.add(name);
-    }
     this.el[name] = value;
     return this
   }
@@ -14497,12 +12736,6 @@ class BrowserDOMElement extends DOMElement {
       let attr = attributes.item(i);
       newEl.setAttribute(attr.name, attr.value);
     }
-    
-    
-    
-    
-    
-    
     if (this.eventListeners) {
       this.eventListeners.forEach(function(listener) {
         newEl.addEventListener(listener.eventName, listener.handler, listener.capture);
@@ -14600,6 +12833,10 @@ class BrowserDOMElement extends DOMElement {
     return childNodes
   }
 
+  getChildNodeIterator() {
+    return new BrowserChildNodeIterator(this.el)
+  }
+
   get childNodes() {
     return this.getChildNodes()
   }
@@ -14673,8 +12910,8 @@ class BrowserDOMElement extends DOMElement {
   }
 
   clone(deep) {
-    let clone$$1 = this.el.cloneNode(deep);
-    return BrowserDOMElement.wrap(clone$$1)
+    let clone = this.el.cloneNode(deep);
+    return BrowserDOMElement.wrap(clone)
   }
 
   createDocument(format) {
@@ -14778,7 +13015,7 @@ class BrowserDOMElement extends DOMElement {
     
     else if (child._isBrowserDOMElement && ! (child instanceof BrowserDOMElement)) {
       child = BrowserDOMElement.wrap(child);
-    } else if (isString$1(child) || isNumber(child)) {
+    } else if (isString(child) || isNumber(child)) {
       child = this.createTextNode(child);
     }
     
@@ -14865,7 +13102,7 @@ class BrowserDOMElement extends DOMElement {
 
   serialize() {
     let outerHTML = this.el.outerHTML;
-    if (isString$1(outerHTML)) {
+    if (isString(outerHTML)) {
       return outerHTML
     } else {
       let xs = new window.XMLSerializer();
@@ -14909,9 +13146,8 @@ class BrowserDOMElement extends DOMElement {
     return this
   }
 
-
   blur() {
-    this.el.focus();
+    this.el.blur();
     return this
   }
 
@@ -14970,9 +13206,16 @@ class BrowserDOMElement extends DOMElement {
   emit(name, data) {
     let event;
     if (data) {
-      event = new window.CustomEvent(name, { detail: data });
+      event = new window.CustomEvent(name, {
+        detail: data,
+        bubbles: true,
+        cancelable: true
+      });
     } else {
-      event = new window.Event(name);
+      event = new window.Event(name, {
+        bubbles: true,
+        cancelable: true
+      });
     }
     this.el.dispatchEvent(event);
   }
@@ -15066,7 +13309,7 @@ class BrowserWindow {
   constructor() {
     
     this.el = window;
-    window.__BrowserDOMElementWrapper__ = this;
+    _attach(window, this);
   }
 
 }
@@ -15176,7 +13419,38 @@ class AttributesMapAdapter {
 
 }
 
-var index = {
+class BrowserChildNodeIterator {
+
+  constructor(el) {
+    this._next = el.firstChild;
+    this._curr = null;
+  }
+
+  hasNext() {
+    return Boolean(this._next)
+  }
+
+  next() {
+    let next = this._next;
+    this._curr = next;
+    this._next = next.nextSibling;
+    return BrowserDOMElement.wrap(next)
+  }
+
+  back() {
+    this._next = this._curr;
+    this._curr = this._curr.previousSibling;
+  }
+
+  peek() {
+    return BrowserDOMElement.wrap(this._curr)
+  }
+
+}
+
+var inBrowser = platform.inBrowser;
+
+var domelementtype = {
 	Text: "text", 
 	Directive: "directive", 
 	Comment: "comment", 
@@ -15255,9 +13529,9 @@ function getInverse(inverse, re){
   }
   return function(data){
     return data
-        .replace(re, func)
-        .replace(re_astralSymbols, astralReplacer)
-        .replace(re_nonASCII, singleCharReplacer);
+      .replace(re, func)
+      .replace(re_astralSymbols, astralReplacer)
+      .replace(re_nonASCII, singleCharReplacer);
   };
 }
 
@@ -15327,7 +13601,7 @@ const singleTag = {
 class DomUtils {
 
   isTag(elem) {
-    return index.isTag(elem)
+    return domelementtype.isTag(elem)
   }
 
   removeElement(elem){
@@ -15543,13 +13817,13 @@ class DomUtils {
       let elem = dom[i];
       if (elem.type === 'root' || elem.type === 'document') {
         output.push(this.render(this.getChildren(elem), opts));
-      } else if (index.isTag(elem)) {
+      } else if (domelementtype.isTag(elem)) {
         output.push(this.renderTag(elem, opts));
-      } else if (elem.type === index.Directive) {
+      } else if (elem.type === domelementtype.Directive) {
         output.push(this.renderDirective(elem));
-      } else if (elem.type === index.Comment) {
+      } else if (elem.type === domelementtype.Comment) {
         output.push(this.renderComment(elem));
-      } else if (elem.type === index.CDATA) {
+      } else if (elem.type === domelementtype.CDATA) {
         output.push(this.renderCdata(elem));
       } else {
         output.push(this.renderText(elem, opts));
@@ -15597,8 +13871,7 @@ class DomUtils {
   }
 
   renderCdata(elem) {
-    const childNodes = this.getChildren(elem);
-    return '<![CDATA[' + this.getData(childNodes[0]) + ']]>'
+    return '<![CDATA[' + this.getData(elem) + ']]>'
   }
 
   renderComment(elem) {
@@ -15620,23 +13893,27 @@ class DomUtils {
     return elem.data
   }
 
-  getText(elem){
-    if(Array.isArray(elem)) return elem.map(e => this.getText(e)).join("");
+  getText(elem, sub){
+    if(Array.isArray(elem)) return elem.map(e => this.getText(e, sub)).join("");
     switch(elem.type) {
-      case index.Tag:
-      case index.Script:
-      case index.Style:
-        return this.getText(this.getChildren(elem))
-      case index.Text:
-      case index.Comment:
-      case index.CDATA:
+      case domelementtype.Tag:
+      case domelementtype.Script:
+      case domelementtype.Style:
+        return this.getText(this.getChildren(elem), true)
+      case domelementtype.Text:
+      case domelementtype.CDATA:
+        return elem.data
+      case domelementtype.Comment:
+        
+        
+        if (sub) {
+          return ""
+        }
         return elem.data
       default:
         return ""
     }
   }
-
-
 
   getChildren(elem) {
     return elem.childNodes;
@@ -15672,7 +13949,7 @@ class DomUtils {
 const domUtils = new DomUtils();
 domUtils.DomUtils = DomUtils;
 
-var index$2 = {
+var boolbase = {
 	trueFunc: function trueFunc(){
 		return true;
 	},
@@ -15681,7 +13958,7 @@ var index$2 = {
 	}
 };
 
-var index$3 = parse;
+var cssWhat = parse;
 
 var re_name = /^(?:\\.|[\w\-\u00c0-\uFFFF])+/;
 var re_escape = /\\([\da-f]{1,6}\s?|(\s)|.)/ig;
@@ -15987,8 +14264,8 @@ function parse$1(formula){
 
 var compile_1$1 = compile$1;
 
-var trueFunc$1$1  = index$2.trueFunc;
-var falseFunc$1$1 = index$2.falseFunc;
+var trueFunc$1$1  = boolbase.trueFunc;
+var falseFunc$1$1 = boolbase.falseFunc;
 
 
 function compile$1(parsed){
@@ -16022,15 +14299,15 @@ function compile$1(parsed){
 	};
 }
 
-var index$4 = function nthCheck(formula){
+var nthCheck = function nthCheck(formula){
 	return compile_1$1(parse_1$1(formula));
 };
 
 var parse_1 = parse_1$1;
 var compile_1 = compile_1$1;
 
-index$4.parse = parse_1;
-index$4.compile = compile_1;
+nthCheck.parse = parse_1;
+nthCheck.compile = compile_1;
 
 var universal = 50;
 var tag = 30;
@@ -16038,7 +14315,7 @@ var attribute = 1;
 var pseudo = 0;
 var descendant = -1;
 var child = -1;
-var parent$1 = -1;
+var parent$2 = -1;
 var sibling = -1;
 var adjacent = -1;
 var procedure = {
@@ -16048,7 +14325,7 @@ var procedure = {
 	pseudo: pseudo,
 	descendant: descendant,
 	child: child,
-	parent: parent$1,
+	parent: parent$2,
 	sibling: sibling,
 	adjacent: adjacent
 };
@@ -16060,7 +14337,7 @@ var procedure$1 = Object.freeze({
 	pseudo: pseudo,
 	descendant: descendant,
 	child: child,
-	parent: parent$1,
+	parent: parent$2,
 	sibling: sibling,
 	adjacent: adjacent,
 	default: procedure
@@ -16145,7 +14422,7 @@ function getProcedure(token){
 	return proc;
 }
 
-var falseFunc$2 = index$2.falseFunc;
+var falseFunc$2 = boolbase.falseFunc;
 
 
 var reChars = /[-[\]{}()*+?.,\\^$|#\s]/g;
@@ -16429,8 +14706,8 @@ function generalFactory(adapter, Pseudos){
 
 var general = generalFactory;
 
-var trueFunc$1          = index$2.trueFunc;
-var falseFunc$3         = index$2.falseFunc;
+var trueFunc$1          = boolbase.trueFunc;
+var falseFunc$3         = boolbase.falseFunc;
 
 function filtersFactory(adapter){
 	var attributes  = attributes$1(adapter),
@@ -16472,7 +14749,7 @@ function filtersFactory(adapter){
 
 		
 		"nth-child": function(next, rule){
-			var func = index$4(rule);
+			var func = nthCheck(rule);
 
 			if(func === falseFunc$3) return func;
 			if(func === trueFunc$1)  return getChildFunc(next);
@@ -16491,7 +14768,7 @@ function filtersFactory(adapter){
 			};
 		},
 		"nth-last-child": function(next, rule){
-			var func = index$4(rule);
+			var func = nthCheck(rule);
 
 			if(func === falseFunc$3) return func;
 			if(func === trueFunc$1)  return getChildFunc(next);
@@ -16510,7 +14787,7 @@ function filtersFactory(adapter){
 			};
 		},
 		"nth-of-type": function(next, rule){
-			var func = index$4(rule);
+			var func = nthCheck(rule);
 
 			if(func === falseFunc$3) return func;
 			if(func === trueFunc$1)  return getChildFunc(next);
@@ -16529,7 +14806,7 @@ function filtersFactory(adapter){
 			};
 		},
 		"nth-last-of-type": function(next, rule){
-			var func = index$4(rule);
+			var func = nthCheck(rule);
 
 			if(func === falseFunc$3) return func;
 			if(func === trueFunc$1)  return getChildFunc(next);
@@ -16822,17 +15099,17 @@ function factory$1(adapter){
 
 var pseudos = factory$1;
 
-var compile$$1 = compileFactory;
+var compile = compileFactory;
 
-var trueFunc       = index$2.trueFunc;
-var falseFunc$1      = index$2.falseFunc;
+var trueFunc       = boolbase.trueFunc;
+var falseFunc$1      = boolbase.falseFunc;
 
 function compileFactory(adapter){
 	var Pseudos     = pseudos(adapter),
 		filters     = Pseudos.filters,
 		Rules 			= general(adapter, Pseudos);
 
-	function compile$$1(selector, options, context){
+	function compile(selector, options, context){
 		var next = compileUnsafe(selector, options, context);
 		return wrap(next);
 	}
@@ -16844,7 +15121,7 @@ function compileFactory(adapter){
 	}
 
 	function compileUnsafe(selector, options, context){
-		var token = index$3(selector, options);
+		var token = cssWhat(selector, options);
 		return compileToken(token, options, context);
 	}
 
@@ -16993,8 +15270,7 @@ function compileFactory(adapter){
 		if(context){
 			return function has(elem){
 				return next(elem) && (
-					(context[0] = elem), adapter.existsOne(func, adapter.getChildren(elem))
-				);
+					context[0] = elem, adapter.existsOne(func, adapter.getChildren(elem)));
 			};
 		}
 
@@ -17013,21 +15289,21 @@ function compileFactory(adapter){
 		return compileToken(token, opts, context);
 	};
 
-	compile$$1.compileToken = compileToken;
-	compile$$1.compileUnsafe = compileUnsafe;
-	compile$$1.Pseudos = Pseudos;
+	compile.compileToken = compileToken;
+	compile.compileUnsafe = compileUnsafe;
+	compile.Pseudos = Pseudos;
 
-	return compile$$1;
+	return compile;
 }
 
-var index$1 = CSSselect$1;
+var cssSelect = CSSselect$1;
 
-var falseFunc      = index$2.falseFunc;
-var defaultCompile = compile$$1(domUtils);
+var falseFunc      = boolbase.falseFunc;
+var defaultCompile = compile(domUtils);
 
 function adapterCompile(adapter){
 	if(!adapter.__compile__){
-		adapter.__compile__ = compile$$1(adapter);
+		adapter.__compile__ = compile(adapter);
 	}
 	return adapter.__compile__
 }
@@ -18978,7 +17254,7 @@ var TildeFullEqual = "≅";
 var TildeTilde = "≈";
 var timesbar = "⨱";
 var timesb = "⊠";
-var times$1 = "×";
+var times = "×";
 var timesd = "⨰";
 var tint = "∭";
 var toea = "⤨";
@@ -21102,7 +19378,7 @@ var entitiesJSON = {
 	TildeTilde: TildeTilde,
 	timesbar: timesbar,
 	timesb: timesb,
-	times: times$1,
+	times: times,
 	timesd: timesd,
 	tint: tint,
 	toea: toea,
@@ -23230,7 +21506,7 @@ var entities = Object.freeze({
 	TildeTilde: TildeTilde,
 	timesbar: timesbar,
 	timesb: timesb,
-	times: times$1,
+	times: times,
 	timesd: timesd,
 	tint: tint,
 	toea: toea,
@@ -23741,7 +22017,7 @@ var sup3$1 = "³";
 var szlig$1 = "ß";
 var THORN$1 = "Þ";
 var thorn$1 = "þ";
-var times$1$1 = "×";
+var times$1 = "×";
 var Uacute$1 = "Ú";
 var uacute$1 = "ú";
 var Ucirc$1 = "Û";
@@ -23848,7 +22124,7 @@ var legacyJSON = {
 	szlig: szlig$1,
 	THORN: THORN$1,
 	thorn: thorn$1,
-	times: times$1$1,
+	times: times$1,
 	Uacute: Uacute$1,
 	uacute: uacute$1,
 	Ucirc: Ucirc$1,
@@ -25233,7 +23509,7 @@ class DomHandler {
     let lastTag;
     let _top = this._tagStack[this._tagStack.length - 1];
     if (_top && _top.childNodes) lastTag = _top.childNodes[_top.childNodes.length - 1];
-    if (lastTag && lastTag.type === index.Text) {
+    if (lastTag && lastTag.type === domelementtype.Text) {
       lastTag.data += text;
     } else {
       let element = this.document.createTextNode(text);
@@ -25243,7 +23519,7 @@ class DomHandler {
 
   oncomment(data) {
     var lastTag = this._tagStack[this._tagStack.length - 1];
-    if(lastTag && lastTag.type === index.Comment){
+    if(lastTag && lastTag.type === domelementtype.Comment){
       lastTag.data += data;
     } else {
       let element = this.document.createComment(data);
@@ -25292,7 +23568,7 @@ class MemoryDOMElement extends DOMElement {
     
 
     switch(type) {
-      case index.Tag: {
+      case domelementtype.Tag: {
         if (!args.name) throw new Error("'name' is mandatory.")
         this.name = this._normalizeName(args.name);
         this.nameWithoutNS = nameWithoutNS(this.name);
@@ -25305,16 +23581,16 @@ class MemoryDOMElement extends DOMElement {
         this._assign(args);
         break
       }
-      case index.Text:
-      case index.Comment: {
+      case domelementtype.Text:
+      case domelementtype.Comment: {
         this.data = args.data || '';
         break
       }
-      case index.CDATA: {
+      case domelementtype.CDATA: {
         this.data = args.data || '';
         break
       }
-      case index.Directive: {
+      case domelementtype.Directive: {
         if (!args.name) throw new Error("'name' is mandatory.")
         this.name = this._normalizeName(args.name);
         this.nameWithoutNS = nameWithoutNS(this.name);
@@ -25355,9 +23631,9 @@ class MemoryDOMElement extends DOMElement {
 
   getNodeType() {
     switch(this.type) {
-      case index.Tag:
-      case index.Script:
-      case index.Style:
+      case domelementtype.Tag:
+      case domelementtype.Script:
+      case domelementtype.Style:
         return 'element'
       default:
         return this.type
@@ -25385,16 +23661,16 @@ class MemoryDOMElement extends DOMElement {
   }
 
   clone(deep) {
-    let clone$$1 = new MemoryDOMElement(this.type, this);
+    let clone = new MemoryDOMElement(this.type, this);
     if (this.childNodes) {
-      clone$$1.childNodes.length = 0;
+      clone.childNodes.length = 0;
       if (deep) {
         this.childNodes.forEach((child) => {
-          clone$$1.appendChild(child.clone(deep));
+          clone.appendChild(child.clone(deep));
         });
       }
     }
-    return clone$$1
+    return clone
   }
 
   get tagName() {
@@ -25415,6 +23691,7 @@ class MemoryDOMElement extends DOMElement {
     } else {
       this.name = String(tagName).toLowerCase();
     }
+    this.nameWithoutNS = nameWithoutNS(this.name);
     return this
   }
 
@@ -25431,9 +23708,11 @@ class MemoryDOMElement extends DOMElement {
     
     switch(name) {
       case 'class':
+        this.classes = new Set();
         parseClasses(this.classes, value);
         break
       case 'style':
+        this.styles = new Map();
         parseStyles(this.styles, value);
         break
       default:
@@ -25537,9 +23816,9 @@ class MemoryDOMElement extends DOMElement {
 
   setTextContent(text) {
     switch(this.type) {
-      case index.Text:
-      case index.Comment:
-      case index.CDATA: {
+      case domelementtype.Text:
+      case domelementtype.Comment:
+      case domelementtype.CDATA: {
         this.data = text;
         break
       }
@@ -25572,15 +23851,15 @@ class MemoryDOMElement extends DOMElement {
   }
 
   is(cssSelector) {
-    return index$1.is(this, cssSelector, { xmlMode: this._isXML() })
+    return cssSelect.is(this, cssSelector, { xmlMode: this._isXML() })
   }
 
   find(cssSelector) {
-    return index$1.selectOne(cssSelector, this, { xmlMode: this._isXML() })
+    return cssSelect.selectOne(cssSelector, this, { xmlMode: this._isXML() })
   }
 
   findAll(cssSelector) {
-    return index$1.selectAll(cssSelector, this, { xmlMode: this._isXML() })
+    return cssSelect.selectAll(cssSelector, this, { xmlMode: this._isXML() })
   }
 
   getChildCount() {
@@ -25619,7 +23898,7 @@ class MemoryDOMElement extends DOMElement {
 
   getLastChild() {
     if (this.childNodes) {
-      return last$1(this.childNodes)
+      return last$2(this.childNodes)
     }
   }
 
@@ -25654,23 +23933,23 @@ class MemoryDOMElement extends DOMElement {
   }
 
   createElement(tagName) {
-    return new MemoryDOMElement(index.Tag, { name: tagName, ownerDocument: this.getOwnerDocument() })
+    return new MemoryDOMElement(domelementtype.Tag, { name: tagName, ownerDocument: this.getOwnerDocument() })
   }
 
   createTextNode(text) {
-    return new MemoryDOMElement(index.Text, { data: text, ownerDocument: this.getOwnerDocument() })
+    return new MemoryDOMElement(domelementtype.Text, { data: text, ownerDocument: this.getOwnerDocument() })
   }
 
   createComment(data) {
-    return new MemoryDOMElement(index.Comment, { data: data, ownerDocument: this.getOwnerDocument() })
+    return new MemoryDOMElement(domelementtype.Comment, { data: data, ownerDocument: this.getOwnerDocument() })
   }
 
   createProcessingInstruction(name, data) {
-    return new MemoryDOMElement(index.Directive, { name: name, data: data, ownerDocument: this.getOwnerDocument() })
+    return new MemoryDOMElement(domelementtype.Directive, { name: name, data: data, ownerDocument: this.getOwnerDocument() })
   }
 
   createCDATASection(data) {
-    return new MemoryDOMElement(index.CDATA, { data: data, ownerDocument: this.getOwnerDocument() })
+    return new MemoryDOMElement(domelementtype.CDATA, { data: data, ownerDocument: this.getOwnerDocument() })
   }
 
   appendChild(child) {
@@ -25817,8 +24096,9 @@ class MemoryDOMElement extends DOMElement {
             break
           }
           default:
-            this.attributes.set(name, val);
+            
         }
+        this.attributes.set(name, val);
       });
     }
     if (this.eventListeners && other.eventListeners) {
@@ -25829,7 +24109,7 @@ class MemoryDOMElement extends DOMElement {
   _normalizeChild(child) {
     if (isNil(child)) return
 
-    if (isString$1(child)) {
+    if (isString(child)) {
       child = this.createTextNode(child);
     }
     
@@ -25871,15 +24151,23 @@ MemoryDOMElement.parseMarkup = function(str, format, options={}) {
   if (!str) {
     return MemoryDOMElement.createDocument(format)
   }
+  let parserOpts = Object.assign({
+    format,
+    decodeEntities: true
+  }, options);
+  
+  if (options.raw) {
+    return parseMarkup(str, parserOpts)
+  }
   if (options.snippet) {
     str = `<__snippet__>${str}</__snippet__>`;
   }
   let doc;
   if (format === 'html') {
-    doc = parseMarkup(str, { format: format, decodeEntities: true });
+    doc = parseMarkup(str, parserOpts);
     _sanitizeHTMLStructure(doc);
   } else if (format === 'xml') {
-    doc = parseMarkup(str, { format: format, decodeEntities: true });
+    doc = parseMarkup(str, parserOpts);
   }
   if (options.snippet) {
     let childNodes = doc.find('__snippet__').childNodes;
@@ -26202,1521 +24490,2775 @@ function _getDefaultImpl() {
   }
 }
 
-class HTMLExporter extends DOMExporter {
-
-  constructor(config, context) {
-    super(_defaultConfig(config), context);
-  }
-
-  exportDocument(doc) {
-    let htmlEl = DefaultDOMElement.parseHTML('<html><head></head><body></body></html>');
-    return this.convertDocument(doc, htmlEl)
-  }
-
-  getDefaultBlockConverter() {
-    return defaultBlockConverter 
-  }
-
-  getDefaultPropertyAnnotationConverter() {
-    return defaultAnnotationConverter 
-  }
-
-}
-
-function _defaultConfig(config) {
-  config = Object.assign({
-    idAttribute: 'data-id'
-  }, config);
-  if (!config.elementFactory) {
-    config.elementFactory = DefaultDOMElement.createDocument('html');
-  }
-  return config
-}
-
-
-const defaultAnnotationConverter = {
-  tagName: 'span',
-  export: function(node, el) {
-    el.tagName = 'span';
-    el.attr('data-type', node.type);
-    var properties = node.toJSON();
-    forEach(properties, function(value, name) {
-      if (name === 'id' || name === 'type') return
-      if (isString$1(value) || isNumber(value) || isBoolean(value)) {
-        el.attr('data-'+name, value);
-      }
-    });
-  }
+const _global = (typeof global !== 'undefined') ? global : window;
+const substanceGlobals = _global.hasOwnProperty('Substance') ? _global.Substance : _global.Substance = {
+  DEBUG_RENDERING: false
 };
 
-const defaultBlockConverter = {
-  export: function(node, el, converter) {
-    el.attr('data-type', node.type);
-    var properties = node.toJSON();
-    forEach(properties, function(value, name) {
-      if (name === 'id' || name === 'type') {
-        return
-      }
-      var prop = converter.$$('div').attr('property', name);
-      if (node.getPropertyType(name) === 'string' && value) {
-        prop.append(converter.annotatedText([node.id, name]));
-      } else {
-        prop.text(value);
-      }
-      el.append(prop);
-    });
+function flattenOften(arr, max) {
+  if (!(max > 0)) throw new Error("'max' must be a positive number")
+  let l = arr.length;
+  arr = flatten(arr);
+  let round = 1;
+  while (round < max && l < arr.length) {
+    l = arr.length;
+    arr = flatten(arr);
+    round++;
   }
+  return arr
+}
+
+function checkGlobal$2(value) {
+  return (value && value.Object === Object) ? value : null;
+}
+
+var freeGlobal$1 = checkGlobal$2(typeof global == 'object' && global);
+
+
+var freeSelf$1 = checkGlobal$2(typeof self == 'object' && self);
+
+
+var thisGlobal$1 = checkGlobal$2(typeof undefined == 'object' && undefined);
+
+
+var root$2 = freeGlobal$1 || freeSelf$1 || thisGlobal$1 || Function('return this')();
+
+var Symbol$2 = root$2.Symbol;
+
+function isObjectLike$2(value) {
+  return !!value && typeof value == 'object';
+}
+
+var symbolTag$1 = '[object Symbol]';
+
+
+var objectProto$7 = Object.prototype;
+
+
+var objectToString$2 = objectProto$7.toString;
+
+
+function isSymbol$2(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike$2(value) && objectToString$2.call(value) == symbolTag$1);
+}
+
+var INFINITY$2 = 1 / 0;
+
+
+var symbolProto$1 = Symbol$2 ? Symbol$2.prototype : undefined;
+var symbolToString$1 = symbolProto$1 ? symbolProto$1.toString : undefined;
+
+
+function baseToString$2(value) {
+  
+  if (typeof value == 'string') {
+    return value;
+  }
+  if (isSymbol$2(value)) {
+    return symbolToString$1 ? symbolToString$1.call(value) : '';
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY$2) ? '-0' : result;
+}
+
+function toString$2(value) {
+  return value == null ? '' : baseToString$2(value);
+}
+
+function baseSlice$2(array, start, end) {
+  var index = -1,
+      length = array.length;
+
+  if (start < 0) {
+    start = -start > length ? 0 : (length + start);
+  }
+  end = end > length ? length : end;
+  if (end < 0) {
+    end += length;
+  }
+  length = start > end ? 0 : ((end - start) >>> 0);
+  start >>>= 0;
+
+  var result = Array(length);
+  while (++index < length) {
+    result[index] = array[index + start];
+  }
+  return result;
+}
+
+function castSlice(array, start, end) {
+  var length = array.length;
+  end = end === undefined ? length : end;
+  return (!start && end >= length) ? array : baseSlice$2(array, start, end);
+}
+
+var rsAstralRange = '\\ud800-\\udfff';
+var rsComboMarksRange = '\\u0300-\\u036f\\ufe20-\\ufe23';
+var rsComboSymbolsRange = '\\u20d0-\\u20f0';
+var rsVarRange = '\\ufe0e\\ufe0f';
+
+
+var rsZWJ = '\\u200d';
+
+
+var reHasComplexSymbol = RegExp('[' + rsZWJ + rsAstralRange  + rsComboMarksRange + rsComboSymbolsRange + rsVarRange + ']');
+
+var rsAstralRange$1 = '\\ud800-\\udfff';
+var rsComboMarksRange$1 = '\\u0300-\\u036f\\ufe20-\\ufe23';
+var rsComboSymbolsRange$1 = '\\u20d0-\\u20f0';
+var rsVarRange$1 = '\\ufe0e\\ufe0f';
+
+
+var rsAstral = '[' + rsAstralRange$1 + ']';
+var rsCombo = '[' + rsComboMarksRange$1 + rsComboSymbolsRange$1 + ']';
+var rsFitz = '\\ud83c[\\udffb-\\udfff]';
+var rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')';
+var rsNonAstral = '[^' + rsAstralRange$1 + ']';
+var rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}';
+var rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]';
+var rsZWJ$1 = '\\u200d';
+
+
+var reOptMod = rsModifier + '?';
+var rsOptVar = '[' + rsVarRange$1 + ']?';
+var rsOptJoin = '(?:' + rsZWJ$1 + '(?:' + [rsNonAstral, rsRegional, rsSurrPair].join('|') + ')' + rsOptVar + reOptMod + ')*';
+var rsSeq = rsOptVar + reOptMod + rsOptJoin;
+var rsSymbol = '(?:' + [rsNonAstral + rsCombo + '?', rsCombo, rsRegional, rsSurrPair, rsAstral].join('|') + ')';
+
+
+var reComplexSymbol = RegExp(rsFitz + '(?=' + rsFitz + ')|' + rsSymbol + rsSeq, 'g');
+
+
+function stringToArray(string) {
+  return string.match(reComplexSymbol);
+}
+
+function createCaseFirst(methodName) {
+  return function(string) {
+    string = toString$2(string);
+
+    var strSymbols = reHasComplexSymbol.test(string)
+      ? stringToArray(string)
+      : undefined;
+
+    var chr = strSymbols
+      ? strSymbols[0]
+      : string.charAt(0);
+
+    var trailing = strSymbols
+      ? castSlice(strSymbols, 1).join('')
+      : string.slice(1);
+
+    return chr[methodName]() + trailing;
+  };
+}
+
+var upperFirst = createCaseFirst('toUpperCase');
+
+function capitalize(string) {
+  return upperFirst(toString$2(string).toLowerCase());
+}
+
+function arrayReduce(array, iteratee, accumulator, initAccum) {
+  var index = -1,
+      length = array ? array.length : 0;
+
+  if (initAccum && length) {
+    accumulator = array[++index];
+  }
+  while (++index < length) {
+    accumulator = iteratee(accumulator, array[index], index, array);
+  }
+  return accumulator;
+}
+
+var deburredLetters = {
+  '\xc0': 'A',  '\xc1': 'A', '\xc2': 'A', '\xc3': 'A', '\xc4': 'A', '\xc5': 'A',
+  '\xe0': 'a',  '\xe1': 'a', '\xe2': 'a', '\xe3': 'a', '\xe4': 'a', '\xe5': 'a',
+  '\xc7': 'C',  '\xe7': 'c',
+  '\xd0': 'D',  '\xf0': 'd',
+  '\xc8': 'E',  '\xc9': 'E', '\xca': 'E', '\xcb': 'E',
+  '\xe8': 'e',  '\xe9': 'e', '\xea': 'e', '\xeb': 'e',
+  '\xcC': 'I',  '\xcd': 'I', '\xce': 'I', '\xcf': 'I',
+  '\xeC': 'i',  '\xed': 'i', '\xee': 'i', '\xef': 'i',
+  '\xd1': 'N',  '\xf1': 'n',
+  '\xd2': 'O',  '\xd3': 'O', '\xd4': 'O', '\xd5': 'O', '\xd6': 'O', '\xd8': 'O',
+  '\xf2': 'o',  '\xf3': 'o', '\xf4': 'o', '\xf5': 'o', '\xf6': 'o', '\xf8': 'o',
+  '\xd9': 'U',  '\xda': 'U', '\xdb': 'U', '\xdc': 'U',
+  '\xf9': 'u',  '\xfa': 'u', '\xfb': 'u', '\xfc': 'u',
+  '\xdd': 'Y',  '\xfd': 'y', '\xff': 'y',
+  '\xc6': 'Ae', '\xe6': 'ae',
+  '\xde': 'Th', '\xfe': 'th',
+  '\xdf': 'ss'
 };
 
-class HTMLImporter extends DOMImporter {
 
-  constructor(config) {
-    super(Object.assign({ idAttribute: 'data-id' }, config));
-
-    
-    this._el = DefaultDOMElement.parseHTML('<html></html>');
-  }
-
-  importDocument(html) {
-    this.reset();
-    var parsed = DefaultDOMElement.parseHTML(html);
-    this.convertDocument(parsed);
-    return this.state.doc
-  }
-
-  
-  convertDocument(documentEl) { 
-    throw new Error('This method is abstract')
-  }
-
+function deburrLetter(letter) {
+  return deburredLetters[letter];
 }
 
-class InlineNode extends PropertyAnnotation {}
+var reLatin1 = /[\xc0-\xd6\xd8-\xde\xdf-\xf6\xf8-\xff]/g;
 
-InlineNode.prototype._isInlineNode = true;
 
-InlineNode.isInline = true;
+var rsComboMarksRange$2 = '\\u0300-\\u036f\\ufe20-\\ufe23';
+var rsComboSymbolsRange$2 = '\\u20d0-\\u20f0';
 
-class Marker extends PropertyAnnotation {
 
-  _initialize(doc, props) {
-    this.document = doc;
-    this.type = props.type;
-    if (!props.type) {
-      throw new Error("'type' is mandatory")
-    }
-    if (!props.start) {
-      throw new Error("'start' is mandatory")
-    }
-    if (!props.end) {
-      throw new Error("'end' is mandatory")
-    }
-    Object.assign(this, props);
-  }
+var rsCombo$1 = '[' + rsComboMarksRange$2 + rsComboSymbolsRange$2 + ']';
 
-  
-  containsSelection(sel) {
-    if (sel.isNull()) return false;
-    if (sel.isPropertySelection()) {
-      return (isArrayEqual(this.start.path, sel.start.path) &&
-        this.start.offset <= sel.start.offset &&
-        this.end.offset >= sel.end.offset)
-    } else {
-      console.warn('Marker.contains() does not support other selection types.');
-    }
-  }
 
-  get type() {
-    return this._type
-  }
+var reComboMark = RegExp(rsCombo$1, 'g');
 
-  set type(type) {
-    this._type = type;
-  }
 
+function deburr(string) {
+  string = toString$2(string);
+  return string && string.replace(reLatin1, deburrLetter).replace(reComboMark, '');
 }
 
+var reBasicWord = /[a-zA-Z0-9]+/g;
 
-Marker.prototype._isPropertyAnnotation = false;
-Marker.prototype._isMarker = true;
 
-class Range {
+var rsAstralRange$2 = '\\ud800-\\udfff';
+var rsComboMarksRange$3 = '\\u0300-\\u036f\\ufe20-\\ufe23';
+var rsComboSymbolsRange$3 = '\\u20d0-\\u20f0';
+var rsDingbatRange = '\\u2700-\\u27bf';
+var rsLowerRange = 'a-z\\xdf-\\xf6\\xf8-\\xff';
+var rsMathOpRange = '\\xac\\xb1\\xd7\\xf7';
+var rsNonCharRange = '\\x00-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\xbf';
+var rsPunctuationRange = '\\u2000-\\u206f';
+var rsSpaceRange = ' \\t\\x0b\\f\\xa0\\ufeff\\n\\r\\u2028\\u2029\\u1680\\u180e\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\u202f\\u205f\\u3000';
+var rsUpperRange = 'A-Z\\xc0-\\xd6\\xd8-\\xde';
+var rsVarRange$2 = '\\ufe0e\\ufe0f';
+var rsBreakRange = rsMathOpRange + rsNonCharRange + rsPunctuationRange + rsSpaceRange;
 
-  constructor(start, end, reverse, containerId, surfaceId) {
-    
-    if (arguments[0] === 'SKIP') return
-    if (arguments.length === 1 && isPlainObject$1(arguments[0])) {
-      let data = arguments[0];
-      this.start = data.start;
-      this.end = data.end;
-      this.reverse = Boolean(data.reverse);
-      this.containerId = data.containerId;
-      this.surfaceId = data.surfaceId;
-    } else {
-      this.start = start;
-      this.end = end;
-      this.reverse = Boolean(reverse);
-      this.containerId = containerId;
-      this.surfaceId = surfaceId;
-    }
+
+var rsApos$1 = "['\u2019]";
+var rsBreak = '[' + rsBreakRange + ']';
+var rsCombo$2 = '[' + rsComboMarksRange$3 + rsComboSymbolsRange$3 + ']';
+var rsDigits = '\\d+';
+var rsDingbat = '[' + rsDingbatRange + ']';
+var rsLower = '[' + rsLowerRange + ']';
+var rsMisc = '[^' + rsAstralRange$2 + rsBreakRange + rsDigits + rsDingbatRange + rsLowerRange + rsUpperRange + ']';
+var rsFitz$1 = '\\ud83c[\\udffb-\\udfff]';
+var rsModifier$1 = '(?:' + rsCombo$2 + '|' + rsFitz$1 + ')';
+var rsNonAstral$1 = '[^' + rsAstralRange$2 + ']';
+var rsRegional$1 = '(?:\\ud83c[\\udde6-\\uddff]){2}';
+var rsSurrPair$1 = '[\\ud800-\\udbff][\\udc00-\\udfff]';
+var rsUpper = '[' + rsUpperRange + ']';
+var rsZWJ$2 = '\\u200d';
+
+
+var rsLowerMisc = '(?:' + rsLower + '|' + rsMisc + ')';
+var rsUpperMisc = '(?:' + rsUpper + '|' + rsMisc + ')';
+var rsOptLowerContr = '(?:' + rsApos$1 + '(?:d|ll|m|re|s|t|ve))?';
+var rsOptUpperContr = '(?:' + rsApos$1 + '(?:D|LL|M|RE|S|T|VE))?';
+var reOptMod$1 = rsModifier$1 + '?';
+var rsOptVar$1 = '[' + rsVarRange$2 + ']?';
+var rsOptJoin$1 = '(?:' + rsZWJ$2 + '(?:' + [rsNonAstral$1, rsRegional$1, rsSurrPair$1].join('|') + ')' + rsOptVar$1 + reOptMod$1 + ')*';
+var rsSeq$1 = rsOptVar$1 + reOptMod$1 + rsOptJoin$1;
+var rsEmoji = '(?:' + [rsDingbat, rsRegional$1, rsSurrPair$1].join('|') + ')' + rsSeq$1;
+
+
+var reComplexWord = RegExp([
+  rsUpper + '?' + rsLower + '+' + rsOptLowerContr + '(?=' + [rsBreak, rsUpper, '$'].join('|') + ')',
+  rsUpperMisc + '+' + rsOptUpperContr + '(?=' + [rsBreak, rsUpper + rsLowerMisc, '$'].join('|') + ')',
+  rsUpper + '?' + rsLowerMisc + '+' + rsOptLowerContr,
+  rsUpper + '+' + rsOptUpperContr,
+  rsDigits,
+  rsEmoji
+].join('|'), 'g');
+
+
+var reHasComplexWord = /[a-z][A-Z]|[A-Z]{2,}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/;
+
+
+function words(string, pattern, guard) {
+  string = toString$2(string);
+  pattern = guard ? undefined : pattern;
+
+  if (pattern === undefined) {
+    pattern = reHasComplexWord.test(string) ? reComplexWord : reBasicWord;
   }
-
-  isCollapsed() {
-    return this.start.equals(this.end)
-  }
-
-  equals(other) {
-    if (this === other) return true
-    else {
-      return (
-        this.containerId === other.containerId &&
-        this.start.equals(other.start) &&
-        this.end.equals(other.end)
-      )
-    }
-  }
-
-  isReverse() {
-    return this.reverse
-  }
-
-  toString() {
-    let str = [this.start.toString(), '->', this.end.toString()];
-    if (this.isReverse()) {
-      str.push('[reverse]');
-    }
-    if (this.containerId) {
-      str.push('[container='+this.containerId+']');
-    }
-    if (this.surfaceId) {
-      str.push('[surface='+this.surfaceId+']');
-    }
-    return str.join('')
-  }
-
+  return string.match(pattern) || [];
 }
 
-Range.prototype._isRange = true;
+var rsApos = "['\u2019]";
 
-class SelectionState {
 
-  constructor(doc) {
-    this.document = doc;
+var reApos = RegExp(rsApos, 'g');
 
-    this.selection = Selection.nullSelection;
-    this._state = {};
-    this._resetState();
-  }
 
-  setSelection(sel) {
-    
-    if (!sel) {
-      sel = Selection.nullSelection;
-    } else {
-      sel.attach(this.document);
-    }
-    
-    
-    this._deriveState(sel);
-    this.selection = sel;
-    return true
-  }
+function createCompounder(callback) {
+  return function(string) {
+    return arrayReduce(words(deburr(string).replace(reApos, '')), callback, '');
+  };
+}
 
-  getSelection() {
-    return this.selection
-  }
+var camelCase = createCompounder(function(result, word, index) {
+  word = word.toLowerCase();
+  return result + (index ? capitalize(word) : word);
+});
 
-  getAnnotationsForType(type) {
-    const state = this._state;
-    if (state.annosByType) {
-      return state.annosByType.get(type) || []
-    }
-    return []
-  }
+function isObject$3(value) {
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
 
-  getMarkers() {
-    
-    return this._state.markers || []
-  }
+function now() {
+  return Date.now();
+}
 
-  isInlineNodeSelection() {
-    return this._state.isInlineNodeSelection
-  }
+var funcTag$1 = '[object Function]';
+var genTag$1 = '[object GeneratorFunction]';
 
-  getContainer() {
-    return this._state.container
-  }
 
-  getPreviousNode() {
-    return this._state.previousNode
-  }
+var objectProto$1$1 = Object.prototype;
 
-  getNextNode() {
-    return this._state.nextNode
-  }
 
+var objectToString$1$1 = objectProto$1$1.toString;
+
+
+function isFunction$3(value) {
   
-  isFirst() {
-    return Boolean(this._state.isFirst)
-  }
-
   
-  isLast() {
-    return Boolean(this._state.isLast)
-  }
-
-  get(key) {
-    return this._state[key]
-  }
-
   
-  set(key, value) {
-    if (this._state[key]) {
-      throw new Error(`State ${key} is already set`)
-    }
-    this._state[key] = value;
+  var tag = isObject$3(value) ? objectToString$1$1.call(value) : '';
+  return tag == funcTag$1 || tag == genTag$1;
+}
+
+var NAN = 0 / 0;
+
+
+var reTrim = /^\s+|\s+$/g;
+
+
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+
+var reIsBinary = /^0b[01]+$/i;
+
+
+var reIsOctal = /^0o[0-7]+$/i;
+
+
+var freeParseInt = parseInt;
+
+
+function toNumber(value) {
+  if (typeof value == 'number') {
+    return value;
+  }
+  if (isSymbol$2(value)) {
+    return NAN;
+  }
+  if (isObject$3(value)) {
+    var other = isFunction$3(value.valueOf) ? value.valueOf() : value;
+    value = isObject$3(other) ? (other + '') : other;
+  }
+  if (typeof value != 'string') {
+    return value === 0 ? value : +value;
+  }
+  value = value.replace(reTrim, '');
+  var isBinary = reIsBinary.test(value);
+  return (isBinary || reIsOctal.test(value))
+    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+    : (reIsBadHex.test(value) ? NAN : +value);
+}
+
+var FUNC_ERROR_TEXT$1 = 'Expected a function';
+
+
+var nativeMax = Math.max;
+var nativeMin = Math.min;
+
+
+function debounce(func, wait, options) {
+  var lastArgs,
+      lastThis,
+      maxWait,
+      result,
+      timerId,
+      lastCallTime,
+      lastInvokeTime = 0,
+      leading = false,
+      maxing = false,
+      trailing = true;
+
+  if (typeof func != 'function') {
+    throw new TypeError(FUNC_ERROR_TEXT$1);
+  }
+  wait = toNumber(wait) || 0;
+  if (isObject$3(options)) {
+    leading = !!options.leading;
+    maxing = 'maxWait' in options;
+    maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
+    trailing = 'trailing' in options ? !!options.trailing : trailing;
   }
 
-  _deriveState(sel) {
-    this._resetState();
-    this._deriveContainerSelectionState(sel);
-    this._deriveAnnoState(sel);
-    if (this.document.getIndex('markers')) {
-      this._deriveMarkerState(sel);
+  function invokeFunc(time) {
+    var args = lastArgs,
+        thisArg = lastThis;
+
+    lastArgs = lastThis = undefined;
+    lastInvokeTime = time;
+    result = func.apply(thisArg, args);
+    return result;
+  }
+
+  function leadingEdge(time) {
+    
+    lastInvokeTime = time;
+    
+    timerId = setTimeout(timerExpired, wait);
+    
+    return leading ? invokeFunc(time) : result;
+  }
+
+  function remainingWait(time) {
+    var timeSinceLastCall = time - lastCallTime,
+        timeSinceLastInvoke = time - lastInvokeTime,
+        result = wait - timeSinceLastCall;
+
+    return maxing ? nativeMin(result, maxWait - timeSinceLastInvoke) : result;
+  }
+
+  function shouldInvoke(time) {
+    var timeSinceLastCall = time - lastCallTime,
+        timeSinceLastInvoke = time - lastInvokeTime;
+
+    
+    
+    
+    return (lastCallTime === undefined || (timeSinceLastCall >= wait) ||
+      (timeSinceLastCall < 0) || (maxing && timeSinceLastInvoke >= maxWait));
+  }
+
+  function timerExpired() {
+    var time = now();
+    if (shouldInvoke(time)) {
+      return trailingEdge(time);
     }
     
+    timerId = setTimeout(timerExpired, remainingWait(time));
   }
 
-  _deriveContainerSelectionState(sel) {
-    let state = this._state;
-    let doc = this.document;
-    if (sel.containerId) {
-      let container = doc.get(sel.containerId);
-      state.container = container;
-      let startId = sel.start.getNodeId();
-      let endId = sel.end.getNodeId();
-      let startNode = doc.get(startId).getContainerRoot();
-      let startPos = container.getPosition(startNode);
-      if (startPos > 0) {
-        state.previousNode = container.getNodeAt(startPos-1);
+  function trailingEdge(time) {
+    timerId = undefined;
+
+    
+    
+    if (trailing && lastArgs) {
+      return invokeFunc(time);
+    }
+    lastArgs = lastThis = undefined;
+    return result;
+  }
+
+  function cancel() {
+    lastInvokeTime = 0;
+    lastArgs = lastCallTime = lastThis = timerId = undefined;
+  }
+
+  function flush() {
+    return timerId === undefined ? result : trailingEdge(now());
+  }
+
+  function debounced() {
+    var time = now(),
+        isInvoking = shouldInvoke(time);
+
+    lastArgs = arguments;
+    lastThis = this;
+    lastCallTime = time;
+
+    if (isInvoking) {
+      if (timerId === undefined) {
+        return leadingEdge(lastCallTime);
       }
-      state.isFirst = isFirst(doc, sel.start);
-      let endNode, endPos;
-      if (endId === startId) {
-        endNode = startNode;
-        endPos = startPos;
-      } else {
-        endNode = doc.get(endId).getContainerRoot();
-        endPos = container.getPosition(endNode);
+      if (maxing) {
+        
+        timerId = setTimeout(timerExpired, wait);
+        return invokeFunc(lastCallTime);
       }
-      if (endPos < container.getLength()-1) {
-        state.nextNode = container.getNodeAt(endPos+1);
-      }
-      state.isLast = isLast(doc, sel.end);
     }
-  }
-
-  _deriveAnnoState(sel) {
-    const doc = this.document;
-    const state = this._state;
-
-    
-    let annosByType = new TreeIndex.Arrays();
-    const propAnnos = documentHelpers.getPropertyAnnotationsForSelection(doc, sel);
-    propAnnos.forEach(function(anno) {
-      annosByType.add(anno.type, anno);
-    });
-
-    if (propAnnos.length === 1 && propAnnos[0].isInline()) {
-      state.isInlineNodeSelection = propAnnos[0].getSelection().equals(sel);
+    if (timerId === undefined) {
+      timerId = setTimeout(timerExpired, wait);
     }
-
-    const containerId = sel.containerId;
-    if (containerId) {
-      const containerAnnos = documentHelpers.getContainerAnnotationsForSelection(doc, sel, containerId);
-      containerAnnos.forEach(function(anno) {
-        annosByType.add(anno.type, anno);
-      });
-    }
-    state.annosByType = annosByType;
+    return result;
   }
-
-  _deriveMarkerState(sel) {
-    const doc = this.document;
-    let state = this._state;
-    let markers = documentHelpers.getMarkersForSelection(doc, sel);
-    state.markers = markers;
-  }
-
-  _resetState() {
-    this._state = {
-      
-      annosByType: null,
-      
-      markers: null,
-      
-      isInlineNodeSelection: false,
-      
-      container: null,
-      previousNode: null,
-      nextNode: null,
-      
-      isFirst: false,
-      
-      isLast: false
-    };
-    return this._state
-  }
+  debounced.cancel = cancel;
+  debounced.flush = flush;
+  return debounced;
 }
 
-var TextNodeMixin = function(SuperClass) {
-  class TextNodeMixin extends SuperClass {
-    getTextPath() {
-      
-      
-      return this.getPath()
-    }
+var isArray$3 = Array.isArray;
 
-    getText() {
-      return this.content
-    }
-
-    isEmpty() {
-      return !this.getText()
-    }
-
-    getLength() {
-      return this.getText().length
-    }
-
-    getAnnotations() {
-      return this.getDocument().getIndex('annotations').get(this.getPath())
-    }
-  }
-  return TextNodeMixin
-};
-
-class TextNode extends TextNodeMixin(DocumentNode) {
-
-  getPath() {
-    return [this.id, 'content']
-  }
-
-  getText() {
-    return this.content
-  }
-
-}
-
-TextNode.isText = true;
-
-TextNode.schema = {
-  type: "text",
-  content: "text",
-  direction: { type: "string", optional: true },
-  textAlign: { type: "string", default: 'left' }
-};
-
-class TextBlock extends TextNode {}
-
-TextBlock.isBlock = true;
-
-class Transaction {
-
+function isHostObject$2(value) {
   
-  constructor(master) {
-    
-    this.master = master;
-    this.stage = master.newInstance().createFromDocument(master);
-    
-    this.stage._isTransactionDocument = true;
-
-    this.tx = this.stage.createEditingInterface();
-    
-    this._isTransacting = false;
-    this._surface = null;
-
-    
-    
-    master._ops.length = 0;
-  }
-
-  dispose() {
-    this.stage.dispose();
-  }
-
   
-
-  get ops() {
-    return this.stage._ops
-  }
-
-  set ops(ops) {
-    this.stage._ops = ops;
-  }
-
-  getSelection() {
-    return this.tx.getSelection()
-  }
-
-  setSelection(sel) {
-    this.tx.setSelection(sel);
-  }
-
-  _reset() {
-    this._before = {};
-    this._after = {};
-    this.stage._ops.length = 0;
-    this._info = {};
-    this.setSelection(null);
-  }
-
-  
-  _recordChange(transformation, selection, info) {
-    if (this._isTransacting) throw new Error('Nested transactions are not supported.')
-    if (!isFunction$1(transformation)) throw new Error('Document.transaction() requires a transformation function.')
-    let hasFinished = false;
-    this._isTransacting = true;
-    this._reset();
-    let change;
+  var result = false;
+  if (value != null && typeof value.toString != 'function') {
     try {
-      const tx = this.tx;
-      tx.setSelection(selection);
-      let selBefore = tx.getSelection();
-      transformation(tx, {
-        selection: selBefore
-      });
-      let ops = this.ops;
-      if (ops.length > 0) {
-        change = new DocumentChange(ops, tx._before, tx._after);
-        change.info = info;
-        change.before = { selection: selBefore };
-        change.after = { selection: tx.getSelection() };
-      }
-      
-      
-      if (this.master._isXMLDocument) {
-        if (info && info.action === 'type') {
-          
-          
-        } else {
-          let res = this.stage._validateChange(change);
-          if (!res.ok) {
-            
-            throw new Error('Transaction is violating the schema: \n' + res.errors.map(err=>err.msg).join('\n'))
-          }
-        }
-      }
-
-      hasFinished = true;
-    } finally {
-      if (!hasFinished) {
-        this._rollback();
-      }
-      this._isTransacting = false;
-    }
-    return change
+      result = !!(value + '');
+    } catch (e) {}
   }
-
-  _sync() {
-    const master = this.master;
-    const stage = this.stage;
-    let ops = master._ops;
-    for (let i = 0; i < ops.length; i++) {
-      stage._applyOp(ops[i]);
-    }
-    ops.length = 0;
-  }
-
-  
-  __applyChange__(change) {
-    const stage = this.stage;
-    const ops = change.ops;
-    for (let i = 0; i < ops.length; i++) {
-      stage._applyOp(ops[i]);
-    }
-  }
-
-  _rollback() {
-    const stage = this.stage;
-    let ops = stage._ops;
-    for (let i = ops.length - 1; i >= 0; i--) {
-      stage._applyOp(ops[i].invert());
-    }
-    ops.length = 0;
-  }
-
+  return result;
 }
 
-class XMLExporter extends DOMExporter {
+var coreJsData$2 = root$2['__core-js_shared__'];
 
-  constructor(config, context) {
-    super(_defaultConfig$1(config), context);
-  }
+var maskSrcKey$1 = (function() {
+  var uid = /[^.]+$/.exec(coreJsData$2 && coreJsData$2.keys && coreJsData$2.keys.IE_PROTO || '');
+  return uid ? ('Symbol(src)_1.' + uid) : '';
+}());
 
-  getDefaultBlockConverter() {
-    return defaultBlockConverter$1 
-  }
 
-  getDefaultPropertyAnnotationConverter() {
-    return defaultAnnotationConverter$1 
-  }
-
+function isMasked$2(func) {
+  return !!maskSrcKey$1 && (maskSrcKey$1 in func);
 }
 
-function _defaultConfig$1(config) {
-  config = Object.assign({
-    idAttribute: 'id'
-  }, config);
-  if (!config.elementFactory) {
-    config.elementFactory = DefaultDOMElement.createDocument('xml');
+var funcToString$1$1 = Function.prototype.toString;
+
+
+function toSource$2(func) {
+  if (func != null) {
+    try {
+      return funcToString$1$1.call(func);
+    } catch (e) {}
+    try {
+      return (func + '');
+    } catch (e) {}
   }
-  return config
+  return '';
 }
 
-const defaultAnnotationConverter$1 = {
-  tagName: 'annotation',
-  export: function(node, el) {
-    el.attr('type', node.type);
-    const properties = node.toJSON();
-    forEach(properties, function(value, name) {
-      if (name === 'id' || name === 'type') return
-      if (isString$1(value) || isNumber(value) || isBoolean(value)) {
-        el.attr(name, value);
-      }
-    });
+var reRegExpChar$1 = /[\\^$.*+?()[\]{}|]/g;
+
+
+var reIsHostCtor$1 = /^\[object .+?Constructor\]$/;
+
+
+var objectProto$2$1 = Object.prototype;
+
+
+var funcToString$2 = Function.prototype.toString;
+
+
+var hasOwnProperty$5 = objectProto$2$1.hasOwnProperty;
+
+
+var reIsNative$1 = RegExp('^' +
+  funcToString$2.call(hasOwnProperty$5).replace(reRegExpChar$1, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+
+function baseIsNative$2(value) {
+  if (!isObject$3(value) || isMasked$2(value)) {
+    return false;
   }
-};
-
-const defaultBlockConverter$1 = {
-  tagName: 'block',
-  export: function(node, el, converter) {
-    el.attr('type', node.type);
-    const properties = node.toJSON();
-    forEach(properties, function(value, name) {
-      if (name === 'id' || name === 'type') {
-        return
-      }
-      const prop = converter.$$(name);
-      if (node.getPropertyType(name) === 'string') {
-        prop.append(converter.annotatedText([node.id, name]));
-      } else {
-        prop.text(value);
-      }
-      el.append(prop);
-    });
-  }
-};
-
-class XMLImporter extends DOMImporter {
-
-  constructor(config, context) {
-    super(Object.assign({ idAttribute: 'id' }, config), context);
-  }
-
-  importDocument(xml) {
-    this.reset();
-    let dom = DefaultDOMElement.parseXML(xml);
-    this.convertDocument(dom);
-    return this.state.doc
-  }
-
-  convertDocument(xmlDocument) {
-    let rootNode = xmlDocument.children[0];
-    if (!rootNode) throw new Error('XML Root node could not be found.')
-    this.convertElement(rootNode);
-  }
-
+  var pattern = (isFunction$3(value) || isHostObject$2(value)) ? reIsNative$1 : reIsHostCtor$1;
+  return pattern.test(toSource$2(value));
 }
 
-class CollabEngine extends EventEmitter {
-
-  constructor(documentEngine) {
-    super();
-    this.documentEngine = documentEngine;
-    
-    this._collaborators = {};
-  }
-
-  
-  _register(collaboratorId, documentId, collaboratorInfo) {
-    let collaborator = this._collaborators[collaboratorId];
-
-    if (!collaborator) {
-      collaborator = this._collaborators[collaboratorId] = {
-        collaboratorId: collaboratorId,
-        documents: {}
-      };
-    }
-
-    
-    collaborator.info = collaboratorInfo;
-
-    
-    collaborator.documents[documentId] = {};
-  }
-
-  
-  _unregister(collaboratorId, documentId) {
-    let collaborator = this._collaborators[collaboratorId];
-    delete collaborator.documents[documentId];
-    let docCount = Object.keys(collaborator.documents).length;
-    
-    if (docCount === 0) {
-      delete this._collaborators[collaboratorId];
-    }
-  }
-
-  
-  getDocumentIds(collaboratorId) {
-    let collaborator = this._collaborators[collaboratorId];
-    if (!collaborator) {
-      
-      
-      return []
-    }
-    return Object.keys(collaborator.documents)
-  }
-
-  
-  getCollaborators(documentId, collaboratorId) {
-    let collaborators = {};
-    forEach(this._collaborators, function(collab) {
-      let doc = collab.documents[documentId];
-      if (doc && collab.collaboratorId !== collaboratorId) {
-        let entry = {
-          
-          collaboratorId: collab.collaboratorId
-        };
-        entry = Object.assign({}, collab.info, entry);
-        collaborators[collab.collaboratorId] = entry;
-      }
-    });
-    return collaborators
-  }
-
-  
-  getCollaboratorIds(documentId, collaboratorId) {
-    let collaborators = this.getCollaborators(documentId, collaboratorId);
-    return map(collaborators, function(c) {
-      return c.collaboratorId
-    })
-  }
-
-  
-  sync({documentId, version, change, collaboratorId}, cb) {
-    this._sync({documentId, version, change}, function(err, result) {
-      if (err) return cb(err)
-      
-      this._register(collaboratorId, documentId);
-      cb(null, result);
-    }.bind(this));
-  }
-
-  
-  _sync({documentId, version, change}, cb) {
-    this.documentEngine.getVersion(documentId, (err, serverVersion) => {
-      if (version > serverVersion) {
-        cb(new SubstanceError('InvalidVersionError', {
-          message: 'Client version greater than server version'
-        }));
-      } else if (change && serverVersion === version) {
-        this._syncFF({documentId, version, change}, cb);
-      } else if (change && serverVersion > version) {
-        this._syncRB({documentId, version, change}, cb);
-      } else if (!change) {
-        
-        this._syncPullOnly({documentId, version, change}, cb);
-      } else {
-        console.warn('Unhandled case');
-      }
-    });
-  }
-
-  _syncPullOnly({documentId, version, change}, cb) {
-    console.warn('This code is not yet tested');
-    this.documentEngine.getChanges(documentId, version, (err, changes) => {
-      let serverChange;
-
-      
-      if (changes.length > 0) {
-        let ops = [];
-        changes.forEach((change) => {
-          ops = ops.concat(change.ops);
-        });
-        serverChange = new DocumentChange(ops, {}, {});
-        serverChange = this.serializeChange(serverChange);
-      }
-      cb(null, {
-        serverChange: serverChange,
-        change: change,
-        version: version
-      });
-    });
-  }
-
-  
-  _syncFF({documentId, change}, cb) {
-    this.documentEngine.addChange(documentId, change, (err, serverVersion) => {
-      if (err) return cb(err)
-      cb(null, {
-        change: change, 
-        serverChange: null,
-        version: serverVersion
-      });
-    });
-  }
-
-  
-  _syncRB({documentId, change, version}, cb) {
-    this._rebaseChange({documentId, change, version}, function(err, rebased) {
-      
-      if (err) return cb(err)
-      
-      this.documentEngine.addChange(
-        documentId,
-        change,
-        function(err, serverVersion) {
-          if (err) return cb(err)
-          cb(null, {
-            change: rebased.change,
-            
-            serverChange: rebased.serverChange,
-            version: serverVersion
-          });
-        }
-      );
-    }.bind(this));
-  }
-
-  
-  _rebaseChange({documentId, change, version}, cb) {
-    this.documentEngine.getChanges(documentId, version, function(err, result, serverVersion) {
-      
-      let B = result.map(this.deserializeChange);
-      let a = this.deserializeChange(change);
-      
-      transformDocumentChange(a, B);
-      let ops = B.reduce(function(ops, change) {
-        return ops.concat(change.ops)
-      }, []);
-      let serverChange = new DocumentChange(ops, {}, {});
-
-      cb(null, {
-        change: this.serializeChange(a),
-        serverChange: this.serializeChange(serverChange),
-        version: serverVersion
-      });
-    }.bind(this));
-  }
-
-  
-  disconnect(args) {
-    this._unregister(args.collaboratorId, args.documentId);
-  }
-
-  
-  serializeChange(change) {
-    return change.toJSON()
-  }
-
-  
-  deserializeChange(serializedChange) {
-    let ch = DocumentChange.fromJSON(serializedChange);
-    return ch
-  }
-
+function getValue$2(object, key) {
+  return object == null ? undefined : object[key];
 }
 
-class CollabServer extends Server {
-  constructor(config) {
-    super(config);
-
-    this.scope = 'substance/collab';
-    this.configurator = config.configurator;
-    this.documentEngine = this.configurator.getDocumentEngine();
-    this.collabEngine = new CollabEngine(this.documentEngine);
-  }
-
-  
-  _error(req, res, err) {
-    console.error(err);
-    res.error({
-      scope: this.scope,
-      type: 'error',
-      error: {
-        name: req.message.type+'Error',
-        cause: {
-          name: err.name
-        }
-      },
-      documentId: req.message.documentId
-    });
-    this.next(req, res);
-  }
-
-  
-  authenticate(req, res) {
-    if (this.config.authenticate) {
-      this.config.authenticate(req, (err, session) => {
-        if (err) {
-          console.error(err);
-          
-          this._error(req, res, new SubstanceError('AuthenticationError', {cause: err}));
-          return
-        }
-        req.setAuthenticated(session);
-        this.next(req, res);
-      });
-    } else {
-      super.authenticate.apply(this, arguments);
-    }
-  }
-
-  
-  enhanceRequest(req, res) {
-    if (this.config.enhanceRequest) {
-      this.config.enhanceRequest(req, (err) => {
-        if (err) {
-          console.error('enhanceRequest returned an error', err);
-          this._error(req, res, err);
-          return
-        }
-        req.setEnhanced();
-        this.next(req, res);
-      });
-    } else {
-      super.enhanceRequest.apply(this, arguments);
-    }
-  }
-
-  
-  onDisconnect(collaboratorId) {
-    
-    
-    let documentIds = this.collabEngine.getDocumentIds(collaboratorId);
-    documentIds.forEach(function(documentId) {
-      this._disconnectDocument(collaboratorId, documentId);
-    }.bind(this));
-  }
-
-  
-  execute(req, res) {
-    let msg = req.message;
-    let method = this[msg.type];
-
-    if (method) {
-      method.call(this, req, res);
-    } else {
-      console.error('Method', msg.type, 'not implemented for CollabServer');
-    }
-  }
-
-  
-  sync(req, res) {
-    let args = req.message;
-
-    
-    this.collabEngine.sync(args, (err, result) => {
-      
-      if (err) {
-        this._error(req, res, err);
-        return
-      }
-
-      
-      let collaborators = this.collabEngine.getCollaborators(args.documentId, args.collaboratorId);
-
-      
-      res.send({
-        scope: this.scope,
-        type: 'syncDone',
-        documentId: args.documentId,
-        version: result.version,
-        serverChange: result.serverChange,
-      });
-
-      
-      forEach(collaborators, (collaborator) => {
-        this.send(collaborator.collaboratorId, {
-          scope: this.scope,
-          type: 'update',
-          documentId: args.documentId,
-          version: result.version,
-          change: result.change
-        });
-      });
-      this.next(req, res);
-    });
-  }
-
-  
-  disconnect(req, res) {
-    let args = req.message;
-    let collaboratorId = args.collaboratorId;
-    let documentId = args.documentId;
-    this._disconnectDocument(collaboratorId, documentId);
-    
-    res.send({
-      scope: this.scope,
-      type: 'disconnectDone',
-      documentId: args.documentId
-    });
-    this.next(req, res);
-  }
-
-  _disconnectDocument(collaboratorId, documentId) {
-    
-    this.collabEngine.disconnect({
-      documentId: documentId,
-      collaboratorId: collaboratorId
-    });
-  }
-
+function getNative$2(object, key) {
+  var value = getValue$2(object, key);
+  return baseIsNative$2(value) ? value : undefined;
 }
 
-class DocumentClient {
-  constructor(config) {
-    this.config = config;
-  }
+var nativeCreate$2 = getNative$2(Object, 'create');
 
-  
-  createDocument(newDocument, cb) {
-    request('POST', this.config.httpUrl, newDocument, cb);
-  }
-
-  
-
-  getDocument(documentId, cb) {
-    request('GET', this.config.httpUrl+documentId, null, cb);
-  }
-
-  
-
-  deleteDocument(documentId, cb) {
-    request('DELETE', this.config.httpUrl+documentId, null, cb);
-  }
-
+function hashClear$2() {
+  this.__data__ = nativeCreate$2 ? nativeCreate$2(null) : {};
 }
 
-class ClientConnection extends EventEmitter {
-  constructor(config) {
-    super();
-
-    this.config = config;
-    this._onMessage = this._onMessage.bind(this);
-    this._onConnectionOpen = this._onConnectionOpen.bind(this);
-    this._onConnectionClose = this._onConnectionClose.bind(this);
-
-    
-    this._connect();
-  }
-
-  _createWebSocket() {
-    throw SubstanceError('AbstractMethodError')
-  }
-
-  
-  _connect() {
-    this.ws = this._createWebSocket();
-    this.ws.addEventListener('open', this._onConnectionOpen);
-    this.ws.addEventListener('close', this._onConnectionClose);
-    this.ws.addEventListener('message', this._onMessage);
-  }
-
-  
-  _disconnect() {
-    this.ws.removeEventListener('message', this._onMessage);
-    this.ws.removeEventListener('open', this._onConnectionOpen);
-    this.ws.removeEventListener('close', this._onConnectionClose);
-    this.ws = null;
-  }
-
-  
-  _onConnectionOpen() {
-    this.emit('open');
-  }
-
-  
-  _onConnectionClose() {
-    this._disconnect();
-    this.emit('close');
-    console.info('websocket connection closed. Attempting to reconnect in 5s.');
-    setTimeout(function() {
-      this._connect();
-    }.bind(this), 5000);
-  }
-
-  
-  _onMessage(msg) {
-    msg = this.deserializeMessage(msg.data);
-    this.emit('message', msg);
-  }
-
-  
-  send(msg) {
-    if (!this.isOpen()) {
-      console.warn('Message could not be sent. Connection is not open.', msg);
-      return
-    }
-    this.ws.send(this.serializeMessage(msg));
-  }
-
-  
-  isOpen() {
-    return this.ws && this.ws.readyState === 1
-  }
-
-  serializeMessage(msg) {
-    return JSON.stringify(msg)
-  }
-
-  deserializeMessage(msg) {
-    return JSON.parse(msg)
-  }
-
+function hashDelete$2(key) {
+  return this.has(key) && delete this.__data__[key];
 }
 
-class WebSocketConnection extends ClientConnection {
-  _createWebSocket() {
-    return new window.WebSocket(this.config.wsUrl);
+var HASH_UNDEFINED$2 = '__lodash_hash_undefined__';
+
+
+var objectProto$3$1 = Object.prototype;
+
+
+var hasOwnProperty$1$1 = objectProto$3$1.hasOwnProperty;
+
+
+function hashGet$2(key) {
+  var data = this.__data__;
+  if (nativeCreate$2) {
+    var result = data[key];
+    return result === HASH_UNDEFINED$2 ? undefined : result;
+  }
+  return hasOwnProperty$1$1.call(data, key) ? data[key] : undefined;
+}
+
+var objectProto$4$1 = Object.prototype;
+
+
+var hasOwnProperty$2$1 = objectProto$4$1.hasOwnProperty;
+
+
+function hashHas$2(key) {
+  var data = this.__data__;
+  return nativeCreate$2 ? data[key] !== undefined : hasOwnProperty$2$1.call(data, key);
+}
+
+var HASH_UNDEFINED$1$1 = '__lodash_hash_undefined__';
+
+
+function hashSet$2(key, value) {
+  var data = this.__data__;
+  data[key] = (nativeCreate$2 && value === undefined) ? HASH_UNDEFINED$1$1 : value;
+  return this;
+}
+
+function Hash$2(entries) {
+  var index = -1,
+      length = entries ? entries.length : 0;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
   }
 }
 
-function computeSnapshot(jsonDoc, changeset) {
-  
-  jsonDoc = cloneDeep(jsonDoc);
-  let nodes = jsonDoc.nodes;
-  changeset.forEach((change) => {
-    change.ops.forEach((opData) => {
-      try {
-        let op = ObjectOperation.fromJSON(opData);
-        op.apply(nodes);
-      } catch (err) {
-        console.error(err, opData);
-      }
-    });
+
+Hash$2.prototype.clear = hashClear$2;
+Hash$2.prototype['delete'] = hashDelete$2;
+Hash$2.prototype.get = hashGet$2;
+Hash$2.prototype.has = hashHas$2;
+Hash$2.prototype.set = hashSet$2;
+
+function listCacheClear$2() {
+  this.__data__ = [];
+}
+
+function eq$2(value, other) {
+  return value === other || (value !== value && other !== other);
+}
+
+function assocIndexOf$2(array, key) {
+  var length = array.length;
+  while (length--) {
+    if (eq$2(array[length][0], key)) {
+      return length;
+    }
+  }
+  return -1;
+}
+
+var arrayProto$1 = Array.prototype;
+
+
+var splice$1 = arrayProto$1.splice;
+
+
+function listCacheDelete$2(key) {
+  var data = this.__data__,
+      index = assocIndexOf$2(data, key);
+
+  if (index < 0) {
+    return false;
+  }
+  var lastIndex = data.length - 1;
+  if (index == lastIndex) {
+    data.pop();
+  } else {
+    splice$1.call(data, index, 1);
+  }
+  return true;
+}
+
+function listCacheGet$2(key) {
+  var data = this.__data__,
+      index = assocIndexOf$2(data, key);
+
+  return index < 0 ? undefined : data[index][1];
+}
+
+function listCacheHas$2(key) {
+  return assocIndexOf$2(this.__data__, key) > -1;
+}
+
+function listCacheSet$2(key, value) {
+  var data = this.__data__,
+      index = assocIndexOf$2(data, key);
+
+  if (index < 0) {
+    data.push([key, value]);
+  } else {
+    data[index][1] = value;
+  }
+  return this;
+}
+
+function ListCache$2(entries) {
+  var index = -1,
+      length = entries ? entries.length : 0;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+
+ListCache$2.prototype.clear = listCacheClear$2;
+ListCache$2.prototype['delete'] = listCacheDelete$2;
+ListCache$2.prototype.get = listCacheGet$2;
+ListCache$2.prototype.has = listCacheHas$2;
+ListCache$2.prototype.set = listCacheSet$2;
+
+var Map$3 = getNative$2(root$2, 'Map');
+
+function mapCacheClear$2() {
+  this.__data__ = {
+    'hash': new Hash$2,
+    'map': new (Map$3 || ListCache$2),
+    'string': new Hash$2
+  };
+}
+
+function isKeyable$2(value) {
+  var type = typeof value;
+  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
+    ? (value !== '__proto__')
+    : (value === null);
+}
+
+function getMapData$2(map, key) {
+  var data = map.__data__;
+  return isKeyable$2(key)
+    ? data[typeof key == 'string' ? 'string' : 'hash']
+    : data.map;
+}
+
+function mapCacheDelete$2(key) {
+  return getMapData$2(this, key)['delete'](key);
+}
+
+function mapCacheGet$2(key) {
+  return getMapData$2(this, key).get(key);
+}
+
+function mapCacheHas$2(key) {
+  return getMapData$2(this, key).has(key);
+}
+
+function mapCacheSet$2(key, value) {
+  getMapData$2(this, key).set(key, value);
+  return this;
+}
+
+function MapCache$2(entries) {
+  var index = -1,
+      length = entries ? entries.length : 0;
+
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
+}
+
+
+MapCache$2.prototype.clear = mapCacheClear$2;
+MapCache$2.prototype['delete'] = mapCacheDelete$2;
+MapCache$2.prototype.get = mapCacheGet$2;
+MapCache$2.prototype.has = mapCacheHas$2;
+MapCache$2.prototype.set = mapCacheSet$2;
+
+var FUNC_ERROR_TEXT$1$1 = 'Expected a function';
+
+
+function memoize$2(func, resolver) {
+  if (typeof func != 'function' || (resolver && typeof resolver != 'function')) {
+    throw new TypeError(FUNC_ERROR_TEXT$1$1);
+  }
+  var memoized = function() {
+    var args = arguments,
+        key = resolver ? resolver.apply(this, args) : args[0],
+        cache = memoized.cache;
+
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+    var result = func.apply(this, args);
+    memoized.cache = cache.set(key, result);
+    return result;
+  };
+  memoized.cache = new (memoize$2.Cache || MapCache$2);
+  return memoized;
+}
+
+
+memoize$2.Cache = MapCache$2;
+
+var rePropName$1 = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(\.|\[\])(?:\4|$))/g;
+
+
+var reEscapeChar$1 = /\\(\\)?/g;
+
+
+var stringToPath$2 = memoize$2(function(string) {
+  var result = [];
+  toString$2(string).replace(rePropName$1, function(match, number, quote, string) {
+    result.push(quote ? string.replace(reEscapeChar$1, '$1') : (number || match));
   });
-  return jsonDoc
+  return result;
+});
+
+function castPath$2(value) {
+  return isArray$3(value) ? value : stringToPath$2(value);
 }
 
-const EMPTY_DOC = { nodes: {} };
+var reIsDeepProp$1 = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/;
+var reIsPlainProp$1 = /^\w*$/;
 
 
-class SnapshotEngine {
-  constructor(config) {
-    this.changeStore = config.changeStore;
-    this.snapshotStore = config.snapshotStore;
+function isKey$2(value, object) {
+  if (isArray$3(value)) {
+    return false;
   }
+  var type = typeof value;
+  if (type == 'number' || type == 'symbol' || type == 'boolean' ||
+      value == null || isSymbol$2(value)) {
+    return true;
+  }
+  return reIsPlainProp$1.test(value) || !reIsDeepProp$1.test(value) ||
+    (object != null && value in Object(object));
+}
+
+var INFINITY$1$1 = 1 / 0;
+
+
+function toKey$2(value) {
+  if (typeof value == 'string' || isSymbol$2(value)) {
+    return value;
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY$1$1) ? '-0' : result;
+}
+
+function baseGet$2(object, path) {
+  path = isKey$2(path, object) ? [path] : castPath$2(path);
+
+  var index = 0,
+      length = path.length;
+
+  while (object != null && index < length) {
+    object = object[toKey$2(path[index++])];
+  }
+  return (index && index == length) ? object : undefined;
+}
+
+function get$2(object, path, defaultValue) {
+  var result = object == null ? undefined : baseGet$2(object, path);
+  return result === undefined ? defaultValue : result;
+}
+
+function stackClear() {
+  this.__data__ = new ListCache$2;
+}
+
+function stackDelete(key) {
+  return this.__data__['delete'](key);
+}
+
+function stackGet(key) {
+  return this.__data__.get(key);
+}
+
+function stackHas(key) {
+  return this.__data__.has(key);
+}
+
+var LARGE_ARRAY_SIZE = 200;
+
+
+function stackSet(key, value) {
+  var cache = this.__data__;
+  if (cache instanceof ListCache$2 && cache.__data__.length == LARGE_ARRAY_SIZE) {
+    cache = this.__data__ = new MapCache$2(cache.__data__);
+  }
+  cache.set(key, value);
+  return this;
+}
+
+function Stack(entries) {
+  this.__data__ = new ListCache$2(entries);
+}
+
+
+Stack.prototype.clear = stackClear;
+Stack.prototype['delete'] = stackDelete;
+Stack.prototype.get = stackGet;
+Stack.prototype.has = stackHas;
+Stack.prototype.set = stackSet;
+
+var HASH_UNDEFINED$2$1 = '__lodash_hash_undefined__';
+
+
+function setCacheAdd(value) {
+  this.__data__.set(value, HASH_UNDEFINED$2$1);
+  return this;
+}
+
+function setCacheHas(value) {
+  return this.__data__.has(value);
+}
+
+function SetCache(values) {
+  var index = -1,
+      length = values ? values.length : 0;
+
+  this.__data__ = new MapCache$2;
+  while (++index < length) {
+    this.add(values[index]);
+  }
+}
+
+
+SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
+SetCache.prototype.has = setCacheHas;
+
+function arraySome(array, predicate) {
+  var index = -1,
+      length = array ? array.length : 0;
+
+  while (++index < length) {
+    if (predicate(array[index], index, array)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+var UNORDERED_COMPARE_FLAG$1 = 1;
+var PARTIAL_COMPARE_FLAG$2 = 2;
+
+
+function equalArrays(array, other, equalFunc, customizer, bitmask, stack) {
+  var isPartial = bitmask & PARTIAL_COMPARE_FLAG$2,
+      arrLength = array.length,
+      othLength = other.length;
+
+  if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
+    return false;
+  }
+  
+  var stacked = stack.get(array);
+  if (stacked) {
+    return stacked == other;
+  }
+  var index = -1,
+      result = true,
+      seen = (bitmask & UNORDERED_COMPARE_FLAG$1) ? new SetCache : undefined;
+
+  stack.set(array, other);
 
   
-  getSnapshot(documentId, version, cb) {
-    let jsonDoc = EMPTY_DOC;
-    this._getClosestSnapshot(documentId, version, (err, snapshot, closestVersion) => {
-      if (err) {
-        return cb(err)
+  while (++index < arrLength) {
+    var arrValue = array[index],
+        othValue = other[index];
+
+    if (customizer) {
+      var compared = isPartial
+        ? customizer(othValue, arrValue, index, other, array, stack)
+        : customizer(arrValue, othValue, index, array, other, stack);
+    }
+    if (compared !== undefined) {
+      if (compared) {
+        continue;
       }
-      if (snapshot && version === closestVersion) {
-        
-        return cb(null, snapshot, version)
+      result = false;
+      break;
+    }
+    
+    if (seen) {
+      if (!arraySome(other, function(othValue, othIndex) {
+            if (!seen.has(othIndex) &&
+                (arrValue === othValue || equalFunc(arrValue, othValue, customizer, bitmask, stack))) {
+              return seen.add(othIndex);
+            }
+          })) {
+        result = false;
+        break;
       }
-      let knownVersion;
-      if (snapshot) {
-        knownVersion = closestVersion;
-      } else {
-        knownVersion = 0; 
+    } else if (!(
+          arrValue === othValue ||
+            equalFunc(arrValue, othValue, customizer, bitmask, stack)
+        )) {
+      result = false;
+      break;
+    }
+  }
+  stack['delete'](array);
+  return result;
+}
+
+var Uint8Array = root$2.Uint8Array;
+
+function mapToArray(map) {
+  var index = -1,
+      result = Array(map.size);
+
+  map.forEach(function(value, key) {
+    result[++index] = [key, value];
+  });
+  return result;
+}
+
+function setToArray(set) {
+  var index = -1,
+      result = Array(set.size);
+
+  set.forEach(function(value) {
+    result[++index] = value;
+  });
+  return result;
+}
+
+var UNORDERED_COMPARE_FLAG$2 = 1;
+var PARTIAL_COMPARE_FLAG$3 = 2;
+
+
+var boolTag = '[object Boolean]';
+var dateTag = '[object Date]';
+var errorTag = '[object Error]';
+var mapTag = '[object Map]';
+var numberTag = '[object Number]';
+var regexpTag = '[object RegExp]';
+var setTag = '[object Set]';
+var stringTag = '[object String]';
+var symbolTag$1$1 = '[object Symbol]';
+
+var arrayBufferTag = '[object ArrayBuffer]';
+var dataViewTag = '[object DataView]';
+
+
+var symbolProto$1$1 = Symbol$2 ? Symbol$2.prototype : undefined;
+var symbolValueOf = symbolProto$1$1 ? symbolProto$1$1.valueOf : undefined;
+
+
+function equalByTag(object, other, tag, equalFunc, customizer, bitmask, stack) {
+  switch (tag) {
+    case dataViewTag:
+      if ((object.byteLength != other.byteLength) ||
+          (object.byteOffset != other.byteOffset)) {
+        return false;
       }
-      if (snapshot) {
-        jsonDoc = snapshot;
+      object = object.buffer;
+      other = other.buffer;
+
+    case arrayBufferTag:
+      if ((object.byteLength != other.byteLength) ||
+          !equalFunc(new Uint8Array(object), new Uint8Array(other))) {
+        return false;
+      }
+      return true;
+
+    case boolTag:
+    case dateTag:
+      
+      
+      
+      return +object == +other;
+
+    case errorTag:
+      return object.name == other.name && object.message == other.message;
+
+    case numberTag:
+      
+      return (object != +object) ? other != +other : object == +other;
+
+    case regexpTag:
+    case stringTag:
+      
+      
+      
+      return object == (other + '');
+
+    case mapTag:
+      var convert = mapToArray;
+
+    case setTag:
+      var isPartial = bitmask & PARTIAL_COMPARE_FLAG$3;
+      convert || (convert = setToArray);
+
+      if (object.size != other.size && !isPartial) {
+        return false;
       }
       
-      this.changeStore.getChanges(documentId, knownVersion, version, (err, changes) => {
-        if (err) return cb(err)
-        if (changes.length < (version - knownVersion)) {
-          return cb('Changes missing for reconstructing version '+ version)
-        }
-        jsonDoc = computeSnapshot(jsonDoc, changes);
-        cb(null, jsonDoc, version);
-      });
-    });
-  }
-
-  
-  createSnapshot(documentId, version, cb) {
-    this.getSnapshot(documentId, version, (err, snapshot) => {
-      if (err) return cb(err)
-      this.snapshotStore.saveSnapshot(documentId, version, snapshot, cb);
-    });
-  }
-
-  _getClosestSnapshot(documentId, version, cb) {
-    let closestVersion;
-
-    this.snapshotStore.getVersions(documentId, (err, versions) => {
-      if (err) return cb(err)
-
-      if(versions.length === 0) {
-        return cb(null, undefined)
+      var stacked = stack.get(object);
+      if (stacked) {
+        return stacked == other;
       }
+      bitmask |= UNORDERED_COMPARE_FLAG$2;
+      stack.set(object, other);
 
-      if (versions.indexOf(version) >= 0) {
-        closestVersion = version;
-      } else {
-        
-        let smallerVersions = versions.filter(function(v) {
-          return parseInt(v, 10) < version
-        });
-        
-        closestVersion = Math.max.apply(null, smallerVersions);
+      
+      return equalArrays(convert(object), convert(other), equalFunc, customizer, bitmask, stack);
+
+    case symbolTag$1$1:
+      if (symbolValueOf) {
+        return symbolValueOf.call(object) == symbolValueOf.call(other);
       }
-      if (!closestVersion) {
-        return cb(null, undefined)
-      }
-      this.snapshotStore.getSnapshot(documentId, closestVersion, cb);
-    });
   }
+  return false;
 }
 
-class DocumentEngine extends EventEmitter {
-  constructor(config) {
-    super();
-    this.changeStore = config.changeStore;
-    this.snapshotStore = config.snapshotStore;
-    
-    
-    this.snapshotFrequency = config.snapshotFrequency || 1;
-    this.snapshotEngine = new SnapshotEngine({
-      changeStore: this.changeStore,
-      snapshotStore: this.snapshotStore
-    });
-  }
+var nativeGetPrototype$1 = Object.getPrototypeOf;
 
-  
-  createDocument(documentId, initialChange, cb) {
-    this.addChange(documentId, initialChange, cb);
-  }
 
+function getPrototype$2(value) {
+  return nativeGetPrototype$1(Object(value));
+}
+
+var objectProto$6$1 = Object.prototype;
+
+
+var hasOwnProperty$4$1 = objectProto$6$1.hasOwnProperty;
+
+
+function baseHas$2(object, key) {
   
-  getDocument(documentId, version, cb) {
-    if (typeof version === 'function') {
-      cb = version;
-      version = undefined;
+  
+  
+  return object != null &&
+    (hasOwnProperty$4$1.call(object, key) ||
+      (typeof object == 'object' && key in object && getPrototype$2(object) === null));
+}
+
+var nativeKeys = Object.keys;
+
+
+function baseKeys(object) {
+  return nativeKeys(Object(object));
+}
+
+function baseTimes(n, iteratee) {
+  var index = -1,
+      result = Array(n);
+
+  while (++index < n) {
+    result[index] = iteratee(index);
+  }
+  return result;
+}
+
+function baseProperty(key) {
+  return function(object) {
+    return object == null ? undefined : object[key];
+  };
+}
+
+var getLength = baseProperty('length');
+
+var MAX_SAFE_INTEGER$1 = 9007199254740991;
+
+
+function isLength(value) {
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER$1;
+}
+
+function isArrayLike(value) {
+  return value != null && isLength(getLength(value)) && !isFunction$3(value);
+}
+
+function isArrayLikeObject(value) {
+  return isObjectLike$2(value) && isArrayLike(value);
+}
+
+var argsTag$1 = '[object Arguments]';
+
+
+var objectProto$7$1 = Object.prototype;
+
+
+var hasOwnProperty$5$1 = objectProto$7$1.hasOwnProperty;
+
+
+var objectToString$2$1 = objectProto$7$1.toString;
+
+
+var propertyIsEnumerable = objectProto$7$1.propertyIsEnumerable;
+
+
+function isArguments(value) {
+  
+  return isArrayLikeObject(value) && hasOwnProperty$5$1.call(value, 'callee') &&
+    (!propertyIsEnumerable.call(value, 'callee') || objectToString$2$1.call(value) == argsTag$1);
+}
+
+var stringTag$1 = '[object String]';
+
+
+var objectProto$8 = Object.prototype;
+
+
+var objectToString$3 = objectProto$8.toString;
+
+
+function isString$1(value) {
+  return typeof value == 'string' ||
+    (!isArray$3(value) && isObjectLike$2(value) && objectToString$3.call(value) == stringTag$1);
+}
+
+function indexKeys(object) {
+  var length = object ? object.length : undefined;
+  if (isLength(length) &&
+      (isArray$3(object) || isString$1(object) || isArguments(object))) {
+    return baseTimes(length, String);
+  }
+  return null;
+}
+
+var MAX_SAFE_INTEGER$1$1 = 9007199254740991;
+
+
+var reIsUint$1 = /^(?:0|[1-9]\d*)$/;
+
+
+function isIndex$2(value, length) {
+  length = length == null ? MAX_SAFE_INTEGER$1$1 : length;
+  return !!length &&
+    (typeof value == 'number' || reIsUint$1.test(value)) &&
+    (value > -1 && value % 1 == 0 && value < length);
+}
+
+var objectProto$9 = Object.prototype;
+
+
+function isPrototype(value) {
+  var Ctor = value && value.constructor,
+      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$9;
+
+  return value === proto;
+}
+
+function keys(object) {
+  var isProto = isPrototype(object);
+  if (!(isProto || isArrayLike(object))) {
+    return baseKeys(object);
+  }
+  var indexes = indexKeys(object),
+      skipIndexes = !!indexes,
+      result = indexes || [],
+      length = result.length;
+
+  for (var key in object) {
+    if (baseHas$2(object, key) &&
+        !(skipIndexes && (key == 'length' || isIndex$2(key, length))) &&
+        !(isProto && key == 'constructor')) {
+      result.push(key);
     }
-    if (!documentId) {
-      throw new Error('Invalid Arguments')
+  }
+  return result;
+}
+
+var PARTIAL_COMPARE_FLAG$4 = 2;
+
+
+function equalObjects(object, other, equalFunc, customizer, bitmask, stack) {
+  var isPartial = bitmask & PARTIAL_COMPARE_FLAG$4,
+      objProps = keys(object),
+      objLength = objProps.length,
+      othProps = keys(other),
+      othLength = othProps.length;
+
+  if (objLength != othLength && !isPartial) {
+    return false;
+  }
+  var index = objLength;
+  while (index--) {
+    var key = objProps[index];
+    if (!(isPartial ? key in other : baseHas$2(other, key))) {
+      return false;
     }
-    if (version === undefined) {
-      this.getVersion(documentId, (err, version) => {
-        if (err) return cb(err)
-        this.snapshotEngine.getSnapshot(documentId, version, cb);
-      });
+  }
+  
+  var stacked = stack.get(object);
+  if (stacked) {
+    return stacked == other;
+  }
+  var result = true;
+  stack.set(object, other);
+
+  var skipCtor = isPartial;
+  while (++index < objLength) {
+    key = objProps[index];
+    var objValue = object[key],
+        othValue = other[key];
+
+    if (customizer) {
+      var compared = isPartial
+        ? customizer(othValue, objValue, key, other, object, stack)
+        : customizer(objValue, othValue, key, object, other, stack);
+    }
+    
+    if (!(compared === undefined
+          ? (objValue === othValue || equalFunc(objValue, othValue, customizer, bitmask, stack))
+          : compared
+        )) {
+      result = false;
+      break;
+    }
+    skipCtor || (skipCtor = key == 'constructor');
+  }
+  if (result && !skipCtor) {
+    var objCtor = object.constructor,
+        othCtor = other.constructor;
+
+    
+    if (objCtor != othCtor &&
+        ('constructor' in object && 'constructor' in other) &&
+        !(typeof objCtor == 'function' && objCtor instanceof objCtor &&
+          typeof othCtor == 'function' && othCtor instanceof othCtor)) {
+      result = false;
+    }
+  }
+  stack['delete'](object);
+  return result;
+}
+
+var DataView = getNative$2(root$2, 'DataView');
+
+var Promise$1 = getNative$2(root$2, 'Promise');
+
+var Set$1 = getNative$2(root$2, 'Set');
+
+var WeakMap$1 = getNative$2(root$2, 'WeakMap');
+
+var mapTag$1 = '[object Map]';
+var objectTag$1 = '[object Object]';
+var promiseTag = '[object Promise]';
+var setTag$1 = '[object Set]';
+var weakMapTag = '[object WeakMap]';
+
+var dataViewTag$1 = '[object DataView]';
+
+
+var objectProto$10 = Object.prototype;
+
+
+var objectToString$4 = objectProto$10.toString;
+
+
+var dataViewCtorString = toSource$2(DataView);
+var mapCtorString = toSource$2(Map$3);
+var promiseCtorString = toSource$2(Promise$1);
+var setCtorString = toSource$2(Set$1);
+var weakMapCtorString = toSource$2(WeakMap$1);
+
+
+function getTag(value) {
+  return objectToString$4.call(value);
+}
+
+
+
+if ((DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag$1) ||
+    (Map$3 && getTag(new Map$3) != mapTag$1) ||
+    (Promise$1 && getTag(Promise$1.resolve()) != promiseTag) ||
+    (Set$1 && getTag(new Set$1) != setTag$1) ||
+    (WeakMap$1 && getTag(new WeakMap$1) != weakMapTag)) {
+  getTag = function(value) {
+    var result = objectToString$4.call(value),
+        Ctor = result == objectTag$1 ? value.constructor : undefined,
+        ctorString = Ctor ? toSource$2(Ctor) : undefined;
+
+    if (ctorString) {
+      switch (ctorString) {
+        case dataViewCtorString: return dataViewTag$1;
+        case mapCtorString: return mapTag$1;
+        case promiseCtorString: return promiseTag;
+        case setCtorString: return setTag$1;
+        case weakMapCtorString: return weakMapTag;
+      }
+    }
+    return result;
+  };
+}
+
+var getTag$1 = getTag;
+
+var argsTag$2 = '[object Arguments]';
+var arrayTag$1 = '[object Array]';
+var boolTag$1 = '[object Boolean]';
+var dateTag$1 = '[object Date]';
+var errorTag$1 = '[object Error]';
+var funcTag$1$1 = '[object Function]';
+var mapTag$2 = '[object Map]';
+var numberTag$1 = '[object Number]';
+var objectTag$2 = '[object Object]';
+var regexpTag$1 = '[object RegExp]';
+var setTag$2 = '[object Set]';
+var stringTag$2 = '[object String]';
+var weakMapTag$1 = '[object WeakMap]';
+
+var arrayBufferTag$1 = '[object ArrayBuffer]';
+var dataViewTag$2 = '[object DataView]';
+var float32Tag = '[object Float32Array]';
+var float64Tag = '[object Float64Array]';
+var int8Tag = '[object Int8Array]';
+var int16Tag = '[object Int16Array]';
+var int32Tag = '[object Int32Array]';
+var uint8Tag = '[object Uint8Array]';
+var uint8ClampedTag = '[object Uint8ClampedArray]';
+var uint16Tag = '[object Uint16Array]';
+var uint32Tag = '[object Uint32Array]';
+
+
+var typedArrayTags = {};
+typedArrayTags[float32Tag] = typedArrayTags[float64Tag] =
+typedArrayTags[int8Tag] = typedArrayTags[int16Tag] =
+typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] =
+typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] =
+typedArrayTags[uint32Tag] = true;
+typedArrayTags[argsTag$2] = typedArrayTags[arrayTag$1] =
+typedArrayTags[arrayBufferTag$1] = typedArrayTags[boolTag$1] =
+typedArrayTags[dataViewTag$2] = typedArrayTags[dateTag$1] =
+typedArrayTags[errorTag$1] = typedArrayTags[funcTag$1$1] =
+typedArrayTags[mapTag$2] = typedArrayTags[numberTag$1] =
+typedArrayTags[objectTag$2] = typedArrayTags[regexpTag$1] =
+typedArrayTags[setTag$2] = typedArrayTags[stringTag$2] =
+typedArrayTags[weakMapTag$1] = false;
+
+
+var objectProto$11 = Object.prototype;
+
+
+var objectToString$5 = objectProto$11.toString;
+
+
+function isTypedArray(value) {
+  return isObjectLike$2(value) &&
+    isLength(value.length) && !!typedArrayTags[objectToString$5.call(value)];
+}
+
+var PARTIAL_COMPARE_FLAG$1 = 2;
+
+
+var argsTag = '[object Arguments]';
+var arrayTag = '[object Array]';
+var objectTag = '[object Object]';
+
+
+var objectProto$5$1 = Object.prototype;
+
+
+var hasOwnProperty$3$1 = objectProto$5$1.hasOwnProperty;
+
+
+function baseIsEqualDeep(object, other, equalFunc, customizer, bitmask, stack) {
+  var objIsArr = isArray$3(object),
+      othIsArr = isArray$3(other),
+      objTag = arrayTag,
+      othTag = arrayTag;
+
+  if (!objIsArr) {
+    objTag = getTag$1(object);
+    objTag = objTag == argsTag ? objectTag : objTag;
+  }
+  if (!othIsArr) {
+    othTag = getTag$1(other);
+    othTag = othTag == argsTag ? objectTag : othTag;
+  }
+  var objIsObj = objTag == objectTag && !isHostObject$2(object),
+      othIsObj = othTag == objectTag && !isHostObject$2(other),
+      isSameTag = objTag == othTag;
+
+  if (isSameTag && !objIsObj) {
+    stack || (stack = new Stack);
+    return (objIsArr || isTypedArray(object))
+      ? equalArrays(object, other, equalFunc, customizer, bitmask, stack)
+      : equalByTag(object, other, objTag, equalFunc, customizer, bitmask, stack);
+  }
+  if (!(bitmask & PARTIAL_COMPARE_FLAG$1)) {
+    var objIsWrapped = objIsObj && hasOwnProperty$3$1.call(object, '__wrapped__'),
+        othIsWrapped = othIsObj && hasOwnProperty$3$1.call(other, '__wrapped__');
+
+    if (objIsWrapped || othIsWrapped) {
+      var objUnwrapped = objIsWrapped ? object.value() : object,
+          othUnwrapped = othIsWrapped ? other.value() : other;
+
+      stack || (stack = new Stack);
+      return equalFunc(objUnwrapped, othUnwrapped, customizer, bitmask, stack);
+    }
+  }
+  if (!isSameTag) {
+    return false;
+  }
+  stack || (stack = new Stack);
+  return equalObjects(object, other, equalFunc, customizer, bitmask, stack);
+}
+
+function baseIsEqual(value, other, customizer, bitmask, stack) {
+  if (value === other) {
+    return true;
+  }
+  if (value == null || other == null || (!isObject$3(value) && !isObjectLike$2(other))) {
+    return value !== value && other !== other;
+  }
+  return baseIsEqualDeep(value, other, baseIsEqual, customizer, bitmask, stack);
+}
+
+var UNORDERED_COMPARE_FLAG = 1;
+var PARTIAL_COMPARE_FLAG = 2;
+
+
+function baseIsMatch(object, source, matchData, customizer) {
+  var index = matchData.length,
+      length = index,
+      noCustomizer = !customizer;
+
+  if (object == null) {
+    return !length;
+  }
+  object = Object(object);
+  while (index--) {
+    var data = matchData[index];
+    if ((noCustomizer && data[2])
+          ? data[1] !== object[data[0]]
+          : !(data[0] in object)
+        ) {
+      return false;
+    }
+  }
+  while (++index < length) {
+    data = matchData[index];
+    var key = data[0],
+        objValue = object[key],
+        srcValue = data[1];
+
+    if (noCustomizer && data[2]) {
+      if (objValue === undefined && !(key in object)) {
+        return false;
+      }
     } else {
-      this.snapshotEngine.getSnapshot(documentId, version, cb);
-    }
-  }
-
-  
-  deleteDocument(documentId, cb) {
-    this.changeStore.deleteChanges(documentId, (err) => {
-      if (err) {
-        return cb(new Error('Deleting changes failed'))
+      var stack = new Stack;
+      if (customizer) {
+        var result = customizer(objValue, srcValue, key, object, source, stack);
       }
-    });
-  }
-
-  
-  documentExists(documentId, cb) {
-    this.getVersion(documentId, (err, version) => {
-      if (version >= 0) {
-        cb(null, true);
-      } else {
-        cb(null, false);
+      if (!(result === undefined
+            ? baseIsEqual(srcValue, objValue, customizer, UNORDERED_COMPARE_FLAG | PARTIAL_COMPARE_FLAG, stack)
+            : result
+          )) {
+        return false;
       }
-    });
-  }
-
-  
-  getChanges(documentId, sinceVersion, toVersion, cb) {
-    this.changeStore.getChanges(documentId, sinceVersion, toVersion, cb);
-  }
-
-  
-  getVersion(documentId, cb) {
-    this.changeStore.getVersion(documentId, cb);
-  }
-
-  
-  requestSnapshot(documentId, version, cb) {
-    if (version % this.snapshotFrequency === 0) {
-      this.snapshotEngine.createSnapshot(documentId, version, cb);
-    } else {
-      cb(null); 
     }
   }
+  return true;
+}
 
+function isStrictComparable(value) {
+  return value === value && !isObject$3(value);
+}
+
+function getMatchData(object) {
+  var result = keys(object),
+      length = result.length;
+
+  while (length--) {
+    var key = result[length],
+        value = object[key];
+
+    result[length] = [key, value, isStrictComparable(value)];
+  }
+  return result;
+}
+
+function matchesStrictComparable(key, srcValue) {
+  return function(object) {
+    if (object == null) {
+      return false;
+    }
+    return object[key] === srcValue &&
+      (srcValue !== undefined || (key in Object(object)));
+  };
+}
+
+function baseMatches(source) {
+  var matchData = getMatchData(source);
+  if (matchData.length == 1 && matchData[0][2]) {
+    return matchesStrictComparable(matchData[0][0], matchData[0][1]);
+  }
+  return function(object) {
+    return object === source || baseIsMatch(object, source, matchData);
+  };
+}
+
+function baseHasIn(object, key) {
+  return object != null && key in Object(object);
+}
+
+function hasPath(object, path, hasFunc) {
+  path = isKey$2(path, object) ? [path] : castPath$2(path);
+
+  var result,
+      index = -1,
+      length = path.length;
+
+  while (++index < length) {
+    var key = toKey$2(path[index]);
+    if (!(result = object != null && hasFunc(object, key))) {
+      break;
+    }
+    object = object[key];
+  }
+  if (result) {
+    return result;
+  }
+  var length = object ? object.length : 0;
+  return !!length && isLength(length) && isIndex$2(key, length) &&
+    (isArray$3(object) || isString$1(object) || isArguments(object));
+}
+
+function hasIn(object, path) {
+  return object != null && hasPath(object, path, baseHasIn);
+}
+
+var UNORDERED_COMPARE_FLAG$3 = 1;
+var PARTIAL_COMPARE_FLAG$5 = 2;
+
+
+function baseMatchesProperty(path, srcValue) {
+  if (isKey$2(path) && isStrictComparable(srcValue)) {
+    return matchesStrictComparable(toKey$2(path), srcValue);
+  }
+  return function(object) {
+    var objValue = get$2(object, path);
+    return (objValue === undefined && objValue === srcValue)
+      ? hasIn(object, path)
+      : baseIsEqual(srcValue, objValue, undefined, UNORDERED_COMPARE_FLAG$3 | PARTIAL_COMPARE_FLAG$5);
+  };
+}
+
+function identity(value) {
+  return value;
+}
+
+function basePropertyDeep(path) {
+  return function(object) {
+    return baseGet$2(object, path);
+  };
+}
+
+function property(path) {
+  return isKey$2(path) ? baseProperty(toKey$2(path)) : basePropertyDeep(path);
+}
+
+function baseIteratee(value) {
   
-  addChange(documentId, change, cb) {
-    this.changeStore.addChange(documentId, change, (err, newVersion) => {
-      if (err) return cb(err)
+  
+  if (typeof value == 'function') {
+    return value;
+  }
+  if (value == null) {
+    return identity;
+  }
+  if (typeof value == 'object') {
+    return isArray$3(value)
+      ? baseMatchesProperty(value[0], value[1])
+      : baseMatches(value);
+  }
+  return property(value);
+}
 
-      this.requestSnapshot(documentId, newVersion, () => {
-        
-        cb(null, newVersion);
-      });
-    });
+function createFind(findIndexFunc) {
+  return function(collection, predicate, fromIndex) {
+    var iterable = Object(collection);
+    predicate = baseIteratee(predicate, 3);
+    if (!isArrayLike(collection)) {
+      var props = keys(collection);
+    }
+    var index = findIndexFunc(props || collection, function(value, key) {
+      if (props) {
+        key = value;
+        value = iterable[key];
+      }
+      return predicate(value, key, iterable);
+    }, fromIndex);
+    return index > -1 ? collection[props ? props[index] : index] : undefined;
+  };
+}
+
+function baseFindIndex(array, predicate, fromIndex, fromRight) {
+  var length = array.length,
+      index = fromIndex + (fromRight ? 1 : -1);
+
+  while ((fromRight ? index-- : ++index < length)) {
+    if (predicate(array[index], index, array)) {
+      return index;
+    }
+  }
+  return -1;
+}
+
+var INFINITY$2$1 = 1 / 0;
+var MAX_INTEGER = 1.7976931348623157e+308;
+
+
+function toFinite(value) {
+  if (!value) {
+    return value === 0 ? value : 0;
+  }
+  value = toNumber(value);
+  if (value === INFINITY$2$1 || value === -INFINITY$2$1) {
+    var sign = (value < 0 ? -1 : 1);
+    return sign * MAX_INTEGER;
+  }
+  return value === value ? value : 0;
+}
+
+function toInteger(value) {
+  var result = toFinite(value),
+      remainder = result % 1;
+
+  return result === result ? (remainder ? result - remainder : result) : 0;
+}
+
+var nativeMax$1 = Math.max;
+
+
+function findIndex$1(array, predicate, fromIndex) {
+  var length = array ? array.length : 0;
+  if (!length) {
+    return -1;
+  }
+  var index = fromIndex == null ? 0 : toInteger(fromIndex);
+  if (index < 0) {
+    index = nativeMax$1(length + index, 0);
+  }
+  return baseFindIndex(array, baseIteratee(predicate, 3), index);
+}
+
+var find = createFind(findIndex$1);
+
+function isMatch(object, source) {
+  return object === source || baseIsMatch(object, source, getMatchData(source));
+}
+
+function arrayEach(array, iteratee) {
+  var index = -1,
+      length = array ? array.length : 0;
+
+  while (++index < length) {
+    if (iteratee(array[index], index, array) === false) {
+      break;
+    }
+  }
+  return array;
+}
+
+function assignMergeValue(object, key, value) {
+  if ((value !== undefined && !eq$2(object[key], value)) ||
+      (typeof key == 'number' && value === undefined && !(key in object))) {
+    object[key] = value;
   }
 }
 
-class CollabServerConfigurator {
-  constructor() {
-    this.config = {
-      heartbeat: 30*1000,
-      documentStore: undefined,
-      changeStore: undefined,
-      snapshotStore: undefined
-    };
-  }
+var objectProto$12 = Object.prototype;
 
-  setHost(host) {
-    this.config.host = host;
-  }
 
-  setPort(port) {
-    this.config.port = port;
-  }
+var hasOwnProperty$6 = objectProto$12.hasOwnProperty;
 
-  
-  
 
-  setDocumentStore(documentStore) {
-    this.config.documentStore = documentStore;
-  }
-
-  setChangeStore(changeStore) {
-    this.config.changeStore = changeStore;
-  }
-
-  setSnapshotStore(snapshotStore) {
-    this.config.snapshotStore = snapshotStore;
-  }
-
-  
-  
-
-  getHost() {
-    return this.config.host
-  }
-
-  getPort() {
-    return this.config.port
-  }
-
-  getDocumentStore() {
-    return this.config.documentStore
-  }
-
-  getChangeStore() {
-    return this.config.changeStore
-  }
-
-  getSnapshotStore() {
-    return this.config.snapshotStore
-  }
-
-  
-  getDocumentEngine() {
-    if (!this.documentEngine) {
-      this.documentEngine = new DocumentEngine({
-        documentStore: this.config.documentStore,
-        changeStore: this.config.changeStore,
-        snapshotStore: this.config.snapshotStore
-      });
-    }
-    return this.documentEngine
-  }
-
-  
-  import(pkg, options) {
-    pkg.configure(this, options || {});
-    return this
-  }
-
-}
-
-class CollabClient extends EventEmitter {
-  constructor(config) {
-    super();
-
-    this.config = config;
-    this.connection = config.connection;
-
-    
-    this.scope = 'substance/collab';
-
-    
-    this._onMessage = this._onMessage.bind(this);
-    this._onConnectionOpen = this._onConnectionOpen.bind(this);
-    this._onConnectionClose = this._onConnectionClose.bind(this);
-
-    
-    this.connection.on('open', this._onConnectionOpen);
-    this.connection.on('close', this._onConnectionClose);
-    this.connection.on('message', this._onMessage);
-  }
-
-  _onConnectionClose() {
-    this.emit('disconnected');
-  }
-
-  _onConnectionOpen() {
-    this.emit('connected');
-  }
-
-  
-  _onMessage(msg) {
-    if (msg.scope === this.scope) {
-      this.emit('message', msg);
-    } else if (msg.scope !== '_internal') {
-      console.info('Message ignored. Not sent in hub scope', msg);
-    }
-  }
-
-  
-  send(msg) {
-    if (!this.connection.isOpen()) {
-      console.warn('Message could not be sent. Connection not open.', msg);
-      return
-    }
-
-    msg.scope = this.scope;
-    if (this.config.enhanceMessage) {
-      msg = this.config.enhanceMessage(msg);
-    }
-    this.connection.send(msg);
-  }
-
-  
-  isConnected() {
-    return this.connection.isOpen()
-  }
-
-  dispose() {
-    this.connection.off(this);
+function assignValue$2(object, key, value) {
+  var objValue = object[key];
+  if (!(hasOwnProperty$6.call(object, key) && eq$2(objValue, value)) ||
+      (value === undefined && !(key in object))) {
+    object[key] = value;
   }
 }
 
-class SnapshotStore {
-  constructor(seed) {
-    this._snapshots = seed || {};
-  }
+function copyObject(source, props, object, customizer) {
+  object || (object = {});
 
-  
-  getVersions(documentId, cb) {
-    let versions = this._getVersions(documentId);
-    cb(null, versions);
-  }
+  var index = -1,
+      length = props.length;
 
-  
-  getSnapshot(documentId, version, cb) {
-    if (!arguments.length === 3) {
-      throw new Error('Invalid Arguments')
-    }
-    let docEntry = this._snapshots[documentId];
-    if (!docEntry) return cb(null, undefined)
-    let snapshot = docEntry[version];
-    if (snapshot) {
-      cb(null, snapshot, version);
-    } else {
-      cb(null, undefined);
-    }
-  }
+  while (++index < length) {
+    var key = props[index];
 
-  
-  saveSnapshot(documentId, version, data, cb) {
-    if (!documentId || !version || !data) {
-      throw new Error('Invalid arguments')
-    }
-    let docEntry = this._snapshots[documentId];
-    if (!docEntry) {
-      docEntry = this._snapshots[documentId] = {};
-    }
-    docEntry[version] = data;
-    cb(null, docEntry[version]);
-  }
+    var newValue = customizer
+      ? customizer(object[key], source[key], key, object, source)
+      : source[key];
 
-  
-  deleteSnapshot(documentId, version, cb) {
-    let docEntry = this._snapshots[documentId];
-    if (!docEntry || !docEntry[version]) {
-      return cb(new Error('Snapshot does not exist and can not be deleted'))
-    }
-    let snapshot = this._snapshots[documentId][version];
-    delete this._snapshots[documentId][version];
-    cb(null, snapshot);
+    assignValue$2(object, key, newValue);
   }
-
-  
-  _getVersions(documentId) {
-    let docEntry = this._snapshots[documentId];
-    if (!docEntry) return [] 
-    return Object.keys(docEntry)
-  }
-
+  return object;
 }
 
-var CollabServerPackage = {
-  name: 'collab-server',
-  configure: function (config) {
-    config.setChangeStore(new ChangeStore());
-    config.setSnapshotStore(new SnapshotStore());
+function baseAssign(object, source) {
+  return object && copyObject(source, keys(source), object);
+}
+
+function cloneBuffer(buffer, isDeep) {
+  if (isDeep) {
+    return buffer.slice();
   }
+  var result = new buffer.constructor(buffer.length);
+  buffer.copy(result);
+  return result;
+}
+
+function copyArray(source, array) {
+  var index = -1,
+      length = source.length;
+
+  array || (array = Array(length));
+  while (++index < length) {
+    array[index] = source[index];
+  }
+  return array;
+}
+
+function stubArray() {
+  return [];
+}
+
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+
+
+function getSymbols(object) {
+  
+  
+  return getOwnPropertySymbols(Object(object));
+}
+
+
+if (!getOwnPropertySymbols) {
+  getSymbols = stubArray;
+}
+
+var getSymbols$1 = getSymbols;
+
+function copySymbols(source, object) {
+  return copyObject(source, getSymbols$1(source), object);
+}
+
+function arrayPush(array, values) {
+  var index = -1,
+      length = values.length,
+      offset = array.length;
+
+  while (++index < length) {
+    array[offset + index] = values[index];
+  }
+  return array;
+}
+
+function baseGetAllKeys(object, keysFunc, symbolsFunc) {
+  var result = keysFunc(object);
+  return isArray$3(object) ? result : arrayPush(result, symbolsFunc(object));
+}
+
+function getAllKeys(object) {
+  return baseGetAllKeys(object, keys, getSymbols$1);
+}
+
+var objectProto$13 = Object.prototype;
+
+
+var hasOwnProperty$7 = objectProto$13.hasOwnProperty;
+
+
+function initCloneArray(array) {
+  var length = array.length,
+      result = array.constructor(length);
+
+  
+  if (length && typeof array[0] == 'string' && hasOwnProperty$7.call(array, 'index')) {
+    result.index = array.index;
+    result.input = array.input;
+  }
+  return result;
+}
+
+function cloneArrayBuffer(arrayBuffer) {
+  var result = new arrayBuffer.constructor(arrayBuffer.byteLength);
+  new Uint8Array(result).set(new Uint8Array(arrayBuffer));
+  return result;
+}
+
+function cloneDataView(dataView, isDeep) {
+  var buffer = isDeep ? cloneArrayBuffer(dataView.buffer) : dataView.buffer;
+  return new dataView.constructor(buffer, dataView.byteOffset, dataView.byteLength);
+}
+
+function addMapEntry(map, pair) {
+  
+  map.set(pair[0], pair[1]);
+  return map;
+}
+
+function cloneMap(map, isDeep, cloneFunc) {
+  var array = isDeep ? cloneFunc(mapToArray(map), true) : mapToArray(map);
+  return arrayReduce(array, addMapEntry, new map.constructor);
+}
+
+var reFlags = /\w*$/;
+
+
+function cloneRegExp(regexp) {
+  var result = new regexp.constructor(regexp.source, reFlags.exec(regexp));
+  result.lastIndex = regexp.lastIndex;
+  return result;
+}
+
+function addSetEntry(set, value) {
+  set.add(value);
+  return set;
+}
+
+function cloneSet(set, isDeep, cloneFunc) {
+  var array = isDeep ? cloneFunc(setToArray(set), true) : setToArray(set);
+  return arrayReduce(array, addSetEntry, new set.constructor);
+}
+
+var symbolProto$2 = Symbol$2 ? Symbol$2.prototype : undefined;
+var symbolValueOf$1 = symbolProto$2 ? symbolProto$2.valueOf : undefined;
+
+
+function cloneSymbol(symbol) {
+  return symbolValueOf$1 ? Object(symbolValueOf$1.call(symbol)) : {};
+}
+
+function cloneTypedArray(typedArray, isDeep) {
+  var buffer = isDeep ? cloneArrayBuffer(typedArray.buffer) : typedArray.buffer;
+  return new typedArray.constructor(buffer, typedArray.byteOffset, typedArray.length);
+}
+
+var boolTag$3 = '[object Boolean]';
+var dateTag$3 = '[object Date]';
+var mapTag$4 = '[object Map]';
+var numberTag$3 = '[object Number]';
+var regexpTag$3 = '[object RegExp]';
+var setTag$4 = '[object Set]';
+var stringTag$4 = '[object String]';
+var symbolTag$3 = '[object Symbol]';
+
+var arrayBufferTag$3 = '[object ArrayBuffer]';
+var dataViewTag$4 = '[object DataView]';
+var float32Tag$2 = '[object Float32Array]';
+var float64Tag$2 = '[object Float64Array]';
+var int8Tag$2 = '[object Int8Array]';
+var int16Tag$2 = '[object Int16Array]';
+var int32Tag$2 = '[object Int32Array]';
+var uint8Tag$2 = '[object Uint8Array]';
+var uint8ClampedTag$2 = '[object Uint8ClampedArray]';
+var uint16Tag$2 = '[object Uint16Array]';
+var uint32Tag$2 = '[object Uint32Array]';
+
+
+function initCloneByTag(object, tag, cloneFunc, isDeep) {
+  var Ctor = object.constructor;
+  switch (tag) {
+    case arrayBufferTag$3:
+      return cloneArrayBuffer(object);
+
+    case boolTag$3:
+    case dateTag$3:
+      return new Ctor(+object);
+
+    case dataViewTag$4:
+      return cloneDataView(object, isDeep);
+
+    case float32Tag$2: case float64Tag$2:
+    case int8Tag$2: case int16Tag$2: case int32Tag$2:
+    case uint8Tag$2: case uint8ClampedTag$2: case uint16Tag$2: case uint32Tag$2:
+      return cloneTypedArray(object, isDeep);
+
+    case mapTag$4:
+      return cloneMap(object, isDeep, cloneFunc);
+
+    case numberTag$3:
+    case stringTag$4:
+      return new Ctor(object);
+
+    case regexpTag$3:
+      return cloneRegExp(object);
+
+    case setTag$4:
+      return cloneSet(object, isDeep, cloneFunc);
+
+    case symbolTag$3:
+      return cloneSymbol(object);
+  }
+}
+
+var objectCreate = Object.create;
+
+
+function baseCreate(proto) {
+  return isObject$3(proto) ? objectCreate(proto) : {};
+}
+
+function initCloneObject(object) {
+  return (typeof object.constructor == 'function' && !isPrototype(object))
+    ? baseCreate(getPrototype$2(object))
+    : {};
+}
+
+function stubFalse() {
+  return false;
+}
+
+var freeExports = typeof exports == 'object' && exports;
+
+
+var freeModule = freeExports && typeof module == 'object' && module;
+
+
+var moduleExports = freeModule && freeModule.exports === freeExports;
+
+
+var Buffer = moduleExports ? root$2.Buffer : undefined;
+
+
+var isBuffer = !Buffer ? stubFalse : function(value) {
+  return value instanceof Buffer;
 };
 
-class DocumentServer {
+var argsTag$3 = '[object Arguments]';
+var arrayTag$2 = '[object Array]';
+var boolTag$2 = '[object Boolean]';
+var dateTag$2 = '[object Date]';
+var errorTag$2 = '[object Error]';
+var funcTag$2 = '[object Function]';
+var genTag$1$1 = '[object GeneratorFunction]';
+var mapTag$3 = '[object Map]';
+var numberTag$2 = '[object Number]';
+var objectTag$3 = '[object Object]';
+var regexpTag$2 = '[object RegExp]';
+var setTag$3 = '[object Set]';
+var stringTag$3 = '[object String]';
+var symbolTag$2 = '[object Symbol]';
+var weakMapTag$2 = '[object WeakMap]';
 
-  constructor(params) {
-    this.configurator = params.configurator;
-    this.engine = this.configurator.getDocumentEngine();
+var arrayBufferTag$2 = '[object ArrayBuffer]';
+var dataViewTag$3 = '[object DataView]';
+var float32Tag$1 = '[object Float32Array]';
+var float64Tag$1 = '[object Float64Array]';
+var int8Tag$1 = '[object Int8Array]';
+var int16Tag$1 = '[object Int16Array]';
+var int32Tag$1 = '[object Int32Array]';
+var uint8Tag$1 = '[object Uint8Array]';
+var uint8ClampedTag$1 = '[object Uint8ClampedArray]';
+var uint16Tag$1 = '[object Uint16Array]';
+var uint32Tag$1 = '[object Uint32Array]';
+
+
+var cloneableTags = {};
+cloneableTags[argsTag$3] = cloneableTags[arrayTag$2] =
+cloneableTags[arrayBufferTag$2] = cloneableTags[dataViewTag$3] =
+cloneableTags[boolTag$2] = cloneableTags[dateTag$2] =
+cloneableTags[float32Tag$1] = cloneableTags[float64Tag$1] =
+cloneableTags[int8Tag$1] = cloneableTags[int16Tag$1] =
+cloneableTags[int32Tag$1] = cloneableTags[mapTag$3] =
+cloneableTags[numberTag$2] = cloneableTags[objectTag$3] =
+cloneableTags[regexpTag$2] = cloneableTags[setTag$3] =
+cloneableTags[stringTag$3] = cloneableTags[symbolTag$2] =
+cloneableTags[uint8Tag$1] = cloneableTags[uint8ClampedTag$1] =
+cloneableTags[uint16Tag$1] = cloneableTags[uint32Tag$1] = true;
+cloneableTags[errorTag$2] = cloneableTags[funcTag$2] =
+cloneableTags[weakMapTag$2] = false;
+
+
+function baseClone(value, isDeep, isFull, customizer, key, object, stack) {
+  var result;
+  if (customizer) {
+    result = object ? customizer(value, key, object, stack) : customizer(value);
+  }
+  if (result !== undefined) {
+    return result;
+  }
+  if (!isObject$3(value)) {
+    return value;
+  }
+  var isArr = isArray$3(value);
+  if (isArr) {
+    result = initCloneArray(value);
+    if (!isDeep) {
+      return copyArray(value, result);
+    }
+  } else {
+    var tag = getTag$1(value),
+        isFunc = tag == funcTag$2 || tag == genTag$1$1;
+
+    if (isBuffer(value)) {
+      return cloneBuffer(value, isDeep);
+    }
+    if (tag == objectTag$3 || tag == argsTag$3 || (isFunc && !object)) {
+      if (isHostObject$2(value)) {
+        return object ? value : {};
+      }
+      result = initCloneObject(isFunc ? {} : value);
+      if (!isDeep) {
+        return copySymbols(value, baseAssign(result, value));
+      }
+    } else {
+      if (!cloneableTags[tag]) {
+        return object ? value : {};
+      }
+      result = initCloneByTag(value, tag, baseClone, isDeep);
+    }
+  }
+  
+  stack || (stack = new Stack);
+  var stacked = stack.get(value);
+  if (stacked) {
+    return stacked;
+  }
+  stack.set(value, result);
+
+  if (!isArr) {
+    var props = isFull ? getAllKeys(value) : keys(value);
+  }
+  
+  arrayEach(props || value, function(subValue, key) {
+    if (props) {
+      key = subValue;
+      subValue = value[key];
+    }
+    assignValue$2(result, key, baseClone(subValue, isDeep, isFull, customizer, key, value, stack));
+  });
+  return result;
+}
+
+var objectTag$4 = '[object Object]';
+
+
+var objectProto$14 = Object.prototype;
+
+
+var funcToString$2$1 = Function.prototype.toString;
+
+
+var hasOwnProperty$8 = objectProto$14.hasOwnProperty;
+
+
+var objectCtorString = funcToString$2$1.call(Object);
+
+
+var objectToString$6 = objectProto$14.toString;
+
+
+function isPlainObject$1(value) {
+  if (!isObjectLike$2(value) ||
+      objectToString$6.call(value) != objectTag$4 || isHostObject$2(value)) {
+    return false;
+  }
+  var proto = getPrototype$2(value);
+  if (proto === null) {
+    return true;
+  }
+  var Ctor = hasOwnProperty$8.call(proto, 'constructor') && proto.constructor;
+  return (typeof Ctor == 'function' &&
+    Ctor instanceof Ctor && funcToString$2$1.call(Ctor) == objectCtorString);
+}
+
+var Reflect = root$2.Reflect;
+
+function iteratorToArray(iterator) {
+  var data,
+      result = [];
+
+  while (!(data = iterator.next()).done) {
+    result.push(data.value);
+  }
+  return result;
+}
+
+var objectProto$16 = Object.prototype;
+
+
+var enumerate = Reflect ? Reflect.enumerate : undefined;
+var propertyIsEnumerable$1 = objectProto$16.propertyIsEnumerable;
+
+
+function baseKeysIn(object) {
+  object = object == null ? object : Object(object);
+
+  var result = [];
+  for (var key in object) {
+    result.push(key);
+  }
+  return result;
+}
+
+
+if (enumerate && !propertyIsEnumerable$1.call({ 'valueOf': 1 }, 'valueOf')) {
+  baseKeysIn = function(object) {
+    return iteratorToArray(enumerate(object));
+  };
+}
+
+var baseKeysIn$1 = baseKeysIn;
+
+var objectProto$15 = Object.prototype;
+
+
+var hasOwnProperty$9 = objectProto$15.hasOwnProperty;
+
+
+function keysIn(object) {
+  var index = -1,
+      isProto = isPrototype(object),
+      props = baseKeysIn$1(object),
+      propsLength = props.length,
+      indexes = indexKeys(object),
+      skipIndexes = !!indexes,
+      result = indexes || [],
+      length = result.length;
+
+  while (++index < propsLength) {
+    var key = props[index];
+    if (!(skipIndexes && (key == 'length' || isIndex$2(key, length))) &&
+        !(key == 'constructor' && (isProto || !hasOwnProperty$9.call(object, key)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+function toPlainObject(value) {
+  return copyObject(value, keysIn(value));
+}
+
+function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, stack) {
+  var objValue = object[key],
+      srcValue = source[key],
+      stacked = stack.get(srcValue);
+
+  if (stacked) {
+    assignMergeValue(object, key, stacked);
+    return;
+  }
+  var newValue = customizer
+    ? customizer(objValue, srcValue, (key + ''), object, source, stack)
+    : undefined;
+
+  var isCommon = newValue === undefined;
+
+  if (isCommon) {
+    newValue = srcValue;
+    if (isArray$3(srcValue) || isTypedArray(srcValue)) {
+      if (isArray$3(objValue)) {
+        newValue = objValue;
+      }
+      else if (isArrayLikeObject(objValue)) {
+        newValue = copyArray(objValue);
+      }
+      else {
+        isCommon = false;
+        newValue = baseClone(srcValue, true);
+      }
+    }
+    else if (isPlainObject$1(srcValue) || isArguments(srcValue)) {
+      if (isArguments(objValue)) {
+        newValue = toPlainObject(objValue);
+      }
+      else if (!isObject$3(objValue) || (srcIndex && isFunction$3(objValue))) {
+        isCommon = false;
+        newValue = baseClone(srcValue, true);
+      }
+      else {
+        newValue = objValue;
+      }
+    }
+    else {
+      isCommon = false;
+    }
+  }
+  stack.set(srcValue, newValue);
+
+  if (isCommon) {
     
-    this.path = '/api/documents';
+    mergeFunc(newValue, srcValue, srcIndex, customizer, stack);
   }
+  stack['delete'](srcValue);
+  assignMergeValue(object, key, newValue);
+}
 
-  
-  bind(app) {
-    app.post(this.path, this._createDocument.bind(this));
-    app.get(this.path + '/:id', this._getDocument.bind(this));
-    app.delete(this.path + '/:id', this._deleteDocument.bind(this));
+function baseMerge(object, source, srcIndex, customizer, stack) {
+  if (object === source) {
+    return;
   }
+  if (!(isArray$3(source) || isTypedArray(source))) {
+    var props = keysIn(source);
+  }
+  arrayEach(props || source, function(srcValue, key) {
+    if (props) {
+      key = srcValue;
+      srcValue = source[key];
+    }
+    if (isObject$3(srcValue)) {
+      stack || (stack = new Stack);
+      baseMergeDeep(object, source, key, srcIndex, baseMerge, customizer, stack);
+    }
+    else {
+      var newValue = customizer
+        ? customizer(object[key], srcValue, (key + ''), object, source, stack)
+        : undefined;
 
+      if (newValue === undefined) {
+        newValue = srcValue;
+      }
+      assignMergeValue(object, key, newValue);
+    }
+  });
+}
+
+function isIterateeCall(value, index, object) {
+  if (!isObject$3(object)) {
+    return false;
+  }
+  var type = typeof index;
+  if (type == 'number'
+        ? (isArrayLike(object) && isIndex$2(index, object.length))
+        : (type == 'string' && index in object)
+      ) {
+    return eq$2(object[index], value);
+  }
+  return false;
+}
+
+function apply(func, thisArg, args) {
+  var length = args.length;
+  switch (length) {
+    case 0: return func.call(thisArg);
+    case 1: return func.call(thisArg, args[0]);
+    case 2: return func.call(thisArg, args[0], args[1]);
+    case 3: return func.call(thisArg, args[0], args[1], args[2]);
+  }
+  return func.apply(thisArg, args);
+}
+
+var FUNC_ERROR_TEXT$2 = 'Expected a function';
+
+
+var nativeMax$2 = Math.max;
+
+
+function rest(func, start) {
+  if (typeof func != 'function') {
+    throw new TypeError(FUNC_ERROR_TEXT$2);
+  }
+  start = nativeMax$2(start === undefined ? (func.length - 1) : toInteger(start), 0);
+  return function() {
+    var args = arguments,
+        index = -1,
+        length = nativeMax$2(args.length - start, 0),
+        array = Array(length);
+
+    while (++index < length) {
+      array[index] = args[start + index];
+    }
+    switch (start) {
+      case 0: return func.call(this, array);
+      case 1: return func.call(this, args[0], array);
+      case 2: return func.call(this, args[0], args[1], array);
+    }
+    var otherArgs = Array(start + 1);
+    index = -1;
+    while (++index < start) {
+      otherArgs[index] = args[index];
+    }
+    otherArgs[start] = array;
+    return apply(func, this, otherArgs);
+  };
+}
+
+function createAssigner(assigner) {
+  return rest(function(object, sources) {
+    var index = -1,
+        length = sources.length,
+        customizer = length > 1 ? sources[length - 1] : undefined,
+        guard = length > 2 ? sources[2] : undefined;
+
+    customizer = (assigner.length > 3 && typeof customizer == 'function')
+      ? (length--, customizer)
+      : undefined;
+
+    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+      customizer = length < 3 ? undefined : customizer;
+      length = 1;
+    }
+    object = Object(object);
+    while (++index < length) {
+      var source = sources[index];
+      if (source) {
+        assigner(object, source, index, customizer);
+      }
+    }
+    return object;
+  });
+}
+
+var merge = createAssigner(function(object, source, srcIndex) {
+  baseMerge(object, source, srcIndex);
+});
+
+var mergeWith = createAssigner(function(object, source, srcIndex, customizer) {
+  baseMerge(object, source, srcIndex, customizer);
+});
+
+function indexOfNaN(array, fromIndex, fromRight) {
+  var length = array.length,
+      index = fromIndex + (fromRight ? 1 : -1);
+
+  while ((fromRight ? index-- : ++index < length)) {
+    var other = array[index];
+    if (other !== other) {
+      return index;
+    }
+  }
+  return -1;
+}
+
+function baseIndexOf(array, value, fromIndex) {
+  if (value !== value) {
+    return indexOfNaN(array, fromIndex);
+  }
+  var index = fromIndex - 1,
+      length = array.length;
+
+  while (++index < length) {
+    if (array[index] === value) {
+      return index;
+    }
+  }
+  return -1;
+}
+
+function arrayIncludes(array, value) {
+  var length = array ? array.length : 0;
+  return !!length && baseIndexOf(array, value, 0) > -1;
+}
+
+function arrayIncludesWith(array, value, comparator) {
+  var index = -1,
+      length = array ? array.length : 0;
+
+  while (++index < length) {
+    if (comparator(value, array[index])) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function cacheHas(cache, key) {
+  return cache.has(key);
+}
+
+function noop() {
   
-  _createDocument(req, res, next) {
-    const { documentId, change } = req.body;
-    this.engine.createDocument(documentId, change, function(err, version) {
-      if (err) return next(err)
-      res.json(version);
+}
+
+var INFINITY$3 = 1 / 0;
+
+
+var createSet = !(Set$1 && (1 / setToArray(new Set$1([,-0]))[1]) == INFINITY$3) ? noop : function(values) {
+  return new Set$1(values);
+};
+
+var LARGE_ARRAY_SIZE$1 = 200;
+
+
+function baseUniq(array, iteratee, comparator) {
+  var index = -1,
+      includes = arrayIncludes,
+      length = array.length,
+      isCommon = true,
+      result = [],
+      seen = result;
+
+  if (comparator) {
+    isCommon = false;
+    includes = arrayIncludesWith;
+  }
+  else if (length >= LARGE_ARRAY_SIZE$1) {
+    var set = iteratee ? null : createSet(array);
+    if (set) {
+      return setToArray(set);
+    }
+    isCommon = false;
+    includes = cacheHas;
+    seen = new SetCache;
+  }
+  else {
+    seen = iteratee ? [] : result;
+  }
+  outer:
+  while (++index < length) {
+    var value = array[index],
+        computed = iteratee ? iteratee(value) : value;
+
+    value = (comparator || value !== 0) ? value : 0;
+    if (isCommon && computed === computed) {
+      var seenIndex = seen.length;
+      while (seenIndex--) {
+        if (seen[seenIndex] === computed) {
+          continue outer;
+        }
+      }
+      if (iteratee) {
+        seen.push(computed);
+      }
+      result.push(value);
+    }
+    else if (!includes(seen, computed, comparator)) {
+      if (seen !== result) {
+        seen.push(computed);
+      }
+      result.push(value);
+    }
+  }
+  return result;
+}
+
+function uniq(array) {
+  return (array && array.length)
+    ? baseUniq(array)
+    : [];
+}
+
+function arrayMap(array, iteratee) {
+  var index = -1,
+      length = array ? array.length : 0,
+      result = Array(length);
+
+  while (++index < length) {
+    result[index] = iteratee(array[index], index, array);
+  }
+  return result;
+}
+
+function baseUnary(func) {
+  return function(value) {
+    return func(value);
+  };
+}
+
+var LARGE_ARRAY_SIZE$2 = 200;
+
+
+function baseDifference(array, values, iteratee, comparator) {
+  var index = -1,
+      includes = arrayIncludes,
+      isCommon = true,
+      length = array.length,
+      result = [],
+      valuesLength = values.length;
+
+  if (!length) {
+    return result;
+  }
+  if (iteratee) {
+    values = arrayMap(values, baseUnary(iteratee));
+  }
+  if (comparator) {
+    includes = arrayIncludesWith;
+    isCommon = false;
+  }
+  else if (values.length >= LARGE_ARRAY_SIZE$2) {
+    includes = cacheHas;
+    isCommon = false;
+    values = new SetCache(values);
+  }
+  outer:
+  while (++index < length) {
+    var value = array[index],
+        computed = iteratee ? iteratee(value) : value;
+
+    value = (comparator || value !== 0) ? value : 0;
+    if (isCommon && computed === computed) {
+      var valuesIndex = valuesLength;
+      while (valuesIndex--) {
+        if (values[valuesIndex] === computed) {
+          continue outer;
+        }
+      }
+      result.push(value);
+    }
+    else if (!includes(values, computed, comparator)) {
+      result.push(value);
+    }
+  }
+  return result;
+}
+
+var without = rest(function(array, values) {
+  return isArrayLikeObject(array)
+    ? baseDifference(array, values)
+    : [];
+});
+
+function createBaseFor(fromRight) {
+  return function(object, iteratee, keysFunc) {
+    var index = -1,
+        iterable = Object(object),
+        props = keysFunc(object),
+        length = props.length;
+
+    while (length--) {
+      var key = props[fromRight ? length : ++index];
+      if (iteratee(iterable[key], key, iterable) === false) {
+        break;
+      }
+    }
+    return object;
+  };
+}
+
+var baseFor = createBaseFor();
+
+function baseForOwn(object, iteratee) {
+  return object && baseFor(object, iteratee, keys);
+}
+
+function createBaseEach(eachFunc, fromRight) {
+  return function(collection, iteratee) {
+    if (collection == null) {
+      return collection;
+    }
+    if (!isArrayLike(collection)) {
+      return eachFunc(collection, iteratee);
+    }
+    var length = collection.length,
+        index = fromRight ? length : -1,
+        iterable = Object(collection);
+
+    while ((fromRight ? index-- : ++index < length)) {
+      if (iteratee(iterable[index], index, iterable) === false) {
+        break;
+      }
+    }
+    return collection;
+  };
+}
+
+var baseEach = createBaseEach(baseForOwn);
+
+function baseMap(collection, iteratee) {
+  var index = -1,
+      result = isArrayLike(collection) ? Array(collection.length) : [];
+
+  baseEach(collection, function(value, key, collection) {
+    result[++index] = iteratee(value, key, collection);
+  });
+  return result;
+}
+
+function baseSortBy(array, comparer) {
+  var length = array.length;
+
+  array.sort(comparer);
+  while (length--) {
+    array[length] = array[length].value;
+  }
+  return array;
+}
+
+function compareAscending(value, other) {
+  if (value !== other) {
+    var valIsDefined = value !== undefined,
+        valIsNull = value === null,
+        valIsReflexive = value === value,
+        valIsSymbol = isSymbol$2(value);
+
+    var othIsDefined = other !== undefined,
+        othIsNull = other === null,
+        othIsReflexive = other === other,
+        othIsSymbol = isSymbol$2(other);
+
+    if ((!othIsNull && !othIsSymbol && !valIsSymbol && value > other) ||
+        (valIsSymbol && othIsDefined && othIsReflexive && !othIsNull && !othIsSymbol) ||
+        (valIsNull && othIsDefined && othIsReflexive) ||
+        (!valIsDefined && othIsReflexive) ||
+        !valIsReflexive) {
+      return 1;
+    }
+    if ((!valIsNull && !valIsSymbol && !othIsSymbol && value < other) ||
+        (othIsSymbol && valIsDefined && valIsReflexive && !valIsNull && !valIsSymbol) ||
+        (othIsNull && valIsDefined && valIsReflexive) ||
+        (!othIsDefined && valIsReflexive) ||
+        !othIsReflexive) {
+      return -1;
+    }
+  }
+  return 0;
+}
+
+function compareMultiple(object, other, orders) {
+  var index = -1,
+      objCriteria = object.criteria,
+      othCriteria = other.criteria,
+      length = objCriteria.length,
+      ordersLength = orders.length;
+
+  while (++index < length) {
+    var result = compareAscending(objCriteria[index], othCriteria[index]);
+    if (result) {
+      if (index >= ordersLength) {
+        return result;
+      }
+      var order = orders[index];
+      return result * (order == 'desc' ? -1 : 1);
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+  return object.index - other.index;
+}
+
+function baseOrderBy(collection, iteratees, orders) {
+  var index = -1;
+  iteratees = arrayMap(iteratees.length ? iteratees : [identity], baseUnary(baseIteratee));
+
+  var result = baseMap(collection, function(value, key, collection) {
+    var criteria = arrayMap(iteratees, function(iteratee) {
+      return iteratee(value);
     });
-  }
+    return { 'criteria': criteria, 'index': ++index, 'value': value };
+  });
 
-  
-  _getDocument(req, res, next) {
-    const documentId = req.params.id;
-    this.engine.getDocument(documentId, function(err, jsonDoc, version) {
-      if (err) return next(err)
-      res.json({
-        data: jsonDoc,
-        version: version
-      });
-    });
-  }
+  return baseSortBy(result, function(object, other) {
+    return compareMultiple(object, other, orders);
+  });
+}
 
-  
-  _deleteDocument(req, res, next) {
-    let documentId = req.params.id;
-    this.engine.deleteDocument(documentId, function(err, result) {
-      if (err) return next(err)
-      res.json(result);
-    });
+function orderBy(collection, iteratees, orders, guard) {
+  if (collection == null) {
+    return [];
   }
+  if (!isArray$3(iteratees)) {
+    iteratees = iteratees == null ? [] : [iteratees];
+  }
+  orders = guard ? undefined : orders;
+  if (!isArray$3(orders)) {
+    orders = orders == null ? [] : [orders];
+  }
+  return baseOrderBy(collection, iteratees, orders);
 }
 
 class VirtualElement extends DOMElement {
@@ -28062,7 +27604,7 @@ class VirtualHTMLElement extends VirtualElement {
       return
     } else if (child._isVirtualElement) {
       return child
-    } else if (isString$1(child) || isBoolean(child) || isNumber(child)) {
+    } else if (isString(child) || isBoolean(child) || isNumber(child)) {
       return new VirtualTextNode(String(child))
     } else {
       throw new Error('Unsupported child type')
@@ -28070,12 +27612,12 @@ class VirtualHTMLElement extends VirtualElement {
   }
 
   _append(outlet, args) {
-    if (args.length === 1 && !isArray$1(args[0])) {
+    if (args.length === 1 && !isArray(args[0])) {
       this._appendChild(outlet, args[0]);
       return
     }
     var children;
-    if (isArray$1(args[0])) {
+    if (isArray(args[0])) {
       children = args[0];
     } else if (arguments.length > 1) {
       children = Array.prototype.slice.call(args,0);
@@ -28265,9 +27807,9 @@ VirtualElement.createElement = function() {
   var _first = arguments[0];
   var _second = arguments[1];
   var type;
-  if (isString$1(_first)) {
+  if (isString(_first)) {
     type = "element";
-  } else if (isFunction$1(_first) && _first.prototype._isComponent) {
+  } else if (isFunction$2(_first) && _first.prototype._isComponent) {
     type = "component";
   } else if (isNil(_first)) {
     throw new Error('$$(null): provided argument was null or undefined.')
@@ -28310,9 +27852,9 @@ VirtualElement.createElement = function() {
     content.ref(ref);
   }
   eventHandlers.forEach(function(h) {
-    if (isFunction$1(h.handler)) {
+    if (isFunction$2(h.handler)) {
       content.on(h.name, h.handler);
-    } else if (isPlainObject$1(h.handler)) {
+    } else if (isPlainObject(h.handler)) {
       var params = h.handler;
       content.on(h.name, params.handler, params.context, params);
     } else {
@@ -28858,9 +28400,9 @@ function _updateHash(args) {
   }
   
   
-  if (isFunction$1(oldHash.keys) && oldHash.size > 0) {
-    let keys$$1 = Array.from(oldHash.keys());
-    keys$$1.forEach((key) => {
+  if (isFunction$2(oldHash.keys) && oldHash.size > 0) {
+    let keys = Array.from(oldHash.keys());
+    keys.forEach((key) => {
       if (!updatedKeys[key]) {
         remove(key);
       }
@@ -29204,15 +28746,23 @@ class Component extends EventEmitter {
     return comp
   }
 
+  getElement() {
+    return this.el
+  }
+
   getNativeElement() {
     return this.el.getNativeElement()
   }
 
   
-  getLabel(name) {
-    let labelProvider = this.context.labelProvider;
+  getLabel(name, ...args) {
+    let labelProvider = this.getLabelProvider();
     if (!labelProvider) throw new Error('Missing labelProvider.')
-    return labelProvider.getLabel(name)
+    return labelProvider.getLabel(name, ...args)
+  }
+
+  getLabelProvider() {
+    return this.context.labelProvider
   }
 
   
@@ -29339,7 +28889,8 @@ class Component extends EventEmitter {
 
   
   send(action) {
-    var comp = this;
+    
+    var comp = this.getParent();
     while(comp) {
       if (comp._actionHandlers && comp._actionHandlers[action]) {
         comp._actionHandlers[action].apply(comp, Array.prototype.slice.call(arguments, 1));
@@ -29361,7 +28912,7 @@ class Component extends EventEmitter {
 
   
   handleAction(name, handler) {
-    if (!name || !handler || !isFunction$1(handler)) {
+    if (!name || !handler || !isFunction$2(handler)) {
       throw new Error('Illegal arguments.')
     }
     handler = handler.bind(this);
@@ -29563,14 +29114,16 @@ class Component extends EventEmitter {
 
   getChildren() {
     if (!this.el) return []
-    var children = this.el.getChildren();
+    let children = this.el.getChildren();
     children = children.map(_unwrapComp).filter(Boolean);
     return children
   }
 
   getChildAt(pos) {
-    var node = this.el.getChildAt(pos);
-    return _unwrapCompStrict(node)
+    let node = this.el.getChildAt(pos);
+    if (node) {
+      return _unwrapCompStrict(node)
+    }
   }
 
   find(cssSelector) {
@@ -29588,7 +29141,7 @@ class Component extends EventEmitter {
   }
 
   insertAt(pos, childEl) {
-    if (isString$1(childEl)) {
+    if (isString(childEl)) {
       childEl = new VirtualElement.TextNode(childEl);
     }
     if (!childEl._isVirtualElement) {
@@ -29730,7 +29283,7 @@ Component.mount = function(props, el) {
     props = {};
   }
   if (!el) throw new Error("'el' is required.")
-  if (isString$1(el)) {
+  if (isString(el)) {
     var selector = el;
     if (platform.inBrowser) {
       el = window.document.querySelector(selector);
@@ -29837,6 +29390,7416 @@ TextNodeComponent.prototype._SKIP_COMPONENT_INIT = true;
 Component.Element = ElementComponent;
 Component.TextNode = TextNodeComponent;
 
+class FontAwesomeIcon extends Component {
+  constructor(...args) {
+    super(...args);
+  }
+
+  render($$) {
+    return $$('i').addClass('fa ' + this.props.icon)
+  }
+
+}
+
+class FontAwesomeIconProvider {
+
+  constructor(icons) {
+    this.faMap = {};
+    this.textMap = {};
+    forEach(icons, function(config, name) {
+      let faClass = config['fontawesome'];
+      if (faClass) {
+        this.addFAIcon(name, faClass);
+      }
+      let text = config['text'];
+      if (text) {
+        this.addTextIcon(name, text);
+      }
+    }.bind(this));
+  }
+
+  renderIcon($$, name) {
+    let faClass = this.faMap[name];
+    let text = this.textMap[name];
+    if (faClass) {
+      return $$(FontAwesomeIcon, { icon: faClass })
+    } else if (text) {
+      return text
+    }
+  }
+
+  addFAIcon(name, faClass) {
+    this.faMap[name] = faClass;
+  }
+
+  addTextIcon(name, text) {
+    this.textMap[name] = text;
+  }
+}
+
+class CommandManager {
+
+  constructor(context, commands) {
+    const editorSession = context.editorSession;
+    if (!editorSession) {
+      throw new Error('EditorSession required.')
+    }
+    this.editorSession = context.editorSession;
+    
+    this.commands = commands;
+
+    
+    
+    this.context = Object.assign({}, context, {
+      
+      doc: this.editorSession.getDocument()
+    });
+
+    
+    this._initialize();
+
+    
+    this.editorSession.on('pre-render', this._onSessionUpdate, this);
+
+    
+    
+    this._updateCommandStates(this.editorSession);
+  }
+
+  dispose() {
+    this.editorSession.off(this);
+  }
+
+  
+  executeCommand(commandName, userParams, cb) {
+    let cmd = this._getCommand(commandName);
+    if (!cmd) {
+      console.warn('command', commandName, 'not registered');
+      return
+    }
+    let commandStates = this.editorSession.getCommandStates();
+    let commandState = commandStates[commandName];
+    let params = Object.assign(this._getCommandParams(), userParams, {
+      commandState: commandState
+    });
+
+    if (cmd.isAsync) {
+      
+      this.editorSession.lock();
+      cmd.execute(params, this._getCommandContext(), (err, info) => {
+        if (err) {
+          if (cb) {
+            cb(err);
+          } else {
+            console.error(err);
+          }
+        } else {
+          if (cb) cb(null, info);
+        }
+        this.editorSession.unlock();
+      });
+    } else {
+      let info = cmd.execute(params, this._getCommandContext());
+      return info
+    }
+  }
+
+  _initialize() {
+    this.commandRegistry = new Registry();
+    forEach(this.commands, (command) => {
+      this.commandRegistry.add(command.name, command);
+    });
+  }
+
+  _getCommand(commandName) {
+    return this.commandRegistry.get(commandName)
+  }
+
+  
+  _updateCommandStates(editorSession) {
+    const commandContext = this._getCommandContext();
+    const params = this._getCommandParams();
+    const surface = params.surface;
+    const commandRegistry = this.commandRegistry;
+
+    
+    
+    let commandStates = {};
+    let commandNames = commandRegistry.names.slice();
+    
+    commandNames.forEach((name) => {
+      commandStates[name] = { disabled: true };
+    });
+    
+    if (surface) {
+      let included = surface.props.commands;
+      let excluded = surface.props.excludedCommands;
+      if (included) {
+        commandNames = included.filter((name) => {
+          return commandRegistry.contains(name)
+        });
+      } else if (excluded) {
+        commandNames = without(commandNames, ...excluded);
+      }
+    }
+    const commands = commandNames.map(name => commandRegistry.get(name));
+    commands.forEach((cmd) => {
+      if (cmd) {
+        commandStates[cmd.getName()] = cmd.getCommandState(params, commandContext);
+      }
+    });
+    
+    
+    
+    
+    this.commandStates = commandStates;
+    editorSession.setCommandStates(commandStates);
+  }
+
+  _onSessionUpdate(editorSession) {
+    
+    
+    if (
+      editorSession.hasChanged('change') ||
+      editorSession.hasChanged('selection') ||
+      editorSession.hasChanged('commandStates')
+    ) {
+      this._updateCommandStates(editorSession);
+    }
+  }
+
+  _getCommandContext() {
+    return this.context
+  }
+
+  _getCommandParams() {
+    let editorSession = this.context.editorSession;
+    let selectionState = editorSession.getSelectionState();
+    let sel = selectionState.getSelection();
+    let surface = this.context.surfaceManager.getFocusedSurface();
+    return {
+      editorSession: editorSession,
+      selectionState: selectionState,
+      surface: surface,
+      selection: sel,
+    }
+  }
+}
+
+function getDOMRangeFromEvent(evt) {
+  let range, x = evt.clientX, y = evt.clientY;
+  
+  if (document.body.createTextRange) {
+    range = document.body.createTextRange();
+    range.moveToPoint(x, y);
+  }
+  else if (!isNil(document.createRange)) {
+    
+    
+    if (!isNil(evt.rangeParent)) {
+      range = document.createRange();
+      range.setStart(evt.rangeParent, evt.rangeOffset);
+      range.collapse(true);
+    }
+    
+    else if (document.caretPositionFromPoint) {
+      let pos = document.caretPositionFromPoint(x, y);
+      range = document.createRange();
+      range.setStart(pos.offsetNode, pos.offset);
+      range.collapse(true);
+    }
+    
+    else if (document.caretRangeFromPoint) {
+      range = document.caretRangeFromPoint(x, y);
+    }
+  }
+  return range
+}
+
+
+function getSelectionRect(parentRect) {
+  if (platform.inBrowser) {
+    const wsel = window.getSelection();
+    if (wsel.rangeCount === 0) return
+    const wrange = wsel.getRangeAt(0);
+    let contentRect = parentRect;
+    let selectionRect = wrange.getBoundingClientRect();
+    if (selectionRect.top === 0 && selectionRect.bottom === 0) {
+      selectionRect = _fixForCursorRectBug();
+    }
+    return getRelativeRect(contentRect, selectionRect)
+  }
+}
+
+function _fixForCursorRectBug() {
+  let wsel = window.getSelection();
+  let el = wsel.anchorNode;
+  if (!el) return
+  while (el && el.nodeType !== 1) {
+    el = el.parentNode;
+  }
+  let rects = el.getClientRects();
+  let rect = rects[0];
+  return {
+    left: rect.left,
+    top: rect.top,
+    width: 0,
+    height: rect.height,
+    right: rect.width,
+    bottom: rect.bottom
+  }
+}
+
+function getRelativeRect(parentRect, childRect) {
+  var left = childRect.left - parentRect.left;
+  var top = childRect.top - parentRect.top;
+  return {
+    left: left,
+    top: top,
+    right: parentRect.width - left - childRect.width,
+    bottom: parentRect.height - top - childRect.height,
+    width: childRect.width,
+    height: childRect.height
+  }
+}
+
+function isMouseInsideDOMSelection(e) {
+  let wsel = window.getSelection();
+  if (wsel.rangeCount === 0) {
+    return false
+  }
+  let wrange = wsel.getRangeAt(0);
+  let selectionRect = wrange.getBoundingClientRect();
+  return e.clientX >= selectionRect.left &&
+         e.clientX <= selectionRect.right &&
+         e.clientY >= selectionRect.top &&
+         e.clientY <= selectionRect.bottom
+}
+
+function setDOMSelection(startNode, startOffset, endNode, endOffset) {
+  let wsel = window.getSelection();
+  let wrange = window.document.createRange();
+  if (startNode._isDOMElement) {
+    startNode = startNode.getNativeElement();
+  }
+  if (!endNode) {
+    endNode = startNode;
+    endOffset = startOffset;
+  }
+  if (endNode._isDOMElement) {
+    endNode = endNode.getNativeElement();
+  }
+  wrange.setStart(startNode, startOffset);
+  wrange.setEnd(endNode, endOffset);
+  wsel.removeAllRanges();
+  wsel.addRange(wrange);
+}
+
+function getQueryStringParam(param, url) {
+  if (typeof window === 'undefined') return null
+  let href = url ? url : window.location.href;
+  let reg = new RegExp( '[?&]' + param + '=([^&#]*)', 'i' );
+  let string = reg.exec(href);
+  return string ? decodeURIComponent(string[1]) : null;
+}
+
+class DragAndDropHandler {
+
+  match(dragState, context) { 
+    return false
+  }
+
+  drop(dragState, context) { 
+    
+  }
+
+  get _isDragAndDropHandler() {
+    return true
+  }
+
+}
+
+class DragManager extends EventEmitter {
+
+  constructor(customDropHandlers, context) {
+    super();
+
+    this.context = context;
+
+    let dropAssetHandlers = [];
+    let moveInlineHandlers = [];
+    customDropHandlers.forEach((h) => {
+      
+      let type = h.type || 'drop-asset';
+      switch (type) {
+        case 'drop-asset': {
+          dropAssetHandlers.push(h);
+          break
+        }
+        case 'move-inline': {
+          moveInlineHandlers.push(h);
+          break
+        }
+        default:
+          console.warn('Unknown type of drop handler.', h);
+      }
+    });
+
+    
+    this.dropHandlers = [
+      
+      new MoveInline(moveInlineHandlers),
+      
+      new MoveBlockNode(),
+      
+      new InsertNodes(dropAssetHandlers, this.context),
+      
+      
+      new CustomHandler(),
+    ];
+    if (platform.inBrowser) {
+      this.el = DefaultDOMElement.wrapNativeElement(document);
+      this.el.on('dragstart', this.onDragStart, this);
+      
+      this.el.on('drop', this.onDragEnd, this);
+      this.el.on('dragenter', this.onDragEnter, this);
+      this.el.on('dragexit', this.onDragExit, this);
+      this.el.on('mousedown', this.onMousedown, this);
+    }
+  }
+
+  dispose() {
+    if (this.el) {
+      this.el.off(this);
+    }
+  }
+
+  onDragStart(e) {
+    
+    this._initDrag(e, { external: false });
+    
+    
+    var img = document.createElement("img");
+    img.src = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+    e.dataTransfer.setDragImage(img, 0, 0);
+    
+    
+    
+    
+    
+    
+    if (this.dragState.mode === 'inline') {
+      e.dataTransfer.setData('text/html', img.outerHTML);
+    } else {
+      
+      
+      e.dataTransfer.setData('text/html', '<div></div>');
+    }
+    
+  }
+
+  
+  onDragEnter(e) {
+    if (!this.dragState) {
+      
+      this._initDrag(e, {external: true});
+    }
+  }
+
+  onDragEnd(event) {
+    if (event.__reserved__) return
+    
+    if (this.dragState) {
+      event.stopPropagation();
+      event.preventDefault();
+      
+      
+      this._onDragEnd(event);
+    }
+  }
+
+  onDragExit(e) {
+    if (platform.isFF) {
+      
+    } else {
+      
+      
+      
+      this._onDragEnd(e);
+    }
+  }
+
+  extendDragState(extState) {
+    Object.assign(this.dragState, extState);
+  }
+
+  
+  
+  onMousedown(event) {
+    if (this.dragState) {
+      this.dragState = null;
+      this._onDragEnd(event);
+    }
+  }
+
+  _onDragEnd(event) {
+    if (!this.dragState) {
+      
+      
+      
+      console.warn('Not in a valid drag state.');
+    } else {
+      this._handleDrop(event);
+    }
+    this.emit('drag:finished');
+    this.dragState = null;
+  }
+
+  
+  _handleDrop(e) {
+    let dragState = this.dragState;
+    let i, handler;
+    let match = false;
+    dragState.event = e;
+    dragState.data = this._getData(e);
+    
+    for (i = 0; i < this.dropHandlers.length && !match; i++) {
+      handler = this.dropHandlers[i];
+      match = handler.match(dragState);
+    }
+    if (match) {
+      let editorSession = this.context.editorSession;
+      editorSession.transaction((tx) => {
+        handler.drop(tx, dragState);
+      });
+    } else {
+      console.error('No drop handler could be found.');
+    }
+  }
+
+  
+  _initDrag(event, options) {
+    
+    
+    
+    
+
+    
+    let sel = this._getSelection();
+    let dragState = Object.assign({ startEvent: event }, options);
+    this.dragState = dragState;
+
+    
+    
+    if (dragState.external) {
+      dragState.selectionDrag = false;
+      dragState.sourceSelection = null;
+      dragState.scrollPanes = this._getSurfacesGroupedByScrollPane();
+      this.emit('drag:started', dragState);
+      return
+    }
+
+    
+    
+    let isSelectionDrag = (
+      (sel.isPropertySelection() || sel.isContainerSelection()) &&
+      isMouseInsideDOMSelection(event)
+    );
+    if (isSelectionDrag) {
+      
+      if (sel.isContainerSelection()) {
+        console.warn('Dragging of ContainerSelection is not supported yet.');
+        return _stop()
+      }
+      
+      dragState.inline = true;
+      dragState.selectionDrag = true;
+      dragState.sourceSelection = sel;
+      
+      return
+    }
+    let comp = Component.unwrap(event.target);
+    if (!comp) return _stop()
+    let isolatedNodeComponent;
+    if (comp._isInlineNodeComponent) {
+      isolatedNodeComponent = comp;
+      dragState.inline = true;
+      dragState.sourceNode = comp.props.node;
+    } else {
+      isolatedNodeComponent = comp.context.isolatedNodeComponent;
+    }
+    if (!isolatedNodeComponent) return _stop()
+    let surface = isolatedNodeComponent.context.surface;
+    
+    if(isolatedNodeComponent._isInlineNodeComponent) {
+      let inlineNode = isolatedNodeComponent.props.node;
+      dragState.inline = true;
+      dragState.selectionDrag = true;
+      dragState.sourceSelection = {
+        type: 'property',
+        path: inlineNode.start.path,
+        startOffset: inlineNode.start.offset,
+        endOffset: inlineNode.end.offset,
+        containerId: surface.getContainerId(),
+        surfaceId: surface.id
+      };
+      return
+    }
+    
+    
+    dragState.selectionDrag = false;
+    dragState.nodeDrag = true;
+    dragState.sourceSelection = {
+      type: 'node',
+      nodeId: isolatedNodeComponent.props.node.id,
+      containerId: surface.getContainerId(),
+      surfaceId: surface.id
+    };
+    
+    
+    
+    dragState.scrollPanes = this._getSurfacesGroupedByScrollPane();
+    
+    this.emit('drag:started', dragState);
+
+    function _stop() {
+      
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
+
+  _getSurfacesGroupedByScrollPane() {
+    
+    
+    let surfaces = this.context.surfaceManager.getSurfaces();
+    let scrollPanes = {};
+    surfaces.forEach((surface) => {
+      
+      if (!surface.isContainerEditor()) return
+      let scrollPane = surface.context.scrollPane;
+      let scrollPaneName = scrollPane.getName();
+      let surfaceName = surface.getName();
+      if (!scrollPanes[scrollPaneName]) {
+        let surfaces = {};
+        surfaces[surfaceName] = surface;
+        scrollPanes[scrollPaneName] = { scrollPane, surfaces };
+      } else {
+        scrollPanes[scrollPaneName].surfaces[surfaceName] = surface;
+      }
+    });
+    return scrollPanes
+  }
+
+  _getSelection() {
+    return this.context.editorSession.getSelection()
+  }
+
+  _getComponents(targetEl) {
+    let res = [];
+    let curr = targetEl;
+    while (curr) {
+      let comp = Component.getComponentForDOMElement(curr);
+      if (comp) {
+        res.unshift(comp);
+        if(comp._isSurface) {
+          return res
+        }
+      }
+      curr = curr.parentNode;
+    }
+    return null
+  }
+
+  _getIsolatedNodeOrContainerChild(targetEl) {
+    let parent, current;
+    current = targetEl;
+    parent = current.parentNode;
+    while(parent) {
+      if (parent._comp && parent._comp._isContainerEditor) {
+        return current._comp
+      } else if (current._comp && current._comp._isIsolatedNode) {
+        return current._comp
+      }
+      current = parent;
+      parent = current.parentNode;
+    }
+  }
+
+  
+  _extractUris(dataTransfer) {
+    let uris = [];
+    let rawUriList = dataTransfer.getData('text/uri-list');
+    if (rawUriList) {
+      uris = rawUriList.split('\n').filter(function(item) {
+        return !item.startsWith('#')
+      });
+    }
+    return uris
+  }
+
+  
+  _getData(e) {
+    let dataTransfer = e.dataTransfer;
+    if (dataTransfer) {
+      return {
+        files: Array.prototype.slice.call(dataTransfer.files),
+        uris: this._extractUris(dataTransfer),
+        text: dataTransfer.getData('text/plain'),
+        html: dataTransfer.getData('text/html')
+      }
+    }
+  }
+}
+
+
+class MoveBlockNode extends DragAndDropHandler {
+
+  match(dragState) {
+    let {insertPos} = dragState.dropParams;
+    
+    return (!dragState.external && dragState.nodeDrag &&
+      dragState.dropType === 'place' && insertPos >= 0
+    )
+  }
+
+  drop(tx, dragState) {
+    
+    
+    
+    
+    let { insertPos } = dragState.dropParams;
+    tx.setSelection(dragState.sourceSelection);
+    let copy = tx.copySelection();
+    
+    tx.deleteSelection({ clear: true });
+    let containerId = dragState.targetSurface.getContainerId();
+    let surfaceId = dragState.targetSurface.getName();
+    let container = tx.get(containerId);
+    let targetNodeId = container.getNodeIdAt(insertPos);
+    let insertMode = 'before';
+    if (!targetNodeId) {
+      targetNodeId = container.getNodeIdAt(insertPos-1);
+      insertMode = 'after';
+    }
+    tx.setSelection({
+      type: 'node',
+      nodeId: targetNodeId,
+      mode: insertMode,
+      containerId: containerId,
+      surfaceId: surfaceId
+    });
+    tx.paste(copy);
+  }
+}
+
+class MoveInline extends DragAndDropHandler {
+
+  match(dragState) {
+    return !dragState.external && dragState.inline
+  }
+
+  drop(tx, dragState) {
+    let event = dragState.event;
+    let sourceSel = dragState.sourceSelection;
+    let wrange = getDOMRangeFromEvent(event);
+    if (!wrange) return
+    let comp = Component.unwrap(event.target);
+    if (!comp) return
+    let domSelection = comp.context.domSelection;
+    if (!domSelection) return
+    let range = domSelection.mapDOMRange(wrange);
+    if (!range) return
+    let targetSel = tx.getDocument()._createSelectionFromRange(range);
+
+    
+    tx.selection = sourceSel;
+    let snippet = tx.copySelection();
+    tx.deleteSelection();
+    tx.selection = transformSelection(targetSel, tx);
+    tx.paste(snippet);
+  }
+}
+
+class InsertNodes extends DragAndDropHandler {
+  constructor(assetHandlers, context) {
+    super();
+    this.assetHandlers = assetHandlers;
+    this.context = context;
+  }
+
+  match(dragState) {
+    return dragState.dropType === 'place' && dragState.external
+  }
+
+  drop(tx, dragState) {
+    let { insertPos } = dragState.dropParams;
+    let files = dragState.data.files;
+    let uris = dragState.data.uris;
+    let containerId = dragState.targetSurface.getContainerId();
+    let surfaceId = dragState.targetSurface.id;
+    let container = tx.get(containerId);
+    let targetNode = container.getNodeIdAt(insertPos);
+    let insertMode = 'before';
+    if (!targetNode) {
+      targetNode = container.getNodeIdAt(insertPos-1);
+      insertMode = 'after';
+    }
+    tx.setSelection({
+      type: 'node',
+      nodeId: targetNode,
+      mode: insertMode,
+      containerId: containerId,
+      surfaceId: surfaceId
+    });
+    if (files.length > 0) {
+      files.forEach((file) => {
+        this._callHandlers(tx, {
+          file: file,
+          type: 'file'
+        });
+      });
+    } else if (uris.length > 0) {
+      uris.forEach((uri) => {
+        this._callHandlers(tx, {
+          uri: uri,
+          type: 'uri'
+        });
+      });
+    } else {
+      console.info('TODO: implement html/text drop here');
+    }
+  }
+
+  _callHandlers(tx, params) {
+    let i, handler;
+    for (i = 0; i < this.assetHandlers.length; i++) {
+      handler = this.assetHandlers[i];
+
+      let match = handler.match(params, this.context);
+      if (match) {
+        handler.drop(tx, params, this.context);
+        break
+      }
+    }
+  }
+}
+
+
+class CustomHandler extends DragAndDropHandler {
+
+  match(dragState) {
+    return dragState.dropType === 'custom'
+  }
+
+  drop(tx, dragState) {
+    
+    dragState.component.handleDrop(tx, dragState);
+  }
+}
+
+class FileManager {
+
+  constructor(editorSession, extensions, context) {
+    this.editorSession = editorSession;
+    this.extensions = extensions;
+    this.proxies = {};
+    this.context = context;
+
+    
+    forEach(editorSession.getDocument().getNodes(), (node) => {
+      if (node._isFileNode) this.storeFile(node);
+    });
+
+    this.editorSession.onUpdate('document', this._onDocumentChange, this);
+  }
+
+  dispose() {
+    this.editorSession.off(this);
+  }
+
+  storeFile(fileNode) {
+    let proxy = this.proxies[fileNode.id];
+    
+    if (!proxy) {
+      proxy = this.createFileProxy(fileNode);
+      if (proxy) {
+        this.proxies[fileNode.id] = proxy;
+      }
+    }
+    fileNode.proxy = proxy;
+    return proxy
+  }
+
+  createFileProxy(fileNode) { 
+    let context = this.context;
+    for (var i = 0; i < this.extensions.length; i++) {
+      let ExtClass = this.extensions[i];
+      if (ExtClass.match(fileNode, context)) {
+        return new ExtClass(fileNode, context)
+      }
+    }
+    console.error('No file adapter found for ', fileNode);
+  }
+
+  getProxy(fileNode) {
+    return this.proxies[fileNode.id]
+  }
+
+  sync() {
+    
+    
+    let promises = map(this.proxies, (proxy) => {
+      return proxy.sync()
+    });
+    return Promise.all(promises)
+  }
+
+  _onDocumentChange(change) {
+    let doc = this.editorSession.getDocument();
+    forEach(change.created, (_, id) => {
+      let node = doc.get(id);
+      if (node._isFileNode) {
+        this.storeFile(node);
+      }
+    });
+  }
+}
+
+const events = [ 'keydown', 'keyup', 'keypress', 'mousedown', 'mouseup' , 'copy' ];
+
+class GlobalEventHandler {
+
+  constructor(editorSession, surfaceManager) {
+    this.editorSession = editorSession;
+    this.surfaceManager = surfaceManager;
+    this.listeners = [];
+    this.initialize();
+  }
+
+  initialize() {
+    if (platform.inBrowser) {
+      let document = DefaultDOMElement.wrapNativeElement(window.document);
+      events.forEach(function(name) {
+        document.on(name, this._dispatch.bind(this, name), this);
+      }.bind(this));
+    }
+  }
+
+  dispose() {
+    if (platform.inBrowser) {
+      let document = DefaultDOMElement.wrapNativeElement(window.document);
+      document.off(this);
+    }
+  }
+
+  addEventListener(eventName, handler, options) {
+    if (!options.id) {
+      throw new Error("GlobalEventHandler can only be used with option 'id'")
+    }
+    let listener = new DOMEventListener(eventName, handler, options);
+    this.listeners.push(listener);
+  }
+
+  removeEventListener(listener) {
+    let idx = this.listeners.indexOf(listener);
+    if (idx > -1) {
+      this.listeners.splice(idx, 1);
+    }
+  }
+
+  getEventListeners() {
+    return this.listeners
+  }
+
+  _getActiveListener(eventName) {
+    let editorSession = this.editorSession;
+    let sel = editorSession.getSelection();
+    if (sel) {
+      let surfaceId = sel.surfaceId;
+      for (let i = 0; i < this.listeners.length; i++) {
+        let listener = this.listeners[i];
+        if (listener.eventName === eventName && listener.options.id === surfaceId) {
+          return listener
+        }
+      }
+    }
+  }
+
+  _dispatch(eventName, e) {
+    let listener = this._getActiveListener(eventName);
+    if (listener) {
+      listener.handler(e);
+    }
+  }
+}
+
+GlobalEventHandler.prototype.on = DOMElement.prototype.on;
+GlobalEventHandler.prototype.off = DOMElement.prototype.off;
+
+let keys$1 = {
+  UNDEFINED: 0,
+  BACKSPACE: 8,
+  DELETE: 46,
+  INSERT: 45,
+  LEFT: 37,
+  RIGHT: 39,
+  UP: 38,
+  DOWN: 40,
+  ENTER: 13,
+  RETURN: 13,
+  END: 35,
+  HOME: 36,
+  TAB: 9,
+  PAGEUP: 33,
+  PAGEDOWN: 34,
+  ESCAPE: 27,
+  ESC: 27,
+  SHIFT: 16,
+  SPACE: 32,
+  PLUS: 171,
+  VOLUMEUP: 183,
+  VOLUMEDOWN: 182,
+  VOLUMEMUTE: 181,
+  PRINTSCREEN: 44
+};
+
+
+for(let i=1;i<=24;i++) {
+  keys$1['F'+i] = 111 + i;
+}
+
+function parseKeyEvent(event, onlyModifiers) {
+  let frags = [];
+  if (event.altKey) {
+    if (event.code === 'AltRight') {
+      frags.push('ALTGR');
+    } else {
+      frags.push('ALT');
+    }
+  }
+  if (event.ctrlKey) frags.push('CTRL');
+  if (event.metaKey) frags.push('META');
+  if (event.shiftKey) frags.push('SHIFT');
+  if (!onlyModifiers) {
+    frags.push(event.keyCode);
+  }
+  return frags.join('+')
+}
+
+class ExecuteCommandHandler {
+
+  constructor(editorSession, commandName) {
+    this.editorSession = editorSession;
+    this.commandName = commandName;
+  }
+
+  execute(params) {
+    let commandState = params.editorSession.getCommandStates()[this.commandName];
+    if (!commandState || commandState.disabled) return false
+    this.editorSession.executeCommand(this.commandName, params);
+    return true
+  }
+
+}
+
+class KeyboardManager {
+
+  constructor(editorSession, bindings, options) {
+    this.editorSession = editorSession;
+    this.context = options.context || {};
+    this.keydownBindings = {};
+    this.textinputBindings = {};
+
+    bindings.forEach(({ key, spec }) => {
+      
+      let type = spec.type || 'keydown';
+      if(spec.command) {
+        let handler = new ExecuteCommandHandler(editorSession, spec.command);
+        let hook = handler.execute.bind(handler);
+        if (type === 'keydown') {
+          key = parseCombo(key);
+          if (!this.keydownBindings[key]) this.keydownBindings[key] = [];
+          this.keydownBindings[key].push(hook);
+        } else if (type === 'textinput') {
+          
+          this.textinputBindings[key] = hook;
+        }
+      } else {
+        throw new Error('Keyboard binding not supported', spec)
+      }
+    });
+  }
+
+  onKeydown(event) {
+    let key = parseKeyEvent(event);
+    let hooks = this.keydownBindings[key];
+    if (hooks) {
+      let params = this._getParams();
+      let hasExecuted = false;
+      for (let i = 0; i < hooks.length && !hasExecuted; i++) {
+        const hook = hooks[i];
+        hasExecuted = hook(params, this.context);
+      }
+      if (hasExecuted) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      return hasExecuted
+    }
+  }
+
+
+  onTextInput(text) {
+    let hook = this.textinputBindings[text];
+    if (hook) {
+      let params = this._getParams();
+      return hook(params, this.context)
+    }
+  }
+
+  _getParams() {
+    let editorSession = this.editorSession;
+    let selectionState = editorSession.getSelectionState();
+    let sel = selectionState.getSelection();
+    let surface = this.context.surfaceManager.getFocusedSurface();
+    return {
+      editorSession: editorSession,
+      selectionState: selectionState,
+      surface: surface,
+      selection: sel,
+    }
+  }
+
+}
+
+function parseCombo(combo) {
+  let frags = combo.split('+');
+  let data = {
+    keyCode: -1
+  };
+  for (var i = 0; i < frags.length; i++) {
+    let frag = frags[i].toUpperCase();
+    switch(frag) {
+      case 'ALT': {
+        data.altKey = true;
+        break
+      }
+      case 'ALTGR': {
+        data.altKey = true;
+        data.code = 'AltRight';
+        break
+      }
+      case 'CMD': {
+        data.metaKey = true;
+        break
+      }
+      case 'CTRL': {
+        data.ctrlKey = true;
+        break
+      }
+      case 'COMMANDORCONTROL': {
+        if (platform.isMac) {
+          data.metaKey = true;
+        } else {
+          data.ctrlKey = true;
+        }
+        break
+      }
+      case 'MEDIANEXTTRACK': {
+        data.code = 'MediaTrackNext';
+        break
+      }
+      case 'MEDIAPLAYPAUSE': {
+        data.code = 'MediaPlayPause';
+        break
+      }
+      case 'MEDIAPREVIOUSTRACK': {
+        data.code = 'MediaPreviousTrack';
+        break
+      }
+      case 'MEDIASTOP': {
+        data.code = 'MediaStop';
+        break
+      }
+      case 'SHIFT': {
+        data.shiftKey = true;
+        break
+      }
+      case 'SUPER': {
+        data.metaKey = true;
+        break
+      }
+      default:
+        if (frag.length === 1) {
+          data.keyCode = frag.charCodeAt(0);
+        } else if (keys$1.hasOwnProperty(frag)) {
+          data.keyCode = keys$1[frag];
+        } else {
+          throw new Error('Unsupported keyboard command: '+ combo)
+        }
+    }
+  }
+  return parseKeyEvent(data)
+}
+
+KeyboardManager.parseCombo = parseCombo;
+
+class MacroManager {
+
+  constructor(context, macros) {
+    this.context = context;
+    this.macros = macros;
+    this.context.editorSession.onFinalize('document', this.onDocumentChanged, this);
+  }
+
+  dispose() {
+    this.context.editorSession.off(this);
+  }
+
+  onDocumentChanged(change, info) {
+    this.executeMacros(change, info);
+  }
+
+  executeMacros(change, info) {
+    let doc = this.context.editorSession.getDocument();
+    let nodeId, node, text, start, end;
+    let path;
+    
+    
+    switch(info.action) {
+      case 'type': {
+        let op = change.ops[0];
+        if (op.type === 'update' && op.diff._isTextOperation) {
+          path = op.path;
+          nodeId = path[0];
+          node = doc.get(nodeId);
+          text = doc.get(path);
+          start = op.diff.pos;
+          end = start+op.diff.getLength();
+        }
+        break
+      }
+      case 'break': {
+        
+        
+        
+
+        
+        
+        
+        
+        let sel = change.before.selection;
+        if (!sel.isPropertySelection()) return
+        path = sel.path;
+        nodeId = path[0];
+        node = doc.get(nodeId);
+        
+        if (!node || !node.isText()) return
+        text = node.getText();
+        start = sel.start.offset;
+        end = start;
+        break
+      }
+      case 'paste': {
+        
+        if (change.ops.length === 1) {
+          let op = change.ops[0];
+          if (op.type === 'update' && op.propertyType === 'string') {
+            path = op.path;
+            nodeId = path[0];
+            node = doc.get(nodeId);
+            if (!node.isText()) return
+            text = node.getText();
+            start = op.diff.pos;
+            end = start+op.diff.getLength();
+          }
+        }
+        break
+      }
+      default:
+        return
+    }
+
+    let props = {
+      action: info.action,
+      node: node,
+      path: path,
+      text: text,
+      start: start,
+      end: end,
+      editorSession: this.context.editorSession,
+      selection: this.context.editorSession.getSelection()
+    };
+
+    setTimeout(() => {
+      for (let i = 0; i < this.macros.length; i++) {
+        let macro = this.macros[i];
+        let executed = macro.execute(props, this.context);
+        if (executed) {
+          break
+        }
+      }
+    });
+
+  }
+}
+
+class ArrayTree {
+  add(path, val) {
+    if (!this[path]) {
+      this[path] = [];
+    }
+    this[path].push(val);
+  }
+  remove(path, val) {
+    if (this[path]) {
+      deleteFromArray(this[path], val);
+    }
+  }
+  get(path) {
+    return this[path] || []
+  }
+}
+
+class Marker extends PropertyAnnotation {
+
+  _initialize(doc, props) {
+    this.document = doc;
+    this.type = props.type;
+    if (!props.type) {
+      throw new Error("'type' is mandatory")
+    }
+    if (!props.start) {
+      throw new Error("'start' is mandatory")
+    }
+    if (!props.end) {
+      throw new Error("'end' is mandatory")
+    }
+    Object.assign(this, props);
+  }
+
+  
+  containsSelection(sel) {
+    if (sel.isNull()) return false;
+    if (sel.isPropertySelection()) {
+      return (isArrayEqual(this.start.path, sel.start.path) &&
+        this.start.offset <= sel.start.offset &&
+        this.end.offset >= sel.end.offset)
+    } else {
+      console.warn('Marker.contains() does not support other selection types.');
+    }
+  }
+
+  get type() {
+    return this._type
+  }
+
+  set type(type) {
+    this._type = type;
+  }
+
+}
+
+
+Marker.prototype._isPropertyAnnotation = false;
+Marker.prototype._isMarker = true;
+
+class MarkersManager {
+
+  constructor(editorSession) {
+    this.editorSession = editorSession;
+
+    
+    this._textProperties = {};
+    this._dirtyProps = {};
+
+    this._markers = new MarkersIndex(this);
+
+    
+    
+    editorSession.onUpdate(this._onChange, this);
+
+    
+    editorSession.onRender(this._updateProperties, this);
+  }
+
+  dispose() {
+    this.editorSession.off(this);
+    this._markers.dispose();
+  }
+
+  setMarkers(key, markers) {
+    this.clearMarkers(key);
+    markers.forEach(m => this.addMarker(key, m));
+  }
+
+  addMarker(key, marker) {
+    marker._key = key;
+    if (!marker._isMarker) {
+      marker = new Marker(this.editorSession.getDocument(), marker);
+    }
+    this._markers.add(marker);
+  }
+
+  clearMarkers(key) {
+    this._markers.clear(key);
+  }
+
+  
+  register(textProperyComponent) {
+    let path = String(textProperyComponent.getPath());
+    
+    let textProperties = this._textProperties[path];
+    if (!textProperties) {
+      textProperties = this._textProperties[path] = [];
+    }
+    textProperties.push(textProperyComponent);
+  }
+
+
+  deregister(textProperyComponent) {
+    let path = String(textProperyComponent.getPath());
+    
+    let textProperties = this._textProperties[path];
+    if (!textProperties) {
+      
+      return
+    }
+    deleteFromArray(this._textProperties[path], textProperyComponent);
+    if (textProperties.length === 0) {
+      delete this._textProperties[path];
+    }
+  }
+
+  getMarkers(path, opts) {
+    opts = opts || {};
+    let doc = this.editorSession.getDocument();
+    let annos = doc.getAnnotations(path) || [];
+    let markers = this._markers.get(path, opts.surfaceId, opts.containerId);
+    return annos.concat(markers)
+  }
+
+  _onChange(editorSession) {
+    if (editorSession.hasDocumentChanged()) {
+      const change = editorSession.getChange();
+      this._markers._onDocumentChange(change);
+      this._recordDirtyTextProperties(change);
+    }
+  }
+
+  _recordDirtyTextProperties(change) {
+    
+    forEach(change.updated, (val, id) => {
+      this._dirtyProps[id] = true;
+    });
+  }
+
+  
+  _updateProperties() {
+    
+    Object.keys(this._dirtyProps).forEach((path) => {
+      let textProperties = this._textProperties[path];
+      if (textProperties) {
+        textProperties.forEach(this._updateTextProperty.bind(this));
+      }
+    });
+    this._dirtyProps = {};
+  }
+
+  
+  _updateTextProperty(textPropertyComponent) {
+    let path = textPropertyComponent.getPath();
+    let markers = this.getMarkers(path, {
+      surfaceId: textPropertyComponent.getSurfaceId(),
+      containerId: textPropertyComponent.getContainerId()
+    });
+    
+    textPropertyComponent.setState({
+      markers: markers
+    });
+  }
+
+}
+
+
+class MarkersIndex {
+
+  constructor(manager) {
+    this._manager = manager;
+
+    this._byKey = new ArrayTree();
+    this._documentMarkers = new ArrayTree();
+    this._surfaceMarkers = {};
+    this._containerMarkers = {};
+  }
+
+  get(path, surfaceId) {
+    let markers = this._documentMarkers[path] || [];
+    if (surfaceId && this._surfaceMarkers[surfaceId]) {
+      let surfaceMarkers = this._surfaceMarkers[surfaceId][path];
+      if (surfaceMarkers) markers = markers.concat(surfaceMarkers);
+    }
+    
+    return markers
+  }
+
+  add(marker) {
+    const key = marker._key;
+    this._byKey.add(key, marker);
+    this._add(marker);
+  }
+
+  
+  remove(marker) {
+    const key = marker._key;
+    this._byKey.remove(key, marker);
+    this._remove(marker);
+  }
+
+  
+  clear(key) {
+    let markers = this._byKey.get(key);
+    markers.forEach((marker) => {
+      this._remove(marker);
+    });
+  }
+
+  _add(marker) {
+    const dirtyProps = this._manager._dirtyProps;
+    
+    const scope = marker.scope || 'document';
+    switch (scope) {
+      case 'document': {
+        const path = marker.start.path;
+        
+        dirtyProps[path] = true;
+        this._documentMarkers.add(path, marker);
+        break
+      }
+      case 'surface': {
+        if (!this._surfaceMarkers[marker.surfaceId]) {
+          this._surfaceMarkers[marker.surfaceId] = new ArrayTree();
+        }
+        const path = marker.start.path;
+        dirtyProps[path] = true;
+        this._surfaceMarkers[marker.surfaceId].add(path, marker);
+        break
+      }
+      case 'container': {
+        console.warn('Container scoped markers are not supported yet');
+        break
+      }
+      default:
+        console.error('Invalid marker scope.');
+    }
+  }
+
+  _remove(marker) {
+    const dirtyProps = this._manager._dirtyProps;
+    const scope = marker.scope || 'document';
+    switch (scope) {
+      case 'document': {
+        const path = marker.start.path;
+        dirtyProps[path] = true;
+        this._documentMarkers.remove(path, marker);
+        break
+      }
+      case 'surface': {
+        if (!this._surfaceMarkers[marker.surfaceId]) {
+          this._surfaceMarkers[marker.surfaceId] = new ArrayTree();
+        }
+        const path = marker.start.path;
+        dirtyProps[path] = true;
+        this._surfaceMarkers[marker.surfaceId].remove(path, marker);
+        break
+      }
+      case 'container': {
+        console.warn('Container scoped markers are not supported yet');
+        break
+      }
+      default:
+        console.error('Invalid marker scope.');
+    }
+  }
+
+  
+  _getAllCustomMarkers(path) {
+    let markers = this._documentMarkers[path] || [];
+    for(let surfaceId in this._surfaceMarkers) {
+      if (!this._surfaceMarkers.hasOwnProperty(surfaceId)) continue
+      let surfaceMarkers = this._surfaceMarkers[surfaceId][path];
+      if (surfaceMarkers) markers = markers.concat(surfaceMarkers);
+    }
+    
+    return markers
+  }
+
+  _onDocumentChange(change) {
+    change.ops.forEach((op) => {
+      if (op.type === 'update' && op.diff._isTextOperation) {
+        let markers = this._getAllCustomMarkers(op.path);
+        let diff = op.diff;
+        switch (diff.type) {
+          case 'insert':
+            this._transformInsert(markers, diff);
+            break
+          case 'delete':
+            this._transformDelete(markers, diff);
+            break
+          default:
+            
+        }
+      }
+    });
+  }
+
+  _transformInsert(markers, op) {
+    const pos = op.pos;
+    const length = op.str.length;
+    if (length === 0) return
+    markers.forEach((marker) => {
+      
+      var start = marker.start.offset;
+      var end = marker.end.offset;
+      var newStart = start;
+      var newEnd = end;
+      if (pos >= end) return
+      if (pos <= start) {
+        newStart += length;
+        newEnd += length;
+        marker.start.offset = newStart;
+        marker.end.offset = newEnd;
+        return
+      }
+      if (pos < end) {
+        newEnd += length;
+        marker.end.offset = newEnd;
+        
+        
+        
+        this._remove(marker);
+      }
+    });
+  }
+
+  _transformDelete(markers, op) {
+    const pos1 = op.pos;
+    const length = op.str.length;
+    const pos2 = pos1 + length;
+    if (pos1 === pos2) return
+    markers.forEach((marker) => {
+      var start = marker.start.offset;
+      var end = marker.end.offset;
+      var newStart = start;
+      var newEnd = end;
+      if (pos2 <= start) {
+        newStart -= length;
+        newEnd -= length;
+        marker.start.offset = newStart;
+        marker.end.offset = newEnd;
+      } else if (pos1 >= end) {
+        
+      }
+      
+      
+      else {
+        if (pos1 <= start) {
+          newStart = start - Math.min(pos2-pos1, start-pos1);
+        }
+        if (pos1 <= end) {
+          newEnd = end - Math.min(pos2-pos1, end-pos1);
+        }
+        
+        if (start !== end && newStart === newEnd) {
+          this._remove(marker);
+          return
+        }
+        if (start !== newStart) {
+          marker.start.offset = newStart;
+        }
+        if (end !== newEnd) {
+          marker.end.offset = newEnd;
+        }
+        this._remove(marker);
+      }
+    });
+  }
+
+}
+
+class SurfaceManager {
+
+  constructor(editorSession) {
+    this.editorSession = editorSession;
+    this.surfaces = {};
+    this._state = {
+      selection: null
+    };
+    editorSession.onUpdate('selection', this._onSelectionChanged, this);
+    editorSession.onPostRender(this._recoverDOMSelection, this);
+  }
+
+  dispose() {
+    this.editorSession.off(this);
+  }
+
+  
+  getSurface(name) {
+    if (name) {
+      return this.surfaces[name]
+    }
+  }
+
+  
+  getFocusedSurface() {
+    const sel = this._state.selection;
+    if (sel && sel.surfaceId) {
+      return this.getSurface(sel.surfaceId)
+    }
+  }
+
+  getSurfaces() {
+    
+    
+    return Object.keys(this.surfaces).map(key => this.surfaces[key])
+  }
+
+  
+  registerSurface(surface) {
+    const id = surface.getId();
+    if (this.surfaces[id]) {
+      console.error(`A surface with id ${id} has already been registered.`);
+    }
+    this.surfaces[id] = surface;
+  }
+
+  
+  unregisterSurface(surface) {
+    surface.off(this);
+    let surfaceId = surface.getId();
+    
+    
+    
+    
+    
+    let registeredSurface = this.surfaces[surfaceId];
+    if (registeredSurface === surface) {
+      delete this.surfaces[surfaceId];
+    }
+  }
+
+  _onSelectionChanged(selection) {
+    const state = this._state;
+    state.selection = selection;
+    
+    
+    
+    if (selection && selection.isCustomSelection() && platform.inBrowser) {
+      window.getSelection().removeAllRanges();
+      window.document.activeElement.blur();
+    }
+  }
+
+  
+  _recoverDOMSelection() {
+    
+    
+    
+    if (this.editorSession._blurred) return
+
+    let focusedSurface = this.getFocusedSurface();
+    
+    if (focusedSurface && !focusedSurface.isDisabled()) {
+      
+      focusedSurface._focus();
+      focusedSurface.rerenderDOMSelection();
+    }
+  }
+}
+
+class SaveHandlerStub {
+
+  
+  saveDocument({fileManager}) {
+    console.info('Simulating save ...');
+
+    return fileManager.sync()
+    .then(() => {
+      
+      
+      console.info('Creating document snapshot...');
+    })
+
+  }
+}
+
+class DefaultLabelProvider {
+
+  constructor(labels, lang) {
+    this.lang = lang || 'en';
+    this.labels = labels;
+  }
+
+  getLabel(name, params) {
+    let labels = this.labels[this.lang];
+    if (!labels) return name
+    let rawLabel = labels[name] || name;
+    
+    if (params) {
+      return this._evalTemplate(rawLabel, params)
+    } else {
+      return rawLabel
+    }
+  }
+
+  setLanguage(lang) {
+    this.lang = lang || 'en';
+  }
+
+  _evalTemplate(label, params) {
+    let vars = this._extractVariables(label);
+    vars.forEach((varName) => {
+      let searchExp = new RegExp(`\\\${${varName}}`, 'g');
+      let replaceStr = params[varName];
+      label = label.replace(searchExp, replaceStr);
+    });
+    return label
+  }
+
+  _extractVariables(rawLabel) {
+    let qualityRegex = /\${(\w+)}/g;
+    let matches;
+    let vars = [];
+
+    while (matches = qualityRegex.exec(rawLabel)) { 
+      vars.push(matches[1]);
+    }
+    return vars
+  }
+
+}
+
+class Configurator {
+  constructor() {
+    this.config = {
+      schema: {},
+      nodes: {},
+      tools: {},
+      components: {},
+      converters: {},
+      importers: {},
+      exporters: {},
+      fileProxies: [],
+      commands: {},
+      commandGroups: {},
+      toolPanels: {},
+      editingBehaviors: [],
+      macros: [],
+      managers: {},
+      dropHandlers: [],
+      keyboardShortcuts: [],
+      icons: {},
+      labels: {},
+      lang: 'en',
+      editorOptions: [],
+      CommandManagerClass: CommandManager,
+      DragManagerClass: DragManager,
+      SaveHandlerClass: null,
+    };
+  }
+
+  
+  
+
+  
+  defineSchema(schema) {
+    if (schema.ArticleClass) {
+      console.warn('DEPRECATED: schema.ArticleClass is now called schema.DocumentClass');
+      schema.DocumentClass = schema.ArticleClass;
+    }
+    if (!schema.DocumentClass) {
+      throw new Error('schema.DocumentClass is mandatory')
+    }
+    this.config.schema = schema;
+  }
+
+  addEditorOption(option) {
+    if (!option.key) {
+      throw new Error('An option key must be defined')
+    }
+    if (!option.value) {
+      throw new Error('An option value must be defined')
+    }
+    this.config.editorOptions[option.key] = option.value;
+  }
+
+  getEditorOptions() {
+    return this.config.editorOptions
+  }
+
+    
+  addNode(NodeClass) {
+    var type = NodeClass.type;
+    if (!type) {
+      throw new Error('A NodeClass must have a type.')
+    }
+    if (this.config.nodes[type]) {
+      throw new Error('NodeClass with this type name is already registered: ' + type)
+    }
+    this.config.nodes[type] = NodeClass;
+  }
+
+  
+  addConverter(type, converter) {
+    var converters = this.config.converters[type];
+    if (!converters) {
+      converters = {};
+      this.config.converters[type] = converters;
+    }
+    if (!converter.type) {
+      throw new Error('A converter needs an associated type.')
+    }
+    converters[converter.type] = converter;
+  }
+
+  
+  addImporter(type, ImporterClass) {
+    this.config.importers[type] = ImporterClass;
+  }
+
+  
+  addExporter(type, ExporterClass) {
+    this.config.exporters[type] = ExporterClass;
+  }
+
+  
+  addComponent(nodeType, ComponentClass, force) {
+    if (!force && this.config.components[nodeType]) {
+      throw new Error(nodeType+' already registered')
+    }
+    if (!ComponentClass) {
+      throw new Error('Provided nil for component '+nodeType)
+    }
+    if (!ComponentClass.prototype._isComponent) {
+      throw new Error('ComponentClass must be a subclass of ui/Component.')
+    }
+    this.config.components[nodeType] = ComponentClass;
+  }
+
+  addCommand(name, CommandClass, options) {
+    if (!isString(name)) {
+      throw new Error("Expecting 'name' to be a String")
+    }
+    if (!CommandClass) {
+      throw new Error('Provided nil for command '+name)
+    }
+    if (!CommandClass.prototype._isCommand) {
+      throw new Error("Expecting 'CommandClass' to be of type ui/Command.")
+    }
+    options = options || {};
+    if (this.config.commands[name] && !options.force) {
+      throw new Error(`Another command with name ${name} has already been registered. Use 'options.force' if this is intentional.`)
+    }
+    this.config.commands[name] = {
+      name,
+      CommandClass,
+      options
+    };
+
+    
+    let commandGroup = options.commandGroup;
+    if (commandGroup) {
+      if (!this.config.commandGroups[commandGroup]) {
+        this.config.commandGroups[commandGroup] = [];
+      }
+      this.config.commandGroups[commandGroup].push(name);
+    }
+  }
+
+  addTool(name, ToolClass) {
+    if (!isString(name)) {
+      throw new Error("Expecting 'name' to be a String")
+    }
+    if (!ToolClass) {
+      throw new Error('Provided nil for tool '+name)
+    }
+    if (!ToolClass || !ToolClass.prototype._isTool) {
+      throw new Error("Expecting 'ToolClass' to be of type ui/Tool. name:", name)
+    }
+
+    this.config.tools[name] = ToolClass;
+  }
+
+  getTools() {
+    return this.config.tools
+  }
+
+  addToolPanel(name, spec) {
+    this.config.toolPanels[name] = spec;
+  }
+
+  getToolPanel(name) {
+    return this.config.toolPanels[name]
+  }
+
+  addManager(name, ManagerClass) {
+    this.config.managers[name] = ManagerClass;
+  }
+
+  getManagers() {
+    return this.config.managers
+  }
+
+  
+  addIcon(iconName, options) {
+    var iconConfig = this.config.icons[iconName];
+    if (!iconConfig) {
+      iconConfig = {};
+      this.config.icons[iconName] = iconConfig;
+    }
+    Object.assign(iconConfig, options);
+  }
+
+  
+  addLabel(labelName, label) {
+    if (isString(label)) {
+      if(!this.config.labels['en']) {
+        this.config.labels['en'] = {};
+      }
+      this.config.labels['en'][labelName] = label;
+    } else {
+      forEach(label, function(label, lang) {
+        if (!this.config.labels[lang]) {
+          this.config.labels[lang] = {};
+        }
+        this.config.labels[lang][labelName] = label;
+      }.bind(this));
+    }
+  }
+
+  
+  addSeed(seed) {
+    this.config.seed = seed;
+  }
+
+  
+  addEditingBehavior(editingBehavior) {
+    this.config.editingBehaviors.push(editingBehavior);
+  }
+
+  addMacro(macro) {
+    this.config.macros.push(macro);
+  }
+
+  addDragAndDrop(DragAndDropHandlerClass) {
+    
+    
+    console.warn('DEPRECATED: Use addDropHandler() instead');
+    if (!DragAndDropHandlerClass.prototype._isDragAndDropHandler) {
+      throw new Error('Only instances of DragAndDropHandler are allowed.')
+    }
+    this.addDropHandler(new DragAndDropHandlerClass());
+  }
+
+  addDropHandler(dropHandler) {
+    
+    if (dropHandler._isDragAndDropHandler) {
+      dropHandler.type = dropHandler.type || 'drop-asset';
+    }
+    this.config.dropHandlers.push(dropHandler);
+  }
+
+  addKeyboardShortcut(combo, spec) {
+    let entry = {
+      key: combo,
+      spec: spec
+    };
+    this.config.keyboardShortcuts.push(entry);
+  }
+
+  addFileProxy(FileProxyClass) {
+    this.config.fileProxies.push(FileProxyClass);
+  }
+
+  getFileAdapters() {
+    return this.config.fileProxies.slice(0)
+  }
+
+  
+  import(pkg, options) {
+    pkg.configure(this, options || {});
+    return this
+  }
+
+  
+  
+
+  getConfig() {
+    return this.config
+  }
+
+  getStyles() {
+    return this.config.styles
+  }
+
+  getSchema() {
+    if (!this.schema) {
+      this.schema = new DocumentSchema(this.config.schema);
+      this.schema.addNodes(this.config.nodes);
+    }
+    return this.schema
+  }
+
+  getDocumentClass() {
+    return this.config.schema.DocumentClass
+  }
+
+  createArticle(seed) {
+    console.warn('DEPRECATED: createArticle is now called createDocument');
+    return this.createDocument(seed)
+  }
+
+  createDocument(seed) {
+    const schema = this.getSchema();
+    const DocumentClass = schema.getDocumentClass();
+    let doc = new DocumentClass(schema);
+    if (seed) {
+      seed(doc);
+    }
+    return doc
+  }
+
+  createImporter(type, context, options = {}) {
+    var ImporterClass = this.config.importers[type];
+    var config = Object.assign({
+      schema: this.getSchema(),
+      converters: this.getConverterRegistry().get(type).values(),
+    }, options);
+    return new ImporterClass(config, context)
+  }
+
+  createExporter(type, context, options = {}) {
+    var ExporterClass = this.config.exporters[type];
+    var config = Object.assign({
+      schema: this.getSchema(),
+      converters: this.getConverterRegistry().get(type).values()
+    }, options);
+    return new ExporterClass(config, context)
+  }
+
+  getCommandGroups() {
+    return this.config.commandGroups
+  }
+
+  getComponentRegistry() {
+    var componentRegistry = new ComponentRegistry();
+    forEach(this.config.components, function(ComponentClass, name) {
+      componentRegistry.add(name, ComponentClass);
+    });
+    return componentRegistry
+  }
+
+  getCommands() {
+    return map(this.config.commands, function(item, name) {
+      return new item.CommandClass(Object.assign({name: name}, item.options))
+    })
+  }
+
+  getSurfaceCommandNames() {
+    var commands = this.getCommands();
+    var commandNames = commands.map(function(C) {
+      return C.name
+    });
+    return commandNames
+  }
+
+  
+  getConverterRegistry() {
+    if (!this.converterRegistry) {
+      var converterRegistry = new Registry();
+      forEach(this.config.converters, function(converters, name) {
+        converterRegistry.add(name, new Registry(converters));
+      });
+      this.converterRegistry = converterRegistry;
+    }
+    return this.converterRegistry
+  }
+
+  getDropHandlers() {
+    return this.config.dropHandlers.slice(0)
+  }
+
+  getSeed() {
+    return this.config.seed
+  }
+
+  getIconProvider() {
+    return new FontAwesomeIconProvider(this.config.icons)
+  }
+
+  getEditingBehavior() {
+    var editingBehavior = new EditingBehavior();
+    this.config.editingBehaviors.forEach(function(behavior) {
+      behavior.register(editingBehavior);
+    });
+    return editingBehavior
+  }
+
+  getMacros() {
+    return this.config.macros
+  }
+
+  getKeyboardShortcuts() {
+    return this.config.keyboardShortcuts
+  }
+
+  getFindAndReplaceConfig() {
+    return this.config.findAndReplace
+  }
+
+  setFindAndReplaceConfig(config) {
+    this.config.findAndReplace = config;
+  }
+
+  
+  getKeyboardShortcutsByCommand() {
+    let keyboardShortcuts = {};
+    this.config.keyboardShortcuts.forEach((entry) => {
+      if (entry.spec.command) {
+        let shortcut = entry.key.toUpperCase();
+
+        if (platform.isMac) {
+          shortcut = shortcut.replace(/CommandOrControl/i, '⌘');
+          shortcut = shortcut.replace(/Ctrl/i, '^');
+          shortcut = shortcut.replace(/Alt/i, '⌥');
+          shortcut = shortcut.replace(/\+/g, '');
+        } else {
+          shortcut = shortcut.replace(/CommandOrControl/i, 'Ctrl');
+        }
+
+        keyboardShortcuts[entry.spec.command] = shortcut;
+      }
+    });
+    return keyboardShortcuts
+  }
+
+  setDefaultLanguage(lang) {
+    this.config.lang = lang;
+  }
+
+  getDefaultLanguage() {
+    return this.config.lang || 'en'
+  }
+
+  
+
+  setCommandManagerClass(CommandManagerClass) {
+    this.config.CommandManagerClass = CommandManagerClass;
+  }
+
+  getCommandManagerClass() {
+    return this.config.CommandManagerClass || CommandManager
+  }
+
+  setDragManagerClass(DragManagerClass) {
+    this.config.DragManagerClass = DragManagerClass;
+  }
+
+  getDragManagerClass() {
+    return this.config.DragManagerClass || DragManager
+  }
+
+  setFileManagerClass(FileManagerClass) {
+    this.config.FileManagerClass = FileManagerClass;
+  }
+
+  getFileManagerClass() {
+    return this.config.FileManagerClass || FileManager
+  }
+
+  setGlobalEventHandlerClass(GlobalEventHandlerClass) {
+    this.config.GlobalEventHandlerClass = GlobalEventHandlerClass;
+  }
+
+  getGlobalEventHandlerClass() {
+    return this.config.GlobalEventHandlerClass || GlobalEventHandler
+  }
+
+  setKeyboardManagerClass(KeyboardManagerClass) {
+    this.config.KeyboardManagerClass = KeyboardManagerClass;
+  }
+
+  getKeyboardManagerClass() {
+    return this.config.KeyboardManagerClass || KeyboardManager
+  }
+
+  setMacroManagerClass(MacroManagerClass) {
+    this.config.MacroManagerClass = MacroManagerClass;
+  }
+
+  getMacroManagerClass() {
+    return this.config.MacroManagerClass || MacroManager
+  }
+
+  setMarkersManagerClass(MarkersManagerClass) {
+    this.config.MarkersManagerClass = MarkersManagerClass;
+  }
+
+  getMarkersManagerClass() {
+    return this.config.MarkersManagerClass || MarkersManager
+  }
+
+  setSurfaceManagerClass(SurfaceManagerClass) {
+    this.config.SurfaceManagerClass = SurfaceManagerClass;
+  }
+
+  getSurfaceManagerClass() {
+    return this.config.SurfaceManagerClass || SurfaceManager
+  }
+
+  setSaveHandlerClass(SaveHandlerClass) {
+    this.config.SaveHandlerClass = SaveHandlerClass;
+  }
+
+  getSaveHandler() {
+    let SaveHandler = this.config.SaveHandlerClass || SaveHandlerStub;
+    return new SaveHandler()
+  }
+
+  getLabelProviderClass() {
+    return this.config.LabelProviderClass || DefaultLabelProvider
+  }
+
+  setLabelProviderClass(LabelProviderClass) {
+    this.config.LabelProviderClass = LabelProviderClass;
+  }
+
+  getLabelProvider() {
+    const LabelProvider = this.getLabelProviderClass();
+    return new LabelProvider(this.config.labels)
+  }
+
+}
+
+var TextNodeMixin = function(SuperClass) {
+  class TextNodeMixin extends SuperClass {
+    getTextPath() {
+      
+      console.warn('DEPRECATED: use node.getPath()');
+      return this.getPath()
+    }
+
+    getText() {
+      return this.content
+    }
+
+    isEmpty() {
+      return !this.getText()
+    }
+
+    getLength() {
+      return this.getText().length
+    }
+
+    getAnnotations() {
+      return this.getDocument().getIndex('annotations').get(this.getPath())
+    }
+  }
+  return TextNodeMixin
+};
+
+const ENTER = 1;
+const EXIT = -1;
+const ANCHOR = -2;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Fragmenter {
+
+  constructor(options) {
+    Object.assign(this, options);
+  }
+
+  start(rootContext, text, annotations) {
+    if (!isString(text)) {
+      throw new Error("Illegal argument: 'text' must be a String, but was " + text)
+    }
+    this._start(rootContext, text, annotations);
+  }
+
+  onText(context, text, entry) { 
+  }
+
+  
+  onEnter(entry, parentContext) { 
+    return null
+  }
+
+  onExit(entry, context, parentContext) { 
+  }
+
+  _enter(entry, parentContext) {
+    entry.counter++;
+    return this.onEnter(entry, parentContext)
+  }
+
+  _exit(entry, context, parentContext) {
+    this.onExit(entry, context, parentContext);
+  }
+
+  _createText(context, text, entry) {
+    this.onText(context, text, entry);
+  }
+
+  _start(rootContext, text, annotations) {
+    var entries = _extractEntries.call(this, annotations);
+    var stack = [{context: rootContext, entry: null}];
+
+    var pos = 0;
+    for (var i = 0; i < entries.length; i++) {
+      var entry = entries[i];
+      var textFragment = text.substring(pos, entry.pos);
+      if (textFragment) {
+        
+        this._createText(stack[stack.length-1].context, textFragment, entry);
+      }
+
+      pos = entry.pos;
+      var stackLevel, idx, _entry;
+      if (entry.mode === ENTER || entry.mode === ANCHOR) {
+        
+        for (stackLevel = 1; stackLevel < stack.length; stackLevel++) {
+          if (entry.level < stack[stackLevel].entry.level) {
+            break
+          }
+        }
+        
+        
+        for (idx = stack.length-1; idx >= stackLevel; idx--) {
+          _entry = stack[idx].entry;
+          
+          _entry.length = pos - _entry.pos;
+          this._exit(_entry, stack[idx].context, stack[idx-1].context);
+        }
+        stack.splice(stackLevel, 0, {entry: entry});
+        
+        for (idx = stackLevel; idx < stack.length; idx++) {
+          _entry = stack[idx].entry;
+          
+          _entry.pos = pos;
+          stack[idx].context = this._enter(_entry, stack[idx-1].context);
+        }
+      }
+      if (entry.mode === EXIT || entry.mode === ANCHOR) {
+        
+        for (stackLevel = 1; stackLevel < stack.length; stackLevel++) {
+          if (stack[stackLevel].entry.node === entry.node) {
+            break
+          }
+        }
+        for (idx = stack.length-1; idx >= stackLevel; idx--) {
+          _entry = stack[idx].entry;
+          
+          _entry.length = pos - _entry.pos;
+          this._exit(_entry, stack[idx].context, stack[idx-1].context);
+        }
+        stack.splice(stackLevel, 1);
+        
+        for (idx = stackLevel; idx < stack.length; idx++) {
+          _entry = stack[idx].entry;
+          
+          _entry.pos = pos;
+          stack[idx].context = this._enter(_entry, stack[idx-1].context);
+        }
+      }
+    }
+
+    
+    var trailingText = text.substring(pos);
+    if (trailingText) {
+      this._createText(rootContext, trailingText);
+    }
+  }
+
+}
+
+Fragmenter.SHOULD_NOT_SPLIT = 0;
+Fragmenter.NORMAL = 10;
+Fragmenter.ANY = 100;
+Fragmenter.ALWAYS_ON_TOP = Number.MAX_VALUE;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function _extractEntries(annotations) {
+  var openers = [];
+  var closers = [];
+  forEach(annotations, function(a) {
+    var isAnchor = (a.isAnchor ? a.isAnchor() : false);
+    
+    if (isAnchor) {
+      openers.push({
+        mode: ANCHOR,
+        pos: a.offset,
+        id: a.id,
+        level: Fragmenter.ALWAYS_ON_TOP,
+        type: 'anchor',
+        node: a,
+        counter: -1,
+        length: 0
+      });
+    } else {
+      
+      
+      
+      
+      
+      
+      
+
+      
+      var l = Fragmenter.NORMAL;
+      var isInline = (a.isInline ? a.isInline() : false);
+      if (isInline) {
+        l = Number.MAX_VALUE;
+      } else if (a.constructor.hasOwnProperty('fragmentation')) {
+        l = a.constructor.fragmentation;
+      } else if (a.hasOwnProperty('fragmentationHint')) {
+        l = a.fragmentationHint;
+      }
+      var startOffset = Math.min(a.start.offset, a.end.offset);
+      var endOffset = Math.max(a.start.offset, a.end.offset);
+      var opener = {
+        pos: startOffset,
+        mode: ENTER,
+        level: l,
+        id: a.id,
+        type: a.type,
+        node: a,
+        length: 0,
+        counter: -1,
+      };
+      openers.push(opener);
+      closers.push({
+        pos: endOffset,
+        mode: EXIT,
+        level: l,
+        id: a.id,
+        type: a.type,
+        node: a,
+        opener: opener
+      });
+    }
+  });
+
+  
+  openers.sort(_compareOpeners);
+  
+  for (var i = openers.length - 1; i >= 0; i--) {
+    openers[i].idx = i;
+  }
+  closers.sort(_compareClosers);
+  
+  var entries = new Array(openers.length+closers.length);
+  var idx = 0;
+  var idx1 = 0;
+  var idx2 = 0;
+  var opener = openers[idx1];
+  var closer = closers[idx2];
+  while(opener || closer) {
+    if (opener && closer) {
+      
+      if (closer.pos <= opener.pos && closer.opener !== opener) {
+        entries[idx] = closer;
+        idx2++;
+      } else {
+        entries[idx] = opener;
+        idx1++;
+      }
+    } else if (opener) {
+      entries[idx] = opener;
+      idx1++;
+    } else if (closer) {
+      entries[idx] = closer;
+      idx2++;
+    }
+    opener = openers[idx1];
+    closer = closers[idx2];
+    idx++;
+  }
+  return entries
+}
+
+function _compareOpeners(a, b) {
+  if (a.pos < b.pos) return -1
+  if (a.pos > b.pos) return 1
+  if (a.mode < b.mode) return -1
+  if (a.mode > b.mode) return 1
+  if (a.mode === b.mode) {
+    if (a.level < b.level) return -1
+    if (a.level > b.level) return 1
+  }
+  return 0
+}
+
+
+function _compareClosers(a, b) {
+  if (a.pos < b.pos) return -1
+  if (a.pos > b.pos) return 1
+  
+  
+  
+  
+  
+  if (a.pos === a.opener.pos && b.pos === b.opener.pos) {
+    if (a.opener.idx < b.opener.idx) {
+      return -1
+    } else {
+      return 1
+    }
+  }
+  if (a.opener.idx > b.opener.idx) return -1
+  if (a.opener.idx < b.opener.idx) return 1
+  return 0
+}
+
+function node2element(node) {
+  
+  let dom = DefaultDOMElement.createDocument('xml');
+  let el = _node2element(dom, node);
+  return el
+}
+
+function _node2element(dom, node) {
+  let el;
+  switch(node._elementType) {
+    case 'text': {
+      el = _renderTextNode(dom, node);
+      break
+    }
+    case 'element':
+    case 'inline-element':
+    case 'container': {
+      el = _renderElementNode(dom, node);
+      break
+    }
+    case 'anchor':
+    case 'annotation': {
+      el = _createElement$1(dom, node);
+      break
+    }
+    case 'external': {
+      el = DefaultDOMElement.parseSnippet(node.xml, 'xml');
+      break
+    }
+    default:
+      throw new Error('Invalid element type.')
+  }
+  return el
+}
+
+function _createElement$1(dom, node) {
+  let el = dom.createElement(node.type);
+  el.attr('id', node.id);
+  el.attr(node.attributes);
+  return el
+}
+
+function _renderElementNode(dom, node) {
+  let el = _createElement$1(dom, node);
+  el.append(node.getChildren().map(child => _node2element(dom, child)));
+  return el
+}
+
+function _renderTextNode(dom, node) {
+  const annos = node.getAnnotations();
+  const text = node.getText();
+  let el = _createElement$1(dom, node);
+  if (annos && annos.length > 0) {
+    let fragmenter = new Fragmenter({
+      onText: (context, text) => { context.append(text); },
+      onEnter: (fragment) => {
+        return _node2element(dom, fragment.node)
+      },
+      onExit: (fragment, context, parentContext) => {
+        parentContext.append(context);
+      }
+    });
+    fragmenter.start(el, text, annos);
+  } else {
+    el.append(text);
+  }
+  return el
+}
+
+function nameWithoutNS$1(name) {
+  const idx = name.indexOf(':');
+  if (idx > 0) {
+    return name.slice(idx+1)
+  } else {
+    return name
+  }
+}
+
+class Adapter extends domUtils.DomUtils {
+
+  
+  isTag() {
+    return true
+  }
+
+  getChildren(elem){
+    return elem.getChildren() || []
+  }
+
+  getAttributeValue(elem, name){
+    return elem.getAttribute(name)
+  }
+
+  getAttributes(elem) {
+    return ['id', elem.id].concat(map(elem.attributes, (val, key) => { return [key,val] }))
+  }
+
+  hasAttrib(elem, name){
+    return name === 'id' || elem.attributes.hasOwnProperty(name)
+  }
+
+  getName(elem){
+    return elem.type
+  }
+
+  getNameWithoutNS(elem){
+    return nameWithoutNS$1(this.getName(elem))
+  }
+
+  getText(elem) {
+    if (elem._elementType === 'text') {
+      return elem.getText()
+    }
+    
+    return ''
+  }
+}
+
+var cssSelectAdapter = new Adapter();
+
+class XMLDocumentNode extends DocumentNode {
+
+  _initialize(doc, props) {
+    
+    
+    
+    if (props.attributes) {
+      delete props.attributes.id;
+    }
+    super._initialize(doc, props);
+  }
+
+  toXML() {
+    return node2element(this)
+  }
+
+  
+  findChild(tagName) {
+    const children = this.getChildren();
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+      if (child.type === tagName) return child
+    }
+  }
+
+  find(cssSelector) {
+    return cssSelect.selectOne(cssSelector, this, { xmlMode: true, adapter: cssSelectAdapter })
+  }
+
+  findAll(cssSelector) {
+    return cssSelect.selectAll(cssSelector, this, { xmlMode: true, adapter: cssSelectAdapter })
+  }
+
+  isContainer() {
+    return false
+  }
+
+  
+  isBlock() {
+    const parentNode = this.parentNode;
+    return (parentNode && parentNode.isContainer())
+  }
+
+  get children() {
+    return this.getChildren()
+  }
+
+  getChildren() {
+    
+    return this.getChildNodes()
+  }
+
+  getChildNodes() {
+    if (this._childNodes) {
+      return documentHelpers.getNodes(this.getDocument(), this._childNodes)
+    } else {
+      return []
+    }
+  }
+
+  getChildCount() {
+    if (this._childNodes) {
+      return this._childNodes.length
+    } else {
+      return 0
+    }
+  }
+
+  getChildNodeIterator() {
+    return new ArrayIterator(this.getChildNodes())
+  }
+
+  getFirstChild() {
+    if (this._childNodes) {
+      return this.getDocument().get(this._childNodes[0])
+    }
+  }
+
+  getLastChild() {
+    if (this._childNodes) {
+      return this.getDocument().get(last$2(this._childNodes))
+    }
+  }
+
+
+  get tagName() {
+    return this.type
+  }
+
+  
+  get parent() {
+    return this.parentNode
+  }
+
+  setAttribute(name, val) {
+    if (name === 'id') {
+      throw new Error("'id' is read-only and can not be changed")
+    }
+    this.getDocument().set([this.id, 'attributes', name], val);
+  }
+
+  getAttribute(name) {
+    if (name === 'id') return this.id
+    return this.attributes[name]
+  }
+
+  getElementSchema() {
+    return this.getDocument().getElementSchema(this.type)
+  }
+
+  serialize() {
+    return this.toXML()
+  }
+
+  isTextNode() {
+    return false
+  }
+
+  isElementNode() {
+    return false
+  }
+
+}
+
+XMLDocumentNode.prototype.attr = DOMElement.prototype.attr;
+
+XMLDocumentNode.schema = {
+  attributes: { type: 'object', default: {} }
+};
+
+class XMLTextElement extends TextNodeMixin(XMLDocumentNode) {
+
+  getPath() {
+    return [this.id, 'content']
+  }
+
+  getText() {
+    return this.content
+  }
+
+  
+  getChildren() {
+    const annos = this.getAnnotations();
+    
+    annos.sort(_byStartOffset);
+    return annos
+  }
+
+  setText(text) {
+    const doc = this.getDocument();
+    const path = this.getPath();
+    const oldText = this.getText();
+    
+    if (oldText.length > 0) {
+      doc.update(path, { type: 'delete', start: 0, end: oldText.length });
+    }
+    doc.update(path, { type: 'insert', start: 0, text });
+    return this
+  }
+
+  
+
+  getTextContent() {
+    return this.getText()
+  }
+
+  setTextContent(text) {
+    return this.setText(text)
+  }
+
+  get textContent() {
+    return this.getText()
+  }
+
+  set textContent(text) {
+    this.setText(text);
+  }
+
+  appendChild(child) { 
+    
+    
+    
+    
+    
+    
+    
+    throw new Error('This is not implemented yet.')
+  }
+
+  removeChild(child) { 
+    
+    throw new Error('This is not implemented yet.')
+  }
+
+  
+  isElementNode() {
+    return true
+  }
+
+}
+
+XMLTextElement.prototype._isXMLTextElement = true;
+
+XMLTextElement.prototype.text = DOMElement.prototype.text;
+
+XMLTextElement.prototype._elementType = 'text';
+
+
+XMLTextElement.isText = true;
+XMLTextElement.isBlock = true;
+
+XMLTextElement.type = 'text';
+
+XMLTextElement.schema = {
+  content: "text"
+};
+
+function _byStartOffset(a,b) {
+  return a.start.offset - b.start.offset
+}
+
+class XMLNodeConverter {
+
+  constructor(type) {
+    this.type = type;
+    this.tagName = nameWithoutNS$1(type);
+    this.tagNameNS = type;
+  }
+
+  matchElement(el) {
+    return (el.tagName === this.tagNameNS)
+  }
+
+  export(node, el) {
+    el.tagName = this.tagNameNS;
+    el.setAttributes(node.attributes);
+  }
+
+}
+
+class XMLTextElementConverter extends XMLNodeConverter {
+
+  import(el, node, converter) {
+    node.content = converter.annotatedText(el, [node.id, 'content'], { preserveWhitespace: true });
+  }
+
+  export(node, el, converter) {
+    el.tagName = this.tagNameNS;
+    el.setAttributes(node.attributes);
+    el.append(converter.annotatedText([node.id, 'content']));
+  }
+
+}
+
+class XMLElementNode extends XMLDocumentNode {
+
+  appendChild(child) {
+    this.insertAt(this._childNodes.length, child);
+  }
+
+  removeChild(child) {
+    const childId = child.id;
+    const childPos = this._childNodes.indexOf(childId);
+    if (childPos >= 0) {
+      this.removeAt(childPos);
+    } else {
+      throw new Error(`node ${childId} is not a child of ${this.id}`)
+    }
+    return this
+  }
+
+  insertBefore(newChild, ref) {
+    if (!ref) {
+      this.appendChild(newChild);
+    } else {
+      let pos = this._childNodes.indexOf(ref.id);
+      if (pos < 0) {
+        throw new Error('Given node is not a child.')
+      }
+      this.insertAt(pos, newChild);
+    }
+  }
+
+  insertAt(pos, child) {
+    const length = this._childNodes.length;
+    if (pos >= 0 && pos <= length) {
+      const doc = this.getDocument();
+      doc.update([this.id, '_childNodes'], { type: 'insert', pos, value: child.id });
+    } else {
+      throw new Error('Index out of bounds.')
+    }
+    return this
+  }
+
+  removeAt(pos) {
+    const length = this._childNodes.length;
+    if (pos >= 0 && pos < length) {
+      const doc = this.getDocument();
+      doc.update([this.id, '_childNodes'], { type: 'delete', pos: pos });
+    } else {
+      throw new Error('Index out of bounds.')
+    }
+    return this
+  }
+
+  getInnerXML() {
+    return this.getChildren().map((child) => {
+      return child.toXML().outerHTML
+    }).join('')
+  }
+
+  isElementNode() {
+    return true
+  }
+
+  getChildAt(idx) {
+    let childId = this._childNodes[idx];
+    if (childId) {
+      return this.getDocument().get(childId)
+    }
+  }
+
+  
+
+}
+
+XMLElementNode.prototype.append = DOMElement.prototype.append;
+
+XMLElementNode.prototype._elementType = 'element';
+
+XMLElementNode.type = 'element';
+
+XMLElementNode.schema = {
+  _childNodes: { type: ['array', 'id'], default: [], owned: true}
+};
+
+XMLElementNode.isBlock = true;
+
+class ElementNodeConverter extends XMLNodeConverter {
+
+  import(el, node, converter) {
+    let it = converter.getChildNodeIterator(el);
+    let childNodeIds = [];
+    while(it.hasNext()) {
+      const childEl = it.next();
+      if (childEl.isElementNode()) {
+        let childNode = converter.convertElement(childEl);
+        childNodeIds.push(childNode.id);
+      }
+    }
+    node._childNodes = childNodeIds;
+  }
+
+  export(node, el, converter) {
+    el.tagName = this.tagNameNS;
+    el.setAttributes(node.attributes);
+    el.childNodes.forEach((childNode) => {
+      let childEl = converter.convertNode(childNode);
+      el.appendChild(childEl);
+    });
+  }
+
+}
+
+class XMLAnnotationNode extends AnnotationMixin(XMLDocumentNode) {
+
+  
+  get parentNode() {
+    const path = this.start.path;
+    const doc = this.getDocument();
+    return doc.get(path[0])
+  }
+
+  isPropertyAnnotation() {
+    return true
+  }
+
+}
+
+XMLAnnotationNode.prototype._elementType = 'annotation';
+
+
+XMLAnnotationNode.prototype._isPropertyAnnotation = true;
+
+XMLAnnotationNode.type = 'annotation';
+
+
+XMLAnnotationNode.schema = {};
+
+class XMLAnchorNode extends XMLDocumentNode {
+
+  
+  get parentNode() {
+    const path = this.coor.start.path;
+    const doc = this.getDocument();
+    return doc.get(path[0])
+  }
+
+}
+
+XMLAnchorNode.prototype._elementType = 'anchor';
+
+XMLAnchorNode.type = 'anchor';
+
+XMLAnchorNode.schema = {
+  coor: { type: "coordinate", optional: true }
+};
+
+class XMLInlineElementNode extends XMLAnnotationNode {
+
+  
+  get parentNode() {
+    const path = this.start.path;
+    if (path[0]) {
+      const doc = this.getDocument();
+      return doc.get(path[0])
+    }
+    return this._parentNode
+  }
+
+  set parentNode(parent) {
+    const path = this.start.path;
+    if (path[0]) {
+      throw new Error('parent of inline-element is implicitly given')
+    }
+    this._parentNode = parent;
+  }
+
+}
+
+XMLInlineElementNode.prototype._elementType = 'inline-element';
+
+
+
+XMLInlineElementNode.prototype._isInlineNode = true;
+XMLInlineElementNode.isInline = true;
+
+
+XMLInlineElementNode.type = 'inline-element';
+
+XMLInlineElementNode.schema = {
+  childNodes: { type: ['array', 'id'], default: [], owned: true},
+};
+
+class XMLExternalNode extends XMLDocumentNode {}
+
+XMLExternalNode.prototype._elementType = 'external';
+
+XMLExternalNode.type = 'external';
+
+XMLExternalNode.schema = {
+  xml: { type: 'string', default: ''}
+};
+
+XMLExternalNode.isBlock = true;
+
+class ExternalNodeConverter extends XMLNodeConverter {
+
+  import(el, node) {
+    node.xml = el.innerHTML;
+  }
+
+  export(node, el) {
+    el.tagName = this.tagNameNS;
+    el.setAttributes(node.attributes);
+    el.innerHTML = node.xml;
+  }
+
+}
+
+class XMLContainerNode extends ContainerMixin(XMLElementNode) {
+
+  getContentPath() {
+    return [this.id, '_childNodes']
+  }
+
+  getContent() {
+    return this._childNodes
+  }
+
+  isContainer() {
+    return true
+  }
+
+  appendChild(child) {
+    super.show(child.id);
+  }
+
+}
+
+XMLContainerNode.prototype._elementType = 'container';
+
+XMLContainerNode.type = 'container';
+
+XMLContainerNode.schema = {};
+
+XMLContainerNode.isBlock = true;
+
+function createCountingIdGenerator() {
+  var counters = {};
+  return function uuid(prefix) {
+    if (!counters.hasOwnProperty(prefix)) {
+      counters[prefix] = 1;
+    }
+    var result = [prefix, '-', counters[prefix]++].join('');
+    return result
+  }
+}
+
+const WS_LEFT = /^\s+/g;
+
+
+const WS_RIGHT = /\s+$/g;
+const WS_ALL = /\s+/g;
+
+
+const SPACE = " ";
+const TABS_OR_NL = /[\t\n\r]+/g;
+
+const INVISIBLE_CHARACTER = "\u200B";
+
+
+class DOMImporter {
+
+  constructor(config, context) {
+    this.context = context || {};
+
+    if (!config.schema) {
+      throw new Error('"config.schema" is mandatory')
+    }
+    if (!config.converters) {
+      throw new Error('"config.converters" is mandatory')
+    }
+
+    this.config = Object.assign({ idAttribute: 'id' }, config);
+    this.schema = config.schema;
+    this.converters = config.converters;
+    this.state = null;
+
+    this._defaultBlockConverter = null;
+    this._allConverters = [];
+    this._blockConverters = [];
+    this._propertyAnnotationConverters = [];
+
+    this.state = new DOMImporter.State();
+
+    this._initialize();
+  }
+
+  
+  _initialize() {
+    const schema = this.schema;
+    const defaultTextType = schema.getDefaultTextType();
+    const converters = this.converters;
+    for (let i = 0; i < converters.length; i++) {
+      let converter;
+      if (typeof converters[i] === 'function') {
+        const Converter = converters[i];
+        converter = new Converter();
+      } else {
+        converter = converters[i];
+      }
+      if (!converter.type) {
+        throw new Error('Converter must provide the type of the associated node.')
+      }
+      if (!converter.matchElement && !converter.tagName) {
+        throw new Error('Converter must provide a matchElement function or a tagName property.')
+      }
+      if (!converter.matchElement) {
+        converter.matchElement = this._defaultElementMatcher.bind(converter);
+      }
+      const NodeClass = schema.getNodeClass(converter.type);
+      if (!NodeClass) {
+        throw new Error('No node type defined for converter')
+      }
+      if (!this._defaultBlockConverter && defaultTextType === converter.type) {
+        this._defaultBlockConverter = converter;
+      }
+      this._allConverters.push(converter);
+      
+      if (NodeClass.prototype._isPropertyAnnotation) {
+        this._propertyAnnotationConverters.push(converter);
+      } else {
+        this._blockConverters.push(converter);
+      }
+    }
+  }
+
+  dispose() {
+    if (this.state.doc) {
+      this.state.doc.dispose();
+    }
+  }
+
+  
+  reset() {
+    if (this.state.doc) {
+      this.state.doc.dispose();
+    }
+    this.state.reset();
+    this.state.doc = this._createDocument();
+  }
+
+  getDocument() {
+    return this.state.doc
+  }
+
+  
+  convertContainer(elements, containerId) {
+    if (!this.state.doc) this.reset();
+    const state = this.state;
+    const iterator = new ArrayIterator(elements);
+    const nodeIds = [];
+    while(iterator.hasNext()) {
+      const el = iterator.next();
+      let node;
+      const blockTypeConverter = this._getConverterForElement(el, 'block');
+      if (blockTypeConverter) {
+        state.pushContext(el.tagName, blockTypeConverter);
+        let nodeData = this._createNodeData(el, blockTypeConverter.type);
+        nodeData = blockTypeConverter.import(el, nodeData, this) || nodeData;
+        node = this._createNode(nodeData);
+        let context = state.popContext();
+        context.annos.forEach((a) => {
+          this._createNode(a);
+        });
+      } else if (el.isCommentNode()) {
+        continue
+      } else {
+        
+        if (el.isTextNode() && /^\s*$/.exec(el.textContent)) continue
+        
+        
+        iterator.back();
+        node = this._wrapInlineElementsIntoBlockElement(iterator);
+      }
+      if (node) {
+        nodeIds.push(node.id);
+      }
+    }
+    return this._createNode({
+      type: 'container',
+      id: containerId,
+      nodes: nodeIds
+    })
+  }
+
+  
+  convertElement(el) {
+    if (!this.state.doc) this.reset();
+    let isTopLevel = !this.state.isConverting;
+    if (isTopLevel) {
+      this.state.isConverting = true;
+    }
+
+    let nodeData, annos;
+    const converter = this._getConverterForElement(el);
+    if (converter) {
+      const NodeClass = this.schema.getNodeClass(converter.type);
+      nodeData = this._createNodeData(el, converter.type);
+      this.state.pushContext(el.tagName, converter);
+      
+      
+      
+      
+      
+      if (NodeClass.isInline) {
+        nodeData = this._convertInlineNode(el, nodeData, converter);
+      }
+      else if (NodeClass.prototype._isPropertyAnnotation) {
+        nodeData = this._convertPropertyAnnotation(el, nodeData);
+      } else {
+        nodeData = converter.import(el, nodeData, this) || nodeData;
+      }
+      let context = this.state.popContext();
+      annos = context.annos;
+    } else {
+      throw new Error('No converter found for '+el.tagName)
+    }
+    
+    const node = this._createNode(nodeData);
+    
+    annos.forEach((a) => {
+      this._createNode(a);
+    });
+
+    
+    
+    if (this.config["stand-alone"] && isTopLevel) {
+      this.state.isConverting = false;
+      this.reset();
+    }
+    return node
+  }
+
+  
+  annotatedText(el, path, options={}) {
+    if (!path) {
+      throw new Error('path is mandatory')
+    }
+    const state = this.state;
+    const context = last$2(state.contexts);
+    
+    
+    if (!context) {
+      throw new Error('This should be called from within an element converter.')
+    }
+    
+    const oldPreserveWhitespace = state.preserveWhitespace;
+    if (options.preserveWhitespace) {
+      state.preserveWhitespace = true;
+    }
+    state.stack.push({ path: path, offset: 0, text: "", annos: []});
+    
+    
+    
+    this.state.lastChar = '';
+    const iterator = this.getChildNodeIterator(el);
+    const text = this._annotatedText(iterator);
+    
+    
+    const top = state.stack.pop();
+    context.annos = context.annos.concat(top.annos);
+
+    
+    state.preserveWhitespace = oldPreserveWhitespace;
+
+    return text
+  }
+
+  
+  plainText(el) {
+    var state = this.state;
+    var text = el.textContent;
+    if (state.stack.length > 0) {
+      var context = last$2(state.stack);
+      context.offset += text.length;
+      context.text += context.text.concat(text);
+    }
+    return text
+  }
+
+  
+  _customText(text) {
+    var state = this.state;
+    if (state.stack.length > 0) {
+      var context = last$2(state.stack);
+      context.offset += text.length;
+      context.text += context.text.concat(text);
+    }
+    return text
+  }
+
+  
+  nextId(prefix) {
+    
+    
+    
+    
+    return this.state.uuid(prefix)
+  }
+
+  _getNextId(dom, type) {
+    let id = this.nextId(type);
+    while (this.state.ids[id] || dom.find('#'+id)) {
+      id = this.nextId(type);
+    }
+    return id
+  }
+
+  _getIdForElement(el, type) {
+    let id = el.getAttribute(this.config.idAttribute);
+    if (id && !this.state.ids[id]) return id
+    return this._getNextId(el.getOwnerDocument(), type)
+  }
+
+
+  
+  
+  _createDocument() {
+    
+    const schema = this.config.schema;
+    const DocumentClass = schema.getDocumentClass();
+    return new DocumentClass(schema)
+  }
+
+  _convertPropertyAnnotation(el, nodeData) {
+    const path = [nodeData.id, '_content'];
+    
+    
+    
+    nodeData._content = this.annotatedText(el, path);
+    nodeData.start = { path, offset: 0 };
+    nodeData.end = { offset: nodeData._content.length };
+    return nodeData
+  }
+
+  _convertInlineNode(el, nodeData, converter) {
+    const path = [nodeData.id, '_content'];
+    if (converter.import) {
+      nodeData = converter.import(el, nodeData, this) || nodeData;
+    }
+    nodeData._content = '$';
+    nodeData.start = { path, offset: 0 };
+    nodeData.end = { offset: 1 };
+    return nodeData
+  }
+
+  _createNodeData(el, type) {
+    if (!type) {
+      throw new Error('type is mandatory.')
+    }
+    let nodeData = {
+      type,
+      id: this._getIdForElement(el, type)
+    };
+    this.state.ids[nodeData.id] = true;
+    return nodeData
+  }
+
+  _createNode(nodeData) {
+    let doc = this.state.doc;
+    
+    
+    
+    let node = doc.get(nodeData.id);
+    if (node) {
+      
+      doc.delete(node.id);
+    }
+    return doc.create(nodeData)
+  }
+
+  getChildNodeIterator(el) {
+    return el.getChildNodeIterator()
+  }
+
+  _defaultElementMatcher(el) {
+    return el.is(this.tagName)
+  }
+
+  
+  _annotatedText(iterator) {
+    const state = this.state;
+    const context = last$2(state.stack);
+    
+    if (!context) {
+      throw new Error('Illegal state: context is null.')
+    }
+    while(iterator.hasNext()) {
+      var el = iterator.next();
+      var text = "";
+      
+      
+      if (el.isTextNode()) {
+        text = this._prepareText(el.textContent);
+        if (text.length) {
+          
+          
+          context.text = context.text.concat(text);
+          context.offset += text.length;
+        }
+      } else if (el.isCommentNode()) {
+        
+        continue
+      } else if (el.isElementNode()) {
+        const annoConverter = this._getConverterForElement(el, 'inline');
+        
+        if (!annoConverter) {
+          
+          if (!this.IGNORE_DEFAULT_WARNINGS) {
+            console.warn('Unsupported inline element. We will not create an annotation for it, but process its children to extract annotated text.', el.outerHTML);
+          }
+          
+          
+          const iterator = this.getChildNodeIterator(el);
+          this._annotatedText(iterator);
+          continue
+        }
+        
+        
+        
+        var startOffset = context.offset;
+        const annoType = annoConverter.type;
+        const AnnoClass = this.schema.getNodeClass(annoType);
+        let annoData = this._createNodeData(el, annoType);
+        
+        let stackFrame = {
+          path: context.path,
+          offset: startOffset,
+          text: "",
+          annos: []
+        };
+        state.stack.push(stackFrame);
+        
+        if (annoConverter.import) {
+          state.pushContext(el.tagName, annoConverter);
+          annoData = annoConverter.import(el, annoData, this) || annoData;
+          state.popContext();
+        }
+        
+        
+        
+        
+        if (AnnoClass.isInline) {
+          this._customText(INVISIBLE_CHARACTER);
+          
+          
+          
+          state.lastChar = '';
+        } else {
+          
+          
+          
+          const iterator = this.getChildNodeIterator(el);
+          this._annotatedText(iterator);
+        }
+        
+        state.stack.pop();
+        context.offset = stackFrame.offset;
+        context.text = context.text.concat(stackFrame.text);
+        
+        const endOffset = context.offset;
+        annoData.start = {
+          path: context.path.slice(0),
+          offset: startOffset
+        };
+        annoData.end = {
+          offset: endOffset
+        };
+        
+        let parentFrame = last$2(state.stack);
+        parentFrame.annos = parentFrame.annos.concat(stackFrame.annos, annoData);
+      } else {
+        console.warn('Unknown element type. Taking plain text.', el.outerHTML);
+        text = this._prepareText(el.textContent);
+        context.text = context.text.concat(text);
+        context.offset += text.length;
+      }
+    }
+    
+    return context.text
+  }
+
+  _getConverterForElement(el, mode) {
+    var converters;
+    if (mode === "block") {
+      if (!el.tagName) return null
+      converters = this._blockConverters;
+    } else if (mode === "inline") {
+      converters = this._propertyAnnotationConverters;
+    } else {
+      converters = this._allConverters;
+    }
+    var converter = null;
+    for (var i = 0; i < converters.length; i++) {
+      if (this._converterCanBeApplied(converters[i], el)) {
+        converter = converters[i];
+        break
+      }
+    }
+    return converter
+  }
+
+  _converterCanBeApplied(converter, el) {
+    return converter.matchElement(el, this)
+  }
+
+  
+  _wrapInlineElementsIntoBlockElement(childIterator) {
+    if (!childIterator.hasNext()) return
+
+    const converter = this._defaultBlockConverter;
+    if (!converter) {
+      throw new Error('Wrapping inline elements automatically is not supported in this schema.')
+    }
+
+    let dom = childIterator.peek().getOwnerDocument();
+    let wrapper = dom.createElement('wrapper');
+    while(childIterator.hasNext()) {
+      const el = childIterator.next();
+      
+      const blockTypeConverter = this._getConverterForElement(el, 'block');
+      if (blockTypeConverter) {
+        childIterator.back();
+        break
+      }
+      wrapper.append(el.clone());
+    }
+    const type = this.schema.getDefaultTextType();
+    const id = this._getNextId(dom, type);
+    let nodeData = { type, id };
+    this.state.pushContext('wrapper', converter);
+    nodeData = converter.import(wrapper, nodeData, this) || nodeData;
+    let context = this.state.popContext();
+    let annos = context.annos;
+    
+    const node = this._createNode(nodeData);
+    
+    annos.forEach((a) => {
+      this._createNode(a);
+    });
+    return node
+  }
+
+  
+  
+  
+  
+  _prepareText(text) {
+    const state = this.state;
+    if (state.preserveWhitespace) {
+      return text
+    }
+    var repl = SPACE;
+    
+    text = text.replace(TABS_OR_NL, '');
+    
+    
+    
+    
+    
+    if (state.lastChar === SPACE) {
+      
+      text = text.replace(WS_LEFT, '');
+    } else {
+      text = text.replace(WS_LEFT, repl);
+    }
+    text = text.replace(WS_RIGHT, repl);
+    
+    
+    
+    if (this.config.REMOVE_INNER_WS || state.removeInnerWhitespace) {
+      text = text.replace(WS_ALL, SPACE);
+    }
+    state.lastChar = text[text.length-1] || state.lastChar;
+    return text
+  }
+
+  
+  _trimTextContent(el) {
+    var nodes = el.getChildNodes();
+    var firstNode = nodes[0];
+    var lastNode = last$2(nodes);
+    var text, trimmed;
+      
+    if (firstNode && firstNode.isTextNode()) {
+      text = firstNode.textContent;
+      trimmed = this._trimLeft(text);
+      firstNode.textContent = trimmed;
+    }
+    if (lastNode && lastNode.isTextNode()) {
+      text = lastNode.textContent;
+      trimmed = this._trimRight(text);
+      lastNode.textContent = trimmed;
+    }
+    return el
+  }
+
+  _trimLeft(text) {
+    return text.replace(WS_LEFT, "")
+  }
+
+  _trimRight(text) {
+    return text.replace(WS_RIGHT, "")
+  }
+
+}
+
+class DOMImporterState {
+
+  constructor() {
+    this.reset();
+  }
+
+  reset() {
+    this.preserveWhitespace = false;
+    this.nodes = [];
+    this.annotations = [];
+    this.containerId = null;
+    this.container = [];
+    this.ids = {};
+    
+    this.contexts = [];
+    
+    this.stack = [];
+    this.lastChar = "";
+    this.skipTypes = {};
+    this.ignoreAnnotations = false;
+    this.isConverting = false;
+
+    
+    
+    this.uuid = createCountingIdGenerator();
+  }
+
+  pushContext(tagName, converter) {
+    this.contexts.push({ tagName: tagName, converter: converter, annos: []});
+  }
+
+  popContext() {
+    return this.contexts.pop()
+  }
+
+  getCurrentContext() {
+    return last$2(this.contexts)
+  }
+
+}
+
+DOMImporter.State = DOMImporterState;
+
+DOMImporter.INVISIBLE_CHARACTER = INVISIBLE_CHARACTER;
+
+const START = 'START';
+const END = 'END';
+const EPSILON = 'EPSILON';
+const TEXT$2 = 'TEXT';
+
+class DFA {
+
+  constructor(transitions) {
+    if (!transitions || Object.keys(transitions).length === 0) {
+      transitions = { START: { EPSILON: END } };
+    }
+    this.transitions = transitions;
+  }
+
+  consume(state, id) {
+    const T = this.transitions;
+    
+    
+    if (!T[state]) return -1
+    let nextState = T[state][id];
+    if (nextState !== undefined) {
+      return nextState
+    }
+    while(T[state][EPSILON] !== undefined) {
+      state = T[state][EPSILON];
+      if (state === END) {
+        return -1
+      }
+      nextState = T[state][id];
+      if (nextState !== undefined) {
+        return nextState
+      }
+    }
+    return -1
+  }
+
+  canConsume(state, id) {
+    let nextState = this.consume(state, id);
+    return (nextState !== -1)
+  }
+
+  isFinished(state) {
+    const T = this.transitions;
+    if (state === 'END') return true
+    
+    if (!T[state]) return false
+    while(T[state][EPSILON] !== undefined) {
+      state = T[state][EPSILON];
+      if (state === 'END') return true
+    }
+    return false
+  }
+
+  
+
+  
+  _tokensByPath() {
+    const result = [];
+    const transitions = this.transitions;
+    if (!transitions) return []
+
+    
+    let first = {};
+    forEach(transitions[START], (to, token) => {
+      if (!first[to]) first[to] = [];
+      first[to].push(token);
+    });
+
+    let visited = {START: true, END: true};
+    forEach(first, (tokens, state) => {
+      
+      
+      
+      
+      let _siblings = {};
+      tokens.forEach((t) => {
+        if (t !== EPSILON) {
+          _siblings[t] = true;
+        }
+      });
+      let stack = [state];
+      while(stack.length > 0) {
+        let from = stack.pop();
+        if (state === END) continue
+        visited[from] = true;
+        let T = transitions[from];
+        if (!T) throw new Error(`Internal Error: no transition from state ${from}`)
+        let tokens = Object.keys(T);
+        for (let i = 0; i < tokens.length; i++) {
+          const token = tokens[i];
+          const to = T[token];
+          if (!visited[to]) stack.push(to);
+          if (token !== EPSILON) {
+            _siblings[token] = true;
+          }
+        }
+      }
+      let _siblingTokens = Object.keys(_siblings);
+      if (_siblingTokens.length > 0) {
+        result.push(_siblingTokens);
+      }
+    });
+    return result
+  }
+
+}
+
+DFA.START = START;
+DFA.END = END;
+DFA.EPSILON = EPSILON;
+DFA.TEXT = TEXT$2;
+
+function _isTextNodeEmpty(el) {
+  return Boolean(/^\s*$/.exec(el.textContent))
+}
+
+const { TEXT: TEXT$1 } = DFA;
+
+class ValidatingChildNodeIterator {
+
+  constructor(el, it, expr) {
+    this.el = el;
+    this.it = it;
+    this.expr = expr;
+    this.state = expr.getInitialState();
+    this._oldStates = [];
+  }
+
+  hasNext() {
+    return this.it.hasNext()
+  }
+
+  next() {
+    const state = this.state;
+    const expr = this.expr;
+    let next = this.it.next();
+    let oldState = cloneDeep(this.state);
+    let ok;
+    if (next.isTextNode()) {
+      ok = expr.consume(state, TEXT$1);
+    } else if (next.isElementNode()) {
+      ok = expr.consume(state, next.tagName);
+    }
+    if (!ok) {
+      if (next.isTextNode()) {
+        if (!_isTextNodeEmpty(next)) {
+          console.error(`TEXT is invalid within <${expr.name}>. Skipping.`, next.textContent);
+        }
+      } else if (next.isElementNode()) {
+        let error = last$2(state.errors);
+        console.error(error.msg, this.el.getNativeElement());
+      }
+      
+      this.state = oldState;
+      return next.createComment(next.outerHTML)
+    } else {
+      this._oldStates.push(oldState);
+      return next
+    }
+  }
+
+  back() {
+    this.it.back();
+    this.state = this._oldStates.pop();
+    return this
+  }
+
+  peek() {
+    return this.it.peek()
+  }
+
+}
+
+class XMLDocumentImporter extends DOMImporter {
+
+  constructor(config, context) {
+    
+    super({
+      
+      schema: config.schema,
+      
+      converters: config.converters,
+      idAttribute: config.schema.xmlSchema.getIdAttribute(),
+    }, context);
+    this.xmlSchema = config.schema.xmlSchema;
+  }
+
+  importDocument(dom) {
+    this.reset();
+    const doc = this.state.doc;
+    if (isString(dom)) {
+      dom = DefaultDOMElement.parseXML(dom);
+    }
+    const startTag = this.xmlSchema.getStartElement();
+    let rootEl;
+    if (dom.is(startTag)) {
+      rootEl = dom;
+    } else {
+      rootEl = dom.find(startTag);
+    }
+    if (!rootEl) throw new Error(`Could not find <${startTag}> element.`)
+    
+    
+    doc.root = this.convertElement(rootEl);
+    return this.state.doc
+  }
+
+  _initialize() {
+    const schema = this.schema;
+    const defaultTextType = schema.getDefaultTextType();
+    const converters = this.converters;
+
+    this._allConverters = [];
+    this._propertyAnnotationConverters = [];
+    this._blockConverters = [];
+
+    for (let i = 0; i < converters.length; i++) {
+      let converter;
+      if (typeof converters[i] === 'function') {
+        const Converter = converters[i];
+        converter = new Converter();
+      } else {
+        converter = converters[i];
+      }
+      if (!converter.type) {
+        throw new Error('Converter must provide the type of the associated node.')
+      }
+      if (!converter.matchElement && !converter.tagName) {
+        throw new Error('Converter must provide a matchElement function or a tagName property.')
+      }
+      if (!converter.matchElement) {
+        converter.matchElement = this._defaultElementMatcher.bind(converter);
+      }
+      const NodeClass = schema.getNodeClass(converter.type);
+      if (!NodeClass) {
+        throw new Error('No node type defined for converter')
+      }
+      if (!this._defaultBlockConverter && defaultTextType === converter.type) {
+        this._defaultBlockConverter = converter;
+      }
+
+      
+      if (NodeClass.prototype._isAnnotation) {
+        this._propertyAnnotationConverters.push(converter);
+      } else {
+        this._blockConverters.push(converter);
+      }
+    }
+    this._allConverters = this._blockConverters.concat(this._propertyAnnotationConverters);
+  }
+
+  _createNodeData(el, type) {
+    let nodeData = super._createNodeData(el, type);
+    let attributes = {};
+    el.getAttributes().forEach((value, key) => {
+      attributes[key] = value;
+    });
+    nodeData.attributes = attributes;
+    return nodeData
+  }
+
+  getChildNodeIterator(el) {
+    
+    let schema = this.xmlSchema.getElementSchema(el.tagName);
+    let it = el.getChildNodeIterator();
+    return new ValidatingChildNodeIterator(el, it, schema.expr)
+  }
+
+  _convertPropertyAnnotation() {
+    throw new Error('stand-alone annotations are not supported.')
+  }
+
+  _convertInlineNode(el, nodeData, converter) {
+    const path = [];
+    if (converter.import) {
+      nodeData = converter.import(el, nodeData, this) || nodeData;
+    }
+    nodeData.start = { path, offset: 0 };
+    nodeData.end = { offset: 0 };
+    return nodeData
+  }
+}
+
+function registerSchema(config, xmlSchema, DocumentClass, options = {}) {
+  const schemaName = xmlSchema.getName();
+  let defaultTextType;
+  
+  
+  if (xmlSchema.getDefaultTextType) {
+    defaultTextType = xmlSchema.getDefaultTextType();
+  }
+  
+  config.defineSchema({
+    name: schemaName,
+    version: xmlSchema.getVersion(),
+    defaultTextType: defaultTextType,
+    DocumentClass: DocumentClass,
+    
+    xmlSchema: xmlSchema
+  });
+  const tagNames = xmlSchema.getTagNames();
+  
+  tagNames.forEach((tagName) => {
+    const elementSchema = xmlSchema.getElementSchema(tagName);
+    const name = elementSchema.name;
+    let NodeClass, ConverterClass;
+    switch (elementSchema.type) {
+      case 'element':
+      case 'hybrid': {
+        NodeClass = XMLElementNode;
+        ConverterClass = ElementNodeConverter;
+        break
+      }
+      case 'text': {
+        NodeClass = XMLTextElement;
+        ConverterClass = XMLTextElementConverter;
+        break
+      }
+      case 'annotation': {
+        NodeClass = XMLAnnotationNode;
+        ConverterClass = XMLNodeConverter;
+        break
+      }
+      case 'anchor': {
+        NodeClass = XMLAnchorNode;
+        ConverterClass = XMLNodeConverter;
+        break
+      }
+      case 'inline-element': {
+        NodeClass = XMLInlineElementNode;
+        ConverterClass = XMLNodeConverter;
+        break
+      }
+      case 'external': {
+        NodeClass = XMLExternalNode;
+        ConverterClass = ExternalNodeConverter;
+        break
+      }
+      case 'container': {
+        NodeClass = XMLContainerNode;
+        ConverterClass = ElementNodeConverter;
+        break
+      }
+      default:
+        throw new Error('Illegal state')
+    }
+    
+    class Node extends NodeClass {}
+    Node.type = name;
+
+    
+    const attributes = elementSchema.attributes;
+    forEach(attributes, (spec, name) => {
+      _defineAttribute(Node, name, spec);
+    });
+
+    config.addNode(Node);
+    let converter = new ConverterClass(name);
+    config.addConverter(schemaName, converter);
+
+    let ImporterClass = options.ImporterClass || XMLDocumentImporter;
+    config.addImporter(schemaName, ImporterClass);
+  });
+}
+
+const BUILTIN_ATTRS = ['id', 'type', 'attributes', '_childNodes', '_content'];
+
+function _defineAttribute(Node, attributeName) {
+  let name = attributeName.replace(':', '_');
+  name = camelCase(name);
+  if (BUILTIN_ATTRS.indexOf(name) >= 0) {
+    
+    return
+  }
+  Object.defineProperty(Node.prototype, name, {
+    get() {
+      return this.getAttribute(attributeName)
+    },
+    set(val) {
+      this.setAttribute(attributeName, val);
+      return this
+    }
+  });
+}
+
+const START$2 = DFA.START;
+const END$2 = DFA.END;
+const EPSILON$2 = DFA.EPSILON;
+
+
+class DFABuilder {
+
+  constructor(transitions) {
+    this.transitions = transitions;
+  }
+
+  addTransition(from, to, tokens) {
+    if (!this.transitions) this.transitions = {};
+    if (!isArray(tokens)) tokens = [tokens];
+    tokens.forEach(token => _addTransition(this.transitions, from, to, token));
+    return this
+  }
+
+  
+  append(other) {
+    if (this.transitions && other.transitions) {
+      let t1 = cloneDeep(this.transitions);
+      let t2 = cloneDeep(other.transitions);
+      
+      
+      let firstIsOptional = Boolean(t1[START$2][EPSILON$2]);
+      let secondIsOptional = Boolean(t2[START$2][EPSILON$2]);
+
+      if (firstIsOptional) {
+        
+        
+        delete t1[START$2][EPSILON$2];
+      }
+      
+      
+      let newState = uuid();
+      
+      
+      forEach(t1, (T) => {
+        forEach(T, (to, token) => {
+          if (to === END$2) {
+            T[token] = newState;
+          }
+        });
+      });
+      
+      
+      if (firstIsOptional) {
+        forEach(t2[START$2], (to, token) => {
+          _addTransition(t1, START$2, to, token);
+        });
+      }
+      
+      
+      t2[newState] = t2[START$2];
+      forEach(t2, (T) => {
+        forEach(T, (to, token) => {
+          if (to === START$2) {
+            T[token] = newState;
+          }
+        });
+      });
+      delete t2[START$2];
+      
+      forEach(t2, (T, from) => {
+        forEach(T, (to, token) => {
+          _addTransition(t1, from, to, token);
+        });
+      });
+      
+      
+      if (firstIsOptional && secondIsOptional) {
+        _addTransition(t1, START$2, END$2, EPSILON$2);
+      }
+      this.transitions = t1;
+    } else if (other.transitions) {
+      this.transitions = cloneDeep(other.transitions);
+    }
+    return this
+  }
+
+  
+  merge(other) {
+    if (this.transitions && other.transitions) {
+      let t1 = this.transitions;
+      let t2 = other.transitions;
+      forEach(t2, (T, from) => {
+        forEach(T, (to, token) => {
+          _addTransition(t1, from, to, token);
+        });
+      });
+    } else if (other.transitions) {
+      this.transitions = cloneDeep(other.transitions);
+    }
+    return this
+  }
+
+  
+  optional() {
+    let dfa = new DFABuilder(cloneDeep(this.transitions));
+    if (this.transitions) {
+      dfa.addTransition(START$2, END$2, EPSILON$2);
+    }
+    return dfa
+  }
+
+  
+  kleene() {
+    let dfa = this.plus();
+    return dfa.optional()
+  }
+
+  
+  plus() {
+    let dfa;
+    if (this.transitions) {
+      let t1 = cloneDeep(this.transitions);
+      
+      
+      
+      
+      const isOptional = Boolean(t1[START$2][EPSILON$2]);
+      delete t1[START$2][EPSILON$2];
+      
+      
+      let newState = uuid();
+      forEach(t1, (T) => {
+        forEach(T, (to, token) => {
+          if (to === END$2) {
+            T[token] = newState;
+          }
+        });
+      });
+      
+      _addTransition(t1, newState, END$2, EPSILON$2);
+      
+      forEach(t1[START$2], (to, token) => {
+        _addTransition(t1, newState, to, token);
+      });
+      
+      if (isOptional) {
+        _addTransition(t1, START$2, END$2, EPSILON$2);
+      }
+      dfa = new DFABuilder(t1);
+    } else {
+      dfa = new DFABuilder(cloneDeep(this.transitions));
+    }
+    return dfa
+  }
+
+  toJSON() {
+    return cloneDeep(this.transitions)
+  }
+
+  
+  copy() {
+    let t = cloneDeep(this.transitions);
+    if (this.transitions) {
+      let states = Object.keys(t);
+      let map = { START: START$2, END: END$2 };
+      states.forEach((id) => {
+        if (id === START$2 || id === END$2) return
+        map[id] = uuid();
+      });
+      forEach(t, (T, from) => {
+        if (from !== START$2 && from !== END$2) {
+          t[map[from]] = T;
+          delete t[from];
+        }
+        forEach(T, (to, token) => {
+          if (to !== START$2 && to !== END$2) {
+            T[token] = map[to];
+          }
+        });
+      });
+    }
+    return new DFABuilder(t)
+  }
+
+}
+
+DFABuilder.singleToken = function(token) {
+  let dfa = new DFABuilder();
+  dfa.addTransition(START$2, END$2, token);
+  return dfa
+};
+
+function _addTransition(transitions, from, to, token) {
+  let T = transitions[from];
+  if (!T) {
+    transitions[from] = T = {};
+  }
+  if (token === EPSILON$2 && from === START$2 && to !== END$2) {
+    throw new Error('The only EPSILON transition from START must be START->END')
+  }
+  if (T[token] && T[token] !== to) {
+    console.error('Token %s already used. Ignoring this transition.', token);
+    return
+    
+  }
+  T[token] = to;
+}
+
+const { START: START$1, END: END$1, TEXT: TEXT$4, EPSILON: EPSILON$1 } = DFA;
+
+
+
+class Expression {
+
+  constructor(name, root) {
+    this.name = name;
+    this.root = root;
+
+    this._initialize();
+  }
+
+  _initialize() {
+    this._compile();
+  }
+
+  toString() {
+    return this.root.toString()
+  }
+
+  copy() {
+    return this.root.copy()
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      content: this.root.toJSON()
+    }
+  }
+
+  isAllowed(tagName) {
+    return Boolean(this._allowedChildren[tagName])
+  }
+
+  
+  _normalize() {
+    this.root._normalize();
+  }
+
+  
+  _compile() {
+    
+    this.root._compile();
+  }
+
+  _describeError(state, token) {
+    let msg = [];
+    if (token !== TEXT$4) {
+      if (!this.isAllowed(token)) {
+        msg.push(`<${token}> is not valid in <${this.name}>\nSchema: ${this.toString()}`);
+      } else {
+        
+        msg.push(`<${token}> is not allowed at the current position in <${this.name}>.\n${this.toString()}`);
+        
+        
+        
+      }
+    } else {
+      msg.push(`TEXT is not allowed at the current position: ${state.trace.join(',')}\n${this.toString()}`);
+    }
+    return msg.join('')
+  }
+
+}
+
+Expression.fromJSON = function(data) {
+  const name = data.name;
+  const root = _fromJSON(data.content);
+  return createExpression(name, root)
+};
+
+function createExpression(name, root) {
+  if (root instanceof Interleave) {
+    return new InterleaveExpr(name, root)
+  } else {
+    return new DFAExpr(name, root)
+  }
+}
+
+class DFAExpr extends Expression {
+
+  
+  getInitialState() {
+    return {
+      dfaState: START$1,
+      errors: [],
+      trace: [],
+    }
+  }
+
+  canConsume(state, token) {
+    return this.dfa.canConsume(state.dfaState, token)
+  }
+
+  consume(state, token) {
+    const dfa = this.dfa;
+    let oldState = state.dfaState;
+    let newState = dfa.consume(oldState, token);
+    state.dfaState = newState;
+    if (newState === -1) {
+      state.errors.push({
+        msg: this._describeError(state, token),
+        
+        
+        el: state.el
+      });
+      return false
+    } else {
+      state.trace.push(token);
+      return true
+    }
+  }
+
+  isFinished(state) {
+    return this.dfa.isFinished(state.dfaState)
+  }
+
+  _initialize() {
+    super._initialize();
+
+    this._computeAllowedChildren();
+  }
+
+  _compile() {
+    super._compile();
+    this.dfa = new DFA(this.root.dfa.transitions);
+  }
+
+
+  _computeAllowedChildren() {
+    this._allowedChildren = _collectAllTokensFromDFA(this.dfa);
+  }
+
+  _findInsertPos(el, newTag, mode) {
+    const root = this.root;
+    if (root instanceof Sequence) {
+      return this._findInsertPosInSequence(el, newTag, mode)
+    } else if (root instanceof Plus || root instanceof Kleene) {
+      if (mode === 'first') {
+        return 0
+      } else {
+        return el.childNodes.length
+      }
+    }
+  }
+
+  _isValid(_tokens) {
+    let state = this.getInitialState();
+    for (let i = 0; i < _tokens.length; i++) {
+      const token = _tokens[i];
+      
+      
+      
+      if (!token) continue
+      if (!this.consume(state, token)) {
+        return false
+      }
+    }
+    return this.isFinished(state)
+  }
+
+  _findInsertPosInSequence(el, newTag, mode) {
+    const childNodes = el.getChildNodes();
+    
+    
+    
+    const tokens = [];
+    childNodes.forEach((child)=>{
+      
+      
+      
+      const tagName = child.tagName;
+      if (!tagName) {
+        if (child._isDOMElement && child.isTextNode() && !_isTextNodeEmpty(child)) {
+          tokens.push(TEXT$4);
+        } else {
+          tokens.push(null);
+        }
+      } else {
+        tokens.push(tagName);
+      }
+    });
+    const L = tokens.length;
+    const self = this;
+    function _isValid(pos) {
+      let _tokens = tokens.slice(0);
+      _tokens.splice(pos, 0, newTag);
+      return self._isValid(_tokens)
+    }
+    if (mode === 'first') {
+      for (let pos = 0; pos <= L; pos++) {
+        if (_isValid(pos)) {
+          return pos
+        }
+      }
+    } else {
+      for (let pos = L; pos >= 0; pos--) {
+        if (_isValid(pos)) {
+          return pos
+        }
+      }
+    }
+    return -1
+  }
+
+}
+
+function _collectAllTokensFromDFA(dfa) {
+  
+  const children = {};
+  if (dfa.transitions) {
+    forEach(dfa.transitions, (T) => {
+      Object.keys(T).forEach((tagName) => {
+        if (tagName === EPSILON$1) return
+        children[tagName] = true;
+      });
+    });
+  }
+  return children
+}
+
+class InterleaveExpr extends Expression {
+
+  constructor(name, root) {
+    super(name, root);
+  }
+
+  getInitialState() {
+    const dfas = this.dfas;
+    const dfaStates = new Array(dfas.length);
+    dfaStates.fill(START$1);
+    return {
+      dfaStates,
+      errors: [],
+      trace: [],
+      
+      lastDFA: 0,
+    }
+  }
+
+  canConsume(state, token) {
+    return (this._findNextDFA(state, token) >= 0)
+  }
+
+  consume(state, token) {
+    const idx = this._findNextDFA(state, token);
+    if (idx < 0) {
+      state.errors.push({
+        msg: this._describeError(state, token),
+      });
+      return false
+    } else {
+      const dfa = this.dfas[idx];
+      const oldState = state.dfaStates[idx];
+      const newState = dfa.consume(oldState, token);
+      state.dfaStates[idx] = newState;
+      state.trace.push(token);
+      return true
+    }
+  }
+
+  isFinished(state) {
+    const dfas = this.dfas;
+    for (let i = 0; i < dfas.length; i++) {
+      const dfa = dfas[i];
+      const dfaState = state.dfaStates[i];
+      if (!dfa.isFinished(dfaState)) {
+        return false
+      }
+    }
+    return true
+  }
+
+
+  _initialize() {
+    super._initialize();
+
+    this._computeAllowedChildren();
+  }
+
+  _compile() {
+    super._compile();
+
+    this.blocks = this.root.blocks;
+    this.dfas = this.blocks.map(b=>new DFA(b.dfa.transitions));
+  }
+
+  _computeAllowedChildren() {
+    this._allowedChildren = Object.assign(...this.blocks.map((block) => {
+      return _collectAllTokensFromDFA(block.dfa)
+    }));
+  }
+
+  _findNextDFA(state, token) {
+    console.assert(state.dfaStates.length === this.dfas.length);
+    const dfas = this.dfas;
+    for (let i = 0; i < state.dfaStates.length; i++) {
+      const dfa = dfas[i];
+      const dfaState = state.dfaStates[i];
+      if (dfa.canConsume(dfaState, token)) {
+        return i
+      }
+    }
+    return -1
+  }
+
+  _findInsertPos(el, newTag, mode) { 
+    
+    return el.childNodes.length
+  }
+
+}
+
+class Token {
+
+  constructor(name) {
+    this.name = name;
+  }
+
+  toString() {
+    return this.name
+  }
+
+  toJSON() {
+    return this.name
+  }
+
+  copy() {
+    return new Token(this.name)
+  }
+
+  _normalize() {}
+
+  _compile() {
+    this.dfa = DFABuilder.singleToken(this.name);
+  }
+
+}
+
+Token.fromJSON = function (data) {
+  return new Token(data)
+};
+
+
+class Choice {
+
+  constructor(blocks) {
+    this.blocks = blocks;
+  }
+
+  copy() {
+    return new Choice(this.blocks.map(b=>b.copy()))
+  }
+
+  toJSON() {
+    return {
+      type: '|',
+      blocks: this.blocks.map(b=>b.toJSON())
+    }
+  }
+
+  _normalize() {
+    const blocks = this.blocks;
+    for (let i = blocks.length - 1; i >= 0; i--) {
+      let block = blocks[i];
+      block._normalize();
+      
+      if (block instanceof Choice) {
+        blocks.splice(i,1,...(block.blocks));
+      }
+    }
+  }
+
+
+  _compile() {
+    let dfa = new DFABuilder();
+    this.blocks.forEach((block) => {
+      if (block instanceof Token) {
+        dfa.addTransition(START$1, END$1, block.name);
+      } else if (block instanceof Interleave) {
+        throw new Error('Nested interleave blocks are not supported.')
+      } else {
+        if (!block.dfa) {
+          block._compile();
+        }
+        dfa.merge(block.dfa);
+      }
+    });
+    this.dfa = dfa;
+    return dfa
+  }
+
+  toString() {
+    return '('+ this.blocks.map(b=>b.toString()).join('|') + ')'
+  }
+
+}
+
+Choice.fromJSON = function(data) {
+  return new Choice(data.blocks.map((block) => {
+    return _fromJSON(block)
+  }))
+};
+
+
+class Sequence {
+
+  constructor(blocks) {
+    this.blocks = blocks;
+  }
+
+  copy() {
+    return new Sequence(this.blocks.map(b=>b.copy()))
+  }
+
+  toJSON() {
+    return {
+      type: ',',
+      blocks: this.blocks.map(b=>b.toJSON())
+    }
+  }
+
+  _compile() {
+    let dfa = new DFABuilder();
+    this.blocks.forEach((block) => {
+      if (block instanceof Token) {
+        dfa.append(DFABuilder.singleToken(block.name));
+      } else if (block instanceof Interleave) {
+        throw new Error('Nested interleave blocks are not supported.')
+      } else {
+        if (!block.dfa) {
+          block._compile();
+        }
+        dfa.append(block.dfa);
+      }
+    });
+    this.dfa = dfa;
+    return dfa
+  }
+
+  _normalize() {
+    const blocks = this.blocks;
+    for (let i = blocks.length - 1; i >= 0; i--) {
+      let block = blocks[i];
+      block._normalize();
+      
+      if (block instanceof Sequence) {
+        blocks.splice(i, 1,...(block.blocks));
+      }
+    }
+  }
+
+  toString() {
+    return '('+ this.blocks.map(b=>b.toString()).join(',') + ')'
+  }
+
+}
+
+Sequence.fromJSON = function(data) {
+  return new Sequence(data.blocks.map((block) => {
+    return _fromJSON(block)
+  }))
+};
+
+
+class Interleave {
+
+  constructor(blocks) {
+    this.blocks = blocks;
+  }
+
+  copy() {
+    return new Interleave(this.blocks.map(b=>b.copy()))
+  }
+
+  toString() {
+    return '('+ this.blocks.map(b=>b.toString()).join('~') + ')'
+  }
+
+  toJSON() {
+    return {
+      type: '~',
+      blocks: this.blocks.map(b=>b.toJSON())
+    }
+  }
+
+  _normalize() {
+    
+  }
+
+  _compile() {
+    this.blocks.forEach(block => block._compile());
+  }
+
+}
+
+Interleave.fromJSON = function(data) {
+  return new Interleave(data.blocks.map((block) => {
+    return _fromJSON(block)
+  }))
+};
+
+
+
+class Optional {
+
+  constructor(block) {
+    this.block = block;
+  }
+
+  copy() {
+    return new Optional(this.block.copy())
+  }
+
+  toJSON() {
+    return {
+      type: '?',
+      block: this.block.toJSON()
+    }
+  }
+
+  _compile() {
+    const block = this.block;
+    if (block instanceof Interleave) {
+      throw new Error('Nested interleave blocks are not supported.')
+    }
+    if (!block.dfa) {
+      block._compile();
+    }
+    this.dfa = block.dfa.optional();
+    return this.dfa
+  }
+
+  _normalize() {
+    const block = this.block;
+    block._normalize();
+    if (block instanceof Optional) {
+      this.block = block.block;
+    } else if (block instanceof Kleene) {
+      console.error('FIXME -  <optional> is useless here', this.toString());
+    }
+  }
+
+  toString() {
+    return this.block.toString() + '?'
+  }
+
+}
+
+Optional.fromJSON = function(data) {
+  return new Optional(_fromJSON(data.block))
+};
+
+
+
+class Kleene {
+
+  constructor(block) {
+    this.block = block;
+  }
+
+  copy() {
+    return new Kleene(this.block.copy())
+  }
+
+  toJSON() {
+    return {
+      type: '*',
+      block: this.block.toJSON()
+    }
+  }
+
+  _compile() {
+    const block = this.block;
+    if (block instanceof Interleave) {
+      throw new Error('Nested interleave blocks are not supported.')
+    }
+    if (!block.dfa) {
+      block._compile();
+    }
+    this.dfa = block.dfa.kleene();
+    return this.dfa
+  }
+
+  _normalize() {
+    const block = this.block;
+    block._normalize();
+    if (block instanceof Optional || block instanceof Kleene) {
+      this.block = block.block;
+    } else if (block instanceof Plus) {
+      throw new Error('This does not make sense:' + this.toString())
+    }
+  }
+
+  toString() {
+    return this.block.toString() + '*'
+  }
+
+}
+
+Kleene.fromJSON = function(data) {
+  return new Kleene(_fromJSON(data.block))
+};
+
+
+class Plus {
+
+  constructor(block) {
+    this.block = block;
+  }
+
+  copy() {
+    return new Plus(this.block.copy())
+  }
+
+  toJSON() {
+    return {
+      type: '+',
+      block: this.block.toJSON()
+    }
+  }
+
+  _compile() {
+    const block = this.block;
+    if (block instanceof Interleave) {
+      throw new Error('Nested interleave blocks are not supported.')
+    }
+    if (!block.dfa) {
+      block._compile();
+    }
+    this.dfa = block.dfa.plus();
+    return this.dfa
+  }
+
+  _normalize() {
+    const block = this.block;
+    block._normalize();
+    if (block instanceof Optional || block instanceof Kleene) {
+      throw new Error('This does not make sense:' + this.toString())
+    } else if (block instanceof Plus) {
+      this.block = block.block;
+    }
+  }
+
+  toString() {
+    return this.block.toString() + '+'
+  }
+}
+
+Plus.fromJSON = function(data) {
+  return new Plus(_fromJSON(data.block))
+};
+
+function _fromJSON(data) {
+  switch(data.type) {
+    case ',':
+      return Sequence.fromJSON(data)
+    case '~':
+      return Interleave.fromJSON(data)
+    case '|':
+      return Choice.fromJSON(data)
+    case '?':
+      return Optional.fromJSON(data)
+    case '+':
+      return Plus.fromJSON(data)
+    case '*':
+      return Kleene.fromJSON(data)
+    default:
+      if (isString(data)) {
+        return new Token(data)
+      }
+      throw new Error('Unsupported data.')
+  }
+}
+
+const { TEXT: TEXT$3 } = DFA;
+
+class XMLSchema {
+
+  constructor(elementSchemas, startElement) {
+    if (!elementSchemas[startElement]) {
+      throw new Error('startElement must be a valid element.')
+    }
+    this._elementSchemas = {};
+    this.startElement = startElement;
+    
+    forEach(elementSchemas, (spec, name) => {
+      this._elementSchemas[name] = new ElementSchema(spec.name, spec.type, spec.attributes, spec.expr);
+    });
+  }
+
+  getIdAttribute() {
+    return 'id'
+  }
+
+  getTagNames() {
+    return Object.keys(this._elementSchemas)
+  }
+
+  getElementSchema(name) {
+    return this._elementSchemas[name]
+  }
+
+  getStartElement() {
+    return this.startElement
+  }
+
+  toJSON() {
+    let result = {
+      start: this.getStartElement(),
+      elements: {}
+    };
+    forEach(this._elementSchemas, (schema, name) => {
+      result.elements[name] = schema.toJSON();
+    });
+    return result
+  }
+
+  
+  toMD() {
+    let result = [];
+    let elementNames = Object.keys(this._elementSchemas);
+    elementNames.sort();
+    elementNames.forEach((name) => {
+      let elementSchema = this._elementSchemas[name];
+      result.push(`# <${elementSchema.name}>`);
+      result.push('');
+      result.push(`type: ${elementSchema.type}`);
+      result.push('attributes: '+ map(elementSchema.attributes, (_, name) => { return name }).join(', '));
+      result.push('children:');
+      result.push('  '+elementSchema.expr.toString());
+      result.push('');
+    });
+    return result.join('\n')
+  }
+
+  validateElement(el) {
+    let tagName = el.tagName;
+    let elementSchema = this.getElementSchema(tagName);
+    return _validateElement(elementSchema, el)
+  }
+}
+
+XMLSchema.fromJSON = function(data) {
+  let elementSchemas = {};
+  forEach(data.elements, (elData) => {
+    let elSchema = ElementSchema.fromJSON(elData);
+    elementSchemas[elSchema.name] = elSchema;
+  });
+  return new XMLSchema(elementSchemas, data.start)
+};
+
+class ElementSchema {
+
+  constructor(name, type, attributes, expr) {
+    this.name = name;
+    this.type = type;
+    this.attributes = attributes;
+    this.expr = expr;
+
+    if (!name) {
+      throw new Error("'name' is mandatory")
+    }
+    if (!type) {
+      throw new Error("'type' is mandatory")
+    }
+    if (!attributes) {
+      throw new Error("'attributes' is mandatory")
+    }
+    if (!expr) {
+      throw new Error("'expr' is mandatory")
+    }
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      type: this.type,
+      attributes: this.attributes,
+      elements: this.expr.toJSON()
+    }
+  }
+
+  isAllowed(tagName) {
+    return this.expr.isAllowed(tagName)
+  }
+
+  isTextAllowed() {
+    return this.expr.isAllowed(TEXT$3)
+  }
+
+  printStructure() {
+    return `${this.name} ::= ${this.expr.toString()}`
+  }
+
+  findFirstValidPos(el, newTag) {
+    return this.expr._findInsertPos(el, newTag, 'first')
+  }
+
+  findLastValidPos(el, newTag) {
+    return this.expr._findInsertPos(el, newTag, 'last')
+  }
+
+}
+
+ElementSchema.fromJSON = function(data) {
+  return new ElementSchema(
+    data.name,
+    data.type,
+    data.attributes,
+    Expression.fromJSON(data.elements)
+  )
+};
+
+function _validateElement(elementSchema, el) {
+  let errors = [];
+  let valid = true;
+  { 
+    const res = _checkAttributes(elementSchema, el);
+    if (!res.ok) {
+      errors = errors.concat(res.errors);
+      valid = false;
+    }
+  }
+  { 
+    if (elementSchema.type === 'external') {
+      
+    } else {
+      
+      let res;
+      if (el._isXMLTextElement) {
+        res = _checkTextElement(elementSchema, el);
+      } else {
+        res = _checkChildren(elementSchema, el);
+      }
+      if (!res.ok) {
+        errors = errors.concat(res.errors);
+        valid = false;
+      }
+    }
+  }
+  return {
+    errors,
+    ok: valid
+  }
+}
+
+function _checkAttributes(elementSchema, el) { 
+  return { ok: true }
+}
+
+function _checkChildren(elementSchema, el) {
+  
+  
+  if (elementSchema.type === 'external') {
+    return true
+  }
+  const expr = elementSchema.expr;
+  const state = expr.getInitialState();
+  const iterator = el.getChildNodeIterator();
+  let valid = true;
+  while (valid && iterator.hasNext()) {
+    const childEl = iterator.next();
+    let token;
+    if (childEl.isTextNode()) {
+      
+      if (elementSchema.type !== 'text' && _isTextNodeEmpty(childEl)) {
+        continue
+      }
+      token = TEXT$3;
+    } else if (childEl.isElementNode()) {
+      token = childEl.tagName;
+    } else {
+      continue
+    }
+    if (!expr.consume(state, token)) {
+      valid = false;
+    }
+  }
+  
+  if (state.errors.length > 0) {
+    state.errors.forEach((err) => {
+      err.el = el;
+    });
+  }
+  if (valid && !expr.isFinished(state)) {
+    state.errors.push({
+      msg: `<${el.tagName}> is incomplete.\nSchema: ${expr.toString()}`,
+      el
+    });
+    valid = false;
+  }
+  if (valid) {
+    state.ok = true;
+  }
+  return state
+}
+
+function _checkTextElement(elementSchema, el) {
+  let res = {
+    ok: true,
+    errors: []
+  };
+  if (elementSchema.type !== 'text') {
+    res.ok = false;
+    res.errors = [{
+      msg: 'Provided element is a text element',
+      el
+    }];
+  }
+  return res
+}
+
+var ManifestSchemaData = {"start":"dar","elements":{"dar":{"name":"dar","type":"element","attributes":{},"elements":{"name":"dar","content":{"type":",","blocks":["documents","assets"]}}},"documents":{"name":"documents","type":"element","attributes":{},"elements":{"name":"documents","content":{"type":"*","block":"document"}}},"assets":{"name":"assets","type":"element","attributes":{},"elements":{"name":"assets","content":{"type":"*","block":"asset"}}},"document":{"name":"document","type":"element","attributes":{"id":{"name":"id"},"type":{"name":"type"},"path":{"name":"path"}},"elements":{"name":"document","content":{"type":",","blocks":[]}}},"asset":{"name":"asset","type":"element","attributes":{"id":{"name":"id"},"type":{"name":"type"},"path":{"name":"path"}},"elements":{"name":"asset","content":{"type":",","blocks":[]}}}}};
+
+const ManifestSchema = XMLSchema.fromJSON(ManifestSchemaData);
+
+
+ManifestSchema.getName = function() {
+  return 'RDC-Manifest'
+};
+
+ManifestSchema.getVersion = function() {
+  return '1.0'
+};
+
+ManifestSchema.getDocTypeParams = function() {
+  return ['manifest', 'RDC-Manifest 1.0', ManifestSchema.uri]
+};
+
+
+ManifestSchema.getDefaultTextType = function () {
+  return 'text'
+};
+
+ManifestSchema.uri = '//Manifest-1.0.dtd';
+
+class ParentNodeHook$2 {
+
+  constructor(doc) {
+    this.doc = doc;
+    
+    this.parents = {};
+    doc.data.on('operation:applied', this._onOperationApplied, this);
+  }
+
+  _onOperationApplied(op) {
+    const doc = this.doc;
+    const parents = this.parents;
+    let node = doc.get(op.path[0]);
+    switch(op.type) {
+      case 'create': {
+        switch(node._elementType) {
+          case 'element':
+          case 'container': {
+            _setParent(node, node._childNodes);
+            _setRegisteredParent(node);
+            break
+          }
+          default: {
+            _setRegisteredParent(node);
+          }
+        }
+        break
+      }
+      case 'update': {
+        
+        
+        let update = op.diff;
+        if (op.path[1] === '_childNodes') {
+          if (update.isInsert()) {
+            _setParent(node, update.getValue());
+          } else if (update.isDelete()) {
+            _setParent(null, update.getValue());
+          }
+        }
+        break
+      }
+      case 'set': {
+        if (op.path[1] === '_childNodes') {
+          _setParent(null, op.getOldValue());
+          _setParent(node, op.getValue());
+        }
+        break
+      }
+      default:
+        
+    }
+
+    function _setParent(parent, ids) {
+      if (ids) {
+        if (isArray(ids)) {
+          ids.forEach(_set);
+        } else {
+          _set(ids);
+        }
+      }
+      function _set(id) {
+        
+        
+        
+        parents[id] = parent;
+        let child = doc.get(id);
+        if (child) {
+          child.parentNode = parent;
+        }
+      }
+    }
+    function _setRegisteredParent(child) {
+      let parent = parents[child.id];
+      if (parent) {
+        child.parentNode = parent;
+      }
+    }
+  }
+}
+
+ParentNodeHook$2.register = function(doc) {
+  return new ParentNodeHook$2(doc)
+};
+
+class XMLEditingInterface extends EditingInterface {
+
+  find(cssSelector) {
+    return this.getDocument().find(cssSelector)
+  }
+
+  findAll(cssSelector) {
+    return this.getDocument().findAll(cssSelector)
+  }
+
+  createElement(...args) {
+    return this.getDocument().createElement(...args)
+  }
+
+}
+
+class XMLDocument extends Document {
+
+  _initialize() {
+    this.nodeFactory = new DocumentNodeFactory(this);
+    this.data = new IncrementalData(this.schema, this.nodeFactory);
+    
+    this.addIndex('type', new PropertyIndex('type'));
+    
+    this.addIndex('annotations', new AnnotationIndex());
+    ParentNodeHook$2.register(this);
+  }
+
+  toXML() {
+    let dom = DefaultDOMElement.createDocument('xml');
+    dom.setDocType(...this.getDocTypeParams());
+    let xml = dom.createProcessingInstruction('xml', 'version="1.0" encoding="UTF-8"');
+    dom.insertAt(0, xml);
+    let rootElement = this.getRootNode().toXML();
+    dom.append(rootElement);
+    return dom
+  }
+
+  getDocTypeParams() {
+    
+    throw new Error('This method is abstract')
+  }
+
+  getXMLSchema() {
+    
+    throw new Error('This method is abstract')
+  }
+
+  getRootNode() {
+    
+    throw new Error('This method is abstract')
+  }
+
+  
+  getDocTypeAsString() {
+    return new Error('This method is abstract')
+  }
+
+  createEditingInterface() {
+    return new XMLEditingInterface(this)
+  }
+
+  find(cssSelector) {
+    return this.getRootNode().find(cssSelector)
+  }
+
+  findAll(cssSelector) {
+    return this.getRootNode().findAll(cssSelector)
+  }
+
+  createElement(tagName, data) {
+    let node = this.create(Object.assign({
+      id: uuid(tagName),
+      type: tagName
+    }, data));
+    return node
+  }
+
+  getElementSchema(type) {
+    return this.getXMLSchema().getElementSchema(type)
+  }
+
+  _validateChange(change) {
+    let changed = {};
+    let deleted = [];
+    change.ops.forEach((op) => {
+      switch (op.type) {
+        case "delete": {
+          deleted.push(op.val.id);
+          break
+        }
+        case "create": {
+          changed[op.val.id] = true;
+          break
+        }
+        default: {
+          changed[op.path[0]] = true;
+        }
+      }
+    });
+    
+    deleted.forEach(id => delete changed[id]);
+
+    const xmlSchema = this.getXMLSchema();
+    let errors = [];
+    Object.keys(changed).forEach((id) => {
+      let node = this.get(id);
+      let res = xmlSchema.validateElement(node);
+      if (!res.ok) {
+        errors = errors.concat(res.errors);
+      }
+    });
+    return {
+      ok: errors.length === 0,
+      errors
+    }
+  }
+
+  
+  _apply(documentChange) {
+    
+    if (!documentChange.ops) return
+
+    let created = {};
+    let deleted = {};
+    let updated = {};
+    let affectedContainerAnnos = [];
+
+    const doc = this;
+
+    function _recordUpdate(id, op) {
+      let record = updated[id];
+      if (!record) {
+        record = updated[id] = { ops: [] };
+      }
+      if (op) record.ops.push(op);
+      return record
+    }
+
+    
+    function _checkAnnotation(op) {
+      
+      switch (op.type) {
+        case "create":
+        case "delete": {
+          const annoData = op.val;
+          if (annoData.hasOwnProperty('start')) {
+            updated[annoData.start.path] = true;
+            let node = doc.get(annoData.start.path[0]);
+            if (node) {
+              _recordUpdate(node.id, op);
+            }
+          }
+          if (annoData.hasOwnProperty('end')) {
+            updated[annoData.end.path] = true;
+            let node = doc.get(annoData.start.path[0]);
+            if (node) {
+              _recordUpdate(node.id, op);
+            }
+          }
+          break
+        }
+        case "update":
+        case "set": {
+          let anno = doc.get(op.path[0]);
+          if (anno) {
+            if (anno.isPropertyAnnotation()) {
+              updated[anno.start.path] = true;
+              let node = doc.get(anno.start.path[0]);
+              if (node) {
+                _recordUpdate(node.id, op);
+              }
+            } else if (anno.isContainerAnnotation()) {
+              affectedContainerAnnos.push(anno);
+            }
+          }
+          break
+        }
+        default:
+          
+          throw new Error('Illegal state')
+      }
+    }
+
+    documentChange.ops.forEach((op) => {
+      
+      
+      
+      switch(op.type) {
+        case 'create': {
+          created[op.path[0]] = op.val;
+          break
+        }
+        case 'delete': {
+          let node = this.get(op.path[0]);
+          deleted[node.id] = node;
+          break
+        }
+        case 'update':
+        case 'set': {
+          updated[op.path] = true;
+          let node = this.get(op.path[0]);
+          _recordUpdate(node.id, op);
+          break
+        }
+        default:
+          
+      }
+      
+      _checkAnnotation(op);
+
+      this._applyOp(op);
+    });
+    
+    Object.keys(deleted).forEach((id) => {
+      delete updated[id];
+    });
+    documentChange.created = created;
+    documentChange.updated = updated;
+    documentChange.deleted = deleted;
+    documentChange._extracted = true;
+  }
+
+}
+
+XMLDocument.prototype._isXMLDocument = true;
+
+class ManifestDocument extends XMLDocument {
+
+  getRootNode() {
+    if (!this.root) {
+      let nodes = this.getNodes();
+      let ids = Object.keys(nodes);
+      for (var i = 0; i < ids.length; i++) {
+        let node = nodes[ids[i]];
+        if (node.type === 'dar') {
+          this.root = node;
+        }
+      }
+    }
+    return this.root
+  }
+
+  getDocTypeParams() {
+    return ManifestSchema.getDocTypeParams()
+  }
+
+  getXMLSchema() {
+    return ManifestSchema
+  }
+
+  getDocumentNodes() {
+    return this.findAll('documents > document')
+  }
+
+  getAssetNodes() {
+    return this.findAll('assets > asset')
+  }
+
+  getDocumentEntries() {
+    let documents = this.findAll('documents > document');
+    return documents.map(doc => {
+      return {
+        id: doc.id,
+        name: doc.attr('name'),
+        type: doc.attr('type'),
+        path: doc.attr('path')
+      }
+    })
+  }
+
+}
+
+function loadManifest(xmlStr) {
+  let configurator = new Configurator();
+  registerSchema(configurator, ManifestSchema, ManifestDocument, {
+    ImporterClass: XMLDocumentImporter
+  });
+  let importer = configurator.createImporter(ManifestSchema.getName());
+  let manifest = importer.importDocument(xmlStr);
+  let editorSession = new EditorSession(manifest, { configurator });
+  return editorSession
+}
+
+const path = {
+  join(p1, p2) { return p1+'/'+p2 }
+};
+
+class VfsLoader {
+
+  constructor(vfs, loaders) {
+    this.vfs = vfs;
+    this.loaders = loaders;
+  }
+
+  load(rdcUri) {
+    const vfs = this.vfs;
+    return new Promise((resolve, reject) => {
+      let manifestPath = path.join(rdcUri, 'manifest.xml');
+      let manifestXml;
+      try {
+        manifestXml = vfs.readFileSync(manifestPath);
+      } catch (err) {
+        return reject(err)
+      }
+      let manifest, manifestEditorSession;
+      try {
+        let {editorSession} = loadManifest(manifestXml);
+        manifest = editorSession.getDocument();
+        manifestEditorSession = editorSession;
+      } catch (err) {
+        return reject(err)
+      }
+      let sessions = {};
+      sessions['manifest'] = manifestEditorSession;
+      manifest.findAll('container > documents > document').forEach((el) => {
+        let session;
+        session = this._loadDocument(rdcUri, el);
+        sessions[el.id] = session;
+      });
+      let dc = new DocumentArchive(sessions);
+      resolve(dc);
+    })
+  }
+
+  _loadDocument(rdcUri, el) {
+    const vfs = this.vfs;
+    const type = el.attr('type');
+    const relPath = el.attr('path');
+    let uri = path.join(rdcUri, relPath);
+    let content = vfs.readFileSync(uri);
+    let loader = this.loaders[type];
+    return loader.load(content)
+  }
+
+}
+
+var ManifestLoader = {
+  load(manifestXml) {
+    return loadManifest(manifestXml)
+  }
+};
+
+class PersistedDocumentArchive extends EventEmitter {
+
+  constructor(storage, buffer) {
+    super();
+    this.storage = storage;
+    this.buffer = buffer;
+
+    this._archiveId = null;
+    this._upstreamArchive = null;
+    this._sessions = null;
+    this._pendingFiles = {};
+  }
+
+  hasPendingChanges() {
+    return this.buffer.hasPendingChanges()
+  }
+
+  createFile(file) {
+    let assetId = uuid();
+    let fileExtension = last$2(file.name.split('.'));
+    let filePath = `${assetId}.${fileExtension}`;
+    this._sessions.manifest.transaction(tx => {
+      let assets = tx.find('assets');
+      let asset = tx.createElement('asset', { id: assetId }).attr({
+        path: filePath,
+        type: file.type
+      });
+      assets.appendChild(asset);
+    });
+    this.buffer.addBlob(assetId, {
+      id: assetId,
+      path: filePath,
+      blob: file
+    });
+    this._pendingFiles[filePath] = URL.createObjectURL(file);
+    return filePath
+  }
+
+  
+  _addDocumentRecord(documentId, type, name, path) {
+    this._sessions.manifest.transaction(tx => {
+      let documents = tx.find('documents');
+      let docEntry = tx.createElement('document', { id: documentId }).attr({
+        name: name,
+        path: path,
+        type: type
+      });
+      documents.appendChild(docEntry);
+    });
+  }
+
+  addDocument(type, name, xml) {
+    let documentId = uuid();
+    let sessions = this._sessions;
+    let session = this._loadDocument(type, { data: xml }, sessions);
+    sessions[documentId] = session;
+
+    this._registerForSessionChanges(session, documentId);
+
+    this._addDocumentRecord(documentId, type, name, documentId+'.xml');
+
+    return documentId
+  }
+
+  removeDocument(documentId) {
+    let session = this._sessions[documentId];
+    this._unregisterFromSession(session);
+    this._sessions.manifest.transaction(tx => {
+      let documents = tx.find('documents');
+      let docEntry = tx.find(`#${documentId}`);
+      documents.removeChild(docEntry);
+    });
+  }
+
+  renameDocument(documentId, name) {
+    this._sessions.manifest.transaction(tx => {
+      let docEntry = tx.find(`#${documentId}`);
+      docEntry.attr({name});
+    });
+  }
+
+  getDocumentEntries() {
+    return this.getEditorSession('manifest').getDocument().getDocumentEntries()
+  }
+
+  resolveUrl(path) {
+    let blobUrl = this._pendingFiles[path];
+    if (blobUrl) {
+      return blobUrl
+    } else {
+      let fileRecord = this._upstreamArchive.resources[path];
+      if (fileRecord && fileRecord.encoding === 'url') {
+        return fileRecord.data
+      }
+    }
+  }
+
+  load(archiveId) {
+    const storage = this.storage;
+    const buffer = this.buffer;
+
+    let upstreamArchive;
+    return Promise.resolve()
+    .then(() => {
+      return storage.read(archiveId)
+    })
+    .then((res) => {
+      upstreamArchive = res;
+      return buffer.load()
+    })
+    .then(() => {
+      
+      
+      
+      
+      if (!buffer.hasPendingChanges()) {
+        let localVersion = buffer.getVersion();
+        let upstreamVersion = upstreamArchive.version;
+        if (localVersion && upstreamVersion && localVersion !== upstreamVersion) {
+          
+          
+          console.error('Upstream document has changed. Discarding local changes');
+          this.buffer.reset(upstreamVersion);
+        } else {
+          buffer.reset(upstreamVersion);
+        }
+      }
+    })
+    .then(() => {
+      
+      let sessions = this._ingest(upstreamArchive);
+      
+      if (!sessions['manifest']) {
+        throw new Error('There must be a manifest session.')
+      }
+      
+      if (!buffer.hasPendingChanges()) {
+        
+        
+        
+      } else {
+        buffer.reset(upstreamArchive.version);
+      }
+      
+      this._registerForAllChanges(sessions);
+
+      this._archiveId = archiveId;
+      this._upstreamArchive = upstreamArchive;
+      this._sessions = sessions;
+
+      return this
+    })
+  }
+
+  save() {
+    if (!this.buffer.hasPendingChanges()) {
+      console.info('Save: no pending changes.');
+      return Promise.resolve()
+    }
+    return this._save(this._archiveId)
+  }
+
+  
+  saveAs(newArchiveId) {
+    return this.storage.clone(this._archiveId, newArchiveId).then(() => {
+      return this._save(newArchiveId)
+    })
+  }
+
+  getEditorSession(docId) {
+    return this._sessions[docId]
+  }
+
+  _loadManifest(record) {
+    if (!record) {
+      throw new Error('manifest.xml is missing')
+    }
+    return ManifestLoader.load(record.data)
+  }
+
+  _registerForAllChanges(sessions) {
+    forEach(sessions, (session, docId) => {
+      this._registerForSessionChanges(session, docId);
+    });
+  }
+
+  _registerForSessionChanges(session, docId) {
+    session.onUpdate('document', (change) => {
+      this.buffer.addChange(docId, change);
+      
+      this.emit('archive:changed');
+    }, this);
+  }
+
+  _unregisterFromSession(session) {
+    session.off(this);
+  }
+
+  
+  _save(archiveId) {
+    const buffer = this.buffer;
+    const storage = this.storage;
+    const sessions = this._sessions;
+
+    let rawArchive = this._exportChanges(sessions, buffer);
+
+    
+    
+    
+    
+    
+    
+    return storage.write(archiveId, rawArchive).then(res => {
+      
+      
+      res = JSON.parse(res);
+      
+      buffer.reset(res.version);
+
+      
+      this._archiveId = archiveId;
+    }).catch(err => {
+      console.error('Saving failed.', err);
+    })
+  }
+
+  _exportAssets(sessions, buffer, rawArchive) {
+    let manifest = sessions.manifest.getDocument();
+    let assetNodes = manifest.getAssetNodes();
+    assetNodes.forEach(node => {
+      let id = node.attr('id');
+      if (!buffer.hasBlob(id)) return
+      let path = node.attr('path') || id;
+      let blobRecord = buffer.getBlob(id);
+      rawArchive.resources[path] = {
+        id,
+        data: blobRecord.blob,
+        encoding: 'blob',
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      };
+    });
+  }
+
+  
+  _exportChanges(sessions, buffer) {
+    let rawArchive = {
+      version: buffer.getVersion(),
+      diff: buffer.getChanges(),
+      resources: {}
+    };
+    this._exportManifest(sessions, buffer, rawArchive);
+    this._exportDocuments(sessions, buffer, rawArchive);
+    this._exportAssets(sessions, buffer, rawArchive);
+    return rawArchive
+  }
+
+}
+
+function sendRequest(params, cb) {
+  return new Promise(function(resolve, reject) {
+    var method = (params.method || 'GET').toUpperCase();
+    var url = params.url;
+    if (['GET', 'POST', 'PUT', 'DELETE'].indexOf(method) < 0) {
+      throw new Error("Parameter 'method' must be 'GET', 'POST', 'PUT', or 'DELETE'.")
+    }
+    if (!url) {
+      throw new Error("Parameter 'url' is required.")
+    }
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+      
+      
+      if (xmlhttp.readyState === 4) return _done()
+    };
+    xmlhttp.open(method, url, true);
+    if (params.header) {
+      forEach(params.header, function(val, key) {
+        xmlhttp.setRequestHeader(key, val);
+      });
+    }
+    if (params.data instanceof FormData) { 
+      xmlhttp.send(params.data);
+    } else if (params.data) {
+      xmlhttp.send(JSON.stringify(params.data));
+    } else {
+      xmlhttp.send();
+    }
+
+    function _done() {
+      if (xmlhttp.status === 200) {
+        var response = xmlhttp.responseText;
+        if (cb) cb(null, response);
+        resolve(response);
+      } else {
+        console.error(xmlhttp.statusText);
+        let err = new Error(xmlhttp.statusText);
+        if (cb) cb(err);
+        reject(err);
+      }
+    }
+  })
+}
+
+class HttpStorageClient {
+
+  constructor(apiUrl) {
+    this.apiUrl = apiUrl;
+  }
+
+  
+  read(archiveId) {
+    let url = this.apiUrl;
+    if (archiveId) {
+      url = url + '/' + archiveId;
+    }
+    return sendRequest({
+      method: 'GET',
+      url
+    }).then(response => {
+      return JSON.parse(response)
+    })
+  }
+
+  write(archiveId, data) {
+    let form = new FormData();
+    forEach(data.resources, (record, filePath) => {
+      if (record.encoding === 'blob') {
+        
+        form.append(record.id, record.data, filePath);
+        delete record.data;
+      }
+    });
+    form.append('_archive', JSON.stringify(data));
+    let url = this.apiUrl;
+    if (archiveId) {
+      url = url + '/' + archiveId;
+    }
+    return sendRequest({
+      method: 'PUT',
+      url,
+      data: form
+    })
+  }
+
+}
+
+class InMemoryDarBuffer {
+
+  constructor() {
+    this._version = null;
+    this._changes = [];
+    this._isDirty = {};
+    this._blobs = {};
+  }
+
+  getVersion() {
+    return this._version
+  }
+
+  load(archiveId) { 
+    return Promise.resolve()
+  }
+
+  addChange(docId, change) {
+    
+    if (change.ops.length === 0) return
+    
+    this._isDirty[docId] = true;
+    this._changes.push({
+      docId, change
+    });
+  }
+
+  hasPendingChanges() {
+    return this._changes.length > 0
+  }
+
+  getChanges() {
+    return this._changes.slice()
+  }
+
+  hasResourceChanged(docId) {
+    return this._isDirty[docId]
+  }
+
+  hasBlob(id) {
+    return this._blobs[id]
+  }
+
+  addBlob(id, blob) {
+    this._blobs[id] = blob;
+  }
+
+  getBlob(id) {
+    return this._blobs[id]
+  }
+
+  reset(version) {
+    this._version = version;
+    this._changes = [];
+    this._blobs = {};
+    this._isDirty = {};
+  }
+}
+
+class VfsStorageClient {
+
+  constructor(vfs, baseUrl) {
+    this.vfs = vfs;
+
+    
+    this.baseUrl = baseUrl;
+  }
+
+  read(archiveId) {
+    let rawArchive = _readRawArchive(this.vfs, archiveId, this.baseUrl);
+    return Promise.resolve(rawArchive)
+  }
+
+  write(archiveId, data) { 
+    console.error('Can not write on virtual file system');
+    console.info('This would have been written:', data);
+    return Promise.resolve(false)
+  }
+}
+
+function _readRawArchive(fs, archiveId, baseUrl = '') {
+  let manifestXML = fs.readFileSync(`${archiveId}/manifest.xml`);
+  let manifestSession = ManifestLoader.load(manifestXML);
+  let manifest = manifestSession.getDocument();
+  let docs = manifest.findAll('documents > document');
+  let assets = manifest.findAll('assets > asset');
+  let rawArchive = {
+    version: "0",
+    resources: {
+      'manifest.xml': {
+        encoding: 'utf8',
+        data: manifestXML
+      }
+    }
+  };
+
+  docs.forEach(entry => {
+    let path = entry.attr('path');
+    let content = fs.readFileSync(`${archiveId}/${entry.path}`);
+    rawArchive.resources[path] = {
+      encoding: 'utf8',
+      data: content
+    };
+  });
+  assets.forEach(asset => {
+    let path = asset.attr('path');
+    
+    rawArchive.resources[path] = {
+      encoding: 'url',
+      data: baseUrl+archiveId+'/'+path
+    };
+  });
+  return rawArchive
+}
+
+function findParentDOMElement(nativeEl) {
+  while(nativeEl) {
+    let el = DefaultDOMElement.unwrap(nativeEl);
+    if (el) return el
+    nativeEl = nativeEl.parentNode;
+  }
+}
+
+function stop(event) {
+  event.stopPropagation();
+}
+
+function stopAndPrevent(event) {
+  event.stopPropagation();
+  event.preventDefault();
+}
+
+class BlockNode extends DocumentNode {}
+
+BlockNode.isBlock = true;
+
+class ContainerAdapter extends Container {
+
+  constructor(doc, path) {
+    super(doc, { id: String(path) });
+    this.document = doc;
+    this.path = path;
+
+    
+    
+    doc.data.nodes[this.id] = this;
+  }
+
+  getContentPath() {
+    return this.path
+  }
+
+  get nodes() {
+    return this.document.get(this.path)
+  }
+
+}
+
+ContainerAdapter.prototype._isDocumentNode = false;
+ContainerAdapter.prototype._isContainer = false;
+
+class CoordinateAdapter extends Coordinate {
+
+  constructor(owner, pathProperty, offsetProperty) {
+    super('SKIP');
+
+    this._owner = owner;
+    this._pathProp = pathProperty;
+    this._offsetProp = offsetProperty;
+    Object.freeze(this);
+  }
+
+  equals(other) {
+    return (other === this ||
+      (isArrayEqual(other.path, this.path) && other.offset === this.offset) )
+  }
+
+  get path() {
+    return this._owner[this._pathProp];
+  }
+
+  set path(path) {
+    this._owner[this._pathProp] = path;
+  }
+
+  get offset() {
+    return this._owner[this._offsetProp];
+  }
+
+  set offset(offset) {
+    this._owner[this._offsetProp] = offset;
+  }
+
+  toJSON() {
+    return {
+      path: this.path,
+      offset: this.offset
+    }
+  }
+
+  toString() {
+    return "(" + this.path.join('.') + ", " + this.offset + ")"
+  }
+}
+
+function createDocumentFactory(ArticleClass, create) {
+  return {
+    ArticleClass: ArticleClass,
+    createEmptyArticle: function() {
+      const doc = new ArticleClass();
+      return doc
+    },
+    createArticle: function() {
+      const doc = new ArticleClass();
+      create(doc);
+      return doc
+    },
+    createChangeset: function() {
+      const doc = new ArticleClass();
+      const tx = new ChangeRecorder(doc);
+      create(tx);
+      const change = tx.generateChange();
+      return [change.toJSON()]
+    }
+  }
+}
+
+class DefaultChangeCompressor {
+
+  shouldMerge(lastChange, newChange) {
+    return false
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+  }
+
+  
+  merge(first, second) {
+    
+    
+    var firstOp = first.ops[0];
+    var secondOp = second.ops[0];
+    var firstDiff = firstOp.diff;
+    var secondDiff = secondOp.diff;
+    var mergedOp = false;
+    if (firstDiff.isInsert()) {
+      if (firstDiff.pos+firstDiff.getLength() === secondDiff.pos) {
+        mergedOp = firstOp.toJSON();
+        mergedOp.diff.str += secondDiff.str;
+      }
+    }
+    else if (firstDiff.isDelete()) {
+      
+      
+      if (firstDiff.pos === secondDiff.pos) {
+        mergedOp = firstOp.toJSON();
+        mergedOp.diff.str += secondDiff.str;
+      } else if (secondDiff.pos+secondDiff.getLength() === firstDiff.pos) {
+        mergedOp = firstOp.toJSON();
+        mergedOp.diff = secondDiff;
+        mergedOp.diff.str += firstDiff.str;
+      }
+    }
+    if (mergedOp) {
+      first.ops[0] = ObjectOperation.fromJSON(mergedOp);
+      if (first.ops.length > 1) {
+        
+        
+        
+        first.ops = first.ops.concat(second.ops.slice(1));
+        first.after = second.after;
+      }
+      return true
+    }
+    return false
+  }
+
+}
+
+class FileProxy {
+  constructor(fileNode, context) {
+    this.fileNode = fileNode;
+    this.context = context;
+    fileNode.setProxy(this);
+  }
+
+  get id() {
+    return this.fileNode.id
+  }
+
+  
+  triggerUpdate() {
+    let fileId = this.fileNode.id;
+    this.context.editorSession.transaction((tx) => {
+      tx.set([fileId, '__changed__'], '');
+    }, { history: false });
+  }
+
+  getUrl() {
+    return ''
+  }
+
+  sync() {
+    return Promise.reject(new Error('sync method not implemented'))
+  }
+}
+
+FileProxy.match = function(fileNode, context) { 
+  return false
+};
+
+class DefaultFileProxy extends FileProxy {
+
+  constructor(fileNode, context) {
+    super(fileNode, context);
+
+    
+    this.file = fileNode.sourceFile;
+    if (this.file) {
+      this._fileUrl = URL.createObjectURL(this.file);
+    }
+    this.url = fileNode.url;
+  }
+
+  getUrl() {
+    
+    if (this.url) {
+      return this.url
+    }
+    
+    if (this._fileUrl) {
+      return this._fileUrl
+    }
+    
+    return ''
+  }
+
+  sync() {
+    if (!this.url) {
+      console.info('Simulating file upload. Creating blob url instead.', this._fileUrl);
+      this.url = this._fileUrl;
+    }
+    return Promise.resolve()
+  }
+}
+
+function encodeXMLEntities(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+class DOMExporter {
+
+  constructor(config, context) {
+    this.context = context || {};
+    if (!config.converters) {
+      throw new Error('config.converters is mandatory')
+    }
+    if (!config.converters._isRegistry) {
+      this.converters = new Registry();
+      config.converters.forEach(function(Converter) {
+        let converter = isFunction$2(Converter) ? new Converter() : Converter;
+        if (!converter.type) {
+          console.error('Converter must provide the type of the associated node.', converter);
+          return
+        }
+        this.converters.add(converter.type, converter);
+      }.bind(this));
+    } else {
+      this.converters = config.converters;
+    }
+
+    this.state = {
+      doc: null
+    };
+    this.config = config;
+    
+    
+    this._elementFactory = config.elementFactory;
+    if (!this._elementFactory) {
+      throw new Error("'elementFactory' is mandatory")
+    }
+    this.$$ = this.createElement.bind(this);
+  }
+
+  exportDocument(doc) {
+    
+    
+    
+    
+    return this.convertDocument(doc)
+  }
+
+  
+  convertDocument(doc) { 
+    throw new Error('This method is abstract')
+  }
+
+  convertContainer(container) {
+    if (!container) {
+      throw new Error('Illegal arguments: container is mandatory.')
+    }
+    const doc = container.getDocument();
+    this.state.doc = doc;
+    let elements = [];
+    container.getContent().forEach((id) => {
+      const node = doc.get(id);
+      const nodeEl = this.convertNode(node);
+      elements.push(nodeEl);
+    });
+    return elements
+  }
+
+  convertNode(node) {
+    if (isString(node)) {
+      
+      node = this.state.doc.get(node);
+    } else {
+      this.state.doc = node.getDocument();
+    }
+    var converter = this.getNodeConverter(node);
+    
+    
+    if (node.isPropertyAnnotation() && (!converter || !converter.export)) {
+      return this._convertPropertyAnnotation(node)
+    }
+    if (!converter) {
+      converter = this.getDefaultBlockConverter();
+    }
+    var el;
+    if (converter.tagName) {
+      el = this.$$(converter.tagName);
+    } else {
+      el = this.$$('div');
+    }
+    el.attr(this.config.idAttribute, node.id);
+    if (converter.export) {
+      el = converter.export(node, el, this) || el;
+    } else {
+      el = this.getDefaultBlockConverter().export(node, el, this) || el;
+    }
+    return el
+  }
+
+  convertProperty(doc, path, options) {
+    this.initialize(doc, options);
+    var wrapper = this.$$('div')
+      .append(this.annotatedText(path));
+    return wrapper.innerHTML
+  }
+
+  annotatedText(path) {
+    var doc = this.state.doc;
+    var text = doc.get(path);
+    var annotations = doc.getIndex('annotations').get(path);
+    return this._annotatedText(text, annotations)
+  }
+
+  getNodeConverter(node) {
+    return this.converters.get(node.type)
+  }
+
+  getDefaultBlockConverter() {
+    throw new Error('This method is abstract.')
+  }
+
+  getDefaultPropertyAnnotationConverter() {
+    throw new Error('This method is abstract.')
+  }
+
+  getDocument() {
+    return this.state.doc
+  }
+
+  createElement(str) {
+    return this._elementFactory.createElement(str)
+  }
+
+  _annotatedText(text, annotations) {
+    var self = this;
+
+    var annotator = new Fragmenter();
+    annotator.onText = function(context, text) {
+      context.children.push(encodeXMLEntities(text));
+    };
+    annotator.onEnter = function(fragment) {
+      var anno = fragment.node;
+      return {
+        annotation: anno,
+        children: []
+      }
+    };
+    annotator.onExit = function(fragment, context, parentContext) {
+      var anno = context.annotation;
+      var converter = self.getNodeConverter(anno);
+      if (!converter) {
+        converter = self.getDefaultPropertyAnnotationConverter();
+      }
+      var el;
+      if (converter.tagName) {
+        el = this.$$(converter.tagName);
+      } else {
+        el = this.$$('span');
+      }
+      el.attr(this.config.idAttribute, anno.id);
+      el.append(context.children);
+      if (converter.export) {
+        el = converter.export(anno, el, self) || el;
+      }
+      parentContext.children.push(el);
+    }.bind(this);
+    var wrapper = { children: [] };
+    annotator.start(wrapper, text, annotations);
+    return wrapper.children
+  }
+
+  
+  _convertPropertyAnnotation(anno) {
+    
+    var wrapper = this.$$('div').append(this.annotatedText(anno.path));
+    var el = wrapper.find('['+this.config.idAttribute+'="'+anno.id+'"]');
+    return el
+  }
+
+}
+
+class FileNode extends DocumentNode {
+
+  constructor(...args) {
+    super(...args);
+  }
+
+  getUrl() {
+    if (this.proxy) {
+      return this.proxy.getUrl()
+    } else {
+      
+      console.warn('No file proxy attached to ', this.id);
+      return ''
+    }
+  }
+
+  setProxy(proxy) {
+    this.proxy = proxy;
+  }
+}
+
+FileNode.type = 'file';
+
+FileNode.schema = {
+  url: { type: 'string', optional: true },
+  fileType: { type: 'string', optional: true },
+  mimeType: { type: 'string', optional: true },
+  sourceFile: { type: 'object', optional: true }
+};
+
+FileNode.prototype._isFileNode = true;
+FileNode._isFileNode = true;
+
+class HTMLExporter extends DOMExporter {
+
+  constructor(config, context) {
+    super(_defaultConfig(config), context);
+  }
+
+  exportDocument(doc) {
+    let htmlEl = DefaultDOMElement.parseHTML('<html><head></head><body></body></html>');
+    return this.convertDocument(doc, htmlEl)
+  }
+
+  getDefaultBlockConverter() {
+    return defaultBlockConverter 
+  }
+
+  getDefaultPropertyAnnotationConverter() {
+    return defaultAnnotationConverter 
+  }
+
+}
+
+function _defaultConfig(config) {
+  config = Object.assign({
+    idAttribute: 'data-id'
+  }, config);
+  if (!config.elementFactory) {
+    config.elementFactory = DefaultDOMElement.createDocument('html');
+  }
+  return config
+}
+
+
+const defaultAnnotationConverter = {
+  tagName: 'span',
+  export: function(node, el) {
+    el.tagName = 'span';
+    el.attr('data-type', node.type);
+    var properties = node.toJSON();
+    forEach(properties, function(value, name) {
+      if (name === 'id' || name === 'type') return
+      if (isString(value) || isNumber(value) || isBoolean(value)) {
+        el.attr('data-'+name, value);
+      }
+    });
+  }
+};
+
+const defaultBlockConverter = {
+  export: function(node, el, converter) {
+    el.attr('data-type', node.type);
+    var properties = node.toJSON();
+    forEach(properties, function(value, name) {
+      if (name === 'id' || name === 'type') {
+        return
+      }
+      var prop = converter.$$('div').attr('property', name);
+      if (node.getPropertyType(name) === 'string' && value) {
+        prop.append(converter.annotatedText([node.id, name]));
+      } else {
+        prop.text(value);
+      }
+      el.append(prop);
+    });
+  }
+};
+
+class HTMLImporter extends DOMImporter {
+
+  constructor(config) {
+    super(Object.assign({ idAttribute: 'data-id' }, config));
+
+    
+    this._el = DefaultDOMElement.parseHTML('<html></html>');
+  }
+
+  importDocument(html) {
+    this.reset();
+    var parsed = DefaultDOMElement.parseHTML(html);
+    this.convertDocument(parsed);
+    return this.state.doc
+  }
+
+  
+  convertDocument(documentEl) { 
+    throw new Error('This method is abstract')
+  }
+
+}
+
+class InlineNode extends PropertyAnnotation {}
+
+InlineNode.prototype._isInlineNode = true;
+
+InlineNode.isInline = true;
+
+class Range {
+
+  constructor(start, end, reverse, containerId, surfaceId) {
+    
+    if (arguments[0] === 'SKIP') return
+    if (arguments.length === 1 && isPlainObject(arguments[0])) {
+      let data = arguments[0];
+      this.start = data.start;
+      this.end = data.end;
+      this.reverse = Boolean(data.reverse);
+      this.containerId = data.containerId;
+      this.surfaceId = data.surfaceId;
+    } else {
+      this.start = start;
+      this.end = end;
+      this.reverse = Boolean(reverse);
+      this.containerId = containerId;
+      this.surfaceId = surfaceId;
+    }
+  }
+
+  isCollapsed() {
+    return this.start.equals(this.end)
+  }
+
+  equals(other) {
+    if (this === other) return true
+    else {
+      return (
+        this.containerId === other.containerId &&
+        this.start.equals(other.start) &&
+        this.end.equals(other.end)
+      )
+    }
+  }
+
+  isReverse() {
+    return this.reverse
+  }
+
+  toString() {
+    let str = [this.start.toString(), '->', this.end.toString()];
+    if (this.isReverse()) {
+      str.push('[reverse]');
+    }
+    if (this.containerId) {
+      str.push('[container='+this.containerId+']');
+    }
+    if (this.surfaceId) {
+      str.push('[surface='+this.surfaceId+']');
+    }
+    return str.join('')
+  }
+
+}
+
+Range.prototype._isRange = true;
+
+class TextNode extends TextNodeMixin(DocumentNode) {
+
+  getPath() {
+    return [this.id, 'content']
+  }
+
+  getText() {
+    return this.content
+  }
+
+}
+
+TextNode.isText = true;
+
+TextNode.schema = {
+  type: "text",
+  content: "text",
+  direction: { type: "string", optional: true },
+  textAlign: { type: "string", default: 'left' }
+};
+
+class TextBlock extends TextNode {}
+
+TextBlock.isBlock = true;
+
+class XMLExporter extends DOMExporter {
+
+  constructor(config, context) {
+    super(_defaultConfig$1(config), context);
+  }
+
+  getDefaultBlockConverter() {
+    return defaultBlockConverter$1 
+  }
+
+  getDefaultPropertyAnnotationConverter() {
+    return defaultAnnotationConverter$1 
+  }
+
+}
+
+function _defaultConfig$1(config) {
+  config = Object.assign({
+    idAttribute: 'id'
+  }, config);
+  if (!config.elementFactory) {
+    config.elementFactory = DefaultDOMElement.createDocument('xml');
+  }
+  return config
+}
+
+const defaultAnnotationConverter$1 = {
+  tagName: 'annotation',
+  export: function(node, el) {
+    el.attr('type', node.type);
+    const properties = node.toJSON();
+    forEach(properties, function(value, name) {
+      if (name === 'id' || name === 'type') return
+      if (isString(value) || isNumber(value) || isBoolean(value)) {
+        el.attr(name, value);
+      }
+    });
+  }
+};
+
+const defaultBlockConverter$1 = {
+  tagName: 'block',
+  export: function(node, el, converter) {
+    el.attr('type', node.type);
+    const properties = node.toJSON();
+    forEach(properties, function(value, name) {
+      if (name === 'id' || name === 'type') {
+        return
+      }
+      const prop = converter.$$(name);
+      if (node.getPropertyType(name) === 'string') {
+        prop.append(converter.annotatedText([node.id, name]));
+      } else {
+        prop.text(value);
+      }
+      el.append(prop);
+    });
+  }
+};
+
+class XMLImporter extends DOMImporter {
+
+  constructor(config, context) {
+    super(Object.assign({ idAttribute: 'id' }, config), context);
+  }
+
+  importDocument(xml) {
+    this.reset();
+    let dom = DefaultDOMElement.parseXML(xml);
+    this.convertDocument(dom);
+    return this.state.doc
+  }
+
+  convertDocument(xmlDocument) {
+    let rootNode = xmlDocument.children[0];
+    if (!rootNode) throw new Error('XML Root node could not be found.')
+    this.convertElement(rootNode);
+  }
+
+}
+
+const INLINENODES = ['a','b','big','i','small','tt','abbr','acronym','cite','code','dfn','em','kbd','strong','samp','time','var','bdo','br','img','map','object','q','script','span','sub','sup','button','input','label','select','textarea'].reduce((m,n)=>{m[n]=true;return m}, {});
+
+
+class ClipboardImporter extends HTMLImporter {
+
+  constructor(config) {
+    super(_withCatchAllConverter(config));
+    
+    this.IGNORE_DEFAULT_WARNINGS = true;
+
+    Object.assign(config, {
+      trimWhitespaces: true,
+      REMOVE_INNER_WS: true
+    });
+
+    this.editorOptions = config.editorOptions;
+  }
+
+  
+  importDocument(html) {
+    if (platform.isWindows) {
+      
+      
+      let match = /<!--StartFragment-->(.*)<!--EndFragment-->/.exec(html);
+      if (match) {
+        html = match[1];
+      }
+    }
+
+    
+    
+    
+    if (html.search(/script id=.substance-clipboard./)>=0) {
+      let htmlDoc = DefaultDOMElement.parseHTML(html);
+      let substanceData = htmlDoc.find('#substance-clipboard');
+      if (substanceData) {
+        let jsonStr = substanceData.textContent;
+        try {
+          return this.importFromJSON(jsonStr)
+        } finally {
+          
+        }
+      }
+    }
+
+    if (this.editorOptions && this.editorOptions['forcePlainTextPaste']) {
+      return null;
+    }
+
+    let htmlDoc = DefaultDOMElement.parseHTML(html);
+    let generatorMeta = htmlDoc.find('meta[name="generator"]');
+    let xmnlsw = htmlDoc.find('html').getAttribute('xmlns:w');
+    if(generatorMeta) {
+      let generator = generatorMeta.getAttribute('content');
+      if(generator.indexOf('LibreOffice') > -1) this._isLibreOffice = true;
+    } else if(xmnlsw) {
+      if(xmnlsw.indexOf('office:word') > -1) {
+        this._isMicrosoftWord = true;
+        
+        
+        
+        let match = /<!--StartFragment-->([\s\S]*)<!--EndFragment-->/.exec(html);
+        if (match) {
+          htmlDoc = DefaultDOMElement.parseHTML(match[1]);
+        }
+      }
+    } else if(html.indexOf('docs-internal-guid') > -1) {
+      this._isGoogleDoc = true;
+    }
+
+    let body = htmlDoc.find('body');
+    body = this._sanitizeBody(body);
+    if (!body) {
+      console.warn('Invalid HTML.');
+      return null
+    }
+    this._wrapIntoParagraph(body);
+    this.reset();
+    this.convertBody(body);
+    const doc = this.state.doc;
+    return doc
+  }
+
+  _sanitizeBody(body) {
+    
+    body.findAll('meta').forEach(el => el.remove());
+
+    
+    
+    if(this._isLibreOffice || this._isMicrosoftWord) {
+      let bodyHtml = body.getInnerHTML();
+      body.setInnerHTML(bodyHtml.replace(/\r\n|\r|\n/g, ' '));
+    } else if (this._isGoogleDoc) {
+      body = this._fixupGoogleDocsBody(body);
+    }
+
+    return body
+  }
+
+  _fixupGoogleDocsBody(body) {
+    if (!body) return
+    
+    
+    
+    
+    let bold = body.find('b');
+    if (bold && /^docs-internal/.exec(bold.id)) {
+      body = bold;
+    }
+
+    body.findAll('span').forEach(span => {
+      
+      
+      
+      
+      
+      
+      
+      
+      let nodeTypes = [];
+      if(span.getStyle('font-weight') === '700') nodeTypes.push('b');
+      if(span.getStyle('font-style') === 'italic') nodeTypes.push('i');
+      if(span.getStyle('vertical-align') === 'super') nodeTypes.push('sup');
+      if(span.getStyle('vertical-align') === 'sub') nodeTypes.push('sub');
+
+      function createInlineNodes(parentEl, isRoot) {
+        if(nodeTypes.length > 0) {
+          let el = parentEl.createElement(nodeTypes[0]);
+          if(nodeTypes.length === 1) el.append(span.textContent);
+
+          if(isRoot) {
+            parentEl.replaceChild(span, el);
+          } else {
+            parentEl.appendChild(el);
+          }
+
+          nodeTypes.shift();
+          createInlineNodes(el);
+        }
+      }
+
+      createInlineNodes(span.getParent(), true);
+    });
+
+    let tags = ['b', 'i', 'sup', 'sub'];
+
+    tags.forEach(tag => {
+      body.findAll(tag).forEach(el => {
+        
+        
+        let previousSiblingEl = el.getPreviousSibling();
+        if(previousSiblingEl && el.tagName === previousSiblingEl.tagName) {
+          let parentEl = el.getParent();
+          let newEl = parentEl.createElement(tag);
+          newEl.setInnerHTML(previousSiblingEl.getInnerHTML() + el.getInnerHTML());
+          parentEl.replaceChild(el, newEl);
+          parentEl.removeChild(previousSiblingEl);
+        }
+
+        
+        
+        
+        
+        if(previousSiblingEl && previousSiblingEl.tagName && el.getChildCount() > 0 && el.getChildAt(0).tagName === previousSiblingEl.tagName) {
+          let parentEl = el.getParent();
+          let childEl = el.getChildAt(0);
+          let newEl = parentEl.createElement(previousSiblingEl.tagName);
+          let newChildEl = newEl.createElement(tag);
+          newChildEl.setTextContent(childEl.textContent);
+          newEl.appendChild(newChildEl);
+          parentEl.replaceChild(el, newEl);
+        }
+      });
+    });
+
+    return body
+  }
+
+  _wrapIntoParagraph(body) {
+    let childNodes = body.getChildNodes();
+    let shouldWrap = false;
+    for (let i = 0; i < childNodes.length; i++) {
+      const c = childNodes[i];
+      if (c.isTextNode()) {
+        if (!(/^\s+$/.exec(c.textContent))) {
+          shouldWrap = true;
+          break
+        }
+      } else if (INLINENODES[c.tagName]) {
+        shouldWrap = true;
+        break
+      }
+    }
+    if (shouldWrap) {
+      let p = body.createElement('p');
+      p.append(childNodes);
+      body.append(p);
+    }
+  }
+
+  importFromJSON(jsonStr) {
+    this.reset();
+    let doc = this.getDocument();
+    let jsonData = JSON.parse(jsonStr);
+    let converter = new JSONConverter();
+    converter.importDocument(doc, jsonData);
+    return doc
+  }
+
+  
+  convertBody(body) {
+    this.convertContainer(body.childNodes, Document.SNIPPET_ID);
+  }
+
+  
+  _createDocument() {
+    let emptyDoc = super._createDocument();
+    return emptyDoc.createSnippet()
+  }
+}
+
+function _withCatchAllConverter(config) {
+  config = Object.assign({}, config);
+  let defaultTextType = config.schema.getDefaultTextType();
+  if (defaultTextType) {
+    config.converters = config.converters.concat([{
+      type: defaultTextType,
+      matchElement: function(el) { return el.is('div') },
+      import: function(el, node, converter) {
+        node.content = converter.annotatedText(el, [node.id, 'content']);
+      }
+    }]);
+  }
+  return config
+}
+
+class ClipboardExporter extends HTMLExporter {
+
+  
+  exportDocument(doc) {
+    this.state.doc = doc;
+    let html;
+    let elements = this.convertDocument(doc);
+    
+    if (elements.length === 1 && elements[0].attr('data-id') === Document.TEXT_SNIPPET_ID) {
+      html = elements[0].innerHTML;
+    } else {
+      html = elements.map(function(el) {
+        return el.outerHTML
+      }).join('');
+    }
+    let jsonConverter = new JSONConverter();
+    let jsonStr = JSON.stringify(jsonConverter.exportDocument(doc));
+    let substanceContent = `<script id="substance-clipboard" type="application/json">${jsonStr}</script>`;
+    return '<html><head>' +substanceContent+ '</head><body>' + html + '</body></html>'
+  }
+
+  
+  convertDocument(doc) {
+    let content = doc.get(Document.SNIPPET_ID);
+    if (!content) {
+      throw new Error('Illegal clipboard document: could not find container "' + Document.SNIPPET_ID + '"')
+    }
+    return this.convertContainer(content)
+  }
+
+}
+
+class AbstractClipboard {
+
+  constructor(configurator) {
+    let schema = configurator.getSchema();
+    let converterRegistry = configurator.converterRegistry;
+    let htmlConverters = [];
+    if (converterRegistry && converterRegistry.contains('html')) {
+      htmlConverters = converterRegistry.get('html').values() || [];
+    }
+    
+    
+    this._config = {
+      schema: schema,
+      DocumentClass: schema.getDocumentClass(),
+      converters: htmlConverters,
+      editorOptions: configurator.getEditorOptions()
+    };
+  }
+
+  
+  onCopy(event) {
+    
+    let clipboardData = this._copy();
+    substanceGlobals._clipboardData = event.clipboardData;
+
+    if (event.clipboardData && clipboardData.doc) {
+      event.preventDefault();
+      
+      event.clipboardData.setData('text/plain', clipboardData.text);
+      
+      if (!platform.isIE && !platform.isEdge) {
+        event.clipboardData.setData('text/html', clipboardData.html);
+      }
+    }
+  }
+
+  
+  onCut(event) {
+    
+    event.preventDefault();
+    
+    this.onCopy(event);
+    this._cut();
+  }
+
+  
+  
+  onPaste(event) {
+    let clipboardData = event.clipboardData;
+
+    let types = {};
+    for (let i = 0; i < clipboardData.types.length; i++) {
+      types[clipboardData.types[i]] = true;
+    }
+    
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    let plainText;
+    let html;
+    if (types['text/plain']) {
+      plainText = clipboardData.getData('text/plain');
+    }
+    if (types['text/html']) {
+      html = clipboardData.getData('text/html');
+    }
+
+    
+    
+    if (platform.isEdge &&
+        substanceGlobals.clipboardData &&
+        substanceGlobals.clipboardData.text === plainText) {
+      html = substanceGlobals.clipboardData.html;
+    } else {
+      substanceGlobals.clipboardData = {
+        text: plainText,
+        html: html
+      };
+    }
+
+    
+
+    
+    
+    if (platform.isFF && !html) {
+      this._pastePlainText(plainText);
+      return
+    }
+
+    
+    
+    if (html) {
+      if (!this._pasteHtml(html, plainText)) {
+        this._pastePlainText(plainText);
+      }
+    } else {
+      this._pastePlainText(plainText);
+    }
+  }
+
+  _getImporter() {
+    return new ClipboardImporter(this._config)
+  }
+
+  _getExporter() {
+    return new ClipboardExporter(this._config)
+  }
+
+  
+  _copy() {
+    throw new Error('This method is abstract.')
+  }
+
+  
+  _cut() {
+    throw new Error('This method is abstract.')
+  }
+
+  
+  _pastePlainText(plainText) { 
+    throw new Error('This method is abstract.')
+  }
+
+  
+  _pasteHtml(html, text) { 
+    throw new Error('This method is abstract.')
+  }
+
+}
+
 class ResourceManager {
 
   constructor(editorSession, context) {
@@ -29864,8 +36827,8 @@ class ResourceManager {
 
   _onDocumentChange(change) {
     let doc = this.editorSession.getDocument();
-    forEach(change.created, (node) => {
-      node = doc.get(node.id);
+    forEach(change.created, (_, id) => {
+      let node = doc.get(id);
       if (node.constructor.isResource) {
         setTimeout(() => {
           this.triggerFetch(node);
@@ -29883,6 +36846,127 @@ class ResourceManager {
       });
     });
   }
+}
+
+function levenshtein(a, b){
+  let m = [];
+  for(let i = 0; i <= b.length; i++) {
+    m[i] = [i];
+    if(i === 0) continue;
+    let ib = i-1;
+    for(let j = 0; j <= a.length; j++){
+      m[0][j] = j;
+      if(j === 0) continue;
+      let jb = j-1;
+      m[i][j] = b.charAt(ib) === a.charAt(jb) ? m[ib][jb] : Math.min(
+        m[ib][jb]+1,
+        m[i][jb]+1,
+        m[ib][j]+1
+      );
+    }
+  }
+  return m
+}
+
+function diff(a, b, offset) {
+  if (!isString(a) || !isString(b)) {
+    throw new Error('Illegal arguments.')
+  }
+  offset = offset || 0;
+  let changes = [];
+  if (a || b) {
+    if (!a && b) {
+      changes.push({ type:'insert', start:offset, text:b });
+    } else if (a && !b) {
+      changes.push({ type:'delete', start:offset, end:offset+a.length });
+    } else {
+      let m = levenshtein(a, b);
+      changes = _diff(a, b, m, offset);
+    }
+  }
+  return changes
+}
+
+function _diff(a, b, m, offset) {
+  let i = b.length;
+  let j = a.length;
+  let changes = [];
+  let current;
+  while (i>0 && j>0) {
+    _next();
+  }
+  _commit();
+  return changes
+
+  function _next() {
+    let d = m[i][j];
+    let ib = i-1;
+    let jb = j-1;
+    
+    if (m[ib][jb]<d) {
+      if (current && current.type === 'replace') {
+        current.start--;
+        current.text.unshift(b.charAt(ib));
+      } else {
+        _commit();
+        current = { type:'replace', start:jb, end:j, text:[b.charAt(ib)] };
+      }
+      i--;
+      j--;
+    }
+    
+    else if (m[ib][j]<d) {
+      if (current && current.type === 'insert') {
+        current.start--;
+        current.text.unshift(b.charAt(ib));
+      } else {
+        _commit();
+        current = { type:'insert', start:jb, text:[b.charAt(ib)] };
+      }
+      i--;
+    }
+    
+    else if (m[i][jb]<d) {
+      if (current && current.type === 'delete') {
+        current.start--;
+      } else {
+        _commit();
+        current = { type:'delete', start:jb, end:j };
+      }
+      j--;
+    }
+    
+    else {
+      _commit();
+      i--;
+      j--;
+    }
+  }
+
+  function _commit() {
+    if (current) {
+      switch (current.type) {
+        case 'insert':
+          current.start += offset;
+          current.text = current.text.join('');
+          break
+        case 'delete':
+          current.start += offset;
+          current.end += offset;
+          break
+        case 'replace':
+          current.start += offset;
+          current.end += offset;
+          current.text = current.text.join('');
+          break
+        default:
+          throw new Error('Invalid state')
+      }
+      changes.push(current);
+      current = null;
+    }
+  }
+
 }
 
 class AnnotationComponent extends Component {
@@ -31102,10 +38186,10 @@ class DOMSelection {
   mapModelToDOMCoordinates(sel) {
     if (DEBUG$1) console.info('Model->DOM: sel =', sel.toString());
     let rootEl;
-    let surface = this.editor.surfaceManager.getSurface(sel.surfaceId);
+    let surface = this.editor.getSurfaceManager().getSurface(sel.surfaceId);
     if (!surface) {
       console.warn('Selection should have "surfaceId" set.');
-      rootEl = this.editor.el;
+      rootEl = this.editor.getElement();
     } else {
       rootEl = surface.el;
     }
@@ -31256,7 +38340,7 @@ class DOMSelection {
     let coor = null;
     
     if (!coor) {
-      coor = TextPropertyComponent.getCoordinate(this.editor.el, nodeEl, offset);
+      coor = TextPropertyComponent.getCoordinate(this.editor.getElement(), nodeEl, offset);
     }
     let comp = Component.unwrap(nodeEl);
     if (!coor && comp) {
@@ -31322,6 +38406,7 @@ class AbstractEditor extends Component {
 
   constructor(...args) {
     super(...args);
+
     this._initialize(this.props);
   }
 
@@ -31335,13 +38420,14 @@ class AbstractEditor extends Component {
   }
 
   _initialize(props) {
-    if (!props.editorSession) {
+    const editorSession = props.editorSession;
+    if (!editorSession) {
       throw new Error('EditorSession instance required');
     }
-    this.editorSession = props.editorSession;
-    this.doc = this.editorSession.getDocument();
+    this.editorSession = editorSession;
+    this.doc = editorSession.getDocument();
 
-    let configurator = this.editorSession.getConfigurator();
+    let configurator = editorSession.getConfigurator();
     this.componentRegistry = configurator.getComponentRegistry();
     this.commandGroups = configurator.getCommandGroups();
     this.keyboardShortcuts = configurator.getKeyboardShortcutsByCommand();
@@ -31350,22 +38436,26 @@ class AbstractEditor extends Component {
     this.iconProvider = configurator.getIconProvider();
 
     
-    this.surfaceManager = this.editorSession.surfaceManager;
-    this.commandManager = this.editorSession.commandManager;
-    this.dragManager = this.editorSession.dragManager;
-    this.macroManager = this.editorSession.macroManager;
-    this.converterRegistry = this.editorSession.converterRegistry;
-    this.globalEventHandler = this.editorSession.globalEventHandler;
-    this.editingBehavior = this.editorSession.editingBehavior;
-    this.markersManager = this.editorSession.markersManager;
+    this.surfaceManager = editorSession.surfaceManager;
+    this.commandManager = editorSession.commandManager;
+    this.dragManager = editorSession.dragManager;
+    this.macroManager = editorSession.macroManager;
+    this.converterRegistry = editorSession.converterRegistry;
+    this.globalEventHandler = editorSession.globalEventHandler;
+    this.editingBehavior = editorSession.editingBehavior;
+    this.markersManager = editorSession.markersManager;
 
-    this.resourceManager = new ResourceManager(this.editorSession, this.getChildContext());
+    this.resourceManager = new ResourceManager(editorSession, this.getChildContext());
     this.domSelection = new DOMSelection(this);
 
-    if (platform.inBrowser) {
-      this.documentEl = DefaultDOMElement.wrapNativeElement(document);
-      this.documentEl.on('keydown', this.onKeyDown, this);
-    }
+    
+    this.labelProvider.setLanguage(editorSession.getLanguage());
+    
+    
+    editorSession.onUpdate('lang', (lang) => {
+      this.labelProvider.setLanguage(lang);
+    }, this);
+    editorSession.onRender('lang', this.rerender, this);
   }
 
   willReceiveProps(nextProps) {
@@ -31378,16 +38468,15 @@ class AbstractEditor extends Component {
   }
 
   _dispose() {
-    this.getEditorSession().detachEditor(this);
+    const editorSession = this.getEditorSession();
+    editorSession.off(this);
+    editorSession.detachEditor(this);
     
     
     this.empty();
     
     
     this.resourceManager.dispose();
-    if (platform.inBrowser) {
-      this.documentEl.off(this);
-    }
   }
 
   getChildContext() {
@@ -31438,9 +38527,31 @@ class AbstractEditor extends Component {
   getComponentRegistry() {
     return this.componentRegistry
   }
+
+  getSurfaceManager() {
+    return this.surfaceManager
+  }
+
+  getLabelProvider() {
+    return this.labelProvider
+  }
+
 }
 
-class AbstractScrollPane$$1 extends Component {
+function getRelativeMouseBounds(mouseEvent, containerEl) {
+  let containerElRect = containerEl.getBoundingClientRect();
+  let left = mouseEvent.clientX - containerElRect.left;
+  let top = mouseEvent.clientY - containerElRect.top;
+  let res = {
+    left: left,
+    right: containerElRect.width - left,
+    top: top,
+    bottom: containerElRect.height - top
+  };
+  return res;
+}
+
+class AbstractScrollPane extends Component {
 
   
   getChildContext() {
@@ -31905,403 +39016,40 @@ class BlockNodeComponent extends NodeComponent {
   
 }
 
-const INLINENODES = ['a','b','big','i','small','tt','abbr','acronym','cite','code','dfn','em','kbd','strong','samp','time','var','bdo','br','img','map','object','q','script','span','sub','sup','button','input','label','select','textarea'].reduce((m,n)=>{m[n]=true;return m}, {});
+class Clipboard extends AbstractClipboard {
 
+  constructor(editorSession) {
+    super(editorSession.getConfigurator());
 
-class ClipboardImporter extends HTMLImporter {
-
-  constructor(config) {
-    super(_withCatchAllConverter(config));
-    
-    this.IGNORE_DEFAULT_WARNINGS = true;
-
-    Object.assign(config, {
-      trimWhitespaces: true,
-      REMOVE_INNER_WS: true
-    });
-
-    
-    
-    this._isWindows = platform.isWindows;
-    this.editorOptions = config.editorOptions;
-  }
-
-  
-  importDocument(html) {
-    if (this._isWindows) {
-      
-      
-      let match = /<!--StartFragment-->(.*)<!--EndFragment-->/.exec(html);
-      if (match) {
-        html = match[1];
-      }
-    }
-
-    
-    
-    
-    if (html.search(/script id=.substance-clipboard./)>=0) {
-      let htmlDoc = DefaultDOMElement.parseHTML(html);
-      let substanceData = htmlDoc.find('#substance-clipboard');
-      if (substanceData) {
-        let jsonStr = substanceData.textContent;
-        try {
-          return this.importFromJSON(jsonStr)
-        } finally {
-          
-        }
-      }
-    }
-
-    if (this.editorOptions && this.editorOptions['forcePlainTextPaste']) {
-      return null;
-    }
-
-    let htmlDoc = DefaultDOMElement.parseHTML(html);
-    let generatorMeta = htmlDoc.find('meta[name="generator"]');
-    let xmnlsw = htmlDoc.find('html').getAttribute('xmlns:w');
-    if(generatorMeta) {
-      let generator = generatorMeta.getAttribute('content');
-      if(generator.indexOf('LibreOffice') > -1) this._isLibreOffice = true;
-    } else if(xmnlsw) {
-      if(xmnlsw.indexOf('office:word') > -1) {
-        this._isMicrosoftWord = true;
-        
-        
-        
-        let match = /<!--StartFragment-->([\s\S]*)<!--EndFragment-->/.exec(html);
-        if (match) {
-          htmlDoc = DefaultDOMElement.parseHTML(match[1]);
-        }
-      }
-    } else if(html.indexOf('docs-internal-guid') > -1) {
-      this._isGoogleDoc = true;
-    }
-
-    let body = htmlDoc.find('body');
-    body = this._sanitizeBody(body);
-    if (!body) {
-      console.warn('Invalid HTML.');
-      return null
-    }
-    this._wrapIntoParagraph(body);
-    this.reset();
-    this.convertBody(body);
-    const doc = this.state.doc;
-    return doc
-  }
-
-  _sanitizeBody(body) {
-    
-    body.findAll('meta').forEach(el => el.remove());
-
-    
-    
-    if(this._isLibreOffice || this._isMicrosoftWord) {
-      let bodyHtml = body.getInnerHTML();
-      body.setInnerHTML(bodyHtml.replace(/\r\n|\r|\n/g, ' '));
-    } else if (this._isGoogleDoc) {
-      body = this._fixupGoogleDocsBody(body);
-    }
-
-    return body
-  }
-
-  _fixupGoogleDocsBody(body) {
-    if (!body) return
-    
-    
-    
-    
-    let bold = body.find('b');
-    if (bold && /^docs-internal/.exec(bold.id)) {
-      body = bold;
-    }
-
-    body.findAll('span').forEach(span => {
-      
-      
-      
-      
-      
-      
-      
-      
-      let nodeTypes = [];
-      if(span.getStyle('font-weight') === '700') nodeTypes.push('b');
-      if(span.getStyle('font-style') === 'italic') nodeTypes.push('i');
-      if(span.getStyle('vertical-align') === 'super') nodeTypes.push('sup');
-      if(span.getStyle('vertical-align') === 'sub') nodeTypes.push('sub');
-
-      function createInlineNodes(parentEl, isRoot) {
-        if(nodeTypes.length > 0) {
-          let el = parentEl.createElement(nodeTypes[0]);
-          if(nodeTypes.length === 1) el.append(span.textContent);
-
-          if(isRoot) {
-            parentEl.replaceChild(span, el);
-          } else {
-            parentEl.appendChild(el);
-          }
-
-          nodeTypes.shift();
-          createInlineNodes(el);
-        }
-      }
-
-      createInlineNodes(span.getParent(), true);
-    });
-
-    let tags = ['b', 'i', 'sup', 'sub'];
-
-    tags.forEach(tag => {
-      body.findAll(tag).forEach(el => {
-        
-        
-        let previousSiblingEl = el.getPreviousSibling();
-        if(previousSiblingEl && el.tagName === previousSiblingEl.tagName) {
-          let parentEl = el.getParent();
-          let newEl = parentEl.createElement(tag);
-          newEl.setInnerHTML(previousSiblingEl.getInnerHTML() + el.getInnerHTML());
-          parentEl.replaceChild(el, newEl);
-          parentEl.removeChild(previousSiblingEl);
-        }
-
-        
-        
-        
-        
-        if(previousSiblingEl && previousSiblingEl.tagName && el.getChildCount() > 0 && el.getChildAt(0).tagName === previousSiblingEl.tagName) {
-          let parentEl = el.getParent();
-          let childEl = el.getChildAt(0);
-          let newEl = parentEl.createElement(previousSiblingEl.tagName);
-          let newChildEl = newEl.createElement(tag);
-          newChildEl.setTextContent(childEl.textContent);
-          newEl.appendChild(newChildEl);
-          parentEl.replaceChild(el, newEl);
-        }
-      });
-    });
-
-    return body
-  }
-
-  _wrapIntoParagraph(body) {
-    let childNodes = body.getChildNodes();
-    let shouldWrap = false;
-    for (let i = 0; i < childNodes.length; i++) {
-      const c = childNodes[i];
-      if (c.isTextNode()) {
-        if (!(/^\s+$/.exec(c.textContent))) {
-          shouldWrap = true;
-          break
-        }
-      } else if (INLINENODES[c.tagName]) {
-        shouldWrap = true;
-        break
-      }
-    }
-    if (shouldWrap) {
-      let p = body.createElement('p');
-      p.append(childNodes);
-      body.append(p);
-    }
-  }
-
-  importFromJSON(jsonStr) {
-    this.reset();
-    let doc = this.getDocument();
-    let jsonData = JSON.parse(jsonStr);
-    let converter = new JSONConverter();
-    converter.importDocument(doc, jsonData);
-    return doc
-  }
-
-  
-  convertBody(body) {
-    this.convertContainer(body.childNodes, Document.SNIPPET_ID);
-  }
-
-  
-  _createDocument() {
-    let emptyDoc = super._createDocument();
-    return emptyDoc.createSnippet()
-  }
-}
-
-function _withCatchAllConverter(config) {
-  config = Object.assign({}, config);
-  let defaultTextType = config.schema.getDefaultTextType();
-  config.converters = config.converters.concat([{
-    type: defaultTextType,
-    matchElement: function(el) { return el.is('div') },
-    import: function(el, node, converter) {
-      node.content = converter.annotatedText(el, [node.id, 'content']);
-    }
-  }]);
-  return config
-}
-
-class ClipboardExporter extends HTMLExporter {
-
-  
-  exportDocument(doc) {
-    this.state.doc = doc;
-    let html;
-    let elements = this.convertDocument(doc);
-    
-    if (elements.length === 1 && elements[0].attr('data-id') === Document.TEXT_SNIPPET_ID) {
-      html = elements[0].innerHTML;
-    } else {
-      html = elements.map(function(el) {
-        return el.outerHTML
-      }).join('');
-    }
-    let jsonConverter = new JSONConverter();
-    let jsonStr = JSON.stringify(jsonConverter.exportDocument(doc));
-    let substanceContent = `<script id="substance-clipboard" type="application/json">${jsonStr}</script>`;
-    return '<html><head>' +substanceContent+ '</head><body>' + html + '</body></html>'
-  }
-
-  
-  convertDocument(doc) {
-    let content = doc.get(Document.SNIPPET_ID);
-    if (!content) {
-      throw new Error('Illegal clipboard document: could not find container "' + Document.SNIPPET_ID + '"')
-    }
-    return this.convertContainer(content)
-  }
-
-}
-
-class Clipboard {
-
-  constructor(editorSession, config) {
     this.editorSession = editorSession;
+  }
+
+  
+  _copy() {
+    let editorSession = this.getEditorSession();
+    let sel = editorSession.getSelection();
     let doc = editorSession.getDocument();
-    let schema = doc.getSchema();
-
-    let htmlConverters = [];
-    if (config.converterRegistry && config.converterRegistry.contains('html')) {
-      htmlConverters = config.converterRegistry.get('html').values() || [];
+    let clipboardDoc = null;
+    let clipboardText = "";
+    let clipboardHtml = "";
+    let htmlExporter = this._getExporter();
+    if (!sel.isCollapsed()) {
+      clipboardText = documentHelpers.getTextForSelection(doc, sel) || "";
+      clipboardDoc = copySelection(doc, sel);
+      clipboardHtml = htmlExporter.exportDocument(clipboardDoc);
     }
-    let _config = {
-      schema: schema,
-      DocumentClass: doc.constructor,
-      converters: htmlConverters,
-      editorOptions: config.editorOptions
-    };
-
-    this.htmlImporter = new ClipboardImporter(_config);
-    this.htmlExporter = new ClipboardExporter(_config);
-  }
-
-  dispose() {
-    this.htmlImporter.dispose();
-    
-    
-  }
-
-  getEditorSession() {
-    return this.editorSession
-  }
-
-  
-  attach(el) {
-    el.on('copy', this.onCopy, this);
-    el.on('cut', this.onCut, this);
-    el.on('paste', this.onPaste, this);
-  }
-
-  
-  detach(el) {
-    el.off(this);
-  }
-
-  
-  onCopy(event) {
-    
-    let clipboardData = this._copy();
-    substanceGlobals._clipboardData = event.clipboardData;
-
-    if (event.clipboardData && clipboardData.doc) {
-      event.preventDefault();
-      
-      event.clipboardData.setData('text/plain', clipboardData.text);
-      
-      if (!platform.isIE && !platform.isEdge) {
-        event.clipboardData.setData('text/html', clipboardData.html);
-      }
+    return {
+      doc: clipboardDoc,
+      html: clipboardHtml,
+      text: clipboardText
     }
   }
 
-  
-  onCut(event) {
-    
-    
-    event.preventDefault();
-    
-    this.onCopy(event);
+  _cut() {
     let editorSession = this.getEditorSession();
     editorSession.transaction((tx)=>{
       tx.deleteSelection();
     });
-  }
-
-  
-  
-  onPaste(event) {
-    let clipboardData = event.clipboardData;
-
-    let types = {};
-    for (let i = 0; i < clipboardData.types.length; i++) {
-      types[clipboardData.types[i]] = true;
-    }
-    
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    let plainText;
-    let html;
-    if (types['text/plain']) {
-      plainText = clipboardData.getData('text/plain');
-    }
-    if (types['text/html']) {
-      html = clipboardData.getData('text/html');
-    }
-
-    
-    
-    if (platform.isEdge &&
-        substanceGlobals.clipboardData &&
-        substanceGlobals.clipboardData.text === plainText) {
-      html = substanceGlobals.clipboardData.html;
-    } else {
-      substanceGlobals.clipboardData = {
-        text: plainText,
-        html: html
-      };
-    }
-
-    
-
-    
-    
-    if (platform.isFF && !html) {
-      this._pastePlainText(plainText);
-      return
-    }
-
-    
-    
-    if (html) {
-      if (!this._pasteHtml(html, plainText)) {
-        this._pastePlainText(plainText);
-      }
-    } else {
-      this._pastePlainText(plainText);
-    }
   }
 
   
@@ -32313,2061 +39061,37 @@ class Clipboard {
   }
 
   
-  _copy() {
-    let editorSession = this.getEditorSession();
-    let sel = editorSession.getSelection();
-    let doc = editorSession.getDocument();
-    let clipboardDoc = null;
-    let clipboardText = "";
-    let clipboardHtml = "";
-    if (!sel.isCollapsed()) {
-      clipboardText = documentHelpers.getTextForSelection(doc, sel) || "";
-      clipboardDoc = copySelection(doc, sel);
-      clipboardHtml = this.htmlExporter.exportDocument(clipboardDoc);
-    }
-    return {
-      doc: clipboardDoc,
-      html: clipboardHtml,
-      text: clipboardText
-    }
-  }
-
-  
   _pasteHtml(html, text) {
-    let content = this.htmlImporter.importDocument(html);
-    this.paste(content, text);
-    return true
-  }
-
-  
-  paste(doc, text) {
-    let content = doc || text;
-    let editorSession = this.getEditorSession();
+    let htmlImporter = this._getImporter();
+    let content = htmlImporter.importDocument(html) || text;
     if (content) {
+      let editorSession = this.getEditorSession();
       editorSession.transaction((tx) => {
         tx.paste(content);
       }, { action: 'paste' });
     }
-  }
-
-}
-
-class CommandManager {
-
-  constructor(context, commands) {
-    const editorSession = context.editorSession;
-    if (!editorSession) {
-      throw new Error('EditorSession required.')
-    }
-    this.editorSession = context.editorSession;
-    
-    this.commands = commands;
-
-    
-    
-    this.context = Object.assign({}, context, {
-      
-      doc: this.editorSession.getDocument()
-    });
-
-    
-    this._initialize();
-
-    
-    this.editorSession.onUpdate(this._onSessionUpdate, this);
-
-    
-    
-    this._updateCommandStates(this.editorSession);
-  }
-
-  dispose() {
-    this.editorSession.off(this);
-  }
-
-  
-  executeCommand(commandName, userParams, cb) {
-    let cmd = this._getCommand(commandName);
-    if (!cmd) {
-      console.warn('command', commandName, 'not registered');
-      return
-    }
-    let commandStates = this.editorSession.getCommandStates();
-    let commandState = commandStates[commandName];
-    let params = Object.assign(this._getCommandParams(), userParams, {
-      commandState: commandState
-    });
-
-    if (cmd.isAsync) {
-      
-      this.editorSession.lock();
-      cmd.execute(params, this._getCommandContext(), (err, info) => {
-        if (err) {
-          if (cb) {
-            cb(err);
-          } else {
-            console.error(err);
-          }
-        } else {
-          if (cb) cb(null, info);
-        }
-        this.editorSession.unlock();
-      });
-    } else {
-      let info = cmd.execute(params, this._getCommandContext());
-      return info
-    }
-  }
-
-  _initialize() {
-    this.commandRegistry = new Registry();
-    forEach(this.commands, (command) => {
-      this.commandRegistry.add(command.name, command);
-    });
-  }
-
-  _getCommand(commandName) {
-    return this.commandRegistry.get(commandName)
-  }
-
-  
-  _updateCommandStates(editorSession) {
-    const commandContext = this._getCommandContext();
-    const params = this._getCommandParams();
-    const surface = params.surface;
-    const commandRegistry = this.commandRegistry;
-
-    
-    
-    let commandStates = {};
-    let commandNames = commandRegistry.names.slice();
-    
-    commandNames.forEach((name) => {
-      commandStates[name] = { disabled: true };
-    });
-    
-    if (surface) {
-      let included = surface.props.commands;
-      let excluded = surface.props.excludedCommands;
-      if (included) {
-        commandNames = included.filter((name) => {
-          return commandRegistry.contains(name)
-        });
-      } else if (excluded) {
-        commandNames = without(commandNames, ...excluded);
-      }
-    }
-    const commands = commandNames.map(name => commandRegistry.get(name));
-    commands.forEach((cmd) => {
-      if (cmd) {
-        commandStates[cmd.getName()] = cmd.getCommandState(params, commandContext);
-      }
-    });
-    
-    
-    
-    
-    this.commandStates = commandStates;
-    editorSession.setCommandStates(commandStates);
-  }
-
-  _onSessionUpdate(editorSession) {
-    if (editorSession.hasChanged('change') || editorSession.hasChanged('selection') || editorSession.hasChanged('commandStates')) {
-      this._updateCommandStates(editorSession);
-    }
-  }
-
-  _getCommandContext() {
-    return this.context
-  }
-
-  _getCommandParams() {
-    let editorSession = this.context.editorSession;
-    let selectionState = editorSession.getSelectionState();
-    let sel = selectionState.getSelection();
-    let surface = this.context.surfaceManager.getFocusedSurface();
-    return {
-      editorSession: editorSession,
-      selectionState: selectionState,
-      surface: surface,
-      selection: sel,
-    }
-  }
-}
-
-class ComponentRegistry extends Registry {
-  constructor(entries) {
-    super(entries, function(ComponentClass) {
-      if (!ComponentClass.prototype._isComponent) {
-        throw new Error('Component registry: wrong type. Expected a ComponentClass. Was: ' + String(ComponentClass))
-      }
-    });
-  }
-}
-
-class FontAwesomeIcon extends Component {
-  constructor(...args) {
-    super(...args);
-  }
-
-  render($$) {
-    return $$('i').addClass('fa ' + this.props.icon)
-  }
-
-}
-
-class FontAwesomeIconProvider {
-
-  constructor(icons) {
-    this.faMap = {};
-    this.textMap = {};
-    forEach(icons, function(config, name) {
-      let faClass = config['fontawesome'];
-      if (faClass) {
-        this.addFAIcon(name, faClass);
-      }
-      let text = config['text'];
-      if (text) {
-        this.addTextIcon(name, text);
-      }
-    }.bind(this));
-  }
-
-  renderIcon($$, name) {
-    let faClass = this.faMap[name];
-    let text = this.textMap[name];
-    if (faClass) {
-      return $$(FontAwesomeIcon, { icon: faClass })
-    } else if (text) {
-      return text
-    }
-  }
-
-  addFAIcon(name, faClass) {
-    this.faMap[name] = faClass;
-  }
-
-  addTextIcon(name, text) {
-    this.textMap[name] = text;
-  }
-}
-
-class DefaultLabelProvider {
-  constructor(labels, lang) {
-    this.lang = lang || 'en';
-    this.labels = labels;
-  }
-
-  getLabel(name) {
-    let labels = this.labels[this.lang];
-    if (!labels) return name
-    return labels[name] || name
-  }
-
-  hasLabel(name) {
-    let labels = this.labels[this.lang];
-    return Boolean(labels[name])
-  }
-}
-
-class DragAndDropHandler {
-
-  match(dragState, context) { 
-    return false
-  }
-
-  drop(dragState, context) { 
-    
-  }
-
-  get _isDragAndDropHandler() {
     return true
   }
 
-}
-
-class DragManager extends EventEmitter {
-
-  constructor(customDropHandlers, context) {
-    super();
-
-    this.context = context;
-
-    let dropAssetHandlers = [];
-    let moveInlineHandlers = [];
-    customDropHandlers.forEach((h) => {
-      
-      let type = h.type || 'drop-asset';
-      switch (type) {
-        case 'drop-asset': {
-          dropAssetHandlers.push(h);
-          break
-        }
-        case 'move-inline': {
-          moveInlineHandlers.push(h);
-          break
-        }
-        default:
-          console.warn('Unknown type of drop handler.', h);
-      }
-    });
-
-    
-    this.dropHandlers = [
-      
-      new MoveInline(moveInlineHandlers),
-      
-      new MoveBlockNode(),
-      
-      new InsertNodes(dropAssetHandlers, this.context),
-      
-      
-      new CustomHandler(),
-    ];
-    if (platform.inBrowser) {
-      this.el = DefaultDOMElement.wrapNativeElement(document);
-      this.el.on('dragstart', this.onDragStart, this);
-      
-      this.el.on('drop', this.onDragEnd, this);
-      this.el.on('dragenter', this.onDragEnter, this);
-      this.el.on('dragexit', this.onDragExit, this);
-      this.el.on('mousedown', this.onMousedown, this);
-    }
-  }
-
-  dispose() {
-    if (this.el) {
-      this.el.off(this);
-    }
-  }
-
-  onDragStart(e) {
-    
-    this._initDrag(e, { external: false });
-    
-    
-    var img = document.createElement("img");
-    img.src = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
-    e.dataTransfer.setDragImage(img, 0, 0);
-    
-    
-    
-    
-    
-    
-    if (this.dragState.mode === 'inline') {
-      e.dataTransfer.setData('text/html', img.outerHTML);
-    } else {
-      
-      
-      e.dataTransfer.setData('text/html', '<div></div>');
-    }
-    
-  }
-
-  
-  onDragEnter(e) {
-    if (!this.dragState) {
-      
-      this._initDrag(e, {external: true});
-    }
-  }
-
-  onDragEnd(event) {
-    if (event.__reserved__) return
-    
-    if (this.dragState) {
-      event.stopPropagation();
-      event.preventDefault();
-      
-      
-      this._onDragEnd(event);
-    }
-  }
-
-  onDragExit(e) {
-    if (platform.isFF) {
-      
-    } else {
-      
-      
-      
-      this._onDragEnd(e);
-    }
-  }
-
-  extendDragState(extState) {
-    Object.assign(this.dragState, extState);
-  }
-
-  
-  
-  onMousedown(event) {
-    if (this.dragState) {
-      this.dragState = null;
-      this._onDragEnd(event);
-    }
-  }
-
-  _onDragEnd(event) {
-    if (!this.dragState) {
-      
-      
-      
-      console.warn('Not in a valid drag state.');
-    } else {
-      this._handleDrop(event);
-    }
-    this.emit('drag:finished');
-    this.dragState = null;
-  }
-
-  
-  _handleDrop(e) {
-    let dragState = this.dragState;
-    let i, handler;
-    let match = false;
-    dragState.event = e;
-    dragState.data = this._getData(e);
-    
-    for (i = 0; i < this.dropHandlers.length && !match; i++) {
-      handler = this.dropHandlers[i];
-      match = handler.match(dragState);
-    }
-    if (match) {
-      let editorSession = this.context.editorSession;
-      editorSession.transaction((tx) => {
-        handler.drop(tx, dragState);
-      });
-    } else {
-      console.error('No drop handler could be found.');
-    }
-  }
-
-  
-  _initDrag(event, options) {
-    
-    
-    
-    
-
-    
-    let sel = this._getSelection();
-    let dragState = Object.assign({ startEvent: event }, options);
-    this.dragState = dragState;
-
-    
-    
-    if (dragState.external) {
-      dragState.selectionDrag = false;
-      dragState.sourceSelection = null;
-      dragState.scrollPanes = this._getSurfacesGroupedByScrollPane();
-      this.emit('drag:started', dragState);
-      return
-    }
-
-    
-    
-    let isSelectionDrag = (
-      (sel.isPropertySelection() || sel.isContainerSelection()) &&
-      isMouseInsideDOMSelection(event)
-    );
-    if (isSelectionDrag) {
-      
-      if (sel.isContainerSelection()) {
-        console.warn('Dragging of ContainerSelection is not supported yet.');
-        return _stop()
-      }
-      
-      dragState.inline = true;
-      dragState.selectionDrag = true;
-      dragState.sourceSelection = sel;
-      
-      return
-    }
-    let comp = Component.unwrap(event.target);
-    if (!comp) return _stop()
-    let isolatedNodeComponent;
-    if (comp._isInlineNodeComponent) {
-      isolatedNodeComponent = comp;
-      dragState.inline = true;
-      dragState.sourceNode = comp.props.node;
-    } else {
-      isolatedNodeComponent = comp.context.isolatedNodeComponent;
-    }
-    if (!isolatedNodeComponent) return _stop()
-    let surface = isolatedNodeComponent.context.surface;
-    
-    if(isolatedNodeComponent._isInlineNodeComponent) {
-      let inlineNode = isolatedNodeComponent.props.node;
-      dragState.inline = true;
-      dragState.selectionDrag = true;
-      dragState.sourceSelection = {
-        type: 'property',
-        path: inlineNode.start.path,
-        startOffset: inlineNode.start.offset,
-        endOffset: inlineNode.end.offset,
-        containerId: surface.getContainerId(),
-        surfaceId: surface.id
-      };
-      return
-    }
-    
-    
-    dragState.selectionDrag = false;
-    dragState.nodeDrag = true;
-    dragState.sourceSelection = {
-      type: 'node',
-      nodeId: isolatedNodeComponent.props.node.id,
-      containerId: surface.getContainerId(),
-      surfaceId: surface.id
-    };
-    
-    
-    
-    dragState.scrollPanes = this._getSurfacesGroupedByScrollPane();
-    
-    this.emit('drag:started', dragState);
-
-    function _stop() {
-      
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  }
-
-  _getSurfacesGroupedByScrollPane() {
-    
-    
-    let surfaces = this.context.surfaceManager.getSurfaces();
-    let scrollPanes = {};
-    surfaces.forEach((surface) => {
-      
-      if (!surface.isContainerEditor()) return
-      let scrollPane = surface.context.scrollPane;
-      let scrollPaneName = scrollPane.getName();
-      let surfaceName = surface.getName();
-      if (!scrollPanes[scrollPaneName]) {
-        let surfaces = {};
-        surfaces[surfaceName] = surface;
-        scrollPanes[scrollPaneName] = { scrollPane, surfaces };
-      } else {
-        scrollPanes[scrollPaneName].surfaces[surfaceName] = surface;
-      }
-    });
-    return scrollPanes
-  }
-
-  _getSelection() {
-    return this.context.editorSession.getSelection()
-  }
-
-  _getComponents(targetEl) {
-    let res = [];
-    let curr = targetEl;
-    while (curr) {
-      let comp = Component.getComponentForDOMElement(curr);
-      if (comp) {
-        res.unshift(comp);
-        if(comp._isSurface) {
-          return res
-        }
-      }
-      curr = curr.parentNode;
-    }
-    return null
-  }
-
-  _getIsolatedNodeOrContainerChild(targetEl) {
-    let parent, current;
-    current = targetEl;
-    parent = current.parentNode;
-    while(parent) {
-      if (parent._comp && parent._comp._isContainerEditor) {
-        return current._comp
-      } else if (current._comp && current._comp._isIsolatedNode) {
-        return current._comp
-      }
-      current = parent;
-      parent = current.parentNode;
-    }
-  }
-
-  
-  _extractUris(dataTransfer) {
-    let uris = [];
-    let rawUriList = dataTransfer.getData('text/uri-list');
-    if (rawUriList) {
-      uris = rawUriList.split('\n').filter(function(item) {
-        return !item.startsWith('#')
-      });
-    }
-    return uris
-  }
-
-  
-  _getData(e) {
-    let dataTransfer = e.dataTransfer;
-    if (dataTransfer) {
-      return {
-        files: Array.prototype.slice.call(dataTransfer.files),
-        uris: this._extractUris(dataTransfer),
-        text: dataTransfer.getData('text/plain'),
-        html: dataTransfer.getData('text/html')
-      }
-    }
-  }
-}
-
-
-class MoveBlockNode extends DragAndDropHandler {
-
-  match(dragState) {
-    let {insertPos} = dragState.dropParams;
-    
-    return (!dragState.external && dragState.nodeDrag &&
-      dragState.dropType === 'place' && insertPos >= 0
-    )
-  }
-
-  drop(tx, dragState) {
-    
-    
-    
-    
-    let { insertPos } = dragState.dropParams;
-    tx.setSelection(dragState.sourceSelection);
-    let copy = tx.copySelection();
-    
-    tx.deleteSelection({ clear: true });
-    let containerId = dragState.targetSurface.getContainerId();
-    let surfaceId = dragState.targetSurface.getName();
-    let container = tx.get(containerId);
-    let targetNodeId = container.getNodeIdAt(insertPos);
-    let insertMode = 'before';
-    if (!targetNodeId) {
-      targetNodeId = container.getNodeIdAt(insertPos-1);
-      insertMode = 'after';
-    }
-    tx.setSelection({
-      type: 'node',
-      nodeId: targetNodeId,
-      mode: insertMode,
-      containerId: containerId,
-      surfaceId: surfaceId
-    });
-    tx.paste(copy);
-  }
-}
-
-class MoveInline extends DragAndDropHandler {
-
-  match(dragState) {
-    return !dragState.external && dragState.inline
-  }
-
-  drop(tx, dragState) {
-    let event = dragState.event;
-    let sourceSel = dragState.sourceSelection;
-    let wrange = getDOMRangeFromEvent(event);
-    if (!wrange) return
-    let comp = Component.unwrap(event.target);
-    if (!comp) return
-    let domSelection = comp.context.domSelection;
-    if (!domSelection) return
-    let range = domSelection.mapDOMRange(wrange);
-    if (!range) return
-    let targetSel = tx.getDocument()._createSelectionFromRange(range);
-
-    
-    tx.selection = sourceSel;
-    let snippet = tx.copySelection();
-    tx.deleteSelection();
-    tx.selection = transformSelection(targetSel, tx);
-    tx.paste(snippet);
-  }
-}
-
-class InsertNodes extends DragAndDropHandler {
-  constructor(assetHandlers, context) {
-    super();
-    this.assetHandlers = assetHandlers;
-    this.context = context;
-  }
-
-  match(dragState) {
-    return dragState.dropType === 'place' && dragState.external
-  }
-
-  drop(tx, dragState) {
-    let { insertPos } = dragState.dropParams;
-    let files = dragState.data.files;
-    let uris = dragState.data.uris;
-    let containerId = dragState.targetSurface.getContainerId();
-    let surfaceId = dragState.targetSurface.id;
-    let container = tx.get(containerId);
-    let targetNode = container.getNodeIdAt(insertPos);
-    let insertMode = 'before';
-    if (!targetNode) {
-      targetNode = container.getNodeIdAt(insertPos-1);
-      insertMode = 'after';
-    }
-    tx.setSelection({
-      type: 'node',
-      nodeId: targetNode,
-      mode: insertMode,
-      containerId: containerId,
-      surfaceId: surfaceId
-    });
-    if (files.length > 0) {
-      files.forEach((file) => {
-        this._callHandlers(tx, {
-          file: file,
-          type: 'file'
-        });
-      });
-    } else if (uris.length > 0) {
-      uris.forEach((uri) => {
-        this._callHandlers(tx, {
-          uri: uri,
-          type: 'uri'
-        });
-      });
-    } else {
-      console.info('TODO: implement html/text drop here');
-    }
-  }
-
-  _callHandlers(tx, params) {
-    let i, handler;
-    for (i = 0; i < this.assetHandlers.length; i++) {
-      handler = this.assetHandlers[i];
-
-      let match = handler.match(params, this.context);
-      if (match) {
-        handler.drop(tx, params, this.context);
-        break
-      }
-    }
-  }
-}
-
-
-class CustomHandler extends DragAndDropHandler {
-
-  match(dragState) {
-    return dragState.dropType === 'custom'
-  }
-
-  drop(tx, dragState) {
-    
-    dragState.component.handleDrop(tx, dragState);
-  }
-}
-
-class FileManager {
-
-  constructor(editorSession, extensions, context) {
-    this.editorSession = editorSession;
-    this.extensions = extensions;
-    this.proxies = {};
-    this.context = context;
-
-    
-    forEach(editorSession.getDocument().getNodes(), (node) => {
-      if (node._isFileNode) this.storeFile(node);
-    });
-
-    this.editorSession.onUpdate('document', this._onDocumentChange, this);
-  }
-
-  dispose() {
-    this.editorSession.off(this);
-  }
-
-  storeFile(fileNode) {
-    let proxy = this.proxies[fileNode.id];
-    
-    if (!proxy) {
-      proxy = this.createFileProxy(fileNode);
-      if (proxy) {
-        this.proxies[fileNode.id] = proxy;
-      }
-    }
-    fileNode.proxy = proxy;
-    return proxy
-  }
-
-  createFileProxy(fileNode) { 
-    let context = this.context;
-    for (var i = 0; i < this.extensions.length; i++) {
-      let ExtClass = this.extensions[i];
-      if (ExtClass.match(fileNode, context)) {
-        return new ExtClass(fileNode, context)
-      }
-    }
-    console.error('No file adapter found for ', fileNode);
-  }
-
-  getProxy(fileNode) {
-    return this.proxies[fileNode.id]
-  }
-
-  sync() {
-    
-    
-    let promises = map(this.proxies, (proxy) => {
-      return proxy.sync()
-    });
-    return Promise.all(promises)
-  }
-
-  _onDocumentChange(change) {
-    let doc = this.editorSession.getDocument();
-    forEach(change.created, (nodeData) => {
-      
-      let node = doc.get(nodeData.id);
-      if (node._isFileNode) {
-        this.storeFile(node);
-      }
-    });
-  }
-}
-
-const events = [ 'keydown', 'keyup', 'keypress', 'mousedown', 'mouseup' , 'copy' ];
-
-class GlobalEventHandler {
-
-  constructor(editorSession, surfaceManager) {
-    this.editorSession = editorSession;
-    this.surfaceManager = surfaceManager;
-    this.listeners = [];
-    this.initialize();
-  }
-
-  initialize() {
-    if (platform.inBrowser) {
-      let document = DefaultDOMElement.wrapNativeElement(window.document);
-      events.forEach(function(name) {
-        document.on(name, this._dispatch.bind(this, name), this);
-      }.bind(this));
-    }
-  }
-
-  dispose() {
-    if (platform.inBrowser) {
-      let document = DefaultDOMElement.wrapNativeElement(window.document);
-      document.off(this);
-    }
-  }
-
-  addEventListener(eventName, handler, options) {
-    if (!options.id) {
-      throw new Error("GlobalEventHandler can only be used with option 'id'")
-    }
-    let listener = new DOMEventListener(eventName, handler, options);
-    this.listeners.push(listener);
-  }
-
-  removeEventListener(listener) {
-    let idx = this.listeners.indexOf(listener);
-    if (idx > -1) {
-      this.listeners.splice(idx, 1);
-    }
-  }
-
-  getEventListeners() {
-    return this.listeners
-  }
-
-  _getActiveListener(eventName) {
-    let editorSession = this.editorSession;
-    let sel = editorSession.getSelection();
-    if (sel) {
-      let surfaceId = sel.surfaceId;
-      for (let i = 0; i < this.listeners.length; i++) {
-        let listener = this.listeners[i];
-        if (listener.eventName === eventName && listener.options.id === surfaceId) {
-          return listener
-        }
-      }
-    }
-  }
-
-  _dispatch(eventName, e) {
-    let listener = this._getActiveListener(eventName);
-    if (listener) {
-      listener.handler(e);
-    }
-  }
-}
-
-GlobalEventHandler.prototype.on = DOMElement.prototype.on;
-GlobalEventHandler.prototype.off = DOMElement.prototype.off;
-
-class ExecuteCommandHandler {
-  constructor(editorSession, commandName) {
-    this.editorSession = editorSession;
-    this.commandName = commandName;
-  }
-  execute(params) {
-    let commandState = params.editorSession.getCommandStates()[this.commandName];
-    if (!commandState || commandState.disabled) return false
-    this.editorSession.executeCommand(this.commandName, params);
-    return true
-  }
-}
-
-class KeyboardManager {
-
-  constructor(editorSession, bindings, options) {
-    this.editorSession = editorSession;
-    this.context = options.context || {};
-    this.keydownBindings = {};
-    this.textinputBindings = {};
-
-    bindings.forEach(({ key, spec }) => {
-      
-      let type = spec.type || 'keydown';
-      if(spec.command) {
-        let handler = new ExecuteCommandHandler(editorSession, spec.command);
-        let hook = handler.execute.bind(handler);
-        if (type === 'keydown') {
-          this.keydownBindings[parseCombo(key)] = hook;
-        } else if (type === 'textinput') {
-          this.textinputBindings[key] = hook;
-        }
-      } else {
-        throw new Error('Keyboard binding not supported', spec)
-      }
-    });
-  }
-
-  onKeydown(event) {
-    let key = parseKeyEvent(event);
-    let hook = this.keydownBindings[key];
-    if (hook) {
-      let params = this._getParams();
-      const hasExecuted = hook(params, this.context);
-      if (hasExecuted) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-      return hasExecuted
-    }
-  }
-
-
-  onTextInput(text) {
-    let hook = this.textinputBindings[text];
-    if (hook) {
-      let params = this._getParams();
-      return hook(params, this.context)
-    }
-  }
-
-  _getParams() {
-    let editorSession = this.editorSession;
-    let selectionState = editorSession.getSelectionState();
-    let sel = selectionState.getSelection();
-    let surface = this.context.surfaceManager.getFocusedSurface();
-    return {
-      editorSession: editorSession,
-      selectionState: selectionState,
-      surface: surface,
-      selection: sel,
-    }
+  getEditorSession() {
+    return this.editorSession
   }
 
 }
 
-function parseCombo(combo) {
-  let frags = combo.split('+');
-  let data = {
-    keyCode: -1
-  };
-  for (var i = 0; i < frags.length; i++) {
-    let frag = frags[i].toUpperCase();
-    switch(frag) {
-      case 'ALT': {
-        data.altKey = true;
-        break
-      }
-      case 'ALTGR': {
-        data.altKey = true;
-        data.code = 'AltRight';
-        break
-      }
-      case 'CMD': {
-        data.metaKey = true;
-        break
-      }
-      case 'CTRL': {
-        data.ctrlKey = true;
-        break
-      }
-      case 'COMMANDORCONTROL': {
-        if (platform.isMac) {
-          data.metaKey = true;
-        } else {
-          data.ctrlKey = true;
-        }
-        break
-      }
-      case 'MEDIANEXTTRACK': {
-        data.code = 'MediaTrackNext';
-        break
-      }
-      case 'MEDIAPLAYPAUSE': {
-        data.code = 'MediaPlayPause';
-        break
-      }
-      case 'MEDIAPREVIOUSTRACK': {
-        data.code = 'MediaPreviousTrack';
-        break
-      }
-      case 'MEDIASTOP': {
-        data.code = 'MediaStop';
-        break
-      }
-      case 'SHIFT': {
-        data.shiftKey = true;
-        break
-      }
-      case 'SUPER': {
-        data.metaKey = true;
-        break
-      }
-      default:
-        if (frag.length === 1) {
-          data.keyCode = frag.charCodeAt(0);
-        } else if (keys$1.hasOwnProperty(frag)) {
-          data.keyCode = keys$1[frag];
-        } else {
-          throw new Error('Unsupported keyboard command: '+ combo)
-        }
-    }
-  }
-  return parseKeyEvent(data)
-}
-
-KeyboardManager.parseCombo = parseCombo;
-
-class MacroManager {
-
-  constructor(context, macros) {
-    this.context = context;
-    this.macros = macros;
-    this.context.editorSession.onFinalize('document', this.onDocumentChanged, this);
-  }
-
-  dispose() {
-    this.context.editorSession.off(this);
-  }
-
-  onDocumentChanged(change, info) {
-    this.executeMacros(change, info);
-  }
-
-  executeMacros(change, info) {
-    let doc = this.context.editorSession.getDocument();
-    let nodeId, node, text, start, end;
-    let path;
-    
-    
-    switch(info.action) {
-      case 'type': {
-        let op = change.ops[0];
-        if (op.type === 'update' && op.diff._isTextOperation) {
-          path = op.path;
-          nodeId = path[0];
-          node = doc.get(nodeId);
-          text = doc.get(path);
-          start = op.diff.pos;
-          end = start+op.diff.getLength();
-        }
-        break
-      }
-      case 'break': {
-        
-        
-        
-
-        
-        
-        
-        
-        let sel = change.before.selection;
-        if (!sel.isPropertySelection()) return
-        path = sel.path;
-        nodeId = path[0];
-        node = doc.get(nodeId);
-        
-        if (!node || !node.isText()) return
-        text = node.getText();
-        start = sel.start.offset;
-        end = start;
-        break
-      }
-      case 'paste': {
-        
-        if (change.ops.length === 1) {
-          let op = change.ops[0];
-          if (op.type === 'update' && op.propertyType === 'string') {
-            path = op.path;
-            nodeId = path[0];
-            node = doc.get(nodeId);
-            if (!node.isText()) return
-            text = node.getText();
-            start = op.diff.pos;
-            end = start+op.diff.getLength();
-          }
-        }
-        break
-      }
-      default:
-        return
-    }
-
-    let props = {
-      action: info.action,
-      node: node,
-      path: path,
-      text: text,
-      start: start,
-      end: end,
-      editorSession: this.context.editorSession,
-      selection: this.context.editorSession.getSelection()
-    };
-
-    setTimeout(() => {
-      for (let i = 0; i < this.macros.length; i++) {
-        let macro = this.macros[i];
-        let executed = macro.execute(props, this.context);
-        if (executed) {
-          break
-        }
-      }
-    });
-
+function findParentComponent(el) {
+  while (el) {
+    const comp = Component.unwrap(el);
+    if (comp) return comp
+    el = el.parentNode;
   }
 }
 
-class MarkersManager {
-
-  constructor(editorSession) {
-    this.editorSession = editorSession;
-
-    
-    this._textProperties = {};
-    this._dirtyProps = {};
-
-    this._markers = new MarkersIndex(this);
-
-    
-    
-    editorSession.onUpdate(this._onChange, this);
-
-    
-    editorSession.onRender(this._updateProperties, this);
-  }
-
-  dispose() {
-    this.editorSession.off(this);
-    this._markers.dispose();
-  }
-
-  setMarkers(key, markers) {
-    this.clearMarkers(key);
-    markers.forEach(m => this.addMarker(key, m));
-  }
-
-  addMarker(key, marker) {
-    marker._key = key;
-    if (!marker._isMarker) {
-      marker = new Marker(this.editorSession.getDocument(), marker);
-    }
-    this._markers.add(marker);
-  }
-
-  clearMarkers(key) {
-    this._markers.clear(key);
-  }
-
-  
-  register(textProperyComponent) {
-    let path = String(textProperyComponent.getPath());
-    
-    let textProperties = this._textProperties[path];
-    if (!textProperties) {
-      textProperties = this._textProperties[path] = [];
-    }
-    textProperties.push(textProperyComponent);
-  }
-
-
-  deregister(textProperyComponent) {
-    let path = String(textProperyComponent.getPath());
-    
-    let textProperties = this._textProperties[path];
-    if (!textProperties) {
-      
-      return
-    }
-    deleteFromArray(this._textProperties[path], textProperyComponent);
-    if (textProperties.length === 0) {
-      delete this._textProperties[path];
-    }
-  }
-
-  getMarkers(path, opts) {
-    opts = opts || {};
-    let doc = this.editorSession.getDocument();
-    let annos = doc.getAnnotations(path) || [];
-    let markers = this._markers.get(path, opts.surfaceId, opts.containerId);
-    return annos.concat(markers)
-  }
-
-  _onChange(editorSession) {
-    if (editorSession.hasDocumentChanged()) {
-      const change = editorSession.getChange();
-      this._markers._onDocumentChange(change);
-      this._recordDirtyTextProperties(change);
-    }
-  }
-
-  _recordDirtyTextProperties(change) {
-    
-    forEach(change.updated, (val, id) => {
-      this._dirtyProps[id] = true;
-    });
-  }
-
-  
-  _updateProperties() {
-    
-    Object.keys(this._dirtyProps).forEach((path) => {
-      let textProperties = this._textProperties[path];
-      if (textProperties) {
-        textProperties.forEach(this._updateTextProperty.bind(this));
-      }
-    });
-    this._dirtyProps = {};
-  }
-
-  
-  _updateTextProperty(textPropertyComponent) {
-    let path = textPropertyComponent.getPath();
-    let markers = this.getMarkers(path, {
-      surfaceId: textPropertyComponent.getSurfaceId(),
-      containerId: textPropertyComponent.getContainerId()
-    });
-    
-    textPropertyComponent.setState({
-      markers: markers
-    });
-  }
-
-}
-
-
-class MarkersIndex {
-
-  constructor(manager) {
-    this._manager = manager;
-
-    this._byKey = new ArrayTree();
-    this._documentMarkers = new ArrayTree();
-    this._surfaceMarkers = {};
-    this._containerMarkers = {};
-  }
-
-  get(path, surfaceId) {
-    let markers = this._documentMarkers[path] || [];
-    if (surfaceId && this._surfaceMarkers[surfaceId]) {
-      let surfaceMarkers = this._surfaceMarkers[surfaceId][path];
-      if (surfaceMarkers) markers = markers.concat(surfaceMarkers);
-    }
-    
-    return markers
-  }
-
-  add(marker) {
-    const key = marker._key;
-    this._byKey.add(key, marker);
-    this._add(marker);
-  }
-
-  
-  remove(marker) {
-    const key = marker._key;
-    this._byKey.remove(key, marker);
-    this._remove(marker);
-  }
-
-  
-  clear(key) {
-    let markers = this._byKey.get(key);
-    markers.forEach((marker) => {
-      this._remove(marker);
-    });
-  }
-
-  _add(marker) {
-    const dirtyProps = this._manager._dirtyProps;
-    
-    const scope = marker.scope || 'document';
-    switch (scope) {
-      case 'document': {
-        const path = marker.start.path;
-        
-        dirtyProps[path] = true;
-        this._documentMarkers.add(path, marker);
-        break
-      }
-      case 'surface': {
-        if (!this._surfaceMarkers[marker.surfaceId]) {
-          this._surfaceMarkers[marker.surfaceId] = new ArrayTree();
-        }
-        const path = marker.start.path;
-        dirtyProps[path] = true;
-        this._surfaceMarkers[marker.surfaceId].add(path, marker);
-        break
-      }
-      case 'container': {
-        console.warn('Container scoped markers are not supported yet');
-        break
-      }
-      default:
-        console.error('Invalid marker scope.');
-    }
-  }
-
-  _remove(marker) {
-    const dirtyProps = this._manager._dirtyProps;
-    const scope = marker.scope || 'document';
-    switch (scope) {
-      case 'document': {
-        const path = marker.start.path;
-        dirtyProps[path] = true;
-        this._documentMarkers.remove(path, marker);
-        break
-      }
-      case 'surface': {
-        if (!this._surfaceMarkers[marker.surfaceId]) {
-          this._surfaceMarkers[marker.surfaceId] = new ArrayTree();
-        }
-        const path = marker.start.path;
-        dirtyProps[path] = true;
-        this._surfaceMarkers[marker.surfaceId].remove(path, marker);
-        break
-      }
-      case 'container': {
-        console.warn('Container scoped markers are not supported yet');
-        break
-      }
-      default:
-        console.error('Invalid marker scope.');
-    }
-  }
-
-  
-  _getAllCustomMarkers(path) {
-    let markers = this._documentMarkers[path] || [];
-    for(let surfaceId in this._surfaceMarkers) {
-      if (!this._surfaceMarkers.hasOwnProperty(surfaceId)) continue
-      let surfaceMarkers = this._surfaceMarkers[surfaceId][path];
-      if (surfaceMarkers) markers = markers.concat(surfaceMarkers);
-    }
-    
-    return markers
-  }
-
-  _onDocumentChange(change) {
-    change.ops.forEach((op) => {
-      if (op.type === 'update' && op.diff._isTextOperation) {
-        let markers = this._getAllCustomMarkers(op.path);
-        let diff$$1 = op.diff;
-        switch (diff$$1.type) {
-          case 'insert':
-            this._transformInsert(markers, diff$$1);
-            break
-          case 'delete':
-            this._transformDelete(markers, diff$$1);
-            break
-          default:
-            
-        }
-      }
-    });
-  }
-
-  _transformInsert(markers, op) {
-    const pos = op.pos;
-    const length = op.str.length;
-    if (length === 0) return
-    markers.forEach((marker) => {
-      
-      var start = marker.start.offset;
-      var end = marker.end.offset;
-      var newStart = start;
-      var newEnd = end;
-      if (pos >= end) return
-      if (pos <= start) {
-        newStart += length;
-        newEnd += length;
-        marker.start.offset = newStart;
-        marker.end.offset = newEnd;
-        return
-      }
-      if (pos < end) {
-        newEnd += length;
-        marker.end.offset = newEnd;
-        
-        
-        
-        this._remove(marker);
-      }
-    });
-  }
-
-  _transformDelete(markers, op) {
-    const pos1 = op.pos;
-    const length = op.str.length;
-    const pos2 = pos1 + length;
-    if (pos1 === pos2) return
-    markers.forEach((marker) => {
-      var start = marker.start.offset;
-      var end = marker.end.offset;
-      var newStart = start;
-      var newEnd = end;
-      if (pos2 <= start) {
-        newStart -= length;
-        newEnd -= length;
-        marker.start.offset = newStart;
-        marker.end.offset = newEnd;
-      } else if (pos1 >= end) {
-        
-      }
-      
-      
-      else {
-        if (pos1 <= start) {
-          newStart = start - Math.min(pos2-pos1, start-pos1);
-        }
-        if (pos1 <= end) {
-          newEnd = end - Math.min(pos2-pos1, end-pos1);
-        }
-        
-        if (start !== end && newStart === newEnd) {
-          this._remove(marker);
-          return
-        }
-        if (start !== newStart) {
-          marker.start.offset = newStart;
-        }
-        if (end !== newEnd) {
-          marker.end.offset = newEnd;
-        }
-        this._remove(marker);
-      }
-    });
-  }
-
-}
-
-class SurfaceManager {
-
-  constructor(editorSession) {
-    this.editorSession = editorSession;
-    this.surfaces = {};
-    this._state = {
-      selection: null
-    };
-    editorSession.onUpdate('selection', this._onSelectionChanged, this);
-    editorSession.onPostRender(this._recoverDOMSelection, this);
-  }
-
-  dispose() {
-    this.editorSession.off(this);
-  }
-
-  
-  getSurface(name) {
-    if (name) {
-      return this.surfaces[name]
-    }
-  }
-
-  
-  getFocusedSurface() {
-    const sel = this._state.selection;
-    if (sel && sel.surfaceId) {
-      return this.getSurface(sel.surfaceId)
-    }
-  }
-
-  getSurfaces() {
-    
-    
-    return Object.keys(this.surfaces).map(key => this.surfaces[key])
-  }
-
-  
-  registerSurface(surface) {
-    const id = surface.getId();
-    if (this.surfaces[id]) {
-      console.error(`A surface with id ${id} has already been registered.`);
-    }
-    this.surfaces[id] = surface;
-  }
-
-  
-  unregisterSurface(surface) {
-    surface.off(this);
-    let surfaceId = surface.getId();
-    
-    
-    
-    
-    
-    let registeredSurface = this.surfaces[surfaceId];
-    if (registeredSurface === surface) {
-      delete this.surfaces[surfaceId];
-    }
-  }
-
-  _onSelectionChanged(selection) {
-    const state = this._state;
-    state.selection = selection;
-    
-    
-    
-    if (selection && selection.isCustomSelection() && platform.inBrowser) {
-      window.getSelection().removeAllRanges();
-      window.document.activeElement.blur();
-    }
-  }
-
-  
-  _recoverDOMSelection() {
-    
-    
-    
-    if (this.editorSession._blurred) return
-
-    let focusedSurface = this.getFocusedSurface();
-    
-    if (focusedSurface && !focusedSurface.isDisabled()) {
-      
-      focusedSurface._focus();
-      focusedSurface.rerenderDOMSelection();
-    }
-  }
-}
-
-class SaveHandlerStub {
-
-  
-  saveDocument({fileManager}) {
-    console.info('Simulating save ...');
-
-    return fileManager.sync()
-    .then(() => {
-      
-      
-      console.info('Creating document snapshot...');
-    })
-
-  }
-}
-
-class Configurator {
-  constructor() {
-    this.config = {
-      schema: {},
-      nodes: {},
-      tools: {},
-      components: {},
-      converters: {},
-      importers: {},
-      exporters: {},
-      fileProxies: [],
-      commands: {},
-      commandGroups: {},
-      toolPanels: {},
-      editingBehaviors: [],
-      macros: [],
-      managers: {},
-      dropHandlers: [],
-      keyboardShortcuts: [],
-      icons: {},
-      labels: {},
-      lang: 'en_US',
-      editorOptions: [],
-      CommandManagerClass: CommandManager,
-      DragManagerClass: DragManager,
-      SaveHandlerClass: null,
-    };
-  }
-
-  
-  
-
-  
-  defineSchema(schema) {
-    if (schema.ArticleClass) {
-      console.warn('DEPRECATED: schema.ArticleClass is now called schema.DocumentClass');
-      schema.DocumentClass = schema.ArticleClass;
-    }
-    if (!schema.DocumentClass) {
-      throw new Error('schema.DocumentClass is mandatory')
-    }
-    this.config.schema = schema;
-  }
-
-  addEditorOption(option) {
-    if (!option.key) {
-      throw new Error('An option key must be defined')
-    }
-    if (!option.value) {
-      throw new Error('An option value must be defined')
-    }
-    this.config.editorOptions[option.key] = option.value;
-  }
-
-  getEditorOptions() {
-    return this.config.editorOptions
-  }
-
-    
-  addNode(NodeClass) {
-    var type = NodeClass.type;
-    if (!type) {
-      throw new Error('A NodeClass must have a type.')
-    }
-    if (this.config.nodes[type]) {
-      throw new Error('NodeClass with this type name is already registered: ' + type)
-    }
-    this.config.nodes[type] = NodeClass;
-  }
-
-  
-  addConverter(type, converter) {
-    var converters = this.config.converters[type];
-    if (!converters) {
-      converters = {};
-      this.config.converters[type] = converters;
-    }
-    if (!converter.type) {
-      throw new Error('A converter needs an associated type.')
-    }
-    converters[converter.type] = converter;
-  }
-
-  
-  addImporter(type, ImporterClass) {
-    this.config.importers[type] = ImporterClass;
-  }
-
-  
-  addExporter(type, ExporterClass) {
-    this.config.exporters[type] = ExporterClass;
-  }
-
-  
-  addComponent(nodeType, ComponentClass, force) {
-    if (!force && this.config.components[nodeType]) {
-      throw new Error(nodeType+' already registered')
-    }
-    if (!ComponentClass) {
-      throw new Error('Provided nil for component '+nodeType)
-    }
-    if (!ComponentClass.prototype._isComponent) {
-      throw new Error('ComponentClass must be a subclass of ui/Component.')
-    }
-    this.config.components[nodeType] = ComponentClass;
-  }
-
-  addCommand(name, CommandClass, options) {
-    if (!isString$1(name)) {
-      throw new Error("Expecting 'name' to be a String")
-    }
-    if (!CommandClass) {
-      throw new Error('Provided nil for command '+name)
-    }
-    if (!CommandClass.prototype._isCommand) {
-      throw new Error("Expecting 'CommandClass' to be of type ui/Command.")
-    }
-    this.config.commands[name] = {
-      name: name,
-      CommandClass: CommandClass,
-      options: options || {}
-    };
-
-    
-    let commandGroup = options.commandGroup;
-    if (!this.config.commandGroups[commandGroup]) {
-      this.config.commandGroups[commandGroup] = [];
-    }
-    this.config.commandGroups[commandGroup].push(name);
-  }
-
-  addTool(name, ToolClass) {
-    if (!isString$1(name)) {
-      throw new Error("Expecting 'name' to be a String")
-    }
-    if (!ToolClass) {
-      throw new Error('Provided nil for tool '+name)
-    }
-    if (!ToolClass || !ToolClass.prototype._isTool) {
-      throw new Error("Expecting 'ToolClass' to be of type ui/Tool. name:", name)
-    }
-
-    this.config.tools[name] = ToolClass;
-  }
-
-  getTools() {
-    return this.config.tools
-  }
-
-  addToolPanel(name, spec) {
-    this.config.toolPanels[name] = spec;
-  }
-
-  getToolPanel(name) {
-    return this.config.toolPanels[name]
-  }
-
-  addManager(name, ManagerClass) {
-    this.config.managers[name] = ManagerClass;
-  }
-
-  getManagers() {
-    return this.config.managers
-  }
-
-  
-  addIcon(iconName, options) {
-    var iconConfig = this.config.icons[iconName];
-    if (!iconConfig) {
-      iconConfig = {};
-      this.config.icons[iconName] = iconConfig;
-    }
-    Object.assign(iconConfig, options);
-  }
-
-  
-  addLabel(labelName, label) {
-    if (isString$1(label)) {
-      if(!this.config.labels['en']) {
-        this.config.labels['en'] = {};
-      }
-      this.config.labels['en'][labelName] = label;
-    } else {
-      forEach(label, function(label, lang) {
-        if (!this.config.labels[lang]) {
-          this.config.labels[lang] = {};
-        }
-        this.config.labels[lang][labelName] = label;
-      }.bind(this));
-    }
-  }
-
-  
-  addSeed(seed) {
-    this.config.seed = seed;
-  }
-
-  
-  addEditingBehavior(editingBehavior) {
-    this.config.editingBehaviors.push(editingBehavior);
-  }
-
-  addMacro(macro) {
-    this.config.macros.push(macro);
-  }
-
-  addDragAndDrop(DragAndDropHandlerClass) {
-    
-    
-    console.warn('DEPRECATED: Use addDropHandler() instead');
-    if (!DragAndDropHandlerClass.prototype._isDragAndDropHandler) {
-      throw new Error('Only instances of DragAndDropHandler are allowed.')
-    }
-    this.addDropHandler(new DragAndDropHandlerClass());
-  }
-
-  addDropHandler(dropHandler) {
-    
-    if (dropHandler._isDragAndDropHandler) {
-      dropHandler.type = dropHandler.type || 'drop-asset';
-    }
-    this.config.dropHandlers.push(dropHandler);
-  }
-
-  addKeyboardShortcut(combo, spec) {
-    let entry = {
-      key: combo,
-      spec: spec
-    };
-    this.config.keyboardShortcuts.push(entry);
-  }
-
-  addFileProxy(FileProxyClass) {
-    this.config.fileProxies.push(FileProxyClass);
-  }
-
-  getFileAdapters() {
-    return this.config.fileProxies.slice(0)
-  }
-
-  
-  import(pkg, options) {
-    pkg.configure(this, options || {});
-    return this
-  }
-
-  
-  
-
-  getConfig() {
-    return this.config
-  }
-
-  getStyles() {
-    return this.config.styles
-  }
-
-  getSchema() {
-    if (!this.schema) {
-      this.schema = new DocumentSchema(this.config.schema);
-      this.schema.addNodes(this.config.nodes);
-    }
-    return this.schema
-  }
-
-  getDocumentClass() {
-    return this.config.schema.DocumentClass
-  }
-
-  createArticle(seed) {
-    console.warn('DEPRECATED: createArticle is now called createDocument');
-    return this.createDocument(seed)
-  }
-
-  createDocument(seed) {
-    const schema = this.getSchema();
-    const DocumentClass = schema.getDocumentClass();
-    let doc = new DocumentClass(schema);
-    if (seed) {
-      seed(doc);
-    }
-    return doc
-  }
-
-  createImporter(type, context, options = {}) {
-    var ImporterClass = this.config.importers[type];
-    var config = Object.assign({
-      schema: this.getSchema(),
-      converters: this.getConverterRegistry().get(type).values(),
-    }, options);
-    return new ImporterClass(config, context)
-  }
-
-  createExporter(type, context, options = {}) {
-    var ExporterClass = this.config.exporters[type];
-    var config = Object.assign({
-      schema: this.getSchema(),
-      converters: this.getConverterRegistry().get(type).values()
-    }, options);
-    return new ExporterClass(config, context)
-  }
-
-  getCommandGroups() {
-    return this.config.commandGroups
-  }
-
-  getComponentRegistry() {
-    var componentRegistry = new ComponentRegistry();
-    forEach(this.config.components, function(ComponentClass, name) {
-      componentRegistry.add(name, ComponentClass);
-    });
-    return componentRegistry
-  }
-
-  getCommands() {
-    return map(this.config.commands, function(item, name) {
-      return new item.CommandClass(Object.assign({name: name}, item.options))
-    })
-  }
-
-  getSurfaceCommandNames() {
-    var commands = this.getCommands();
-    var commandNames = commands.map(function(C) {
-      return C.name
-    });
-    return commandNames
-  }
-
-  
-  getConverterRegistry() {
-    if (!this.converterRegistry) {
-      var converterRegistry = new Registry();
-      forEach(this.config.converters, function(converters, name) {
-        converterRegistry.add(name, new Registry(converters));
-      });
-      this.converterRegistry = converterRegistry;
-    }
-    return this.converterRegistry
-  }
-
-  getDropHandlers() {
-    return this.config.dropHandlers.slice(0)
-  }
-
-  getSeed() {
-    return this.config.seed
-  }
-
-  getIconProvider() {
-    return new FontAwesomeIconProvider(this.config.icons)
-  }
-
-  getLabelProvider() {
-    return new DefaultLabelProvider(this.config.labels)
-  }
-
-  getEditingBehavior() {
-    var editingBehavior = new EditingBehavior();
-    this.config.editingBehaviors.forEach(function(behavior) {
-      behavior.register(editingBehavior);
-    });
-    return editingBehavior
-  }
-
-  getMacros() {
-    return this.config.macros
-  }
-
-  getKeyboardShortcuts() {
-    return this.config.keyboardShortcuts
-  }
-
-  getFindAndReplaceConfig() {
-    return this.config.findAndReplace
-  }
-
-  setFindAndReplaceConfig(config) {
-    this.config.findAndReplace = config;
-  }
-
-  
-  getKeyboardShortcutsByCommand() {
-    let keyboardShortcuts = {};
-    this.config.keyboardShortcuts.forEach((entry) => {
-      if (entry.spec.command) {
-        let shortcut = entry.key.toUpperCase();
-
-        if (platform.isMac) {
-          shortcut = shortcut.replace(/CommandOrControl/i, '⌘');
-          shortcut = shortcut.replace(/Ctrl/i, '^');
-          shortcut = shortcut.replace(/Alt/i, '⌥');
-          shortcut = shortcut.replace(/\+/g, '');
-        } else {
-          shortcut = shortcut.replace(/CommandOrControl/i, 'Ctrl');
-        }
-
-        keyboardShortcuts[entry.spec.command] = shortcut;
-      }
-    });
-    return keyboardShortcuts
-  }
-
-  setDefaultLanguage(lang) {
-    this.config.lang = lang;
-  }
-
-  getDefaultLanguage() {
-    return this.config.lang || 'en_US'
-  }
-
-  
-
-  setCommandManagerClass(CommandManagerClass) {
-    this.config.CommandManagerClass = CommandManagerClass;
-  }
-
-  getCommandManagerClass() {
-    return this.config.CommandManagerClass || CommandManager
-  }
-
-  setDragManagerClass(DragManagerClass) {
-    this.config.DragManagerClass = DragManagerClass;
-  }
-
-  getDragManagerClass() {
-    return this.config.DragManagerClass || DragManager
-  }
-
-  setFileManagerClass(FileManagerClass) {
-    this.config.FileManagerClass = FileManagerClass;
-  }
-
-  getFileManagerClass() {
-    return this.config.FileManagerClass || FileManager
-  }
-
-  setGlobalEventHandlerClass(GlobalEventHandlerClass) {
-    this.config.GlobalEventHandlerClass = GlobalEventHandlerClass;
-  }
-
-  getGlobalEventHandlerClass() {
-    return this.config.GlobalEventHandlerClass || GlobalEventHandler
-  }
-
-  setKeyboardManagerClass(KeyboardManagerClass) {
-    this.config.KeyboardManagerClass = KeyboardManagerClass;
-  }
-
-  getKeyboardManagerClass() {
-    return this.config.KeyboardManagerClass || KeyboardManager
-  }
-
-  setMacroManagerClass(MacroManagerClass) {
-    this.config.MacroManagerClass = MacroManagerClass;
-  }
-
-  getMacroManagerClass() {
-    return this.config.MacroManagerClass || MacroManager
-  }
-
-  setMarkersManagerClass(MarkersManagerClass) {
-    this.config.MarkersManagerClass = MarkersManagerClass;
-  }
-
-  getMarkersManagerClass() {
-    return this.config.MarkersManagerClass || MarkersManager
-  }
-
-  setSurfaceManagerClass(SurfaceManagerClass) {
-    this.config.SurfaceManagerClass = SurfaceManagerClass;
-  }
-
-  getSurfaceManagerClass() {
-    return this.config.SurfaceManagerClass || SurfaceManager
-  }
-
-  setSaveHandlerClass(SaveHandlerClass) {
-    this.config.SaveHandlerClass = SaveHandlerClass;
-  }
-
-  getSaveHandler() {
-    let SaveHandler = this.config.SaveHandlerClass || SaveHandlerStub;
-    return new SaveHandler()
-  }
-
-
+function startsWith(str, prefix) {
+  if (!isString(str)) return false
+  if (str.startsWith) return str.startsWith(prefix)
+  if (!isString(prefix)) prefix = String(prefix);
+  return str.slice(0, prefix.length) === prefix
 }
 
 class UnsupportedNodeComponent extends Component {
@@ -34393,6 +39117,10 @@ class Surface extends Component {
   constructor(...args) {
     super(...args);
 
+    this._initialize();
+  }
+
+  _initialize() {
     
     
     this.editorSession = this.props.editorSession || this.context.editorSession;
@@ -34409,29 +39137,12 @@ class Surface extends Component {
     }
     
     
-    this._surfaceId = createSurfaceId(this);
+    this._surfaceId = Surface.createSurfaceId(this);
 
-    this.clipboard = new Clipboard(this.editorSession, {
-      converterRegistry: this.context.converterRegistry,
-      editorOptions: this.editorSession.getConfigurator().getEditorOptions()
-    });
+    this.clipboard = new Clipboard(this.editorSession);
 
     this.domSelection = this.context.domSelection;
     if (!this.domSelection) throw new Error('DOMSelection instance must be provided via context.')
-
-    this.domObserver = null;
-
-    
-    
-    if (platform.inBrowser) {
-      this.documentEl = DefaultDOMElement.wrapNativeElement(window.document);
-    }
-
-    
-    this.undoEnabled = true;
-
-    
-    this._textProperties = {};
 
     this._state = {
       
@@ -34450,22 +39161,28 @@ class Surface extends Component {
   }
 
   didMount() {
-    if (this.context.surfaceManager) {
-      this.context.surfaceManager.registerSurface(this);
+    const editorSession = this.getEditorSession();
+    const surfaceManager = this.getSurfaceManager();
+    if (surfaceManager) {
+      surfaceManager.registerSurface(this);
     }
-    this.editorSession.onRender('selection', this._onSelectionChanged, this);
+    editorSession.onRender('selection', this._onSelectionChanged, this);
+
+    const globalEventHandler = editorSession.globalEventHandler;
+    globalEventHandler.addEventListener('keydown', this._muteNativeHandlers, this);
   }
 
 
   dispose() {
-    this.editorSession.off(this);
-    this.clipboard.dispose();
-    if (this.domObserver) {
-      this.domObserver.disconnect();
+    const editorSession = this.getEditorSession();
+    const surfaceManager = this.getSurfaceManager();
+    editorSession.off(this);
+    if (surfaceManager) {
+      surfaceManager.unregisterSurface(this);
     }
-    if (this.context.surfaceManager) {
-      this.context.surfaceManager.unregisterSurface(this);
-    }
+
+    const globalEventHandler = editorSession.globalEventHandler;
+    globalEventHandler.removeEventListener('keydown', this._muteNativeHandlers);
   }
 
   didUpdate() {
@@ -34497,6 +39214,8 @@ class Surface extends Component {
         } else {
           el.on('keypress', this.onTextInputShim);
         }
+        el.on('paste', this._onPaste);
+        el.on('cut', this._onCut);
       }
       if (!this.isReadonly()) {
         
@@ -34506,27 +39225,20 @@ class Surface extends Component {
         
         el.on('focus', this.onNativeFocus);
         el.on('blur', this.onNativeBlur);
-        
-        this.clipboard.attach(el);
       }
-
+      el.on('copy', this._onCopy);
     }
     return el
   }
 
   renderNode($$, node) {
-    let doc = this.getDocument();
     let componentRegistry = this.getComponentRegistry();
     let ComponentClass = componentRegistry.get(node.type);
     if (!ComponentClass) {
       console.error('Could not resolve a component for type: ' + node.type);
       ComponentClass = UnsupportedNodeComponent;
     }
-    return $$(ComponentClass, {
-      placeholder: this.props.placeholder,
-      doc: doc,
-      node: node
-    }).ref(node.id)
+    return $$(ComponentClass, this._extractNodeProps(node)).ref(node.id)
   }
 
   getComponentRegistry() {
@@ -34538,6 +39250,10 @@ class Surface extends Component {
   }
 
   getId() {
+    return this._surfaceId
+  }
+
+  getSurfaceId() {
     return this._surfaceId
   }
 
@@ -34562,11 +39278,15 @@ class Surface extends Component {
   }
 
   getDocument() {
-    return this.editorSession.getDocument()
+    return this.getEditorSession().getDocument()
   }
 
   getEditorSession() {
     return this.editorSession
+  }
+
+  getSurfaceManager() {
+    return this.context.surfaceManager
   }
 
   isEnabled() {
@@ -34590,14 +39310,14 @@ class Surface extends Component {
   }
 
   focus() {
-    if (this.editorSession.getFocusedSurface() !== this) {
+    if (this.getEditorSession().getFocusedSurface() !== this) {
       this.selectFirst();
     }
   }
 
   blur() {
-    if (this.editorSession.getFocusedSurface() === this) {
-      this.editorSession.setSelection(null);
+    if (this.getEditorSession().getFocusedSurface() === this) {
+      this.getEditorSession().setSelection(null);
     }
   }
 
@@ -34610,7 +39330,7 @@ class Surface extends Component {
     if (this.isDisabled()) return
     if (platform.inBrowser) {
       
-      let sel = this.editorSession.getSelection();
+      let sel = this.getEditorSession().getSelection();
       if (sel.surfaceId === this.getId()) {
         this.domSelection.setSelection(sel);
         
@@ -34639,7 +39359,7 @@ class Surface extends Component {
     if ( event.key === 'Dead' ) return
 
     
-    let custom = this.editorSession.keyboardManager.onKeydown(event);
+    let custom = this.getEditorSession().keyboardManager.onKeydown(event);
     if (!custom) {
       
       switch ( event.keyCode ) {
@@ -34680,9 +39400,10 @@ class Surface extends Component {
     event.preventDefault();
     event.stopPropagation();
     if (!event.data) return
+    const editorSession = this.getEditorSession();
     let text = event.data;
-    if (!this.editorSession.keyboardManager.onTextInput(text)) {
-      this.editorSession.transaction((tx) => {
+    if (!editorSession.keyboardManager.onTextInput(text)) {
+      editorSession.transaction((tx) => {
         tx.insertText(text);
       }, { action: 'type' });
     }
@@ -34700,11 +39421,11 @@ class Surface extends Component {
     
     if (event.data) {
       let l = event.data.length;
-      let sel = this.editorSession.getSelection();
+      let sel = this.getEditorSession().getSelection();
       if (sel.isPropertySelection() && sel.isCollapsed()) {
         
         let offset = sel.start.offset;
-        this.editorSession.setSelection(sel.createWithNewRange(offset-l, offset));
+        this.getEditorSession().setSelection(sel.createWithNewRange(offset-l, offset));
       }
     }
   }
@@ -34720,8 +39441,8 @@ class Surface extends Component {
       if (!event.data) return
       this._delayed(() => {
         let text = event.data;
-        if (!this.editorSession.keyboardManager.onTextInput(text)) {
-          this.editorSession.transaction((tx) => {
+        if (!this.getEditorSession().keyboardManager.onTextInput(text)) {
+          this.getEditorSession().transaction((tx) => {
             tx.insertText(text);
           }, { action: 'type' });
         }
@@ -34749,9 +39470,9 @@ class Surface extends Component {
     }
     event.preventDefault();
     event.stopPropagation();
-    if (!this.editorSession.keyboardManager.onTextInput(character)) {
+    if (!this.getEditorSession().keyboardManager.onTextInput(character)) {
       if (character.length>0) {
-        this.editorSession.transaction((tx) => {
+        this.getEditorSession().transaction((tx) => {
           tx.insertText(character);
         }, { action: 'type' });
       }
@@ -34816,9 +39537,9 @@ class Surface extends Component {
     this._state.skipNextFocusEvent = true;
 
     
-    if (this.documentEl) {
-      
-      this.documentEl.on('mouseup', this.onMouseUp, this, { once: true });
+    if (platform.inBrowser) {
+      let documentEl = DefaultDOMElement.wrapNativeElement(window.document);
+      documentEl.on('mouseup', this.onMouseUp, this, { once: true });
     }
   }
 
@@ -34860,8 +39581,19 @@ class Surface extends Component {
     _state.hasNativeFocus = true;
   }
 
-  
+  _onCopy(e) {
+    this.clipboard.onCopy(e);
+  }
 
+  _onCut(e) {
+    this.clipboard.onCut(e);
+  }
+
+  _onPaste(e) {
+    this.clipboard.onPaste(e);
+  }
+
+  
 
   _onSelectionChanged(selection) {
     let newMode = this._deriveModeFromSelection(selection);
@@ -34900,7 +39632,7 @@ class Surface extends Component {
       if (this.state.mode === 'co-focused') {
         let selState = this.context.editorSession.getSelectionState();
         let sel = selState.getSelection();
-        let surface = this.context.surfaceManager.getSurface(sel.surfaceId);
+        let surface = this.getSurfaceManager().getSurface(sel.surfaceId);
         if (surface) {
           let isolatedNodeComponent = surface.context.isolatedNodeComponent;
           if (isolatedNodeComponent) {
@@ -35000,8 +39732,8 @@ class Surface extends Component {
     event.stopPropagation();
     event.preventDefault();
     const text = ' ';
-    if (!this.editorSession.keyboardManager.onTextInput(text)) {
-      this.editorSession.transaction((tx) => {
+    if (!this.getEditorSession().keyboardManager.onTextInput(text)) {
+      this.getEditorSession().transaction((tx) => {
         tx.insertText(text);
       }, { action: 'type' });
     }
@@ -35028,7 +39760,7 @@ class Surface extends Component {
   _handleEnterKey(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.editorSession.transaction((tx) => {
+    this.getEditorSession().transaction((tx) => {
       tx.break();
     }, { action: 'break' });
   }
@@ -35039,7 +39771,7 @@ class Surface extends Component {
     event.preventDefault();
     event.stopPropagation();
     let direction = (event.keyCode === keys$1.BACKSPACE) ? 'left' : 'right';
-    this.editorSession.transaction((tx) => {
+    this.getEditorSession().transaction((tx) => {
       tx.deleteCharacter(direction);
     }, { action: 'delete' });
   }
@@ -35060,7 +39792,7 @@ class Surface extends Component {
     if (!sel.isNull() && sel.surfaceId === this.id && platform.isFF) {
       this._focusElement();
     }
-    this.editorSession.setSelection(sel);
+    this.getEditorSession().setSelection(sel);
   }
 
   _updateModelSelection(options) {
@@ -35084,24 +39816,6 @@ class Surface extends Component {
 
   
   
-  _registerTextProperty(textPropertyComponent) {
-    let path = textPropertyComponent.getPath();
-    this._textProperties[path] = textPropertyComponent;
-  }
-
-  _unregisterTextProperty(textPropertyComponent) {
-    let path = textPropertyComponent.getPath();
-    if (this._textProperties[path] === textPropertyComponent) {
-      delete this._textProperties[path];
-    }
-  }
-
-  _getTextPropertyComponent(path) {
-    return this._textProperties[path]
-  }
-
-  
-  
   _renderNode($$, nodeId) {
     let doc = this.getDocument();
     let node = doc.get(nodeId);
@@ -35115,6 +39829,15 @@ class Surface extends Component {
       doc: doc,
       node: node
     })
+  }
+
+  _extractNodeProps(node) {
+    let doc = this.getDocument();
+    return {
+      placeholder: this.props.placeholder,
+      doc: doc,
+      node: node
+    }
   }
 
   
@@ -35150,12 +39873,36 @@ class Surface extends Component {
     window.setTimeout(fn, BROWSER_DELAY);
   }
 
+  
+  _muteNativeHandlers(event) {
+    let contentEditableShortcuts;
+
+    if (platform.isMac) {
+      contentEditableShortcuts = [
+        'META+66', 
+        'META+73', 
+        'META+85'  
+      ];
+    } else {
+      contentEditableShortcuts = [
+        'CTRL+66', 
+        'CTRL+73', 
+        'CTRL+85'  
+      ];
+    }
+
+    const key = parseKeyEvent(event);
+    if(contentEditableShortcuts.indexOf(key) > -1) {
+      event.preventDefault();
+    }
+  }
+
 }
 
 Surface.prototype._isSurface = true;
 
 
-function createSurfaceId(surface) {
+Surface.createSurfaceId = function(surface) {
   let isolatedNodeComponent = surface.context.isolatedNodeComponent;
   if (isolatedNodeComponent) {
     let parentSurface = isolatedNodeComponent.context.surface;
@@ -35174,7 +39921,7 @@ function createSurfaceId(surface) {
   } else {
     return surface.name
   }
-}
+};
 
 class ContainerEditor extends Surface {
 
@@ -35186,7 +39933,7 @@ class ContainerEditor extends Surface {
     super(parent, props, el);
 
     this.containerId = this.props.containerId;
-    if (!isString$1(this.containerId)) {
+    if (!isString(this.containerId)) {
       throw new Error("Property 'containerId' is mandatory.")
     }
     let doc = this.getDocument();
@@ -35269,7 +40016,7 @@ class ContainerEditor extends Surface {
     let props = { node };
     if (!node) throw new Error('Illegal argument')
     if (node.isText()) {
-      return super.renderNode($$, node, nodeIndex)
+      return this.renderNode($$, node, nodeIndex)
     } else {
       let componentRegistry = this.context.componentRegistry;
       let ComponentClass = componentRegistry.get(node.type);
@@ -35278,6 +40025,14 @@ class ContainerEditor extends Surface {
       } else {
         return $$(IsolatedNodeComponent, props).ref(node.id)
       }
+    }
+  }
+
+  _extractNodeProps(node) {
+    let doc = this.getDocument();
+    return {
+      doc: doc,
+      node: node
     }
   }
 
@@ -35449,9 +40204,9 @@ class ContainerEditor extends Surface {
     for (let i = 0; i < change.ops.length; i++) {
       let op = change.ops[i];
       if (op.type === "update" && op.path[0] === path[0]) {
-        let diff$$1 = op.diff;
-        if (diff$$1.type === "insert") {
-          let nodeId = diff$$1.getValue();
+        let diff = op.diff;
+        if (diff.type === "insert") {
+          let nodeId = diff.getValue();
           let node = doc.get(nodeId);
           let nodeEl;
           if (node) {
@@ -35462,9 +40217,9 @@ class ContainerEditor extends Surface {
             
             nodeEl = $$('div');
           }
-          this.insertAt(diff$$1.getOffset(), nodeEl);
-        } else if (diff$$1.type === "delete") {
-          this.removeAt(diff$$1.getOffset());
+          this.insertAt(diff.getOffset(), nodeEl);
+        } else if (diff.type === "delete") {
+          this.removeAt(diff.getOffset());
         }
       }
     }
@@ -35546,33 +40301,6 @@ class CustomSurface extends Component {
 
 }
 
-function findParentComponent(el) {
-  while (el) {
-    const comp = Component.unwrap(el);
-    if (comp) return comp
-    el = el.parentNode;
-  }
-}
-
-function setDOMSelection(startNode, startOffset, endNode, endOffset) {
-  let wsel = window.getSelection();
-  let wrange = window.document.createRange();
-  if (startNode._isDOMElement) {
-    startNode = startNode.getNativeElement();
-  }
-  if (!endNode) {
-    endNode = startNode;
-    endOffset = startOffset;
-  }
-  if (endNode._isDOMElement) {
-    endNode = endNode.getNativeElement();
-  }
-  wrange.setStart(startNode, startOffset);
-  wrange.setEnd(endNode, endOffset);
-  wsel.removeAllRanges();
-  wsel.addRange(wrange);
-}
-
 class EditAnnotationCommand extends Command {
 
   constructor(...args) {
@@ -35635,774 +40363,6 @@ class EditInlineNodeCommand extends Command {
     return params.selectionState.getAnnotationsForType(this.config.nodeType)
   }
 
-}
-
-class EditorSession extends EventEmitter {
-
-  constructor(doc, options) {
-    super();
-    options = options || {};
-
-    this.__id__ = uuid();
-    this.document = doc;
-    const configurator = options.configurator;
-    if (!configurator) {
-      throw new Error('No configurator provided.')
-    }
-    this.configurator = configurator;
-
-    this._transaction = new Transaction(doc);
-    
-    
-    _patchTxSetSelection(this._transaction, this);
-
-    this._history = new ChangeHistory();
-    
-    this._currentChange = null;
-
-    
-    
-    
-    
-    this._selectionState = new SelectionState(doc);
-
-    this._commandStates = [];
-
-    
-    this._resources = ['document', 'selection', 'commandStates'];
-    
-    this._dirtyFlags = {};
-    
-    this._change = null;
-    this._info = null;
-
-    this._flowStages = ['update', 'pre-render', 'render', 'post-render', 'position', 'finalize'];
-    
-    this._postponed = [];
-    this._observers = {};
-
-    this._lang = options.lang || this.configurator.getDefaultLanguage();
-    this._dir = options.dir || 'ltr';
-
-    
-    
-    const CommandManager = configurator.getCommandManagerClass();
-    const DragManager = configurator.getDragManagerClass();
-    const FileManager = configurator.getFileManagerClass();
-    const GlobalEventHandler = configurator.getGlobalEventHandlerClass();
-    const KeyboardManager = configurator.getKeyboardManagerClass();
-    const MacroManager = configurator.getMacroManagerClass();
-    const MarkersManager = configurator.getMarkersManagerClass();
-    const SurfaceManager = configurator.getSurfaceManagerClass();
-
-
-    
-    
-    this.surfaceManager = new SurfaceManager(this);
-    
-    this._context = {
-      editorSession: this,
-      
-      surfaceManager: this.surfaceManager,
-    };
-    
-    if (options.context) {
-      Object.assign(this._context, options.context);
-    }
-
-    let commands = configurator.getCommands();
-    let dropHandlers = configurator.getDropHandlers();
-    let macros = configurator.getMacros();
-    let converterRegistry = configurator.getConverterRegistry();
-    let editingBehavior = configurator.getEditingBehavior();
-
-    this.fileManager = options.fileManager || new FileManager(this, configurator.getFileAdapters(), this._context);
-
-    
-    this._hasUnsavedChanges = false;
-    this._isSaving = false;
-
-    if (options.saveHandler) {
-      this.saveHandler = options.saveHandler;
-    } else {
-      this.saveHandler = configurator.getSaveHandler();
-    }
-
-    
-    this._managers = {};
-    forEach(configurator.getManagers(), (ManagerClass, name) => {
-      this._managers[name] = new ManagerClass(this._context);
-    });
-
-    
-    this.commandManager = new CommandManager(this._context, commands);
-
-    
-    
-    this.dragManager = new DragManager(dropHandlers, Object.assign({}, this._context, {
-      commandManager: this.commandManager
-    }));
-    
-    this.macroManager = new MacroManager(this._context, macros);
-    this.globalEventHandler = new GlobalEventHandler(this, this.surfaceManager);
-    this.markersManager = new MarkersManager(this);
-    this.keyboardManager = new KeyboardManager(this, configurator.getKeyboardShortcuts(), {
-      context: this._context
-    });
-
-    
-    this.converterRegistry = converterRegistry;
-    this.editingBehavior = editingBehavior;
-  }
-
-  dispose() {
-    this._transaction.dispose();
-    this.surfaceManager.dispose();
-    this.fileManager.dispose();
-    this.commandManager.dispose();
-    this.dragManager.dispose();
-    this.macroManager.dispose();
-    this.globalEventHandler.dispose();
-    this.markersManager.dispose();
-  }
-
-  hasChanged(resource) {
-    return this._dirtyFlags[resource]
-  }
-
-  hasDocumentChanged() {
-    return this.hasChanged('document')
-  }
-
-  hasSelectionChanged() {
-    return this.hasChanged('selection')
-  }
-
-  hasCommandStatesChanged() {
-    return this.hasChanged('commandStates')
-  }
-
-  hasLanguageChanged() {
-    return this.hasChanged('lang')
-  }
-
-  hasTextDirectionChanged() {
-    return this.hasChanged('dir')
-  }
-
-  get(resourceName) {
-    switch(resourceName) {
-      case 'document':
-        return this.getDocument()
-      case 'selection':
-        return this.getSelection()
-      case 'commandStates':
-        return this.getCommandStates()
-      case 'change':
-        return this.getChange()
-      default:
-        throw new Error('Unknown resource: ' + resourceName)
-    }
-  }
-
-  getConfigurator() {
-    return this.configurator
-  }
-
-  getContext() {
-    return this._context
-  }
-
-  getDocument() {
-    return this.document
-  }
-
-  getManager(name) {
-    return this._managers[name]
-  }
-
-  getSelection() {
-    return this.getSelectionState().getSelection()
-  }
-
-  getSelectionState() {
-    return this._selectionState
-  }
-
-  getCommandStates() {
-    return this._commandStates
-  }
-
-  getChange() {
-    return this._change
-  }
-
-  getChangeInfo() {
-    return this._info
-  }
-
-  getFocusedSurface() {
-    return this.surfaceManager.getFocusedSurface()
-  }
-
-  getSurface(surfaceId) {
-    return this.surfaceManager.getSurface(surfaceId)
-  }
-
-  getLanguage() {
-    return this._lang
-  }
-
-  getTextDirection() {
-    return this._dir
-  }
-
-  canUndo() {
-    return this._history.canUndo()
-  }
-
-  canRedo() {
-    return this._history.canRedo()
-  }
-
-  executeCommand(...args) {
-    this.commandManager.executeCommand(...args);
-  }
-
-  
-  attachEditor(editor) {
-    this.editor = editor;
-  }
-
-  detachEditor() {
-    this.editor = undefined;
-  }
-
-  getEditor() {
-    return this.editor
-  }
-
-  setSelection(sel, skipFlow) {
-    
-    if (sel && isPlainObject$1(sel)) {
-      sel = this.getDocument().createSelection(sel);
-    }
-    if (sel && !sel.isNull()) {
-      if (!sel.surfaceId) {
-        let fs = this.getFocusedSurface();
-        if (fs) {
-          sel.surfaceId = fs.id;
-        }
-      }
-    }
-
-    _addSurfaceId(sel, this);
-    _addContainerId(sel, this);
-
-    if (this._setSelection(sel) && !skipFlow) {
-      this.startFlow();
-    }
-    return sel
-  }
-
-  selectNode(nodeId) {
-    let surface = this.getFocusedSurface();
-    this.setSelection({
-      type: 'node',
-      nodeId: nodeId,
-      containerId: surface.getContainerId(),
-      surfaceId: surface.id
-    });
-  }
-
-  setCommandStates(commandStates) {
-    this._commandStates = commandStates;
-    this._setDirty('commandStates');
-  }
-
-  setLanguage(lang) {
-    if (this._lang !== lang) {
-      this._lang = lang;
-      this._setDirty('lang');
-      this.startFlow();
-    }
-  }
-
-  setTextDirection(dir) {
-    if (this._dir !== dir) {
-      this._dir = dir;
-      this._setDirty('dir');
-      this.startFlow();
-    }
-  }
-
-  createSelection() {
-    const doc = this.getDocument();
-    return doc.createSelection.apply(doc, arguments)
-  }
-
-  getCollaborators() {
-    return null
-  }
-
-  
-  setSaveHandler(saveHandler) {
-    this.saveHandler = saveHandler;
-  }
-
-  
-  transaction(transformation, info) {
-    const t = this._transaction;
-    info = info || {};
-    t._sync();
-    let change = t._recordChange(transformation, this.getSelection(), info);
-    if (change) {
-      this._commit(change, info);
-    } else {
-      
-      this._setSelection(this._transaction.getSelection());
-      this.startFlow();
-    }
-    return change
-  }
-
-  undo() {
-    this._undoRedo('undo');
-  }
-
-  redo() {
-    this._undoRedo('redo');
-  }
-
-  
-
-  on(...args) {
-    let name = args[0];
-    if (this._flowStages.indexOf(name) >= 0) {
-      
-      args.shift();
-      let options = args[2] || {};
-      let resource = options.resource;
-      if (resource) {
-        delete options.resource;
-        args.unshift(resource);
-      }
-      this._registerObserver(name, args);
-    } else {
-      EventEmitter.prototype.on.apply(this, args);
-    }
-  }
-
-  off(...args) {
-    if (args.length === 1) {
-      let observer = args[0];
-      super.off(...args);
-      
-      
-      if (observer[this.__id__]) {
-        const records = observer[this.__id__];
-        delete observer[this.__id__];
-        records.forEach((record) => {
-          this.__deregisterObserver(record);
-        });
-      }
-    } else {
-      const stage = args[0];
-      const method = args[1];
-      const observer = args[2];
-      this._deregisterObserver(stage, method, observer);
-    }
-  }
-
-  
-  onUpdate(...args) {
-    return this._registerObserver('update', args)
-  }
-
-  onPreRender(...args) {
-    return this._registerObserver('pre-render', args)
-  }
-
-  
-  onRender(...args) {
-    return this._registerObserver('render', args)
-  }
-
-  
-  onPostRender(...args) {
-    return this._registerObserver('post-render', args)
-  }
-
-  
-  onPosition(...args) {
-    return this._registerObserver('position', args)
-  }
-
-  onFinalize(...args) {
-    return this._registerObserver('finalize', args)
-  }
-
-  _setSelection(sel) {
-    let hasChanged = this.getSelectionState().setSelection(sel);
-    if (hasChanged) this._setDirty('selection');
-    return hasChanged
-  }
-
-  _undoRedo(which) {
-    const doc = this.getDocument();
-    var from, to;
-    if (which === 'redo') {
-      from = this._history.undoneChanges;
-      to = this._history.doneChanges;
-    } else {
-      from = this._history.doneChanges;
-      to = this._history.undoneChanges;
-    }
-    var change = from.pop();
-    if (change) {
-      this._applyChange(change, {});
-      this._transaction.__applyChange__(change);
-      
-      to.push(change.invert());
-      
-      let sel = change.after.selection;
-      if (sel) sel.attach(doc);
-      this._setSelection(sel);
-      
-      this.startFlow();
-    } else {
-      console.warn('No change can be %s.', (which === 'undo'? 'undone':'redone'));
-    }
-  }
-
-  _transformLocalChangeHistory(externalChange) {
-    
-    
-    
-    
-    var clone$$1 = {
-      ops: externalChange.ops.map(function(op) { return op.clone(); })
-    };
-    transformDocumentChange(clone$$1, this._history.doneChanges);
-    transformDocumentChange(clone$$1, this._history.undoneChanges);
-  }
-
-  _transformSelection(change) {
-    var oldSelection = this.getSelection();
-    var newSelection = transformSelection(oldSelection, change);
-    
-    return newSelection
-  }
-
-  _commit(change, info) {
-    this._commitChange(change, info);
-    
-    this._hasUnsavedChanges = true;
-    this.startFlow();
-  }
-
-  _commitChange(change, info) {
-    change.timestamp = Date.now();
-    this._applyChange(change, info);
-    if (info['history'] !== false && !info['hidden']) {
-      this._history.push(change.invert());
-    }
-    var newSelection = change.after.selection || Selection.nullSelection;
-    
-    
-    if (!newSelection.isNull() && !newSelection.surfaceId) {
-      newSelection.surfaceId = change.after.surfaceId;
-    }
-    this._setSelection(newSelection);
-  }
-
-  _applyChange(change, info) {
-    if (!change) {
-      console.error('FIXME: change is null.');
-      return
-    }
-    const doc = this.getDocument();
-    doc._apply(change);
-    doc._notifyChangeListeners(change, info);
-    this._setDirty('document');
-    this._change = change;
-    this._info = info;
-  }
-
-  
-  hasUnsavedChanges() {
-    return this._hasUnsavedChanges
-  }
-
-  
-  save() {
-    var saveHandler = this.saveHandler;
-
-    if (this._hasUnsavedChanges && !this._isSaving) {
-      this._isSaving = true;
-      
-      if (saveHandler) {
-        let saveParams = {
-          editorSession: this,
-          fileManager: this.fileManager
-        };
-        return saveHandler.saveDocument(saveParams)
-        .then(() => {
-          this._hasUnsavedChanges = false;
-          
-          
-          
-          
-          this.setSelection(this.getSelection());
-        })
-        .catch((err) => {
-          console.error('Error during save', err);
-        }).then(() => { 
-          this._isSaving = false;
-        })
-      } else {
-        console.error('Document saving is not handled at the moment. Make sure saveHandler instance provided to editorSession');
-        return Promise.reject()
-      }
-    }
-  }
-
-  
-  startFlow() {
-    if (this._flowing) {
-      throw new Error('Already in a flow. You need to postpone the update.')
-    }
-    this._flowing = true;
-    try {
-      this.performFlow();
-    } finally {
-      this._resetFlow();
-      this._flowing = false;
-    }
-    
-    
-    
-    const postponed = this._postponed;
-    const self = this;
-    this._postponed = [];
-    setTimeout(function() {
-      postponed.forEach(function(fn) {
-        fn(self);
-      });
-    }, 0);
-  }
-
-  
-  performFlow() {
-    this._flowStages.forEach((stage) => {
-      this._notifyObservers(stage);
-    });
-  }
-
-  postpone(fn) {
-    this._postponed.push(fn);
-  }
-
-  _parseObserverArgs(args) {
-    let params = { stage: null, resource: null, handler: null, context: null, options: {} };
-    
-    let idx = 0;
-    let arg = args[idx];
-    if (isString$1(arg)) {
-      params.resource = arg;
-      idx++;
-      arg = args[idx];
-    }
-    if (!arg) {
-      throw new Error('Provided handler function was nil.')
-    }
-    if (!isFunction$1(arg)) {
-      throw new Error('Expecting a handler Function.')
-    }
-    params.handler = arg;
-    idx++;
-    arg = args[idx];
-    if (arg) {
-      params.context = arg;
-      idx++;
-      arg = args[idx];
-    }
-    if (arg) {
-      params.options = arg;
-    }
-    return params
-  }
-
-  
-
-  _registerObserver(stage, args) {
-    
-    
-    let record = this._parseObserverArgs(args);
-    record.stage = stage;
-    this.__registerObserver(stage, record);
-  }
-
-  __registerObserver(stage, record) {
-    
-    
-    if (record.context) {
-      const observer = record.context;
-      if (!observer[this.__id__]) {
-        observer[this.__id__] = [];
-      }
-      observer[this.__id__].push(record);
-    }
-    let observers = this._observers[stage];
-    if (!observers) {
-      observers = this._observers[stage] = [];
-    }
-    observers.push(record);
-  }
-
-  
-  _deregisterObserver(stage, method, observer) {
-    let self = this; 
-    if (arguments.length === 1) {
-      
-      
-      forEach(self._observers, (observers) => {
-        for (let i = observers.length-1; i >=0 ; i--) {
-          const o = observers[i];
-          if (o.context === observer) {
-            observers.splice(i, 1);
-            o._deregistered = true;
-          }
-        }
-      });
-    } else {
-      let observers = self._observers[stage];
-      
-      
-      if (!observers) {
-        EventEmitter.prototype.off.apply(self, arguments);
-      } else {
-        for (let i = observers.length-1; i >= 0; i--) {
-          let o = observers[i];
-          if (o.handler === method && o.context === observer) {
-            observers.splice(i, 1);
-            o._deregistered = true;
-          }
-        }
-      }
-    }
-  }
-
-  __deregisterObserver(record) {
-    const stage = record.stage;
-    const observers = this._observers[stage];
-    const observer = record.context;
-    const method = record.handler;
-    for (let i = observers.length-1; i >= 0; i--) {
-      let o = observers[i];
-      if (o.handler === method && o.context === observer) {
-        observers.splice(i, 1);
-        o._deregistered = true;
-      }
-    }
-  }
-
-  _notifyObservers(stage) {
-    
-    
-    
-    
-    
-    
-    let _observers = this._observers[stage];
-    if (!_observers) return
-    
-    
-    
-    let observers = _observers.slice();
-    for (let i = 0; i < observers.length; i++) {
-      let o = observers[i];      
-      if (o._deregistered) continue
-      if (!o.resource) {
-        o.handler.call(o.context, this);
-      } else if (o.resource === 'document') {
-        if (!this.hasDocumentChanged()) continue
-        const change = this.getChange();
-        const info = this.getChangeInfo();
-        const path = o.options.path;
-        if (!path) {
-          o.handler.call(o.context, change, info, this);
-        } else if (change.hasUpdated(path)) {
-          o.handler.call(o.context, change, info, this);
-        }
-      } else {
-        if (!this.hasChanged(o.resource)) continue
-        const resource = this.get(o.resource);
-        o.handler.call(o.context, resource, this);
-      }
-    }
-  }
-
-  _setDirty(resource) {
-    this._dirtyFlags[resource] = true;
-  }
-
-  _resetFlow() {
-    Object.keys(this._dirtyFlags).forEach((resource) => {
-      this._dirtyFlags[resource] = false;
-    });
-    this._change = null;
-    this._info = null;
-  }
-
-  
-
-  setBlurred(blurred) {
-    this._blurred = blurred;
-    
-    this.commandManager._updateCommandStates(this);
-    this._setDirty('commandStates');
-  }
-
-  isBlurred() {
-    return Boolean(this._blurred)
-  }
-
-}
-
-function _patchTxSetSelection(tx, editorSession) {
-  tx.setSelection = function(sel) {
-    sel = Transaction.prototype.setSelection.call(tx, sel);
-    _addSurfaceId(sel, editorSession);
-    _addContainerId(sel, editorSession);
-    return sel
-  };
-}
-
-
-function _addSurfaceId(sel, editorSession) {
-  if (sel && !sel.isNull() && !sel.surfaceId) {
-    
-    let surface = editorSession.getFocusedSurface();
-    if (surface) {
-      sel.surfaceId = surface.id;
-    } else {
-      
-      console.warn('No focused surface. Selection will not be rendered.');
-    }
-  }
-}
-
-function _addContainerId(sel, editorSession) {
-  if (sel && !sel.isNull() && sel.surfaceId && !sel.containerId) {
-    let surface = editorSession.getSurface(sel.surfaceId);
-    if (surface) {
-      let containerId = surface.getContainerId();
-      if (containerId) {
-        sel.containerId = containerId;
-      }
-    }
-  }
 }
 
 class Highlights extends EventEmitter {
@@ -36502,6 +40462,11 @@ class InsertInlineNodeCommand extends Command {
   }
 
   
+  isAnnotationCommand() {
+    return true
+  }
+
+  
   execute(params) {
     let state = this.getCommandState(params);
     if (state.disabled) return
@@ -36551,6 +40516,10 @@ class InsertNodeCommand extends Command {
   showInContext(sel, params) {
     let selectionState = params.selectionState;
     return sel.isCollapsed() && selectionState.isFirst() && selectionState.isLast()
+  }
+
+  isInsertCommand() {
+    return true
   }
 
   execute(params, context) {
@@ -36639,7 +40608,7 @@ class MenuItem extends Component {
 
   _getLabel() {
     let labelProvider = this.context.labelProvider;
-    return labelProvider.getLabel(this.props.name)
+    return labelProvider.getLabel(this.props.name, this.props.commandState)
   }
 
   _getKeyboardShortcut() {
@@ -36675,16 +40644,25 @@ class ToolPanel extends Component {
     this.context.editorSession.off(this);
   }
 
-  _onCommandStatesChanged(editorSession) {
-    if (editorSession.hasChanged('commandStates')) {
-      this.rerender();
+  render($$) { 
+    throw new Error('This method is abstract')
+  }
+
+  
+  getEntryTypeComponents() {
+    return {
+      'tool-group': this.getComponent('tool-group'),
+      'tool-dropdown': this.getComponent('tool-dropdown'),
+      'tool-prompt': this.getComponent('tool-prompt'),
+      'tool-separator': this.getComponent('tool-separator')
     }
   }
 
   renderEntries($$) {
     let els = [];
     this.props.toolPanel.forEach((entry) => {
-      let ComponentClass = this.getComponent(entry.type);
+      let entryTypeComponents = this.getEntryTypeComponents();
+      let ComponentClass = entryTypeComponents[entry.type];
       if (!ComponentClass) throw new Error('Toolpanel entry type not found')
       let props = Object.assign({}, entry, { theme: this.getTheme() });
       els.push(
@@ -36721,6 +40699,12 @@ class ToolPanel extends Component {
 
   getTheme() {
     return this.props.theme || 'dark'
+  }
+
+  _onCommandStatesChanged(editorSession) {
+    if (editorSession.hasChanged('commandStates')) {
+      this.rerender();
+    }
   }
 
 }
@@ -37012,7 +40996,7 @@ Router.routeStringToObject = function(routeStr) {
   return obj
 };
 
-class SwitchTextTypeCommand$$1 extends Command {
+class SwitchTextTypeCommand extends Command {
 
   constructor(config) {
     super(config);
@@ -37107,7 +41091,7 @@ class TextBlockComponent extends NodeComponent {
     }
     el.append($$(TextPropertyComponent, {
       placeholder: this.props.placeholder,
-      path: node.getTextPath(),
+      path: node.getPath(),
       direction: node.direction
     }));
     return el
@@ -37160,11 +41144,14 @@ class TextPropertyEditor extends Surface {
     });
   }
 
+  getPath() {
+    return this.props.path
+  }
+
   _handleEnterKey(event) {
     event.stopPropagation();
-    if (!this.props.multiLine) {
+    if (this.props.handleEnter === false || !this.props.multiLine) {
       event.preventDefault();
-      super._handleEnterKey(event);
     }
     this.el.emit('enter', {
       altKey: event.altKey,
@@ -37185,10 +41172,6 @@ class TextPropertyEditor extends Surface {
       shiftKey: event.shiftKey,
       code: event.code
     });
-  }
-
-  getPath() {
-    return this.props.path
   }
 }
 
@@ -37235,7 +41218,7 @@ class ToggleTool extends Component {
     let commandState = this.props.commandState;
     let Button = this.getComponent('button');
     let btn = $$(Button, {
-      icon: this.props.name,
+      icon: this.getIconName(),
       active: commandState.active,
       disabled: commandState.disabled,
       theme: this.props.theme
@@ -37256,10 +41239,16 @@ class ToggleTool extends Component {
     return this.props.name
   }
 
+  getIconName() {
+    return this.props.name
+  }
+
   onClick(e) {
     e.preventDefault();
     e.stopPropagation();
-    if (!this.props.disabled) this.executeCommand();
+    if (!this.props.disabled) {
+      this.executeCommand();
+    }
   }
 
   _getTooltipText() {
@@ -37280,7 +41269,7 @@ class ToggleTool extends Component {
   }
 }
 
-class ToolGroup$$1 extends Component {
+class ToolGroup extends Component {
 
   
   isToolEnabled(commandName, commandState) {
@@ -37310,12 +41299,11 @@ class ToolGroup$$1 extends Component {
 
   render($$) {
     let commandStates = this._getCommandStates();
-    let tools = this.context.tools;
     let el = $$('div').addClass(this._getClassNames());
     el.addClass('sm-'+this.props.name);
     forEach(commandStates, (commandState, commandName) => {
       if (this.isToolEnabled(commandName, commandState) || this.props.showDisabled) {
-        let ToolClass = tools[commandName] || ToggleTool;
+        let ToolClass = this._getToolClass(commandName);
         el.append(
           $$(ToolClass, {
             name: commandName,
@@ -37335,8 +41323,11 @@ class ToolGroup$$1 extends Component {
     let commandGroups = this.context.commandGroups;
     let filteredCommandStates = {}; 
     this.props.commandGroups.forEach((commandGroup) => {
+      
+      
       if (!commandGroups[commandGroup]) {
-        throw new Error('commandGroup "'+commandGroup+'" not found')
+        
+        return
       }
       commandGroups[commandGroup].forEach((commandName) => {
         
@@ -37354,6 +41345,11 @@ class ToolGroup$$1 extends Component {
 
   _getClassNames() {
     return 'sc-tool-group'
+  }
+
+  _getToolClass(commandName) {
+    let tools = this.context.tools;
+    return tools[commandName] || ToggleTool
   }
 }
 
@@ -37380,7 +41376,7 @@ class Menu extends Component {
   }
 }
 
-class ToolDropdown extends ToolGroup$$1 {
+class ToolDropdown extends ToolGroup {
 
   
   willReceiveProps() {
@@ -37410,6 +41406,8 @@ class ToolDropdown extends ToolGroup$$1 {
       } else if (this.props.style === 'descriptive') {
         toggleButton = $$(Button, {
           label: toggleName,
+          
+          commandState: commandStates[toggleName],
           dropdown: true,
           active: this.state.showChoices,
           theme: this.props.theme
@@ -37484,14 +41482,26 @@ class ToolDropdown extends ToolGroup$$1 {
   }
 }
 
-class ToolPrompt$$1 extends ToolGroup$$1 {
+class MenuGroup extends ToolGroup {
+
+  _getToolClass(commandName) {
+    let tools = this.context.tools;
+    return tools[commandName] || MenuItem
+  }
+
+  _getClassNames() {
+    return 'sc-menu-group'
+  }
+}
+
+class ToolPrompt extends ToolGroup {
 
   _getClassNames() {
     return 'sc-tool-prompt'
   }
 }
 
-class WorkflowPane$$1 extends ToolPanel {
+class WorkflowPane extends ToolPanel {
 
   render($$) {
     let el = $$('div').addClass('sc-workflow-pane');
@@ -37508,7 +41518,7 @@ class WorkflowPane$$1 extends ToolPanel {
   }
 }
 
-class Button$$1 extends Component {
+class Button extends Component {
   render($$) {
     let el = $$('button')
       .addClass('sc-button');
@@ -37564,11 +41574,11 @@ class Button$$1 extends Component {
 
   getLabel(name) {
     let labelProvider = this.context.labelProvider;
-    return labelProvider.getLabel(name)
+    return labelProvider.getLabel(name, this.props.commandState)
   }
 }
 
-class Layout$$1 extends Component {
+class Layout extends Component {
 
   render($$) {
     let el = $$('div').addClass('sc-layout');
@@ -37583,6 +41593,83 @@ class Layout$$1 extends Component {
 
     el.append(this.props.children);
     return el
+  }
+}
+
+function getRelativeBoundingRect(els, containerEl) {
+  let nativeCotainerEl;
+  if (containerEl._isDOMElement) {
+    nativeCotainerEl = containerEl.getNativeElement();
+  } else {
+    nativeCotainerEl = containerEl;
+  }
+  if (!isArray(els)) els = [els];
+  let elRects = els.map((el) => {
+    let nativeEl;
+    if (el._isDOMElement) {
+      nativeEl = el.getNativeElement();
+    } else {
+      nativeEl = el;
+    }
+    return _getBoundingOffsetsRect(nativeEl, nativeCotainerEl)
+  });
+
+  let elsRect = _getBoundingRect(elRects);
+  let containerElRect = nativeCotainerEl.getBoundingClientRect();
+  return {
+    left: elsRect.left,
+    top: elsRect.top,
+    right: containerElRect.width - elsRect.left - elsRect.width,
+    bottom: containerElRect.height - elsRect.top - elsRect.height,
+    width: elsRect.width,
+    height: elsRect.height
+  }
+}
+
+
+function _getBoundingRect(rects) {
+  var bounds = {
+    left: Number.POSITIVE_INFINITY,
+    top: Number.POSITIVE_INFINITY,
+    right: Number.NEGATIVE_INFINITY,
+    bottom: Number.NEGATIVE_INFINITY,
+    width: Number.NaN,
+    height: Number.NaN
+  };
+
+  forEach(rects, function(rect) {
+    if (rect.left < bounds.left) {
+      bounds.left = rect.left;
+    }
+    if (rect.top < bounds.top) {
+      bounds.top = rect.top;
+    }
+    if (rect.left + rect.width > bounds.right) {
+      bounds.right = rect.left + rect.width;
+    }
+    if (rect.top + rect.height > bounds.bottom) {
+      bounds.bottom = rect.top + rect.height;
+    }
+  });
+  bounds.width = bounds.right - bounds.left;
+  bounds.height = bounds.bottom - bounds.top;
+  return bounds
+}
+
+
+function _getBoundingOffsetsRect(el, relativeParentEl) {
+  var relativeParentElRect = relativeParentEl.getBoundingClientRect();
+  var elRect = _getBoundingRect(el.getClientRects());
+
+  var left = elRect.left - relativeParentElRect.left;
+  var top = elRect.top - relativeParentElRect.top;
+  return {
+    left: left,
+    top: top,
+    right: relativeParentElRect.width - left - elRect.width,
+    bottom: relativeParentElRect.height - top - elRect.height,
+    width: elRect.width,
+    height: elRect.height
   }
 }
 
@@ -37748,7 +41835,7 @@ class Scrollbar extends Component {
 
 Scrollbar.overlayMinHeight = 2;
 
-class ScrollPane$$1 extends AbstractScrollPane$$1 {
+class ScrollPane extends AbstractScrollPane {
 
   didMount() {
     super.didMount();
@@ -37944,7 +42031,7 @@ class ScrollPane$$1 extends AbstractScrollPane$$1 {
 
 }
 
-class SplitPane$$1 extends Component {
+class SplitPane extends Component {
 
   render($$) {
     if (this.props.children.length !== 2) {
@@ -37991,7 +42078,8 @@ class SplitPane$$1 extends Component {
 
 }
 
-class Toolbar$$1 extends ToolPanel {
+class Toolbar extends ToolPanel {
+
 
   render($$) {
     let el = $$('div').addClass('sc-toolbar');
@@ -38008,2303 +42096,101 @@ class Toolbar$$1 extends ToolPanel {
   }
 }
 
-class CollabSession extends EditorSession {
-
-  constructor(doc, config) {
-    super(doc, config);
-    config = config || {};
-    this.config = config;
-    this.collabClient = config.collabClient;
-    if (config.docVersion) {
-      console.warn('config.docVersion is deprecated: Use config.version instead');
-    }
-    if (config.docVersion) {
-      console.warn('config.docId is deprecated: Use config.documentId instead');
-    }
-    this.version = config.version;
-    this.documentId = config.documentId || config.docId;
-    if (config.autoSync !== undefined) {
-      this.autoSync = config.autoSync;
+function series(tasks, cb, i) {
+  i = i || 0;
+  tasks[i](function(err) {
+    
+    if (err) return cb(err)
+    if (i === tasks.length-1) {
+      cb(...arguments); 
     } else {
-      this.autoSync = true;
+      series(tasks, cb, i + 1);
     }
-    if (!this.documentId) {
-      throw new SubstanceError('InvalidArgumentsError', {message: 'documentId is mandatory'})
-    }
-    if (typeof this.version === undefined) {
-      throw new SubstanceError('InvalidArgumentsError', {message: 'version is mandatory'})
-    }
-    
-    this._connected = false; 
-    this._nextChange = null; 
-    this._pendingChange = null; 
-    this._pendingSync = false;
-    this._error = null;
-    
-    this.onUpdate('document', this.afterDocumentChange, this);
-    
-    this.collabClient.on('connected', this.onCollabClientConnected, this);
-    this.collabClient.on('disconnected', this.onCollabClientDisconnected, this);
-    this.collabClient.on('message', this._onMessage.bind(this));
-    
-    
-    
-    if (this.collabClient.isConnected() && this.autoSync) {
-      this.sync();
-    }
-  }
-
-  
-  dispose() {
-    this.disconnect();
-    this.collabClient.off(this);
-  }
-
-  
-  disconnect() {
-    
-    let msg = {
-      type: 'disconnect',
-      documentId: this.documentId
-    };
-    
-    this._abortSync();
-    this._send(msg);
-  }
-
-  
-  sync() {
-    
-    if (this.__canSync()) {
-      let nextChange = this._nextChange;
-      let msg = {
-        type: 'sync',
-        documentId: this.documentId,
-        version: this.version,
-        change: nextChange ? this.serializeChange(nextChange) : undefined
-      };
-      this._send(msg);
-      this._pendingSync = true;
-      this._pendingChange = nextChange;
-
-      
-      
-      this.emit('sync');
-      this._nextChange = null;
-      this._error = null;
-    } else {
-      console.error('Can not sync. Either collabClient is not connected or already syncing');
-    }
-  }
-
-  getCollaborators() {
-    return this.collaborators
-  }
-
-  isConnected() {
-    return this._connected
-  }
-
-  serializeChange(change) {
-    return change.toJSON()
-  }
-
-  deserializeChange(serializedChange) {
-    return DocumentChange.fromJSON(serializedChange)
-  }
-
-  
-
-  
-  _onMessage(msg) {
-    
-    if (msg.documentId !== this.documentId) {
-      return false
-    }
-    
-    msg = cloneDeep(msg);
-    switch (msg.type) {
-      case 'syncDone':
-        this.syncDone(msg);
-        break
-      case 'syncError':
-        this.syncError(msg);
-        break
-      case 'update':
-        this.update(msg);
-        break
-      case 'disconnectDone':
-        this.disconnectDone(msg);
-        break
-      case 'error':
-        this.error(msg);
-        break
-      default:
-        console.error('CollabSession: unsupported message', msg.type, msg);
-        return false
-    }
-    return true
-  }
-
-  
-  _send(msg) {
-    if (this.collabClient.isConnected()) {
-      this.collabClient.send(msg);
-      return true
-    } else {
-      console.warn('Try not to call _send when disconnected. Skipping message', msg);
-      return false
-    }
-  }
-
-  
-  update(args) {
-    
-    let serverChange = args.change;
-    let serverVersion = args.version;
-
-    if (!this._nextChange && !this._pendingSync) {
-      if (serverChange) {
-        serverChange = this.deserializeChange(serverChange);
-        this._applyRemoteChange(serverChange);
-      }
-      if (serverVersion) {
-        this.version = serverVersion;
-      }
-      this.startFlow();
-    } else {
-      console.info('skipped remote update. Pending sync or local changes.');
-    }
-  }
-
-  
-  syncDone(args) {
-    
-    let serverChange = args.serverChange;
-    let serverVersion = args.version;
-
-    if (serverChange) {
-      serverChange = this.deserializeChange(serverChange);
-      this._applyRemoteChange(serverChange);
-    }
-    this.version = serverVersion;
-    
-    
-    this._pendingChange = null;
-    this._pendingSync = false;
-    this._error = null;
-    
-    this._connected = true;
-    this.startFlow();
-    this.emit('connected');
-    
-    this._requestSync();
-  }
-
-  
-  syncError(error) {
-    console.info('SyncError occured. Aborting sync', error);
-    this._abortSync();
-  }
-
-  disconnectDone() {
-    
-    
-    this._afterDisconnected();
-  }
-
-  
-  error(message) {
-    let error = message.error;
-    let errorFn = this[error.name];
-    let err = SubstanceError.fromJSON(error);
-
-    if (!errorFn) {
-      error('CollabSession: unsupported error', error.name);
-      return false
-    }
-
-    this.emit('error', err);
-    errorFn = errorFn.bind(this);
-    errorFn(err);
-  }
-
-
-  
-
-  afterDocumentChange(change, info) {
-    
-    if (!info.remote) {
-      this._recordChange(change);
-    }
-  }
-
-  
-  onCollabClientConnected() {
-    
-    if (this.autoSync) {
-      this.sync();
-    }
-  }
-
-  
-  onCollabClientDisconnected() {
-    
-    this._abortSync();
-    if (this._connected) {
-      this._afterDisconnected();
-    }
-  }
-
-  
-
-  _commit(change, info) {
-    this._commitChange(change, info);
-    this.startFlow();
-  }
-
-  
-  _applyRemoteChange(change) {
-    
-    if (change.ops.length > 0) {
-      this._transaction.__applyChange__(change);
-      this.getDocument()._apply(change);
-      this._setDirty('document');
-      
-      this._transformLocalChangeHistory(change);
-      this._setSelection(this._transformSelection(change));
-      this._change = change;
-      this._info = { remote: true };
-      this.startFlow();
-    }
-  }
-
-  
-  _recordChange(change) {
-    if (!this._nextChange) {
-      this._nextChange = change;
-    } else {
-      
-      this._nextChange.ops = this._nextChange.ops.concat(change.ops);
-      this._nextChange.after = change.after;
-    }
-    this._requestSync();
-  }
-
-  __canSync() {
-    return this.collabClient.isConnected() && !this._pendingSync
-  }
-
-  
-  _requestSync() {
-    if (this._nextChange && this.__canSync()) {
-      this.sync();
-    }
-  }
-
-  
-  _abortSync() {
-    let newNextChange = this._nextChange;
-
-    if (this._pendingChange) {
-      newNextChange = this._pendingChange;
-      
-      if (this._nextChange) {
-        newNextChange.ops = newNextChange.ops.concat(this._nextChange.ops);
-        newNextChange.after = this._nextChange.after;
-      }
-      this._pendingChange = null;
-    }
-    this._pendingSync = false;
-    this._error = null;
-    this._nextChange = newNextChange;
-  }
-
-  
-  _afterDisconnected() {
-    this._connected = false;
-    this.emit('disconnected');
-  }
-
-  
-  _hasLocalChanges() {
-    return this._nextChange && this._nextChange.ops.length > 0
-  }
-
-}
-
-function node2element(node) {
-  
-  let dom = DefaultDOMElement.createDocument('xml');
-  let el = _node2element(dom, node);
-  return el
-}
-
-function _node2element(dom, node) {
-  let el;
-  switch(node._elementType) {
-    case 'text': {
-      el = _renderTextNode(dom, node);
-      break
-    }
-    case 'element':
-    case 'inline-element':
-    case 'container': {
-      el = _renderElementNode(dom, node);
-      break
-    }
-    case 'anchor':
-    case 'annotation': {
-      el = _createElement$1(dom, node);
-      break
-    }
-    case 'external': {
-      el = DefaultDOMElement.parseSnippet(node.xml, 'xml');
-      break
-    }
-    default:
-      throw new Error('Invalid element type.')
-  }
-  return el
-}
-
-function _createElement$1(dom, node) {
-  let el = dom.createElement(node.type);
-  el.attr('id', node.id);
-  el.attr(node.attributes);
-  return el
-}
-
-function _renderElementNode(dom, node) {
-  let el = _createElement$1(dom, node);
-  el.append(node.getChildren().map(child => _node2element(dom, child)));
-  return el
-}
-
-function _renderTextNode(dom, node) {
-  const annos = node.getAnnotations();
-  const text = node.getText();
-  let el = _createElement$1(dom, node);
-  if (annos && annos.length > 0) {
-    let fragmenter = new Fragmenter({
-      onText: (context, text) => { context.append(text); },
-      onEnter: (fragment) => {
-        return _node2element(dom, fragment.node)
-      },
-      onExit: (fragment, context, parentContext) => {
-        parentContext.append(context);
-      }
-    });
-    fragmenter.start(el, text, annos);
-  } else {
-    el.append(text);
-  }
-  return el
-}
-
-function nameWithoutNS$1(name) {
-  const idx = name.indexOf(':');
-  if (idx > 0) {
-    return name.slice(idx+1)
-  } else {
-    return name
-  }
-}
-
-class Adapter extends domUtils.DomUtils {
-
-  
-  isTag() {
-    return true
-  }
-
-  getChildren(elem){
-    return elem.getChildren() || []
-  }
-
-  getAttributeValue(elem, name){
-    return elem.getAttribute(name)
-  }
-
-  getAttributes(elem) {
-    return ['id', elem.id].concat(map(elem.attributes, (val, key) => { return [key,val] }))
-  }
-
-  hasAttrib(elem, name){
-    return name === 'id' || elem.attributes.hasOwnProperty(name)
-  }
-
-  getName(elem){
-    return elem.type
-  }
-
-  getNameWithoutNS(elem){
-    return nameWithoutNS$1(this.getName(elem))
-  }
-
-  getText(elem) {
-    if (elem._elementType === 'text') {
-      return elem.getText()
-    }
-    
-    return ''
-  }
-}
-
-var cssSelectAdapter = new Adapter();
-
-class XMLDocumentNode extends DocumentNode {
-
-  _initialize(doc, props) {
-    
-    
-    
-    if (props.attributes) {
-      delete props.attributes.id;
-    }
-    super._initialize(doc, props);
-  }
-
-  toXML() {
-    return node2element(this)
-  }
-
-  
-  findChild(tagName) {
-    const children = this.getChildren();
-    for (let i = 0; i < children.length; i++) {
-      const child = children[i];
-      if (child.type === tagName) return child
-    }
-  }
-
-  find(cssSelector) {
-    return index$1.selectOne(cssSelector, this, { xmlMode: true, adapter: cssSelectAdapter })
-  }
-
-  findAll(cssSelector) {
-    return index$1.selectAll(cssSelector, this, { xmlMode: true, adapter: cssSelectAdapter })
-  }
-
-  isContainer() {
-    return false
-  }
-
-  
-  isBlock() {
-    const parentNode = this.parentNode;
-    return (parentNode && parentNode.isContainer())
-  }
-
-  get children() {
-    return this.getChildren()
-  }
-
-  getChildren() {
-    
-    return this.getChildNodes()
-  }
-
-  getChildNodes() {
-    if (this._childNodes) {
-      return documentHelpers.getNodes(this.getDocument(), this._childNodes)
-    } else {
-      return []
-    }
-  }
-
-  getChildCount() {
-    if (this._childNodes) {
-      return this._childNodes.length
-    } else {
-      return 0
-    }
-  }
-
-  getChildNodeIterator() {
-    return new ArrayIterator(this.getChildNodes())
-  }
-
-  getFirstChild() {
-    if (this._childNodes) {
-      return this.getDocument().get(this._childNodes[0])
-    }
-  }
-
-  getLastChild() {
-    if (this._childNodes) {
-      return this.getDocument().get(last$1(this._childNodes))
-    }
-  }
-
-
-  get tagName() {
-    return this.type
-  }
-
-  
-  get parent() {
-    return this.parentNode
-  }
-
-  setAttribute(name, val) {
-    if (name === 'id') {
-      throw new Error("'id' is read-only and can not be changed")
-    }
-    this.getDocument().set([this.id, 'attributes', name], val);
-  }
-
-  getAttribute(name) {
-    if (name === 'id') return this.id
-    return this.attributes[name]
-  }
-
-  getElementSchema() {
-    return this.getDocument().getElementSchema(this.type)
-  }
-
-  serialize() {
-    return this.toXML()
-  }
-
-  isTextNode() {
-    return false
-  }
-
-  isElementNode() {
-    return false
-  }
-
-}
-
-XMLDocumentNode.prototype.attr = DOMElement.prototype.attr;
-
-XMLDocumentNode.schema = {
-  attributes: { type: 'object', default: {} }
-};
-
-class XMLAnchorNode extends XMLDocumentNode {
-
-  
-  get parentNode() {
-    const path = this.coor.start.path;
-    const doc = this.getDocument();
-    return doc.get(path[0])
-  }
-
-}
-
-XMLAnchorNode.prototype._elementType = 'anchor';
-
-XMLAnchorNode.type = 'anchor';
-
-XMLAnchorNode.schema = {
-  coor: { type: "coordinate", optional: true }
-};
-
-class XMLAnnotationNode extends AnnotationMixin(XMLDocumentNode) {
-
-  
-  get parentNode() {
-    const path = this.start.path;
-    const doc = this.getDocument();
-    return doc.get(path[0])
-  }
-
-  isPropertyAnnotation() {
-    return true
-  }
-
-}
-
-XMLAnnotationNode.prototype._elementType = 'annotation';
-
-
-XMLAnnotationNode.prototype._isPropertyAnnotation = true;
-
-XMLAnnotationNode.type = 'annotation';
-
-
-XMLAnnotationNode.schema = {};
-
-class XMLElementNode extends XMLDocumentNode {
-
-  appendChild(child) {
-    this.insertAt(this._childNodes.length, child);
-  }
-
-  removeChild(child) {
-    const childId = child.id;
-    const childPos = this._childNodes.indexOf(childId);
-    if (childPos >= 0) {
-      this.removeAt(childPos);
-    } else {
-      throw new Error(`node ${childId} is not a child of ${this.id}`)
-    }
-    return this
-  }
-
-  insertAt(pos, child) {
-    const length = this._childNodes.length;
-    if (pos >= 0 && pos <= length) {
-      const doc = this.getDocument();
-      doc.update([this.id, '_childNodes'], { type: 'insert', pos, value: child.id });
-    } else {
-      throw new Error('Index out of bounds.')
-    }
-    return this
-  }
-
-  removeAt(pos) {
-    const length = this._childNodes.length;
-    if (pos >= 0 && pos < length) {
-      const doc = this.getDocument();
-      doc.update([this.id, '_childNodes'], { type: 'delete', pos: pos });
-    } else {
-      throw new Error('Index out of bounds.')
-    }
-    return this
-  }
-
-  getInnerXML() {
-    return this.getChildren().map((child) => {
-      return child.toXML().outerHTML
-    }).join('')
-  }
-
-  isElementNode() {
-    return true
-  }
-
-  
-
-}
-
-XMLElementNode.prototype.append = DOMElement.prototype.append;
-
-XMLElementNode.prototype._elementType = 'element';
-
-XMLElementNode.type = 'element';
-
-XMLElementNode.schema = {
-  _childNodes: { type: ['array', 'id'], default: [], owned: true}
-};
-
-XMLElementNode.isBlock = true;
-
-class XMLContainerNode extends ContainerMixin(XMLElementNode) {
-
-  getContentPath() {
-    return [this.id, '_childNodes']
-  }
-
-  getContent() {
-    return this._childNodes
-  }
-
-  isContainer() {
-    return true
-  }
-
-  appendChild(child) {
-    super.show(child.id);
-  }
-
-}
-
-XMLContainerNode.prototype._elementType = 'container';
-
-XMLContainerNode.type = 'container';
-
-XMLContainerNode.schema = {};
-
-XMLContainerNode.isBlock = true;
-
-class ParentNodeHook$2 {
-
-  constructor(doc) {
-    this.doc = doc;
-    
-    this.parents = {};
-    doc.data.on('operation:applied', this._onOperationApplied, this);
-  }
-
-  _onOperationApplied(op) {
-    const doc = this.doc;
-    const parents = this.parents;
-    let node = doc.get(op.path[0]);
-    switch(op.type) {
-      case 'create': {
-        switch(node._elementType) {
-          case 'element':
-          case 'container': {
-            _setParent(node, node._childNodes);
-            _setRegisteredParent(node);
-            break
-          }
-          default: {
-            _setRegisteredParent(node);
-          }
-        }
-        break
-      }
-      case 'update': {
-        
-        
-        let update = op.diff;
-        if (op.path[1] === '_childNodes') {
-          if (update.isInsert()) {
-            _setParent(node, update.getValue());
-          } else if (update.isDelete()) {
-            _setParent(null, update.getValue());
-          }
-        }
-        break
-      }
-      case 'set': {
-        if (op.path[1] === '_childNodes') {
-          _setParent(null, op.getOldValue());
-          _setParent(node, op.getValue());
-        }
-        break
-      }
-      default:
-        
-    }
-
-    function _setParent(parent, ids) {
-      if (ids) {
-        if (isArray$1(ids)) {
-          ids.forEach(_set);
-        } else {
-          _set(ids);
-        }
-      }
-      function _set(id) {
-        
-        
-        
-        parents[id] = parent;
-        let child = doc.get(id);
-        if (child) {
-          child.parentNode = parent;
-        }
-      }
-    }
-    function _setRegisteredParent(child) {
-      let parent = parents[child.id];
-      if (parent) {
-        child.parentNode = parent;
-      }
-    }
-  }
-}
-
-ParentNodeHook$2.register = function(doc) {
-  return new ParentNodeHook$2(doc)
-};
-
-class XMLEditingInterface extends EditingInterface {
-
-  find(cssSelector) {
-    return this.getDocument().find(cssSelector)
-  }
-
-  findAll(cssSelector) {
-    return this.getDocument().findAll(cssSelector)
-  }
-
-  createElement(...args) {
-    return this.getDocument().createElement(...args)
-  }
-
-}
-
-class XMLDocument extends Document {
-
-  _initialize() {
-    this.nodeFactory = new DocumentNodeFactory(this);
-    this.data = new IncrementalData(this.schema, this.nodeFactory);
-    
-    this.addIndex('type', new PropertyIndex('type'));
-    
-    this.addIndex('annotations', new AnnotationIndex());
-    ParentNodeHook$2.register(this);
-  }
-
-  toXML() {
-    let dom = DefaultDOMElement.createDocument('xml');
-    dom.setDocType(...this.getDocTypeParams());
-    let rootElement = this.getRootNode().toXML();
-    dom.append(rootElement);
-    return dom
-  }
-
-  getDocTypeParams() {
-    
-    throw new Error('This method is abstract')
-  }
-
-  getXMLSchema() {
-    
-    throw new Error('This method is abstract')
-  }
-
-  getRootNode() {
-    
-    throw new Error('This method is abstract')
-  }
-
-  
-  getDocTypeAsString() {
-    return new Error('This method is abstract')
-  }
-
-  createEditingInterface() {
-    return new XMLEditingInterface(this)
-  }
-
-  find(cssSelector) {
-    return this.getRootNode().find(cssSelector)
-  }
-
-  findAll(cssSelector) {
-    return this.getRootNode().findAll(cssSelector)
-  }
-
-  createElement(tagName) {
-    let node = this.create({
-      id: uuid(tagName),
-      type: tagName
-    });
-    return node
-  }
-
-  getElementSchema(type) {
-    return this.getXMLSchema().getElementSchema(type)
-  }
-
-  _validateChange(change) {
-    let changed = {};
-    let deleted = [];
-    change.ops.forEach((op) => {
-      switch (op.type) {
-        case "delete": {
-          deleted.push(op.val.id);
-          break
-        }
-        case "create": {
-          changed[op.val.id] = true;
-          break
-        }
-        default: {
-          changed[op.path[0]] = true;
-        }
-      }
-    });
-    
-    deleted.forEach(id => delete changed[id]);
-
-    const xmlSchema = this.getXMLSchema();
-    let errors = [];
-    Object.keys(changed).forEach((id) => {
-      let node = this.get(id);
-      let res = xmlSchema.validateElement(node);
-      if (!res.ok) {
-        errors = errors.concat(res.errors);
-      }
-    });
-    return {
-      ok: errors.length === 0,
-      errors
-    }
-  }
-}
-
-XMLDocument.prototype._isXMLDocument = true;
-
-class XMLNodeConverter {
-
-  constructor(type) {
-    this.type = type;
-    this.tagName = nameWithoutNS$1(type);
-    this.tagNameNS = type;
-  }
-
-  matchElement(el) {
-    return (el.tagName === this.tagNameNS)
-  }
-
-  export(node, el) {
-    el.tagName = this.tagNameNS;
-    el.setAttributes(node.attributes);
-  }
-
-}
-
-class ElementNodeConverter extends XMLNodeConverter {
-
-  import(el, node, converter) {
-    let it = converter.getChildNodeIterator(el);
-    let childNodeIds = [];
-    while(it.hasNext()) {
-      const childEl = it.next();
-      if (childEl.isElementNode()) {
-        let childNode = converter.convertElement(childEl);
-        childNodeIds.push(childNode.id);
-      }
-    }
-    node._childNodes = childNodeIds;
-  }
-
-  export(node, el, converter) {
-    const doc = node.getDocument();
-    el.tagName = this.tagNameNS;
-    el.setAttributes(node.attributes);
-    el.childNodes.forEach((childNode) => {
-      let childEl = converter.convertNode(childNode);
-      el.appendChild(childEl);
-    });
-  }
-
-}
-
-class XMLExternalNode extends XMLDocumentNode {}
-
-XMLExternalNode.prototype._elementType = 'external';
-
-XMLExternalNode.type = 'external';
-
-XMLExternalNode.schema = {
-  xml: { type: 'string', default: ''}
-};
-
-XMLExternalNode.isBlock = true;
-
-class ExternalNodeConverter extends XMLNodeConverter {
-
-  import(el, node, converter) {
-    node.xml = el.innerHTML;
-  }
-
-  export(node, el, converter) {
-    el.tagName = this.tagNameNS;
-    el.setAttributes(node.attributes);
-    el.innerHTML = node.xml;
-  }
-
-}
-
-const START$2 = 'START';
-const END$2 = 'END';
-const EPSILON$2 = 'EPSILON';
-const TEXT$3 = 'TEXT';
-
-class DFA {
-
-  constructor(transitions) {
-    if (!transitions || Object.keys(transitions).length === 0) {
-      transitions = { START: { EPSILON: END$2 } };
-    }
-    this.transitions = transitions;
-  }
-
-  consume(state, id) {
-    const T = this.transitions;
-    
-    
-    if (!T[state]) return -1
-    let nextState = T[state][id];
-    if (nextState !== undefined) {
-      return nextState
-    }
-    while(T[state][EPSILON$2] !== undefined) {
-      state = T[state][EPSILON$2];
-      if (state === END$2) {
-        return -1
-      }
-      nextState = T[state][id];
-      if (nextState !== undefined) {
-        return nextState
-      }
-    }
-    return -1
-  }
-
-  canConsume(state, id) {
-    let nextState = this.consume(state, id);
-    return (nextState !== -1)
-  }
-
-  isFinished(state) {
-    const T = this.transitions;
-    if (state === 'END') return true
-    
-    if (!T[state]) return false
-    while(T[state][EPSILON$2] !== undefined) {
-      state = T[state][EPSILON$2];
-      if (state === 'END') return true
-    }
-    return false
-  }
-
-  
-
-  
-  _tokensByPath() {
-    const result = [];
-    const transitions = this.transitions;
-    if (!transitions) return []
-
-    
-    let first = {};
-    forEach(transitions[START$2], (to, token) => {
-      if (!first[to]) first[to] = [];
-      first[to].push(token);
-    });
-
-    let visited = {START: true, END: true};
-    forEach(first, (tokens, state) => {
-      
-      
-      
-      
-      let _siblings = {};
-      tokens.forEach((t) => {
-        if (t !== EPSILON$2) {
-          _siblings[t] = true;
-        }
-      });
-      let stack = [state];
-      while(stack.length > 0) {
-        let from = stack.pop();
-        if (state === END$2) continue
-        visited[from] = true;
-        let T = transitions[from];
-        if (!T) throw new Error(`Internal Error: no transition from state ${from}`)
-        let tokens = Object.keys(T);
-        for (let i = 0; i < tokens.length; i++) {
-          const token = tokens[i];
-          const to = T[token];
-          if (!visited[to]) stack.push(to);
-          if (token !== EPSILON$2) {
-            _siblings[token] = true;
-          }
-        }
-      }
-      let _siblingTokens = Object.keys(_siblings);
-      if (_siblingTokens.length > 0) {
-        result.push(_siblingTokens);
-      }
-    });
-    return result
-  }
-
-}
-
-DFA.START = START$2;
-DFA.END = END$2;
-DFA.EPSILON = EPSILON$2;
-DFA.TEXT = TEXT$3;
-
-const START$1 = DFA.START;
-const END$1 = DFA.END;
-const EPSILON$1 = DFA.EPSILON;
-
-
-class DFABuilder {
-
-  constructor(transitions) {
-    this.transitions = transitions;
-  }
-
-  addTransition(from, to, tokens) {
-    if (!this.transitions) this.transitions = {};
-    if (!isArray$1(tokens)) tokens = [tokens];
-    tokens.forEach(token => _addTransition(this.transitions, from, to, token));
-    return this
-  }
-
-  
-  append(other) {
-    if (this.transitions && other.transitions) {
-      let t1 = cloneDeep(this.transitions);
-      let t2 = cloneDeep(other.transitions);
-      
-      
-      let firstIsOptional = Boolean(t1[START$1][EPSILON$1]);
-      let secondIsOptional = Boolean(t2[START$1][EPSILON$1]);
-
-      if (firstIsOptional) {
-        
-        
-        delete t1[START$1][EPSILON$1];
-      }
-      
-      
-      let newState = uuid();
-      
-      
-      forEach(t1, (T) => {
-        forEach(T, (to, token) => {
-          if (to === END$1) {
-            T[token] = newState;
-          }
-        });
-      });
-      
-      
-      if (firstIsOptional) {
-        forEach(t2[START$1], (to, token) => {
-          _addTransition(t1, START$1, to, token);
-        });
-      }
-      
-      
-      t2[newState] = t2[START$1];
-      forEach(t2, (T) => {
-        forEach(T, (to, token) => {
-          if (to === START$1) {
-            T[token] = newState;
-          }
-        });
-      });
-      delete t2[START$1];
-      
-      forEach(t2, (T, from) => {
-        forEach(T, (to, token) => {
-          _addTransition(t1, from, to, token);
-        });
-      });
-      
-      
-      if (firstIsOptional && secondIsOptional) {
-        _addTransition(t1, START$1, END$1, EPSILON$1);
-      }
-      this.transitions = t1;
-    } else if (other.transitions) {
-      this.transitions = cloneDeep(other.transitions);
-    }
-    return this
-  }
-
-  
-  merge(other) {
-    if (this.transitions && other.transitions) {
-      let t1 = this.transitions;
-      let t2 = other.transitions;
-      forEach(t2, (T, from) => {
-        forEach(T, (to, token) => {
-          _addTransition(t1, from, to, token);
-        });
-      });
-    } else if (other.transitions) {
-      this.transitions = cloneDeep(other.transitions);
-    }
-    return this
-  }
-
-  
-  optional() {
-    let dfa = new DFABuilder(cloneDeep(this.transitions));
-    if (this.transitions) {
-      dfa.addTransition(START$1, END$1, EPSILON$1);
-    }
-    return dfa
-  }
-
-  
-  kleene() {
-    let dfa = this.plus();
-    return dfa.optional()
-  }
-
-  
-  plus() {
-    let dfa;
-    if (this.transitions) {
-      let t1 = cloneDeep(this.transitions);
-      
-      
-      
-      
-      const isOptional = Boolean(t1[START$1][EPSILON$1]);
-      delete t1[START$1][EPSILON$1];
-      
-      
-      let newState = uuid();
-      forEach(t1, (T) => {
-        forEach(T, (to, token) => {
-          if (to === END$1) {
-            T[token] = newState;
-          }
-        });
-      });
-      
-      _addTransition(t1, newState, END$1, EPSILON$1);
-      
-      forEach(t1[START$1], (to, token) => {
-        _addTransition(t1, newState, to, token);
-      });
-      
-      if (isOptional) {
-        _addTransition(t1, START$1, END$1, EPSILON$1);
-      }
-      dfa = new DFABuilder(t1);
-    } else {
-      dfa = new DFABuilder(cloneDeep(this.transitions));
-    }
-    return dfa
-  }
-
-  toJSON() {
-    return cloneDeep(this.transitions)
-  }
-
-  
-  copy() {
-    let t = cloneDeep(this.transitions);
-    if (this.transitions) {
-      let states = Object.keys(t);
-      let map$$1 = { START: START$1, END: END$1 };
-      states.forEach((id) => {
-        if (id === START$1 || id === END$1) return
-        map$$1[id] = uuid();
-      });
-      forEach(t, (T, from) => {
-        if (from !== START$1 && from !== END$1) {
-          t[map$$1[from]] = T;
-          delete t[from];
-        }
-        forEach(T, (to, token) => {
-          if (to !== START$1 && to !== END$1) {
-            T[token] = map$$1[to];
-          }
-        });
-      });
-    }
-    return new DFABuilder(t)
-  }
-
-}
-
-DFABuilder.singleToken = function(token) {
-  let dfa = new DFABuilder();
-  dfa.addTransition(START$1, END$1, token);
-  return dfa
-};
-
-function _addTransition(transitions, from, to, token) {
-  let T = transitions[from];
-  if (!T) {
-    transitions[from] = T = {};
-  }
-  if (token === EPSILON$1 && from === START$1 && to !== END$1) {
-    throw new Error('The only EPSILON transition from START must be START->END')
-  }
-  if (T[token] && T[token] !== to) {
-    console.error('Token %s already used. Ignoring this transition.', token);
-    return
-    
-  }
-  T[token] = to;
-}
-
-function _isTextNodeEmpty(el) {
-  return Boolean(/^\s*$/.exec(el.textContent))
-}
-
-const { START, END, TEXT: TEXT$2, EPSILON } = DFA;
-
-
-
-class Expression {
-
-  constructor(name, root) {
-    this.name = name;
-    this.root = root;
-
-    this._initialize();
-  }
-
-  _initialize() {
-    this._compile();
-  }
-
-  toString() {
-    return this.root.toString()
-  }
-
-  copy() {
-    return this.root.copy()
-  }
-
-  toJSON() {
-    return {
-      name: this.name,
-      content: this.root.toJSON()
-    }
-  }
-
-  isAllowed(tagName) {
-    return Boolean(this._allowedChildren[tagName])
-  }
-
-  
-  _normalize() {
-    this.root._normalize();
-  }
-
-  
-  _compile() {
-    
-    this.root._compile();
-  }
-
-  _describeError(state, token) {
-    let msg = [];
-    if (token !== TEXT$2) {
-      if (!this.isAllowed(token)) {
-        msg.push(`<${token}> is not valid in <${this.name}>\nSchema: ${this.toString()}`);
-      } else {
-        
-        msg.push(`<${token}> is not allowed at the current position in <${this.name}>.\n${this.toString()}`);
-        
-        
-        
-      }
-    } else {
-      msg.push(`TEXT is not allowed at the current position: ${state.trace.join(',')}\n${this.toString()}`);
-    }
-    return msg.join('')
-  }
-
-}
-
-Expression.fromJSON = function(data) {
-  const name = data.name;
-  const root = _fromJSON(data.content);
-  return createExpression(name, root)
-};
-
-function createExpression(name, root) {
-  if (root instanceof Interleave) {
-    return new InterleaveExpr(name, root)
-  } else {
-    return new DFAExpr(name, root)
-  }
-}
-
-class DFAExpr extends Expression {
-
-  
-  getInitialState() {
-    return {
-      dfaState: START,
-      errors: [],
-      trace: [],
-    }
-  }
-
-  canConsume(state, token) {
-    return this.dfa.canConsume(state.dfaState, token)
-  }
-
-  consume(state, token) {
-    const dfa = this.dfa;
-    let oldState = state.dfaState;
-    let newState = dfa.consume(oldState, token);
-    state.dfaState = newState;
-    if (newState === -1) {
-      state.errors.push({
-        msg: this._describeError(state, token),
-        
-        
-        el: state.el
-      });
-      return false
-    } else {
-      state.trace.push(token);
-      return true
-    }
-  }
-
-  isFinished(state) {
-    return this.dfa.isFinished(state.dfaState)
-  }
-
-  _initialize() {
-    super._initialize();
-
-    this._computeAllowedChildren();
-  }
-
-  _compile() {
-    super._compile();
-    this.dfa = new DFA(this.root.dfa.transitions);
-  }
-
-
-  _computeAllowedChildren() {
-    this._allowedChildren = _collectAllTokensFromDFA(this.dfa);
-  }
-
-  _findInsertPos(el, newTag, mode) {
-    const root = this.root;
-    if (root instanceof Sequence) {
-      return this._findInsertPosInSequence(el, newTag, mode)
-    } else if (root instanceof Plus || root instanceof Kleene) {
-      if (mode === 'first') {
-        return 0
-      } else {
-        return el.childNodes.length
-      }
-    }
-  }
-
-  _isValid(_tokens) {
-    let state = this.getInitialState();
-    for (let i = 0; i < _tokens.length; i++) {
-      const token = _tokens[i];
-      
-      
-      
-      if (!token) continue
-      if (!this.consume(state, token)) {
-        return false
-      }
-    }
-    return this.isFinished(state)
-  }
-
-  _findInsertPosInSequence(el, newTag, mode) {
-    const childNodes = el.getChildNodes();
-    
-    
-    
-    const tokens = [];
-    childNodes.forEach((child)=>{
-      
-      
-      
-      const tagName = child.tagName;
-      if (!tagName) {
-        if (child._isDOMElement && child.isTextNode() && !_isTextNodeEmpty(child)) {
-          tokens.push(TEXT$2);
-        } else {
-          tokens.push(null);
-        }
-      } else {
-        tokens.push(tagName);
-      }
-    });
-    const L = tokens.length;
-    const self = this;
-    function _isValid(pos) {
-      let _tokens = tokens.slice(0);
-      _tokens.splice(pos, 0, newTag);
-      return self._isValid(_tokens)
-    }
-    if (mode === 'first') {
-      for (let pos = 0; pos <= L; pos++) {
-        if (_isValid(pos)) {
-          return pos
-        }
-      }
-    } else {
-      for (let pos = L; pos >= 0; pos--) {
-        if (_isValid(pos)) {
-          return pos
-        }
-      }
-    }
-    return -1
-  }
-
-}
-
-function _collectAllTokensFromDFA(dfa) {
-  
-  const children = {};
-  if (dfa.transitions) {
-    forEach(dfa.transitions, (T) => {
-      Object.keys(T).forEach((tagName) => {
-        if (tagName === EPSILON) return
-        children[tagName] = true;
-      });
-    });
-  }
-  return children
-}
-
-class InterleaveExpr extends Expression {
-
-  constructor(name, root) {
-    super(name, root);
-  }
-
-  getInitialState() {
-    const dfas = this.dfas;
-    const dfaStates = new Array(dfas.length);
-    dfaStates.fill(START);
-    return {
-      dfaStates,
-      errors: [],
-      trace: [],
-      
-      lastDFA: 0,
-    }
-  }
-
-  canConsume(state, token) {
-    return (this._findNextDFA(state, token) >= 0)
-  }
-
-  consume(state, token) {
-    const idx = this._findNextDFA(state, token);
-    if (idx < 0) {
-      state.errors.push({
-        msg: this._describeError(state, token),
-      });
-      return false
-    } else {
-      const dfa = this.dfas[idx];
-      const oldState = state.dfaStates[idx];
-      const newState = dfa.consume(oldState, token);
-      state.dfaStates[idx] = newState;
-      state.trace.push(token);
-      return true
-    }
-  }
-
-  isFinished(state) {
-    const dfas = this.dfas;
-    for (let i = 0; i < dfas.length; i++) {
-      const dfa = dfas[i];
-      const dfaState = state.dfaStates[i];
-      if (!dfa.isFinished(dfaState)) {
-        return false
-      }
-    }
-    return true
-  }
-
-
-  _initialize() {
-    super._initialize();
-
-    this._computeAllowedChildren();
-  }
-
-  _compile() {
-    super._compile();
-
-    this.blocks = this.root.blocks;
-    this.dfas = this.blocks.map(b=>new DFA(b.dfa.transitions));
-  }
-
-  _computeAllowedChildren() {
-    this._allowedChildren = Object.assign(...this.blocks.map((block) => {
-      return _collectAllTokensFromDFA(block.dfa)
-    }));
-  }
-
-  _findNextDFA(state, token) {
-    console.assert(state.dfaStates.length === this.dfas.length);
-    const dfas = this.dfas;
-    for (let i = 0; i < state.dfaStates.length; i++) {
-      const dfa = dfas[i];
-      const dfaState = state.dfaStates[i];
-      if (dfa.canConsume(dfaState, token)) {
-        return i
-      }
-    }
-    return -1
-  }
-
-  _findInsertPos(el, newTag, mode) { 
-    
-    return el.childNodes.length
-  }
-
-}
-
-class Token {
-
-  constructor(name) {
-    this.name = name;
-  }
-
-  toString() {
-    return this.name
-  }
-
-  toJSON() {
-    return this.name
-  }
-
-  copy() {
-    return new Token(this.name)
-  }
-
-  _normalize() {}
-
-  _compile() {
-    this.dfa = DFABuilder.singleToken(this.name);
-  }
-
-}
-
-Token.fromJSON = function (data) {
-  return new Token(data)
-};
-
-
-class Choice {
-
-  constructor(blocks) {
-    this.blocks = blocks;
-  }
-
-  copy() {
-    return new Choice(this.blocks.map(b=>b.copy()))
-  }
-
-  toJSON() {
-    return {
-      type: '|',
-      blocks: this.blocks.map(b=>b.toJSON())
-    }
-  }
-
-  _normalize() {
-    const blocks = this.blocks;
-    for (let i = blocks.length - 1; i >= 0; i--) {
-      let block = blocks[i];
-      block._normalize();
-      
-      if (block instanceof Choice) {
-        blocks.splice(i,1,...(block.blocks));
-      }
-    }
-  }
-
-
-  _compile() {
-    let dfa = new DFABuilder();
-    this.blocks.forEach((block) => {
-      if (block instanceof Token) {
-        dfa.addTransition(START, END, block.name);
-      } else if (block instanceof Interleave) {
-        throw new Error('Nested interleave blocks are not supported.')
-      } else {
-        if (!block.dfa) {
-          block._compile();
-        }
-        dfa.merge(block.dfa);
-      }
-    });
-    this.dfa = dfa;
-    return dfa
-  }
-
-  toString() {
-    return '('+ this.blocks.map(b=>b.toString()).join('|') + ')'
-  }
-
-}
-
-Choice.fromJSON = function(data) {
-  return new Choice(data.blocks.map((block) => {
-    return _fromJSON(block)
-  }))
-};
-
-
-class Sequence {
-
-  constructor(blocks) {
-    this.blocks = blocks;
-  }
-
-  copy() {
-    return new Sequence(this.blocks.map(b=>b.copy()))
-  }
-
-  toJSON() {
-    return {
-      type: ',',
-      blocks: this.blocks.map(b=>b.toJSON())
-    }
-  }
-
-  _compile() {
-    let dfa = new DFABuilder();
-    this.blocks.forEach((block) => {
-      if (block instanceof Token) {
-        dfa.append(DFABuilder.singleToken(block.name));
-      } else if (block instanceof Interleave) {
-        throw new Error('Nested interleave blocks are not supported.')
-      } else {
-        if (!block.dfa) {
-          block._compile();
-        }
-        dfa.append(block.dfa);
-      }
-    });
-    this.dfa = dfa;
-    return dfa
-  }
-
-  _normalize() {
-    const blocks = this.blocks;
-    for (let i = blocks.length - 1; i >= 0; i--) {
-      let block = blocks[i];
-      block._normalize();
-      
-      if (block instanceof Sequence) {
-        blocks.splice(i, 1,...(block.blocks));
-      }
-    }
-  }
-
-  toString() {
-    return '('+ this.blocks.map(b=>b.toString()).join(',') + ')'
-  }
-
-}
-
-Sequence.fromJSON = function(data) {
-  return new Sequence(data.blocks.map((block) => {
-    return _fromJSON(block)
-  }))
-};
-
-
-class Interleave {
-
-  constructor(blocks) {
-    this.blocks = blocks;
-  }
-
-  copy() {
-    return new Interleave(this.blocks.map(b=>b.copy()))
-  }
-
-  toString() {
-    return '('+ this.blocks.map(b=>b.toString()).join('~') + ')'
-  }
-
-  toJSON() {
-    return {
-      type: '~',
-      blocks: this.blocks.map(b=>b.toJSON())
-    }
-  }
-
-  _normalize() {
-    
-  }
-
-  _compile() {
-    this.blocks.forEach(block => block._compile());
-  }
-
-}
-
-Interleave.fromJSON = function(data) {
-  return new Interleave(data.blocks.map((block) => {
-    return _fromJSON(block)
-  }))
-};
-
-
-
-class Optional {
-
-  constructor(block) {
-    this.block = block;
-  }
-
-  copy() {
-    return new Optional(this.block.copy())
-  }
-
-  toJSON() {
-    return {
-      type: '?',
-      block: this.block.toJSON()
-    }
-  }
-
-  _compile() {
-    const block = this.block;
-    if (block instanceof Interleave) {
-      throw new Error('Nested interleave blocks are not supported.')
-    }
-    if (!block.dfa) {
-      block._compile();
-    }
-    this.dfa = block.dfa.optional();
-    return this.dfa
-  }
-
-  _normalize() {
-    const block = this.block;
-    block._normalize();
-    if (block instanceof Optional) {
-      this.block = block.block;
-    } else if (block instanceof Kleene) {
-      console.error('FIXME -  <optional> is useless here', this.toString());
-    }
-  }
-
-  toString() {
-    return this.block.toString() + '?'
-  }
-
-}
-
-Optional.fromJSON = function(data) {
-  return new Optional(_fromJSON(data.block))
-};
-
-
-
-class Kleene {
-
-  constructor(block) {
-    this.block = block;
-  }
-
-  copy() {
-    return new Kleene(this.block.copy())
-  }
-
-  toJSON() {
-    return {
-      type: '*',
-      block: this.block.toJSON()
-    }
-  }
-
-  _compile() {
-    const block = this.block;
-    if (block instanceof Interleave) {
-      throw new Error('Nested interleave blocks are not supported.')
-    }
-    if (!block.dfa) {
-      block._compile();
-    }
-    this.dfa = block.dfa.kleene();
-    return this.dfa
-  }
-
-  _normalize() {
-    const block = this.block;
-    block._normalize();
-    if (block instanceof Optional || block instanceof Kleene) {
-      this.block = block.block;
-    } else if (block instanceof Plus) {
-      throw new Error('This does not make sense:' + this.toString())
-    }
-  }
-
-  toString() {
-    return this.block.toString() + '*'
-  }
-
-}
-
-Kleene.fromJSON = function(data) {
-  return new Kleene(_fromJSON(data.block))
-};
-
-
-class Plus {
-
-  constructor(block) {
-    this.block = block;
-  }
-
-  copy() {
-    return new Plus(this.block.copy())
-  }
-
-  toJSON() {
-    return {
-      type: '+',
-      block: this.block.toJSON()
-    }
-  }
-
-  _compile() {
-    const block = this.block;
-    if (block instanceof Interleave) {
-      throw new Error('Nested interleave blocks are not supported.')
-    }
-    if (!block.dfa) {
-      block._compile();
-    }
-    this.dfa = block.dfa.plus();
-    return this.dfa
-  }
-
-  _normalize() {
-    const block = this.block;
-    block._normalize();
-    if (block instanceof Optional || block instanceof Kleene) {
-      throw new Error('This does not make sense:' + this.toString())
-    } else if (block instanceof Plus) {
-      this.block = block.block;
-    }
-  }
-
-  toString() {
-    return this.block.toString() + '+'
-  }
-}
-
-Plus.fromJSON = function(data) {
-  return new Plus(_fromJSON(data.block))
-};
-
-function _fromJSON(data) {
-  switch(data.type) {
-    case ',':
-      return Sequence.fromJSON(data)
-    case '~':
-      return Interleave.fromJSON(data)
-    case '|':
-      return Choice.fromJSON(data)
-    case '?':
-      return Optional.fromJSON(data)
-    case '+':
-      return Plus.fromJSON(data)
-    case '*':
-      return Kleene.fromJSON(data)
-    default:
-      if (isString$1(data)) {
-        return new Token(data)
-      }
-      throw new Error('Unsupported data.')
-  }
-}
-
-const { TEXT: TEXT$1 } = DFA;
-
-class XMLSchema {
-
-  constructor(elementSchemas, startElement) {
-    if (!elementSchemas[startElement]) {
-      throw new Error('startElement must be a valid element.')
-    }
-    this._elementSchemas = {};
-    this.startElement = startElement;
-    
-    forEach(elementSchemas, (spec, name) => {
-      this._elementSchemas[name] = new ElementSchema(spec.name, spec.type, spec.attributes, spec.expr);
-    });
-  }
-
-  getIdAttribute() {
-    return 'id'
-  }
-
-  getTagNames() {
-    return Object.keys(this._elementSchemas)
-  }
-
-  getElementSchema(name) {
-    return this._elementSchemas[name]
-  }
-
-  getStartElement() {
-    return this.startElement
-  }
-
-  toJSON() {
-    let result = {
-      start: this.getStartElement(),
-      elements: {}
-    };
-    forEach(this._elementSchemas, (schema, name) => {
-      result.elements[name] = schema.toJSON();
-    });
-    return result
-  }
-
-  
-  toMD() {
-    let result = [];
-    let elementNames = Object.keys(this._elementSchemas);
-    elementNames.sort();
-    elementNames.forEach((name) => {
-      let elementSchema = this._elementSchemas[name];
-      result.push(`# <${elementSchema.name}>`);
-      result.push('');
-      result.push(`type: ${elementSchema.type}`);
-      result.push('attributes: '+ map(elementSchema.attributes, (_, name) => { return name }).join(', '));
-      result.push('children:');
-      result.push('  '+elementSchema.expr.toString());
-      result.push('');
-    });
-    return result.join('\n')
-  }
-
-  validateElement(el) {
-    let tagName = el.tagName;
-    let elementSchema = this.getElementSchema(tagName);
-    return _validateElement(elementSchema, el)
-  }
-}
-
-XMLSchema.fromJSON = function(data) {
-  let elementSchemas = {};
-  forEach(data.elements, (elData) => {
-    let elSchema = ElementSchema.fromJSON(elData);
-    elementSchemas[elSchema.name] = elSchema;
   });
-  return new XMLSchema(elementSchemas, data.start)
+}
+
+var async = Object.freeze({
+	series: series
+});
+
+function array2table(keys) {
+  return keys.reduce((obj, key) => {
+    obj[key] = true;
+    return obj
+  }, {})
+}
+
+class Factory extends Registry {
+  
+  create(name) {
+    var clazz = this.get(name);
+    if (!clazz) {
+      throw new Error( 'No class registered by that name: ' + name )
+    }
+    
+    var args = Array.prototype.slice.call( arguments, 1 );
+    var obj = Object.create( clazz.prototype );
+    clazz.apply( obj, args );
+    return obj
+  }
+}
+
+function includes(arr, val) {
+  if (!arr) return false
+  return (arr.indexOf(val) >= 0)
+}
+
+function merge$1(a, b, options) {
+  options = options || {};
+  var _with = null;
+  if (options.array === 'replace') {
+    _with = _replaceArrays;
+  } else if (options.array === 'concat') {
+    _with = _concatArrays;
+  }
+  if (_with) {
+    return mergeWith(a, b, _with)
+  } else {
+    return merge(a, b)
+  }
+}
+
+function _concatArrays(objValue, srcValue) {
+  if (isArray(objValue)) {
+    return objValue.concat(srcValue)
+  } else {
+    return null
+  }
+}
+
+function _replaceArrays(objValue, srcValue) {
+  if (isArray(objValue)) {
+    return srcValue
+  } else {
+    return null
+  }
+}
+
+function percentage(ratio) {
+  return String(Math.floor(ratio*100*100)/100) + ' %'
+}
+
+var pluck = function(collection, prop) {
+  return map(collection, function(item) { return item[prop] })
 };
 
-class ElementSchema {
-
-  constructor(name, type, attributes, expr) {
-    this.name = name;
-    this.type = type;
-    this.attributes = attributes;
-    this.expr = expr;
-
-    if (!name) {
-      throw new Error("'name' is mandatory")
-    }
-    if (!type) {
-      throw new Error("'type' is mandatory")
-    }
-    if (!attributes) {
-      throw new Error("'attributes' is mandatory")
-    }
-    if (!expr) {
-      throw new Error("'expr' is mandatory")
-    }
-  }
-
-  toJSON() {
-    return {
-      name: this.name,
-      type: this.type,
-      attributes: this.attributes,
-      elements: this.expr.toJSON()
-    }
-  }
-
-  isAllowed(tagName) {
-    return this.expr.isAllowed(tagName)
-  }
-
-  isTextAllowed() {
-    return this.expr.isAllowed(TEXT$1)
-  }
-
-  printStructure() {
-    return `${this.name} ::= ${this.expr.toString()}`
-  }
-
-  findFirstValidPos(el, newTag) {
-    return this.expr._findInsertPos(el, newTag, 'first')
-  }
-
-  findLastValidPos(el, newTag) {
-    return this.expr._findInsertPos(el, newTag, 'last')
-  }
-
-}
-
-ElementSchema.fromJSON = function(data) {
-  return new ElementSchema(
-    data.name,
-    data.type,
-    data.attributes,
-    Expression.fromJSON(data.elements)
-  )
-};
-
-function _validateElement(elementSchema, el) {
-  let errors = [];
-  let valid = true;
-  { 
-    const res = _checkAttributes(elementSchema, el);
-    if (!res.ok) {
-      errors = errors.concat(res.errors);
-      valid = false;
-    }
-  }
-  { 
-    const res = _checkChildren(elementSchema, el);
-    if (!res.ok) {
-      errors = errors.concat(res.errors);
-      valid = false;
-    }
-  }
-  return {
-    errors,
-    ok: valid
+function printStacktrace() {
+  try {
+    throw new Error();
+  } catch (err) {
+    console.error(err.stack);
   }
 }
 
-function _checkAttributes(elementSchema, el) { 
-  return { ok: true }
-}
-
-function _checkChildren(elementSchema, el) {
-  
-  
-  if (elementSchema.type === 'external') {
-    return true
+function times$1$1(num, fn, ctx) {
+  for (let i=0; i<num; i++) {
+    fn.call(ctx);
   }
-  const expr = elementSchema.expr;
-  const state = expr.getInitialState();
-  const iterator = el.getChildNodeIterator();
-  let valid = true;
-  while (valid && iterator.hasNext()) {
-    const childEl = iterator.next();
-    let token;
-    if (childEl.isTextNode()) {
-      
-      if (elementSchema.type !== 'text' && _isTextNodeEmpty(childEl)) {
-        continue
-      }
-      token = TEXT$1;
-    } else if (childEl.isElementNode()) {
-      token = childEl.tagName;
-    } else {
-      continue
-    }
-    if (!expr.consume(state, token)) {
-      valid = false;
-    }
-  }
-  
-  if (state.errors.length > 0) {
-    state.errors.forEach((err) => {
-      err.el = el;
-    });
-  }
-  if (valid && !expr.isFinished(state)) {
-    state.errors.push({
-      msg: `<${el.tagName}> is incomplete.\nSchema: ${expr.toString()}`,
-      el
-    });
-    valid = false;
-  }
-  if (valid) {
-    state.ok = true;
-  }
-  return state
-}
-
-class XMLTextNode extends TextNodeMixin(XMLDocumentNode) {
-
-  getPath() {
-    return [this.id, 'content']
-  }
-
-  getText() {
-    return this.content
-  }
-
-  
-  getChildren() {
-    const annos = this.getAnnotations();
-    
-    
-    annos.sort(_byStartOffset);
-    return annos
-  }
-
-  setText(text) {
-    const doc = this.getDocument();
-    const path = this.getPath();
-    const oldText = this.getText();
-    
-    if (oldText.length > 0) {
-      doc.update(path, { type: 'delete', start: 0, end: oldText.length });
-    }
-    doc.update(path, { type: 'insert', start: 0, text });
-    return this
-  }
-
-  
-
-  getTextContent() {
-    return this.getText()
-  }
-
-  setTextContent(text) {
-    return this.setText(text)
-  }
-
-  get textContent() {
-    return this.getText()
-  }
-
-  set textContent(text) {
-    this.setText(text);
-  }
-
-  appendChild(child) {
-    
-    
-    
-    
-    
-    
-    
-    throw new Error('This is not implemented yet.')
-  }
-
-  removeChild(child) {
-    
-    throw new Error('This is not implemented yet.')
-  }
-
-  
-  isElementNode() {
-    return true
-  }
-
-}
-
-XMLTextNode.prototype.text = DOMElement.prototype.text;
-
-XMLTextNode.prototype._elementType = 'text';
-
-XMLTextNode.isText = true;
-XMLTextNode.isBlock = true;
-
-XMLTextNode.type = 'text';
-
-XMLTextNode.schema = {
-  content: "text"
-};
-
-function _byStartOffset(a,b) {
-  return a.start.offset - b.start.offset
-}
-
-class TextNodeConverter extends XMLNodeConverter {
-
-  import(el, node, converter) {
-    node.content = converter.annotatedText(el, [node.id, 'content']);
-  }
-
-  export(node, el, converter) {
-    el.tagName = this.tagNameNS;
-    el.setAttributes(node.attributes);
-    el.append(converter.annotatedText([node.id, 'content']));
-  }
-
 }
 
 function checkSchema(xmlSchema) {
@@ -40315,7 +42201,7 @@ function checkSchema(xmlSchema) {
     const elementSchema = xmlSchema.getElementSchema(name);
     switch(elementSchema.type) {
       case 'text': {
-        issues = issues.concat(_checkTextElement(elementSchema));
+        issues = issues.concat(_checkTextElement$1(elementSchema));
         break
       }
       case 'element':
@@ -40349,7 +42235,7 @@ function checkSchema(xmlSchema) {
   return issues
 }
 
-function _checkTextElement(elementSchema) {
+function _checkTextElement$1(elementSchema) {
   const issues = [];
   
   if (_usedInline(elementSchema)) {
@@ -40480,7 +42366,7 @@ function _expandIncludes(fs, searchDirs, root) {
 }
 
 function _loadRNG(fs, searchDirs, entry) {
-  if (!isArray$1(searchDirs)) searchDirs = [searchDirs];
+  if (!isArray(searchDirs)) searchDirs = [searchDirs];
   let rngPath = _lookupRNG(fs, searchDirs, entry);
   let rngStr = fs.readFileSync(rngPath, 'utf8');
   const rng = DefaultDOMElement.parseXML(rngStr, 'full-doc');
@@ -40489,7 +42375,7 @@ function _loadRNG(fs, searchDirs, entry) {
   return rng
 }
 
-const { TEXT: TEXT$5 } = DFA;
+const { TEXT: TEXT$6 } = DFA;
 
 function analyze(elementSchemas) {
   forEach(elementSchemas, (elementSchema) => {
@@ -40533,7 +42419,7 @@ function _analyzeElementSchema(elementSchema, elementSchemas) {
   let hasElements = false;
   _siblings.forEach((tagNames) => {
     
-    let _hasText = tagNames.indexOf(TEXT$5) >= 0;
+    let _hasText = tagNames.indexOf(TEXT$6) >= 0;
     let _hasElements = (!_hasText && tagNames.length > 0);
     if (_hasText) {
       hasText = true;
@@ -40568,13 +42454,13 @@ function _analyzeElementSchema(elementSchema, elementSchemas) {
   }
 }
 
-const TEXT$4 = DFA.TEXT;
+const TEXT$5 = DFA.TEXT;
 
 
 function compileRNG(fs, searchDirs, entry) {
   let rng;
   
-  if (arguments.length === 1 && isString$1(arguments[0])) {
+  if (arguments.length === 1 && isString(arguments[0])) {
     rng = DefaultDOMElement.parseXML(arguments[0]);
   } else {
     rng = _loadRNG(fs, searchDirs, entry);
@@ -40735,11 +42621,11 @@ function _transformBlock(doc, block, defs, visiting={}) {
       return []
     }
     default: {
-      let clone$$1 = block.clone(false);
+      let clone = block.clone(false);
       block.children.forEach((child) => {
-        clone$$1.append(_transformBlock(doc, child, defs, visiting));
+        clone.append(_transformBlock(doc, child, defs, visiting));
       });
-      return [clone$$1]
+      return [clone]
     }
   }
 }
@@ -40839,7 +42725,7 @@ function _processBlocks(children, grammar) {
         break
       }
       case 'text': {
-        blocks.push(new Token(TEXT$4));
+        blocks.push(new Token(TEXT$5));
         break
       }
       case 'ref': {
@@ -40949,299 +42835,6 @@ function _transformAttribute(el) {
   }
 }
 
-class XMLInlineElementNode extends XMLAnnotationNode {
-
-  
-  get parentNode() {
-    const path = this.start.path;
-    if (path[0]) {
-      const doc = this.getDocument();
-      return doc.get(path[0])
-    }
-    return this._parentNode
-  }
-
-  set parentNode(parent) {
-    const path = this.start.path;
-    if (path[0]) {
-      throw new Error('parent of inline-element is implicitly given')
-    }
-    this._parentNode = parent;
-  }
-
-}
-
-XMLInlineElementNode.prototype._elementType = 'inline-element';
-
-
-
-XMLInlineElementNode.prototype._isInlineNode = true;
-XMLInlineElementNode.isInline = true;
-
-
-XMLInlineElementNode.type = 'inline-element';
-
-XMLInlineElementNode.schema = {
-  childNodes: { type: ['array', 'id'], default: [], owned: true},
-};
-
-const { TEXT: TEXT$6 } = DFA;
-
-class ValidatingChildNodeIterator {
-
-  constructor(el, it, expr) {
-    this.el = el;
-    this.it = it;
-    this.expr = expr;
-    this.state = expr.getInitialState();
-    this._oldStates = [];
-  }
-
-  hasNext() {
-    return this.it.hasNext()
-  }
-
-  next() {
-    const state = this.state;
-    const expr = this.expr;
-    let next = this.it.next();
-    let oldState = cloneDeep(this.state);
-    let ok;
-    if (next.isTextNode()) {
-      ok = expr.consume(state, TEXT$6);
-    } else if (next.isElementNode()) {
-      ok = expr.consume(state, next.tagName);
-    }
-    if (!ok) {
-      if (next.isTextNode()) {
-        if (!_isTextNodeEmpty(next)) {
-          console.error(`TEXT is invalid within <${expr.name}>. Skipping.`, next.textContent);
-        }
-      } else if (next.isElementNode()) {
-        let error = last$1(state.errors);
-        console.error(error.msg, this.el.getNativeElement());
-      }
-      
-      this.state = oldState;
-      return next.createComment(next.outerHTML)
-    } else {
-      this._oldStates.push(oldState);
-      return next
-    }
-  }
-
-  back() {
-    this.it.back();
-    this.state = this._oldStates.pop();
-    return this
-  }
-
-  peek() {
-    return this.it.peek()
-  }
-
-}
-
-class XMLDocumentImporter extends DOMImporter {
-
-  constructor(config, context) {
-    
-    super({
-      
-      schema: config.schema,
-      
-      converters: config.converters,
-      idAttribute: config.schema.xmlSchema.getIdAttribute(),
-    }, context);
-    this.xmlSchema = config.schema.xmlSchema;
-  }
-
-  importDocument(dom) {
-    this.reset();
-    const doc = this.state.doc;
-    if (isString$1(dom)) {
-      dom = DefaultDOMElement.parseXML(dom);
-    }
-    const startTag = this.xmlSchema.getStartElement();
-    let rootEl = dom.find(startTag);
-    if (!rootEl) throw new Error(`Could not find <${startTag}> element.`)
-    doc.root = this.convertElement(rootEl);
-    return this.state.doc
-  }
-
-  _initialize() {
-    const schema = this.schema;
-    const defaultTextType = schema.getDefaultTextType();
-    const converters = this.converters;
-
-    this._allConverters = [];
-    this._propertyAnnotationConverters = [];
-    this._blockConverters = [];
-
-    for (let i = 0; i < converters.length; i++) {
-      let converter;
-      if (typeof converters[i] === 'function') {
-        const Converter = converters[i];
-        converter = new Converter();
-      } else {
-        converter = converters[i];
-      }
-      if (!converter.type) {
-        throw new Error('Converter must provide the type of the associated node.')
-      }
-      if (!converter.matchElement && !converter.tagName) {
-        throw new Error('Converter must provide a matchElement function or a tagName property.')
-      }
-      if (!converter.matchElement) {
-        converter.matchElement = this._defaultElementMatcher.bind(converter);
-      }
-      const NodeClass = schema.getNodeClass(converter.type);
-      if (!NodeClass) {
-        throw new Error('No node type defined for converter')
-      }
-      if (!this._defaultBlockConverter && defaultTextType === converter.type) {
-        this._defaultBlockConverter = converter;
-      }
-
-      
-      if (NodeClass.prototype._isAnnotation) {
-        this._propertyAnnotationConverters.push(converter);
-      } else {
-        this._blockConverters.push(converter);
-      }
-    }
-    this._allConverters = this._blockConverters.concat(this._propertyAnnotationConverters);
-  }
-
-  _createNodeData(el, type) {
-    let nodeData = super._createNodeData(el, type);
-    let attributes = {};
-    el.getAttributes().forEach((value, key) => {
-      attributes[key] = value;
-    });
-    nodeData.attributes = attributes;
-    return nodeData
-  }
-
-  getChildNodeIterator(el) {
-    
-    let schema = this.xmlSchema.getElementSchema(el.tagName);
-    let it = el.getChildNodeIterator();
-    return new ValidatingChildNodeIterator(el, it, schema.expr)
-  }
-
-  _convertPropertyAnnotation() {
-    throw new Error('stand-alone annotations are not supported.')
-  }
-
-  _convertInlineNode(el, nodeData, converter) {
-    const path = [];
-    if (converter.import) {
-      nodeData = converter.import(el, nodeData, this) || nodeData;
-    }
-    nodeData.start = { path, offset: 0 };
-    nodeData.end = { offset: 0 };
-    return nodeData
-  }
-}
-
-function registerSchema(config, xmlSchema, DocumentClass) {
-  const schemaName = xmlSchema.getName();
-  
-  config.defineSchema({
-    name: schemaName,
-    version: xmlSchema.getVersion(),
-    DocumentClass: DocumentClass,
-    
-    
-    defaultTextType: 'p',
-  
-    xmlSchema: xmlSchema
-  });
-  const tagNames = xmlSchema.getTagNames();
-  
-  tagNames.forEach((tagName) => {
-    const elementSchema = xmlSchema.getElementSchema(tagName);
-    const name = elementSchema.name;
-    let NodeClass, ConverterClass;
-    switch (elementSchema.type) {
-      case 'element':
-      case 'hybrid': {
-        NodeClass = XMLElementNode;
-        ConverterClass = ElementNodeConverter;
-        break
-      }
-      case 'text': {
-        NodeClass = XMLTextNode;
-        ConverterClass = TextNodeConverter;
-        break
-      }
-      case 'annotation': {
-        NodeClass = XMLAnnotationNode;
-        ConverterClass = XMLNodeConverter;
-        break
-      }
-      case 'anchor': {
-        NodeClass = XMLAnchorNode;
-        ConverterClass = XMLNodeConverter;
-        break
-      }
-      case 'inline-element': {
-        NodeClass = XMLInlineElementNode;
-        ConverterClass = XMLNodeConverter;
-        break
-      }
-      case 'external': {
-        NodeClass = XMLExternalNode;
-        ConverterClass = ExternalNodeConverter;
-        break
-      }
-      case 'container': {
-        NodeClass = XMLContainerNode;
-        ConverterClass = ElementNodeConverter;
-        break
-      }
-      default:
-        throw new Error('Illegal state')
-    }
-    
-    class Node extends NodeClass {}
-    Node.type = name;
-
-    
-    const attributes = elementSchema.attributes;
-    forEach(attributes, (spec, name) => {
-      _defineAttribute(Node, name, spec);
-    });
-
-    config.addNode(Node);
-    let converter = new ConverterClass(name);
-    config.addConverter(schemaName, converter);
-
-    config.addImporter(schemaName, XMLDocumentImporter);
-  });
-}
-
-const BUILTIN_ATTRS = ['id', 'type', 'attributes', '_childNodes'];
-
-function _defineAttribute(Node, attributeName) {
-  let name = attributeName.replace(':', '_');
-  name = camelCase(name);
-  if (BUILTIN_ATTRS.indexOf(name) >= 0) {
-    
-    return
-  }
-  Object.defineProperty(Node.prototype, name, {
-    get() {
-      return this.getAttribute(attributeName)
-    },
-    set(val) {
-      this.setAttribute(attributeName, val);
-      return this
-    }
-  });
-}
-
 const DISABLED = Object.freeze({
   disabled: true
 });
@@ -41250,6 +42843,8 @@ const DISABLED = Object.freeze({
 class SchemaDrivenCommandManager extends CommandManager {
 
   _initialize() {
+    
+    
     const annotationCommands = new Map();
     const insertCommands = new Map();
     const switchTypeCommands = new Map();
@@ -41421,23 +43016,24 @@ function validateElement(xmlSchema, el) {
 
 function prettyPrintXML(xml) {
   let dom;
-  if (isString$1(xml)) {
+  if (isString(xml)) {
     dom = DefaultDOMElement.parseXML(xml);
   } else {
     dom = xml;
   }
   const result = [];
-  dom.children.forEach((el) => {
+  dom.childNodes.forEach((el) => {
     _prettyPrint(result, el, 0);
   });
   return result.join('\n')
 }
 
 function _prettyPrint(result, el, level) {
-  let indent = new Array(level*2).join(' ');
+  let indent = new Array(level*2).fill(' ').join('');
   if (el.isElementNode()) {
     const isMixed = _isMixed(el);
-    if (isMixed) {
+    const containsCDATA = _containsCDATA(el);
+    if (isMixed || containsCDATA) {
       result.push(indent + el.outerHTML);
     } else {
       let children = el.children;
@@ -41471,13 +43067,23 @@ function _isMixed(el) {
   }
 }
 
+function _containsCDATA(el) {
+  const childNodes = el.childNodes;
+  for (let i = 0; i < childNodes.length; i++) {
+    let child = childNodes[i];
+    if (child.getNodeType() === 'cdata') {
+      return true
+    }
+  }
+}
+
 var ButtonPackage = {
   name: 'button',
   configure: function(config) {
-    config.addComponent('button', Button$$1);
+    config.addComponent('button', Button);
     config.addIcon('dropdown', { 'fontawesome': 'fa-angle-down' });
   },
-  Button: Button$$1
+  Button
 };
 
 class ContextMenu extends ToolPanel {
@@ -41703,9 +43309,9 @@ var InputPackage = {
 var LayoutPackage = {
   name: 'layout',
   configure: function(config) {
-    config.addComponent('layout', Layout$$1);
+    config.addComponent('layout', Layout);
   },
-  Layout: Layout$$1
+  Layout
 };
 
 class Modal extends Component {
@@ -42010,12 +43616,12 @@ var ScrollbarPackage = {
 var ScrollPanePackage = {
   name: 'scroll-pane',
   configure: function(config) {
-    config.addComponent('scroll-pane', ScrollPane$$1);
+    config.addComponent('scroll-pane', ScrollPane);
   },
-  ScrollPane: ScrollPane$$1
+  ScrollPane
 };
 
-class BodyScrollPane extends AbstractScrollPane$$1 {
+class BodyScrollPane extends AbstractScrollPane {
 
   
   getChildContext() {
@@ -42112,9 +43718,9 @@ var BodyScrollPanePackage = {
 var SplitPanePackage = {
   name: 'split-pane',
   configure: function(config) {
-    config.addComponent('split-pane', SplitPane$$1);
+    config.addComponent('split-pane', SplitPane);
   },
-  SplitPane: SplitPane$$1
+  SplitPane
 };
 
 class TabbedPane extends Component {
@@ -42185,9 +43791,8 @@ class Undo extends Command {
     let editorSession = params.editorSession;
     if (editorSession.canUndo()) {
       editorSession.undo();
-      return true
     }
-    return false
+    return true
   }
 
 }
@@ -42219,9 +43824,16 @@ class SelectAll extends Command {
   getCommandState(params) {
     let editorSession = params.editorSession;
     let isBlurred = editorSession.isBlurred();
-    return {
-      disabled: editorSession.getSelection().isNull() || isBlurred
-    }
+    let surface = params.surface || editorSession.getFocusedSurface();
+    let sel = editorSession.getSelection();
+    
+    let disabled = (
+      isBlurred ||
+      !sel || sel.isNull() ||
+      !surface ||
+      !(surface._isContainerEditor || surface._isTextPropertyEditor)
+    );
+    return { disabled }
   }
 
   execute(params) {
@@ -42236,7 +43848,7 @@ class SelectAll extends Command {
         let nodeIds = container.getContent();
         if (nodeIds.length === 0) return false
         let firstNodeId = nodeIds[0];
-        let lastNodeId = last$1(nodeIds);
+        let lastNodeId = last$2(nodeIds);
         sel = editorSession.createSelection({
           type: 'container',
           startPath: [firstNodeId],
@@ -42280,8 +43892,9 @@ var ToolPanelPackage = {
   configure(config) {
     config.addComponent('tool-panel', ToolPanel);
     config.addComponent('tool-dropdown', ToolDropdown);
-    config.addComponent('tool-group', ToolGroup$$1);
-    config.addComponent('tool-prompt', ToolPrompt$$1);
+    config.addComponent('tool-group', ToolGroup);
+    config.addComponent('menu-group', MenuGroup);
+    config.addComponent('tool-prompt', ToolPrompt);
     config.addComponent('tool-separator', ToolSeparator);
   }
 };
@@ -42398,7 +44011,7 @@ var BlockquotePackage = {
     config.addComponent(Blockquote.type, BlockquoteComponent);
     config.addConverter('html', BlockquoteHTMLConverter);
     config.addConverter('xml', BlockquoteHTMLConverter);
-    config.addCommand('blockquote', SwitchTextTypeCommand$$1, {
+    config.addCommand('blockquote', SwitchTextTypeCommand, {
       spec: { type: 'blockquote' },
       commandGroup: 'text-types'
     });
@@ -42484,7 +44097,7 @@ var CodeblockPackage = {
     config.addComponent('codeblock', CodeblockComponent);
     config.addConverter('html', CodeblockHTMLConverter);
     config.addConverter('xml', CodeblockHTMLConverter);
-    config.addCommand('codeblock', SwitchTextTypeCommand$$1, {
+    config.addCommand('codeblock', SwitchTextTypeCommand, {
       spec: { type: 'codeblock' },
       commandGroup: 'text-types'
     });
@@ -43232,7 +44845,16 @@ var FindAndReplacePackage = {
   FindAndReplaceManager
 };
 
-class Heading extends TextBlock {}
+class Heading extends TextBlock {
+
+  isHeading() {
+    return true
+  }
+
+  getLevel() {
+    return this.level
+  }
+}
 
 Heading.schema = {
   type: "heading",
@@ -43282,7 +44904,7 @@ var HeadingMacro = {
         });
         tx.setSelection({
           type: 'property',
-          path: node.getTextPath(),
+          path: node.getPath(),
           startOffset: startOffset - match[0].length
         });
       });
@@ -43327,15 +44949,15 @@ var HeadingPackage = {
     config.addConverter('html', HeadingHTMLConverter);
     config.addConverter('xml', HeadingHTMLConverter);
 
-    config.addCommand('heading1', SwitchTextTypeCommand$$1, {
+    config.addCommand('heading1', SwitchTextTypeCommand, {
       spec: { type: 'heading', level: 1 },
       commandGroup: 'text-types'
     });
-    config.addCommand('heading2', SwitchTextTypeCommand$$1, {
+    config.addCommand('heading2', SwitchTextTypeCommand, {
       spec: { type: 'heading', level: 2 },
       commandGroup: 'text-types'
     });
-    config.addCommand('heading3', SwitchTextTypeCommand$$1, {
+    config.addCommand('heading3', SwitchTextTypeCommand, {
       spec: { type: 'heading', level: 3 },
       commandGroup: 'text-types'
     });
@@ -43762,7 +45384,7 @@ class EditLinkTool extends ToggleTool {
 
   render($$) {
     let Input = this.getComponent('input');
-    let Button$$1 = this.getComponent('button');
+    let Button = this.getComponent('button');
     let commandState = this.props.commandState;
     let el = $$('div').addClass('sc-edit-link-tool');
 
@@ -43780,13 +45402,13 @@ class EditLinkTool extends ToggleTool {
         path: urlPath,
         placeholder: 'Paste or type a link url'
       }),
-      $$(Button$$1, {
+      $$(Button, {
         icon: 'open-link',
         theme: 'dark',
       }).attr('title', this.getLabel('open-link'))
         .on('click', this._openLink),
 
-      $$(Button$$1, {
+      $$(Button, {
         icon: 'delete',
         theme: 'dark',
       }).attr('title', this.getLabel('delete-link'))
@@ -43954,12 +45576,12 @@ function renderListNode(node, rootEl, createElement) {
       for (let j = stack.length; j < item.level; j++) {
         
         let sublist = createElement(getListTagName(node));
-        last$1(stack).append(sublist);
+        last$2(stack).append(sublist);
         stack.push(sublist);
       }
     }
     console.assert(item.level === stack.length, 'item.level should now be the same as stack.length');
-    last$1(stack).append(
+    last$2(stack).append(
       createElement(item)
     );
   }
@@ -43980,12 +45602,12 @@ class ListComponent extends Component {
       .addClass('sc-list')
       .attr('data-id', node.id);
     renderListNode(node, el, (arg) => {
-      if (isString$1(arg)) {
+      if (isString(arg)) {
         return $$(arg)
       } else if(arg.type === 'list-item') {
         let item = arg;
         return $$(ListItemComponent, {
-          path: [item.id, 'content'],
+          path: item.getPath(),
           node: item,
           tagName: 'li'
         })
@@ -44052,11 +45674,11 @@ var ListHTMLConverter = {
     let $$ = converter.$$;
     el.tagName = getListTagName(node);
     renderListNode(node, el, (arg)=>{
-      if (isString$1(arg)) {
+      if (isString(arg)) {
         return $$(arg)
       } else {
         let item = arg;
-        return $$('li').append(converter.annotatedText(item.getTextPath()))
+        return $$('li').append(converter.annotatedText(item.getPath()))
       }
     });
     return el
@@ -44089,11 +45711,11 @@ var ListItemHTMLConverter = {
   },
 
   export: function(node, el, converter) {
-    el.append(converter.annotatedText(node.getTextPath()));
+    el.append(converter.annotatedText(node.getPath()));
   }
 };
 
-class InsertListCommand extends SwitchTextTypeCommand$$1 {
+class InsertListCommand extends SwitchTextTypeCommand {
 
   execute (params) {
     let ordered = this.config.spec.ordered;
@@ -44298,7 +45920,7 @@ var ParagraphPackage = {
     config.addComponent(Paragraph.type, ParagraphComponent);
     config.addConverter('html', ParagraphHTMLConverter);
     config.addConverter('xml', ParagraphHTMLConverter);
-    config.addCommand('paragraph', SwitchTextTypeCommand$$1, {
+    config.addCommand('paragraph', SwitchTextTypeCommand, {
       spec: { type: 'paragraph' },
       commandGroup: 'text-types'
     });
@@ -44559,7 +46181,7 @@ class TableCellComponent extends Component {
     let el = $$('td').addClass('sc-table-cell');
     el.append(
       $$(TextPropertyEditor, {
-        path: node.getTextPath(),
+        path: node.getPath(),
         disabled: this.props.disabled
       }).ref('editor')
     );
@@ -44686,7 +46308,7 @@ var TableHTMLConverter = {
         }
         if (tableCell.colspan > 1) {
           
-          times(tableCell.colspan - 1, () => {
+          times$1$1(tableCell.colspan - 1, () => {
             row.push(null);
           });
         }
@@ -44817,24 +46439,24 @@ class ProseArticle extends Document {
 class ProseEditor extends AbstractEditor {
 
   render($$) {
-    let SplitPane$$1 = this.componentRegistry.get('split-pane');
+    let SplitPane = this.componentRegistry.get('split-pane');
     let el = $$('div').addClass('sc-prose-editor');
     let toolbar = this._renderToolbar($$);
     let editor = this._renderEditor($$);
     let configurator = this.getConfigurator();
-    let ScrollPane$$1 = this.componentRegistry.get('scroll-pane');
-    let Overlay$$1 = this.componentRegistry.get('overlay');
+    let ScrollPane = this.componentRegistry.get('scroll-pane');
+    let Overlay = this.componentRegistry.get('overlay');
     let ContextMenu = this.componentRegistry.get('context-menu');
     let Dropzones = this.componentRegistry.get('dropzones');
 
-    let contentPanel = $$(ScrollPane$$1, {
+    let contentPanel = $$(ScrollPane, {
       name: 'contentPanel',
       contextMenu: this.props.contextMenu || 'native',
       scrollbarPosition: 'right',
       scrollbarType: this.props.scrollbarType
     }).append(
       editor,
-      $$(Overlay$$1, {
+      $$(Overlay, {
         toolPanel: configurator.getToolPanel('main-overlay'),
         theme: 'dark'
       }),
@@ -44843,11 +46465,11 @@ class ProseEditor extends AbstractEditor {
     ).ref('contentPanel');
 
     el.append(
-      $$(SplitPane$$1, {splitType: 'horizontal'}).append(
+      $$(SplitPane, {splitType: 'horizontal'}).append(
         toolbar,
-        $$(SplitPane$$1, {splitType: 'horizontal', sizeB: 'inherit'}).append(
+        $$(SplitPane, {splitType: 'horizontal', sizeB: 'inherit'}).append(
           contentPanel,
-          $$(WorkflowPane$$1, {
+          $$(WorkflowPane, {
             toolPanel: configurator.getToolPanel('workflow')
           })
         )
@@ -44859,7 +46481,7 @@ class ProseEditor extends AbstractEditor {
   _renderToolbar($$) {
     let configurator = this.getConfigurator();
     return $$('div').addClass('se-toolbar-wrapper').append(
-      $$(Toolbar$$1, {
+      $$(Toolbar, {
         toolPanel: configurator.getToolPanel('toolbar')
       }).ref('toolbar')
     )
@@ -44876,14 +46498,26 @@ class ProseEditor extends AbstractEditor {
   }
 }
 
+class ProseArticleImporter extends HTMLImporter {
+
+  convertDocument(documentEl) {
+    let body = documentEl.find('body');
+    this.convertContainer(body.children, 'body');
+  }
+
+}
+
 var ProseEditorPackage = {
   name: 'prose-editor',
   configure: function(config) {
     config.defineSchema({
       name: 'prose-article',
       DocumentClass: ProseArticle,
-      defaultTextType: 'paragraph'
+      defaultTextType: 'paragraph',
+      version: '1.0'
     });
+    config.addImporter('html', ProseArticleImporter);
+
     
     config.import(BasePackage);
     config.import(BlockquotePackage);
@@ -44953,13 +46587,13 @@ class CorrectionTool extends ToggleTool {
 
   render($$) {
     let node = this.props.node;
-    let Button$$1 = this.getComponent('button');
+    let Button = this.getComponent('button');
     let el = $$('div').addClass('sc-correction-tool');
 
     if (node && node.suggestions.length > 0) {
       node.suggestions.forEach((s) => {
         el.append(
-          $$(Button$$1, {
+          $$(Button, {
             label: s,
             style: this.props.style
           }).attr('title', this.getLabel('open-link'))
@@ -44969,7 +46603,7 @@ class CorrectionTool extends ToggleTool {
       });
     } else {
       el.append(
-        $$(Button$$1, {
+        $$(Button, {
           label: 'No suggestions',
           style: this.props.style,
           disabled: true
@@ -45078,7 +46712,7 @@ class SpellCheckManager {
     let path = pathStr.split(',');
     let text = this.editorSession.getDocument().get(path);
     let lang = this.editorSession.getLanguage();
-    if (!text || !isString$1(text)) return
+    if (!text || !isString(text)) return
     sendRequest({
       method: 'POST',
       url: this.apiURL,
@@ -45273,7 +46907,7 @@ class TextInputEditor extends TextPropertyEditor {
     const input = doc.getContentNode();
     this.editorSession.setSelection({
       type: 'property',
-      path: input.getTextPath(),
+      path: input.getPath(),
       startOffset: input.getLength(),
       surfaceId: this.id
     });
@@ -45284,7 +46918,7 @@ class TextInputEditor extends TextPropertyEditor {
     const input = doc.getContentNode();
     this.editorSession.setSelection({
       type: 'property',
-      path: input.getTextPath(),
+      path: input.getPath(),
       startOffset: 0,
       endffset: input.getLength(),
       surfaceId: this.id
@@ -45308,9 +46942,9 @@ var TextInputPackage = {
 var ToolbarPackage = {
   name: 'toolbar',
   configure(config) {
-    config.addComponent('toolbar', Toolbar$$1);
+    config.addComponent('toolbar', Toolbar);
   },
-  Toolbar: Toolbar$$1
+  Toolbar
 };
 
 class TextAlignCommand extends Command {
@@ -45378,7 +47012,7 @@ var TextAlignPackage = {
   }
 };
 
-exports.cssSelect = index$1;
+exports.cssSelect = cssSelect;
 exports.DomUtils = domUtils;
 exports.ChangeStore = ChangeStore;
 exports.CollabServer = CollabServer;
@@ -45398,11 +47032,21 @@ exports.CollabEngine = CollabEngine;
 exports.CollabSession = CollabSession;
 exports.Server = Server;
 exports.SnapshotStore = SnapshotStore;
+exports.DocumentArchive = DocumentArchive;
+exports.VfsLoader = VfsLoader;
+exports.ManifestLoader = ManifestLoader;
+exports.PersistedDocumentArchive = PersistedDocumentArchive;
+exports.HttpStorageClient = HttpStorageClient;
+exports.InMemoryDarBuffer = InMemoryDarBuffer;
+exports.VfsStorageClient = VfsStorageClient;
 exports.DOMElement = DOMElement;
 exports.DOMEventListener = DOMEventListener;
 exports.DefaultDOMElement = DefaultDOMElement;
 exports.BrowserDOMElement = BrowserDOMElement;
 exports.MemoryDOMElement = MemoryDOMElement;
+exports.findParentDOMElement = findParentDOMElement;
+exports.stop = stop;
+exports.stopAndPrevent = stopAndPrevent;
 exports.operationHelpers = operationHelpers;
 exports.selectionHelpers = selectionHelpers;
 exports.annotationHelpers = annotationHelpers;
@@ -45473,9 +47117,10 @@ exports.TextOperation = TextOperation;
 exports.Transaction = Transaction;
 exports.XMLExporter = XMLExporter;
 exports.XMLImporter = XMLImporter;
+exports.AbstractClipboard = AbstractClipboard;
 exports.AbstractEditor = AbstractEditor;
 exports.AbstractIsolatedNodeComponent = AbstractIsolatedNodeComponent;
-exports.AbstractScrollPane = AbstractScrollPane$$1;
+exports.AbstractScrollPane = AbstractScrollPane;
 exports.AnnotatedTextComponent = AnnotatedTextComponent;
 exports.AnnotationCommand = AnnotationCommand;
 exports.AnnotationComponent = AnnotationComponent;
@@ -45521,26 +47166,27 @@ exports.Router = Router;
 exports.SelectionFragmentComponent = SelectionFragmentComponent;
 exports.Surface = Surface;
 exports.SurfaceManager = SurfaceManager;
-exports.SwitchTextTypeCommand = SwitchTextTypeCommand$$1;
+exports.SwitchTextTypeCommand = SwitchTextTypeCommand;
 exports.TextBlockComponent = TextBlockComponent;
 exports.TextPropertyComponent = TextPropertyComponent;
 exports.TextPropertyEditor = TextPropertyEditor;
 exports.ToggleTool = ToggleTool;
 exports.ToolDropdown = ToolDropdown;
-exports.ToolGroup = ToolGroup$$1;
-exports.ToolPrompt = ToolPrompt$$1;
+exports.ToolGroup = ToolGroup;
+exports.MenuGroup = MenuGroup;
+exports.ToolPrompt = ToolPrompt;
 exports.ToolPanel = ToolPanel;
+exports.Tooltip = Tooltip;
 exports.UnsupportedNodeComponent = UnsupportedNodeComponent;
 exports.VirtualElement = VirtualElement;
-exports.WorkflowPane = WorkflowPane$$1;
-exports.Button = Button$$1;
-exports.Layout = Layout$$1;
-exports.ScrollPane = ScrollPane$$1;
-exports.SplitPane = SplitPane$$1;
-exports.Toolbar = Toolbar$$1;
+exports.WorkflowPane = WorkflowPane;
+exports.Button = Button;
+exports.Layout = Layout;
+exports.ScrollPane = ScrollPane;
+exports.SplitPane = SplitPane;
+exports.Toolbar = Toolbar;
 exports.Tool = ToggleTool;
 exports.findParentComponent = findParentComponent;
-exports.setDOMSelection = setDOMSelection;
 exports.async = async;
 exports.ArrayIterator = ArrayIterator;
 exports.ArrayTree = ArrayTree;
@@ -45559,7 +47205,7 @@ exports.extend = extend;
 exports.Factory = Factory;
 exports.filter = filter;
 exports.find = find;
-exports.findIndex = findIndex$1;
+exports.findIndex = findIndex;
 exports.flatten = flatten;
 exports.flattenOften = flattenOften;
 exports.forEach = forEach;
@@ -45567,18 +47213,18 @@ exports.getRelativeBoundingRect = getRelativeBoundingRect;
 exports.getRelativeMouseBounds = getRelativeMouseBounds;
 exports.inBrowser = inBrowser;
 exports.includes = includes;
-exports.isArray = isArray$1;
+exports.isArray = isArray;
 exports.isArrayEqual = isArrayEqual;
 exports.isBoolean = isBoolean;
 exports.isEqual = isEqual;
-exports.isFunction = isFunction$1;
+exports.isFunction = isFunction$2;
 exports.isMatch = isMatch;
 exports.isNil = isNil;
 exports.isNumber = isNumber;
-exports.isObject = isObject$1;
-exports.isPlainObject = isPlainObject$1;
-exports.isString = isString$1;
-exports.last = last$1;
+exports.isObject = isObject;
+exports.isPlainObject = isPlainObject;
+exports.isString = isString;
+exports.last = last$2;
 exports.levenshtein = levenshtein;
 exports.makeMap = array2table;
 exports.map = map;
@@ -45594,7 +47240,7 @@ exports.sendRequest = sendRequest;
 exports.startsWith = startsWith;
 exports.SubstanceError = SubstanceError;
 exports.substanceGlobals = substanceGlobals;
-exports.times = times;
+exports.times = times$1$1;
 exports.TreeIndex = TreeIndex;
 exports.uniq = uniq;
 exports.uuid = uuid;
@@ -45606,18 +47252,21 @@ exports.getDOMRangeFromEvent = getDOMRangeFromEvent;
 exports.getSelectionRect = getSelectionRect;
 exports.getRelativeRect = getRelativeRect;
 exports.isMouseInsideDOMSelection = isMouseInsideDOMSelection;
+exports.setDOMSelection = setDOMSelection;
+exports.getQueryStringParam = getQueryStringParam;
 exports.XMLAnchorNode = XMLAnchorNode;
 exports.XMLAnnotationNode = XMLAnnotationNode;
 exports.XMLContainerNode = XMLContainerNode;
 exports.XMLDocument = XMLDocument;
+exports.XMLDocumentImporter = XMLDocumentImporter;
 exports.XMLEditingInterface = XMLEditingInterface;
 exports.XMLElementNode = XMLElementNode;
 exports.XMLElementNodeConverter = ElementNodeConverter;
 exports.XMLExternalNode = XMLExternalNode;
 exports.XMLExternalNodeConverter = ExternalNodeConverter;
 exports.XMLSchema = XMLSchema;
-exports.XMLTextNode = XMLTextNode;
-exports.XMLTextNodeConverter = TextNodeConverter;
+exports.XMLTextElement = XMLTextElement;
+exports.XMLTextElementConverter = XMLTextElementConverter;
 exports.checkSchema = checkSchema;
 exports.compileRNG = compileRNG;
 exports.registerSchema = registerSchema;

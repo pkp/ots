@@ -1246,3 +1246,7 @@ msgid "xmlfinal.command.log"
 msgstr ""
 "XMLFinal is executing:\n"
 "%s "
+
+#: module/Manager/src/Manager/Controller/ManagerController.php
+msgid "manager.controller.rawXmlDomLog"
+msgstr "Unable to load XML document content in DOM in order to generate manifest XML."
