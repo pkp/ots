@@ -58,6 +58,11 @@ class PathFinderJob extends AbstractQueueJob
 
             $job->documents[] = $xmlDocument;
 
+        } elseif (in_array($mimeType, array('application/vnd.openxmlformats-officedocument.wordprocessingml.document'))) {
+            $job->inputFileFormat = JOB_INPUT_TYPE_WP;
+            $job->conversionStage = JOB_CONVERSION_STAGE_DOCX;
+            $unconvertedDocument->conversionStage =
+                JOB_CONVERSION_STAGE_DOCX;
         } else {
             $job->inputFileFormat = JOB_INPUT_TYPE_WP;
             $job->conversionStage = JOB_CONVERSION_STAGE_WP_IN;
