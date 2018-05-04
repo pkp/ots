@@ -387,7 +387,7 @@ class Merge extends AbstractConverter
 
 		$xml .= "<title-group>";
                 if(!empty($metadata['article-titles']) && is_object($metadata['article-titles'])) { $metadata['article-titles'] = (array) $metadata['article-titles']; }
-		$xml .= !empty($metadata['article-titles'][$locale]) ? "<article-title>".$metadata['article-titles'][$locale]."</article-title>" : "";
+		$xml .= !empty($metadata['article-titles'][$locale]) ? "<article-title xml:lang=\"" . $locale . "\">" . $metadata['article-titles'][$locale]."</article-title>" : "";
 			if (count($metadata['article-titles']) > 1){
 				$xml .= "<trans-title-group>";
 				
