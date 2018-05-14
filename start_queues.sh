@@ -6,8 +6,6 @@ for pid in $RUNNING; do
     kill -9 $pid
 done
 
-#if [[ $(ps ax | grep grobid-service | grep -v grep) ]]; then kill $(ps ax | grep grobid-service | grep -v grep | awk '{print $1}'); fi
-
 php public/index.php queue doctrine bibtex --start &
 echo "Started Bibtex queue [PID $!]"
 php public/index.php queue doctrine bibtexreferences --start &

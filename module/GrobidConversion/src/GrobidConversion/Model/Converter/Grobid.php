@@ -98,7 +98,7 @@ class Grobid extends AbstractConverter
             // batch mode setup
             $tempdirpath = $this->setupBatchModeConversionDir();
             
-            $rawcmd = "{$java} {$java_args} -Dlog4j.configuration={$tempdirpath}/grobid.properties -jar {$install_path}/grobid-core/target/{$jarfile} -gH {$install_path}/grobid-home -gP {$install_path}/grobid-home/config/grobid.properties -dIn {$tempdirpath} -dOut {$tempdirpath} -r -exe processFullText ";
+            $rawcmd = "{$java} {$java_args} -Dlog4j.configuration={$tempdirpath}/grobid.properties -jar {$install_path}/grobid-core/build/libs/{$jarfile} -gH {$install_path}/grobid-home -dIn {$tempdirpath} -dOut {$tempdirpath} -exe processFullText ";
             
             $command->setCommand($rawcmd);
         
@@ -296,7 +296,7 @@ class Grobid extends AbstractConverter
         
         $ch = curl_init();
         
-        curl_setopt($ch, CURLOPT_URL, 'http://localhost:8080/processFulltextDocument');
+        curl_setopt($ch, CURLOPT_URL, 'http://localhost:8070/api/processFulltextDocument');
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
