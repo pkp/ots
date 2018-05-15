@@ -196,6 +196,10 @@ class Merge extends AbstractConverter
         $figElements = $meTypesetDom->getElementsByTagName('fig');
         foreach ($figElements as $figure) {
           $figItem = $figElements->item($k);
+          $figP = $figItem->getElementsByTagName('p');
+          foreach ($figP as $p) {
+            $figItem->removeChild($p);
+          }
           $graphic = $figItem->getElementsByTagName('graphic');
           foreach ($graphic as $g) {
             $children = [];

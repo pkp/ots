@@ -60,7 +60,31 @@ class XmlFinal extends AbstractConverter
     {
         $this->outputFile = $outputFile;
     }
-    
+
+    /**
+     * Run xmllint --format on the document to fix ref-list line length
+     *
+     * @return void
+     */
+    protected function xmllintFormat($inputFile, $outputFile)
+    {
+        $command = new Command;
+        // Set the base command
+        $command->setCommand($this->config['xmllint']['command']);
+        // Just fix linebreaks in the XML
+        $command->addSwitch('--format');
+        // The otherwise-final XML
+        $command->addArgument($this->inputFile);
+        // Redirect STDOUT to file
+        $command->addRedirect('>');
+        // The now-final XML
+        $command->addArgument($this->outputFile);
+        // Run the xmllint command
+        $command->execute();
+        $this->status = $command->isSuccess();
+        $this->output = $command->getOutputString();
+    }
+
     /**
      * Copy final xml document
      */

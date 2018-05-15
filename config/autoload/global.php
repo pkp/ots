@@ -131,6 +131,11 @@ return array(
         'epub' => array(
             'command' => 'vendor/pkp/jats2epub/jats2epub'
         ),
+        'xmlfinal' => array(
+            'xmllint' => array(
+                'command' => 'xmllint',
+            ),
+        ),
         'pdf' => array(
             'wkhtmltopdf' => array(
                 'command' => 'module/PdfConversion/assets/wkhtmltopdf-0.11.0_rc1-amd64',
