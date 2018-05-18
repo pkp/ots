@@ -2,7 +2,11 @@
   Provides all component styles. Does not provide any page styles,
   such as fonts and colors for links etc.
 */
-/* Global variables
+/*
+  Global variables
+
+  TODO: we should move all app-specific styling into app-land, and only keep
+        styles that are necessary for the editing to work.
 -------------------------------------------------- */
 :root {
   /* Layout */
@@ -13,7 +17,7 @@
 
   /* Used by Button component */ /* #f8f8f8; */
 
-  /* Depending on a base-color */
+  /* Depending on a base-color */ /* light grey */
 
   /* We disable this for now, as accessibility needs more discussion */ /* #1795CD;/* #5BE3FF;
 
@@ -28,8 +32,6 @@
   /* code-font */
 
   /* RGB #A3CDFD = HSB 209,29,80 */
-
-  /* Collaborator colors */
 }
 .sc-text-block.sm-align-center {
   text-align: center;
@@ -74,7 +76,8 @@
   /* Styled by embedding context: See: _overlay.css, _toolbar.css */
 }
 .sc-menu {
-  background: #2E2E2E;
+  background: #fff;
+  box-shadow: 0 0 0 0.75pt #d1d1d1, 0 0 3pt 0.75pt #aaa;
   padding: 3px;
   border-radius: 3px;
 }
@@ -84,7 +87,6 @@
   white-space: nowrap;
   background: none;
   border: none;
-  color: #fff;
   text-align: left;
   line-height: 24px;
   font-size: 11px;
@@ -94,11 +96,14 @@
   border-radius: 3px;
   padding: 0px 5px;
 }
+.sc-menu-item:hover {
+  background: #F7F7F9;
+}
 .sc-menu-item[disabled=true] {
   opacity: 0.3;
 }
 .sc-menu-item.sm-active {
-  background: white;
+  background: #eee;
   color: inherit;
 }
 .sc-menu-item.sm-active .se-keyboard-shortcut {
@@ -159,39 +164,6 @@
   border-left: 2px solid #E0E4E4;
 }
 /* button */
-/*
-  Dark Theme - when used on dark background
-  =============================================================
-*/
-.sc-button.sm-theme-dark {
-  position: relative;
-  height: 24px;
-  min-width: 24px;
-  line-height: 24px;
-  text-align: center;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 600;
-  border-radius: 3px;
-  padding-left: 7px;
-  padding-right: 7px;
-}
-.sc-button.sm-theme-dark > .se-dropdown {
-  padding-left: 5px;
-}
-.sc-button.sm-theme-dark[disabled=true] {
-  opacity: 0.4;
-  cursor: default;
-}
-.sc-button.sm-theme-dark.sm-active,
-.sc-button.sm-theme-dark:focus {
-  background: #e4e4e4;
-  color: inherit;
-}
-/*
-  Light Theme - when used on white background
-  =============================================================
-*/
 .sc-button.sm-theme-light {
   position: relative;
   height: 24px;
@@ -212,12 +184,16 @@
   cursor: default;
 }
 .sc-button.sm-theme-light.sm-active {
-  background: #2E2E2E;
+  background: #2E72EA;
   color: white;
 }
-.sc-button.sm-theme-light:hover:not(.sm-active):not([disabled]),
+.sc-button.sm-theme-light:hover:not(.sm-active):not([disabled]) {
+  background: #F7F7F9;
+  color: #2E72EA;
+}
 .sc-button.sm-theme-light:focus {
-  background: #e4e4e4;
+  background: #F7F7F9;
+  color: #2E72EA;
 }
 /* code */
 .sc-code {
@@ -231,7 +207,7 @@
   font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   font-size: 15px;
 }
-// Toolbar styles
+/* Toolbar styles */
 .sc-switch-text-type .se-option.sm-codeblock {
   font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   font-size: 15px;
@@ -239,10 +215,11 @@
 /* context-menu */
 .sc-context-menu {
   position: absolute;
-  background: #2E2E2C;
+  background: #fff;
   border-radius: 5px;
   font-size: 13px;
   z-index: 1000;
+  box-shadow: 0 0 0 0.75pt #d1d1d1, 0 0 3pt 0.75pt #aaa;
 }
 .sc-context-menu.sm-hidden {
   /* we don't use display none because we want to determine the content's width */
@@ -313,7 +290,6 @@
 }
 /* find-and-replace */
 .sc-find-and-replace-tool {
-  background: #fafafa;
   border-top: 1px solid #E0E4E4;
   padding: 5px;
 }
@@ -553,11 +529,13 @@
 .sc-isolated-node {
   position: relative;
 }
-.sc-isolated-node.sm-default-style.sm-selected {/*background: rgba(163,205,253, 0.6);*/
+.sc-isolated-node.sm-default-style.sm-selected {
+  /*background: rgba(163,205,253, 0.6);*/
   outline: 2px solid;
   outline-color: #2A8CFF;
 }
-.sc-isolated-node.sm-default-style.sm-co-selected {/*background: rgba(163,205,253, 0.6);*/
+.sc-isolated-node.sm-default-style.sm-co-selected {
+  /*background: rgba(163,205,253, 0.6);*/
   outline: 2px solid;
   outline-color: #2A8CFF;
 }
@@ -621,18 +599,10 @@
   Prose component that turns on the text paddings.
 */
 .sc-layout > p { margin-bottom: 20px; }
-.sc-layout > h1 {
-  margin-bottom: 20px;
-}
-.sc-layout > h2 {
-  margin-bottom: 20px;
-}
-.sc-layout > h3 {
-  margin-bottom: 20px;
-}
-.sc-layout > h4 {
-  margin-bottom: 20px;
-}
+.sc-layout > h1 { margin-bottom: 20px; }
+.sc-layout > h2 { margin-bottom: 20px; }
+.sc-layout > h3 { margin-bottom: 20px; }
+.sc-layout > h4 { margin-bottom: 20px; }
 /* link */
 .sc-link {
   color: #2079DC;
@@ -647,7 +617,6 @@
 .sc-edit-link-tool .sc-input {
   height: 24px;
   font-size: 11px;
-  color: white;
   min-width: 200px;
   font-family: Monaco, 'Courier New';
   padding: 5px;
@@ -696,23 +665,14 @@
 .sc-overlay .sc-tool-group { display: inline-block; }
 .sc-overlay .sc-tool-group .sc-button { margin: 0px 1px; }
 .sc-overlay.sm-hidden { visibility: hidden; left: 0px; top: 0px; }
-.sc-overlay.sm-theme-dark {}
-.sc-overlay.sm-theme-dark::before {
-  content: '';
-  display: block;
-  margin: 0 auto;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 0 4px 8px 4px;
-  border-color: transparent transparent #2E2E2E transparent;
-}
-.sc-overlay.sm-theme-dark > .se-active-tools {
+.sc-overlay {}
+.sc-overlay > .se-active-tools {
+  margin: 5px;
   border-radius: 3px;
-  background: #2E2E2E;
+  background: #fff;
   display: flex;
   flex-wrap: nowrap;
-  padding: 2px;
+  box-shadow: 0 0 0 0.75pt #d1d1d1, 0 0 3pt 0.75pt #aaa;
 }
 .sc-overlay > .se-active-tools .sc-tool-group {
   flex: 0 0 0;
@@ -876,14 +836,9 @@ Don't grow, don't shrink, use width or height for size determination */
 /* Non-Editables should have a regular cursor */
 .sc-surface *[contenteditable="false"] { cursor: default; }
 .sc-surface *[contenteditable="true"] { cursor: text; }
-// We want Firefox to have a transparent native selection
+/* We want Firefox to have a transparent native selection */
 ::-moz-selection { background: rgba(77, 149, 233, 0.46); }
 .sm-selected-node { outline: 2px solid; outline-color: #2A8CFF; }
-.sm-selected-node.sm-collaborator-1 { outline-color: #A4E57A; }
-.sm-selected-node.sm-collaborator-2 { outline-color: #BC90FF; }
-.sm-selected-node.sm-collaborator-3 { outline-color: #D6BB4C; }
-.sm-selected-node.sm-collaborator-4 { outline-color: #BAA6A0; }
-.sm-selected-node.sm-collaborator-5 { outline-color: #7BB5B3; }
 /* tabbed-pane */
 .sc-tabbed-pane { position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; }
 .sc-tabbed-pane .se-tabs { height: 40px; border-bottom: 1px solid #ddd; }
