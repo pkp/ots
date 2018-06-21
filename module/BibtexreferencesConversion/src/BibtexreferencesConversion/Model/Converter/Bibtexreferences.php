@@ -127,7 +127,7 @@ class Bibtexreferences extends AbstractConverter
         $command = new Command;
         $command->setCommand($this->config['command']);
         $command->addArgument($this->inputFileBibtex);
-        $command->addRedirect('2> /dev/null');
+        $command->addRedirect('2>&1');
 
         $this->logger->debugTranslate(
             'bibtexreferencesconversion.converter.biblatex2xml.commandLog',
