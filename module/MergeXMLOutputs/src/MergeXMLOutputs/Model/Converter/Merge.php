@@ -360,7 +360,7 @@ class Merge extends AbstractConverter
 		
 		$xml .= "<journal-title-group>";
                 if(!empty($metadata['journal-titles']) && is_object($metadata['journal-titles'])) { $metadata['journal-titles'] = (array) $metadata['journal-titles']; }
-		$xml .= !empty($metadata['journal-titles'][$locale]) ? "<journal-title>".$metadata['journal-titles'][$locale]."</journal-title>" : "";
+		$xml .= !empty($metadata['journal-titles'][$locale]) ? "<journal-title xml:lang=\"" . $locale . "\">" . $metadata['journal-titles'][$locale]."</journal-title>" : "";
 			if (count($metadata['journal-titles']) > 1){				
 
 				foreach ($metadata['journal-titles'] as $loc => $title) {
