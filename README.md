@@ -248,7 +248,7 @@ Sample sites-available/httpd.conf:
 
  
 
-Note that you will probably want to make sure that port 8080 is blocked from non-localhost connections so that external submissions can not be made directly to the Grobid module service.
+Note that you will probably want to make sure that port `8080` is blocked from non-localhost connections so that external submissions can not be made directly to the Grobid module service.
 
  
 
@@ -270,7 +270,7 @@ Developer notes
 
 -   SASS compilation, CSS and Javascript compression & unification is done using Guard (http://guardgem.org)
 
--   After making changes to Javascript (javascript/) or style files (style/scss/) recompile/recompress the style and Javascript files by running
+-   After making changes to Javascript (`javascript/`) or style files (`style/scss/`) recompile/recompress the style and Javascript files by running
 
 `# guard`
 
@@ -372,7 +372,7 @@ Example response:
 
 **Retrieve**
 
-Retrieve a converted document. The jobConversionStage parameter specifies which type of conversion you want to get retrned. A full list of conversion stages can be found [here](<https://github.com/pkp/xmlps/blob/master/module/Manager/src/Manager/Entity/Job.php#L14>). The "final" XML produced by our pipeline is stage **20**.
+Retrieve a converted document. The jobConversionStage parameter specifies which type of conversion you want to get returned. A full list of conversion stages can be found [here](<https://github.com/pkp/xmlps/blob/master/module/Manager/src/Manager/Entity/Job.php#L14>). The "final" XML produced by our pipeline is stage **20**.
 
 -   URL: `api/job/retrieve`
 
